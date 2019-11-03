@@ -46,21 +46,48 @@ def make_king_model_cluster(nbodycode, N, W0, M, R, parameters=[]):
 	code.particles.add_particles(bodies)
 	return code
 	
-def main(Rgal, Mgal, alpha, nbodycode, N, W0, M,
+def main(Rgal, Mgal, alpha, nbodycode, Nclusters, Nstars, W0, M,
          R, Rinit, parameters, t_end, dt):
 
+	#just the galactic bulge
 	galaxy_code = GalacticCenterGravityCode(Rgal, Mgal, alpha)
-	cluster_code = make_king_model_cluster(nbodycode, N, W0,
-					       M, R, parameters)
+
+	#set up clusters
+	
+	cluster_codes = [ make_king_model_cluster(nbodycode, Nstars, W0, M, R, parameters) for i in range(Nclusters) ]
 
 	gravity = bridge()
-	gravity.add_system(cluster_code, (galaxy_code,))
 
-	stars = cluster_code.particles.copy()
-	stars.x += Rinit
-	stars.vy = 0.8*galaxy_code.circular_velocity(Rinit)
-	channel = stars.new_channel_to(cluster_code.particles)
-	channel.copy_attributes(['x','y','z','vx','vy','vz'])
+	star_colors = []
+
+	#bridges each cluster with the bulge, not the other way around though
+	for cluster_code in cluster_codes:
+
+
+		gravity.add_system(cluster_code, (galaxy_code,))
+
+		stars = cluster_code.particles.copy()
+		cluster_color = np.random.rand(3,)
+
+		for i in range(len(stars)):
+
+			star_colors.append(cluster_color)
+
+		xrand, yrand, zrand = np.random.rand(), np.random.rand(), np.random.rand()
+		vxrand, vyrand, vzrand = np.random.rand(), np.random.rand(), np.random.rand()
+
+		stars.x += xrand*Rinit # x in (0, R_init)
+		stars.y += yrand*Rinit
+		stars.z += zrand*Rinit
+
+		R = Rinit*np.sqrt(xrand**2 + yrand**2 + zrand**2)
+
+		stars.vx = vxrand*galaxy_code.circular_velocity(R)
+		stars.vy = vyrand*galaxy_code.circular_velocity(R)
+		stars.vz = vzrand*galaxy_code.circular_velocity(R)
+
+		channel = stars.new_channel_to(cluster_code.particles)
+		channel.copy_attributes(['x','y','z','vx','vy','vz'])
 
 	times = np.arange(0., t_end.value_in(units.Myr), dt.value_in(units.Myr))
 	times = [ t|units.Myr for t in times]
@@ -71,10 +98,13 @@ def main(Rgal, Mgal, alpha, nbodycode, N, W0, M,
 		y = gravity.particles.y.value_in(units.parsec)
 
 		plt.figure()
-		plt.scatter(x, y, marker='.', color='k')
+		plt.scatter(x, y, marker='*', s=2, color=star_colors)
 
-		plt.xlim(np.mean(x)-3*np.std(x), np.mean(x)+3.*np.std(x))
-		plt.ylim(np.mean(y)-3*np.std(y), np.mean(y)+3.*np.std(y))
+		Rinit_in_pc = Rinit.value_in(units.parsec)
+		plt.xlim(-4*Rinit_in_pc, 4*Rinit_in_pc)
+		plt.ylim(-4*Rinit_in_pc, 4*Rinit_in_pc)
+		#plt.xlim(np.mean(x)-3*np.std(x), np.mean(x)+3.*np.std(x))
+		#plt.ylim(np.mean(y)-3*np.std(y), np.mean(y)+3.*np.std(y))
 
 		plt.xlabel('$x$ (pc)', fontsize=12)
 		plt.ylabel('$y$ (pc)', fontsize=12)
@@ -90,10 +120,11 @@ if __name__ == '__main__':
 	
 	Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
 	nbodycode = BHTree
-	Ncluster, W0cluster, Mcluster, Rcluster = 100, 1.5, 100.|units.MSun, 1.|units.parsec
-	Rinit = 800.|units.parsec
+	Nclusters = 20
+	Nstars, W0cluster, Mcluster, Rcluster = 100, 1.5, 100.|units.MSun, 1.|units.parsec
+	Rinit = 1000.|units.parsec
 	parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
 	t_end, dt = 100.|units.Myr, 1.|units.Myr
 
-	main(Rgal, Mgal, alpha, nbodycode, Ncluster, W0cluster,
+	main(Rgal, Mgal, alpha, nbodycode, Nclusters, Nstars, W0cluster,
 	     Mcluster, Rcluster, Rinit, parameters, t_end, dt)

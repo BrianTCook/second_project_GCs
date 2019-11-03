@@ -45,6 +45,9 @@ def make_king_model_cluster(nbodycode, N, W0, M, R, parameters=[]):
 		setattr(code.parameters, name, value)
 	code.particles.add_particles(bodies)
 	return code
+
+def rand():
+	return 2.*np.random.rand() - 1.
 	
 def main(Rgal, Mgal, alpha, nbodycode, Nclusters, Nstars, W0, M,
          R, Rinit, parameters, t_end, dt):
@@ -57,14 +60,16 @@ def main(Rgal, Mgal, alpha, nbodycode, Nclusters, Nstars, W0, M,
 	cluster_codes = [ make_king_model_cluster(nbodycode, Nstars, W0, M, R, parameters) for i in range(Nclusters) ]
 
 	gravity = bridge()
-
 	star_colors = []
 
 	#bridges each cluster with the bulge, not the other way around though
-	for cluster_code in cluster_codes:
+	for i, cluster_code in enumerate(cluster_codes):
+	
+		other_clusters = cluster_codes[:i] + cluster_codes[i+1:]
+		other_things = tuple(other_clusters) + (galaxy_code,)
 
-
-		gravity.add_system(cluster_code, (galaxy_code,))
+		gravity.add_system(cluster_code, other_things)		
+		#gravity.add_system(cluster_code, (galaxy_code,))
 
 		stars = cluster_code.particles.copy()
 		cluster_color = np.random.rand(3,)
@@ -73,10 +78,10 @@ def main(Rgal, Mgal, alpha, nbodycode, Nclusters, Nstars, W0, M,
 
 			star_colors.append(cluster_color)
 
-		xrand, yrand, zrand = np.random.rand(), np.random.rand(), np.random.rand()
-		vxrand, vyrand, vzrand = np.random.rand(), np.random.rand(), np.random.rand()
+		xrand, yrand, zrand = rand(), rand(), rand()
+		vxrand, vyrand, vzrand = rand(), rand(), rand()
 
-		stars.x += xrand*Rinit # x in (0, R_init)
+		stars.x += xrand*Rinit # x in (-R_init, R_init)
 		stars.y += yrand*Rinit
 		stars.z += zrand*Rinit
 
@@ -120,9 +125,9 @@ if __name__ == '__main__':
 	
 	Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
 	nbodycode = BHTree
-	Nclusters = 20
+	Nclusters = 50
 	Nstars, W0cluster, Mcluster, Rcluster = 100, 1.5, 100.|units.MSun, 1.|units.parsec
-	Rinit = 1000.|units.parsec
+	Rinit = 5000.|units.parsec
 	parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
 	t_end, dt = 100.|units.Myr, 1.|units.Myr
 

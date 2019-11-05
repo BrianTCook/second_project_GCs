@@ -5,7 +5,11 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import numpy as np
+import time
+import os
 
+#Circumvent a problem with using too many threads on OpenMPI
+os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
 #chapter 7 AMUSE textbook
 
@@ -97,7 +101,13 @@ def main(Rgal, Mgal, alpha, nbodycode, Nclusters, Nstars, W0, M,
 	times = np.arange(0., t_end.value_in(units.Myr), dt.value_in(units.Myr))
 	times = [ t|units.Myr for t in times]
 
+	t0 = time.time()
+
 	for i, t in enumerate(times):
+
+		if i%5 == 0:
+			time_current = (time.time()-t0)/60.
+			print('i = %i, time = %.02f'%(i, time_current))
 
 		x = gravity.particles.x.value_in(units.parsec)
 		y = gravity.particles.y.value_in(units.parsec)
@@ -114,6 +124,7 @@ def main(Rgal, Mgal, alpha, nbodycode, Nclusters, Nstars, W0, M,
 		plt.xlabel('$x$ (pc)', fontsize=12)
 		plt.ylabel('$y$ (pc)', fontsize=12)
 		plt.title('Time: %.02f Myr'%(t.value_in(units.Myr)))
+		plt.tight_layout()
 		plt.savefig('frame_%s.png'%(str(i).rjust(4, '0')))
 		plt.close()		
 
@@ -123,13 +134,16 @@ def main(Rgal, Mgal, alpha, nbodycode, Nclusters, Nstars, W0, M,
 
 if __name__ == '__main__':
 	
+	t1 = time.time()
 	Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
 	nbodycode = BHTree
 	Nclusters = 50
 	Nstars, W0cluster, Mcluster, Rcluster = 100, 1.5, 100.|units.MSun, 1.|units.parsec
-	Rinit = 5000.|units.parsec
+	Rinit = 1000.|units.parsec
 	parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
-	t_end, dt = 100.|units.Myr, 1.|units.Myr
+	t_end, dt = 200.|units.Myr, 1.|units.Myr
 
 	main(Rgal, Mgal, alpha, nbodycode, Nclusters, Nstars, W0cluster,
 	     Mcluster, Rcluster, Rinit, parameters, t_end, dt)
+	t2 = time.time()
+	print('time elapsed: %.02f minutes'%((t2-t1)/60.))

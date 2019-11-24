@@ -99,10 +99,10 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
     if gravity_solver_str == 'Nemesis':
 
         stars_all = Particles(0)
-            
+        
         for cluster_code in cluster_codes:
             
-            stars_all += cluster_code.particles.copy()
+            stars_all.add_particles( cluster_code.particles.copy() )
         
         parts = HierarchicalParticles(stars_all)
 

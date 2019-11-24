@@ -84,6 +84,9 @@ def py_worker():
 
 def gravity_code_setup(gravity_solver_str, cluster_codes):
     
+    #just the galactic bulge
+    galaxy_code = GalacticCenterGravityCode(Rgal, Mgal, alpha)
+
     if gravity_solver_str == 'Brute':
 
             gravity = bridge()
@@ -115,9 +118,10 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
 
-        channel_to_nemesis = stars.new_channel_to(nemesis.particles.all())
+        channel_to_nemesis = stars_all.new_channel_to(nemesis.particles.all())
 
-        gravity = bridge.Bridge(use_threading=False)
+        #gravity = bridge.Bridge(use_threading=False)
+	gravity = bridge()
         gravity.add_system(nemesis, (galaxy_code,) )
         #gravity.timestep = dt_bridge
         
@@ -126,13 +130,13 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
 def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
      R, Rinit, parameters, t_end, dt):
 
-    #just the galactic bulge
-    galaxy_code = GalacticCenterGravityCode(Rgal, Mgal, alpha)
-
     #set up clusters
     cluster_codes = [ make_king_model_cluster(Nstars, W0, M, R, parameters) for i in range(Nclusters) ]
 
     star_colors = []
+
+    #just the galactic bulge, needed to set up initial conditions
+    galaxy_code = GalacticCenterGravityCode(Rgal, Mgal, alpha)
 
     for i, cluster_code in enumerate(cluster_codes):   
 

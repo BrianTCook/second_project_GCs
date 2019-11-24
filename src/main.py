@@ -105,16 +105,12 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
             stars_all += cluster_code.particles.copy()
         
         parts = HierarchicalParticles(stars_all)
-        
-        '''
-        November 24 note: need to figure out time steps, other Nemesis things
-        '''
-        
+
         nemesis = Nemesis( parent_worker, sub_worker, py_worker)
-        nemesis.timestep = dt
-        nemesis.distfunc = timestep
-        nemesis.threshold = dt_nemesis
-        nemesis.radius = radius
+        nemesis.timestep = 1.|units.Myr
+        nemesis.distfunc = 0.1|units.Myr
+        nemesis.threshold = 1.|units.Myr
+        nemesis.radius = 2.|units.parsec #radius of tree/n-body boundary?
         nemesis.commit_parameters()
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
@@ -123,7 +119,7 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
 
         gravity = bridge.Bridge(use_threading=False)
         gravity.add_system(nemesis, (galaxy_code,) )
-        gravity.timestep = dt_bridge
+        #gravity.timestep = dt_bridge
         
     return gravity
 

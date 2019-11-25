@@ -137,7 +137,7 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
 
         #gravity = bridge.Bridge(use_threading=False)
         gravity = bridge()
-        gravity.particles = stars_all
+        gravity.particles.add_particles(stars_all)
         gravity.add_system(nemesis, (galaxy_code,) )
         gravity.timestep = dt_bridge
         

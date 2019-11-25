@@ -82,6 +82,15 @@ def py_worker():
     code=CalculateFieldForParticles(gravity_constant = constants.G)
     return code
 
+'''
+also for nemesis
+'''
+
+def smaller_nbody_power_of_two(dt, conv):
+    nbdt = conv.to_nbody(dt).value_in(nbody_system.time)
+    idt = np.floor(numpy.log2(nbdt))
+    return conv.to_si( 2**idt | nbody_system.time)
+
 def gravity_code_setup(gravity_solver_str, cluster_codes):
     
     #just the galactic bulge
@@ -108,12 +117,17 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
             stars_all.add_particles( cluster_code.particles.copy() )
         
         parts = HierarchicalParticles(stars_all)
-
+        
+        converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
+        dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
+        dt_nemesis = dt
+        dt_bridge = 0.01 * dt
+        
         nemesis = Nemesis( parent_worker, sub_worker, py_worker)
-        nemesis.timestep = 1.|units.Myr
-        nemesis.distfunc = 0.1|units.Myr
-        nemesis.threshold = 1.|units.Myr
-        nemesis.radius = 2.|units.parsec #radius of tree/n-body boundary?
+        nemesis.timestep=dt
+        nemesis.distfunc=timestep
+        nemesis.threshold=dt_nemesis
+        nemesis.radius=radius
         nemesis.commit_parameters()
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
@@ -121,9 +135,9 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
         channel_to_nemesis = stars_all.new_channel_to(nemesis.particles.all())
 
         #gravity = bridge.Bridge(use_threading=False)
-	gravity = bridge()
+	    gravity = bridge()
         gravity.add_system(nemesis, (galaxy_code,) )
-        #gravity.timestep = dt_bridge
+        gravity.timestep = dt_bridge
         
     return gravity
 

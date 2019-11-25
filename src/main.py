@@ -206,20 +206,19 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 
     	    print('x is', gravity.particles.x)
 
-            x = stars.x.value_in(units.parsec) #gravity.particles.x.value_in(units.parsec)
-            y = stars.y.value_in(units.parsec)#gravity.particles.y.value_in(units.parsec)
-            z = stars.z.value_in(units.parsec)#gravity.particles.z.value_in(units.parsec)
+            x = gravity.particles.x.value_in(units.m)
+            y = gravity.particles.y.value_in(units.m)
+            z = gravity.particles.z.value_in(units.m)
+            
+            vx = gravity.particles.vx.value_in(units.kms)
+            vy = gravity.particles.vy.value_in(units.kms)
+            vz = gravity.particles.vz.value_in(units.kms)
             
             xmean, ymean, zmean = np.sum(x)/Ntotal, np.sum(y)/Ntotal, np.sum(z)/Ntotal
             mean_rval = np.sqrt(xmean**2 + ymean**2 + zmean**2)
             mean_radial_coords.append(mean_rval)
     
-            vx = stars.vx.value_in(units.km/units.s) #gravity.particles.x.value_in(units.km/units.s)
-            vy = stars.vy.value_in(units.km/units.s)#gravity.particles.y.value_in(units.parsec)
-            vz = stars.vz.value_in(units.km/units.s)#gravity.particles.z.value_in(units.parsec)
-    
             vxmean, vymean, vzmean = np.sum(vx)/Ntotal, np.sum(vy)/Ntotal, np.sum(vz)/Ntotal
-    
             mean_speed = np.sqrt(vxmean**2 + vymean**2 + vzmean**2)
             mean_speeds.append(mean_speed)
     

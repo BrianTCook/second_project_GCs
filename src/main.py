@@ -206,13 +206,13 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 
     	    print('x is', gravity.particles.x)
 
-            x = gravity.particles.x.value_in(units.m)
-            y = gravity.particles.y.value_in(units.m)
-            z = gravity.particles.z.value_in(units.m)
+            x = [ xx.value_in(units.parsec) for xx in gravity.particles.x ]
+            y = [ yy.value_in(units.parsec) for yy in gravity.particles.y ]
+            z = [ zz.value_in(units.parsec) for zz in gravity.particles.z ]
             
-            vx = gravity.particles.vx.value_in(units.kms)
-            vy = gravity.particles.vy.value_in(units.kms)
-            vz = gravity.particles.vz.value_in(units.kms)
+            vx = [ vxx.value_in(units.kms) for vxx in gravity.particles.vx ]
+            vy = [ vyy.value_in(units.kms) for vyy in gravity.particles.vy ]
+            vz = [ vzz.value_in(units.kms) for vzz in gravity.particles.vz ]
             
             xmean, ymean, zmean = np.sum(x)/Ntotal, np.sum(y)/Ntotal, np.sum(z)/Ntotal
             mean_rval = np.sqrt(xmean**2 + ymean**2 + zmean**2)

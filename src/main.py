@@ -205,8 +205,6 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
    
             #for figures 3 through 6, November 24
 
-    	    print('x is', gravity.particles.x)
-
             x = [ xx.value_in(units.parsec) for xx in gravity.particles.x ]
             y = [ yy.value_in(units.parsec) for yy in gravity.particles.y ]
             z = [ zz.value_in(units.parsec) for zz in gravity.particles.z ]

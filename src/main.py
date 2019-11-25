@@ -277,7 +277,7 @@ if __name__ == '__main__':
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
     t_end, dt = 50.|units.Myr, 1.|units.Myr
 
-    gravity_solvers = [ 'Nemesis' ] #'Nemesis'
+    gravity_solvers = [ 'Brute' ] #'Nemesis'
 
     main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
          Mcluster, Rcluster, Rinit, parameters, t_end, dt)

@@ -179,6 +179,8 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
         channel = stars.new_channel_to(cluster_code.particles)
         channel.copy_attributes(['x','y','z','vx','vy','vz'])
 
+    gravity_solver_info = []
+
     for gravity_solver_str in gravity_solvers:
 
         gravity = gravity_code_setup(gravity_solver_str, cluster_codes)
@@ -239,34 +241,52 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
     
             gravity.evolve_model(t, timestep=dt)
 
+        gravity_solver_info.append([gravity_solver_str, clock_times,
+                                    mean_radial_coords, mean_speeds])
+    
     cluster_code.stop()
-
-    #clock time versus simulation time
+    
     plt.figure()
-    plt.plot(sim_times_unitless, clock_times, label=gravity_solver_str)
+    
+    for gs, clock, radii, speeds in gravity_solver_info:
+
+        #clock time versus simulation time
+        plt.plot(sim_times_unitless, clock, label=gs)
+        
     plt.xlabel('Simulation time (Myr)')
     plt.ylabel('Clock time (seconds)')
     plt.legend(loc='best')
     plt.tight_layout()
     plt.savefig('clocktime.png')
-
-    #clock time versus simulation time
+    plt.close()
+    
     plt.figure()
-    plt.plot(sim_times_unitless, mean_radial_coords, label=gravity_solver_str)
+
+    for gs, clock, radii, speeds in gravity_solver_info:
+
+        #<radial coordinate>
+        plt.plot(sim_times_unitless, mean_radial_coords, label=gs)
+        
     plt.xlabel('Simulation time (Myr)')
     plt.ylabel('Average distance from origin (pc)')
     plt.legend(loc='best')
     plt.tight_layout()
     plt.savefig('radial_coords.png')
-
-    #clock time versus simulation time
+    plt.close()
+    
     plt.figure()
-    plt.semilogy(sim_times_unitless, mean_speeds, label=gravity_solver_str)
+
+    for gs, clock, radii, speeds in gravity_solver_info:
+    
+        #<velocity>
+        plt.semilogy(sim_times_unitless, mean_speeds, label=gs)
+        
     plt.xlabel('Simulation time (Myr)')
     plt.ylabel('Average speed (km/s)')
     plt.legend(loc='best')
     plt.tight_layout()
     plt.savefig('speeds.png')
+    plt.close()
 
 if __name__ == '__main__':
     

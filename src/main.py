@@ -136,7 +136,8 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
         channel_to_nemesis = stars_all.new_channel_to(nemesis.particles.all())
 
         #gravity = bridge.Bridge(use_threading=False)
-	gravity = bridge()
+        gravity = bridge()
+        gravity.particles = stars_all
         gravity.add_system(nemesis, (galaxy_code,) )
         gravity.timestep = dt_bridge
         

@@ -247,6 +247,7 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
     plt.xlabel('Simulation time (Myr)')
     plt.ylabel('Clock time (seconds)')
     plt.legend(loc='best')
+    plt.tight_layout()
     plt.savefig('clocktime.png')
 
     #clock time versus simulation time
@@ -255,6 +256,7 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
     plt.xlabel('Simulation time (Myr)')
     plt.ylabel('Average distance from origin (pc)')
     plt.legend(loc='best')
+    plt.tight_layout()
     plt.savefig('radial_coords.png')
 
     #clock time versus simulation time
@@ -263,6 +265,7 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
     plt.xlabel('Simulation time (Myr)')
     plt.ylabel('Average speed (km/s)')
     plt.legend(loc='best')
+    plt.tight_layout()
     plt.savefig('speeds.png')
 
 if __name__ == '__main__':
@@ -271,7 +274,7 @@ if __name__ == '__main__':
     Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
     Nclusters = 2
     Nstars, W0cluster, Mcluster, Rcluster = 100, 1.5, 100.|units.MSun, 1.|units.parsec
-    Rinit = 500.|units.parsec
+    Rinit = 200.|units.parsec
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
     t_end, dt = 50.|units.Myr, 1.|units.Myr
 

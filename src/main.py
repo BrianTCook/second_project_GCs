@@ -76,7 +76,8 @@ def parent_worker():
     return code
 
 def sub_worker(parts):
-    code = BHTree(converter)
+    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    code = BHTree(converter_sub)
 
 def py_worker():
     code=CalculateFieldForParticles(gravity_constant = constants.G)
@@ -88,7 +89,7 @@ also for nemesis
 
 def smaller_nbody_power_of_two(dt, conv):
     nbdt = conv.to_nbody(dt).value_in(nbody_system.time)
-    idt = np.floor(numpy.log2(nbdt))
+    idt = np.floor(np.log2(nbdt))
     return conv.to_si( 2**idt | nbody_system.time)
 
 def gravity_code_setup(gravity_solver_str, cluster_codes):
@@ -124,10 +125,10 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
         dt_bridge = 0.01 * dt
         
         nemesis = Nemesis( parent_worker, sub_worker, py_worker)
-        nemesis.timestep=dt
-        nemesis.distfunc=timestep
-        nemesis.threshold=dt_nemesis
-        nemesis.radius=radius
+        nemesis.timestep = dt
+        nemesis.distfunc = dt_bridge #timestep
+        nemesis.threshold = dt_nemesis
+        nemesis.radius = 4.|units.parsec #radius
         nemesis.commit_parameters()
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
@@ -135,7 +136,7 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
         channel_to_nemesis = stars_all.new_channel_to(nemesis.particles.all())
 
         #gravity = bridge.Bridge(use_threading=False)
-	    gravity = bridge()
+	gravity = bridge()
         gravity.add_system(nemesis, (galaxy_code,) )
         gravity.timestep = dt_bridge
         
@@ -200,8 +201,11 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
                 print('i=%i, time = %.02f seconds'%(i, clock_time))
     
             clock_times.append(clock_time)
-    
+   
             #for figures 3 through 6, November 24
+
+	    print('x is', gravity.particles.x)
+
             x = gravity.particles.x.value_in(units.parsec)
             y = gravity.particles.y.value_in(units.parsec)
             z = gravity.particles.z.value_in(units.parsec)

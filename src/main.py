@@ -111,12 +111,17 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
 
     if gravity_solver_str == 'Nemesis':
 
-        stars_all = Particles(0)
-        
+	converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+        gravity_dummy = Hermite(converter_sub) #doesn't get used, used for particles
+
         for cluster_code in cluster_codes:
-            
-            stars_all.add_particles( cluster_code.particles.copy() )
+
+	    cluster_particles = cluster_code.particles
+	    print('cluster_particles is', cluster_particles)
+
+            gravity_dummy.particles.add_particles( cluster_particles )
         
+	stars_all = gravity_dummy.particles
         parts = HierarchicalParticles(stars_all)
         
         converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
@@ -292,13 +297,13 @@ if __name__ == '__main__':
     
     t1 = time.time()
     Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
-    Nclusters = 2
-    Nstars, W0cluster, Mcluster, Rcluster = 100, 1.5, 100.|units.MSun, 1.|units.parsec
+    Nclusters = 1
+    Nstars, W0cluster, Mcluster, Rcluster = 20, 1.5, 100.|units.MSun, 1.|units.parsec
     Rinit = 200.|units.parsec
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
     t_end, dt = 50.|units.Myr, 1.|units.Myr
 
-    gravity_solvers = [ 'Brute' ] #'Nemesis'
+    gravity_solvers = [ 'Nemesis' ] #'Brute'
 
     main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
          Mcluster, Rcluster, Rinit, parameters, t_end, dt)

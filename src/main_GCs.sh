@@ -10,5 +10,5 @@ convert -delay 10 'frame_*_Brute.png' -loop 0 GCs_in_background_bru.gif
 rm -rf frame_*.png
 
 mv *.png ~/Desktop/second_project_GCs/figures/
-mv GCs_in_background.gif ~/Desktop/second_project_GCs/figures/
+mv *.gif ~/Desktop/second_project_GCs/figures/
 cp main_GCs.sh ~/Desktop/second_project_GCs/src/

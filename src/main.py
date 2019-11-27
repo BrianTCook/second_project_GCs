@@ -251,6 +251,8 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 
             gravity.evolve_model(t, timestep=dt)
 
+	print(gravity_solver_str)
+	print(mean_radial_coords)
         gravity_solver_info.append([gravity_solver_str, clock_times,
                                     mean_radial_coords, mean_speeds])
     
@@ -301,13 +303,13 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 if __name__ == '__main__':
 
     Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
-    Nclusters = 1
-    Nstars, W0cluster, Mcluster, Rcluster = 20, 1.5, 100.|units.MSun, 1.|units.parsec
+    Nclusters = 2
+    Nstars, W0cluster, Mcluster, Rcluster = 50, 1.5, 100.|units.MSun, 1.|units.parsec
     Rinit = 1000.|units.parsec
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
-    t_end, dt = 50.|units.Myr, 1.|units.Myr
+    t_end, dt = 40.|units.Myr, 1.|units.Myr
 
-    gravity_solvers = [ 'Nemesis' ]
+    gravity_solvers = [ 'Nemesis', 'Brute' ]
 
     main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
          Mcluster, Rcluster, Rinit, parameters, t_end, dt)

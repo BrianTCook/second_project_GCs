@@ -16,7 +16,7 @@ import os
 from nemesis import Nemesis, HierarchicalParticles, system_type
 
 #Circumvent a problem with using too many threads on OpenMPI
-os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
+#os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
 #chapter 7 AMUSE textbook
 
@@ -97,15 +97,17 @@ def gravity_code_setup(gravity_solver_str, galaxy_code,
 
     if gravity_solver_str == 'Brute':
 
-            gravity = bridge()
+        gravity = bridge()
 
-            for i, cluster_code in enumerate(cluster_codes):  
+        for i, cluster_code in enumerate(cluster_codes):  
                 
-                other_clusters = cluster_codes[:i] + cluster_codes[i+1:]
+        	other_clusters = cluster_codes[:i] + cluster_codes[i+1:]
                 other_things = tuple(other_clusters) + (galaxy_code,)
 
                 #bridges each cluster with the bulge, not the other way around though
-                gravity.add_system(cluster_code, other_things)        
+                gravity.add_system(cluster_code, other_things)   
+
+	return gravity     
 
     if gravity_solver_str == 'Nemesis':
 
@@ -113,6 +115,8 @@ def gravity_code_setup(gravity_solver_str, galaxy_code,
         
         for cluster_bodies in cluster_bodies_list:
             stars_all.add_particles(cluster_bodies)
+
+	print('len(stars_all) = %i'%(len(stars_all)))
 
         parts = HierarchicalParticles(stars_all)
         
@@ -135,9 +139,10 @@ def gravity_code_setup(gravity_solver_str, galaxy_code,
         #gravity = bridge.Bridge(use_threading=False)
         gravity = bridge()
         gravity.add_system(nemesis, (galaxy_code,) )
+	gravity.add_particles(stars_all)
         gravity.timestep = dt_bridge
         
-    return gravity
+    	return gravity
 
 def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
      R, Rinit, parameters, t_end, dt):
@@ -148,6 +153,12 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
     
     cluster_bodies_list = [ cbc[0] for cbc in cluster_bodies_and_codes ]
     cluster_codes = [ cbc[1] for cbc in cluster_bodies_and_codes ]
+
+    '''
+    bodies = Particles(0)
+    for cluster_bodies in cluster_bodies_list:
+	bodies.add_particles( cluster_bodies )
+    '''
 
     star_colors = []    
 
@@ -294,12 +305,11 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
     plt.close()
 
 if __name__ == '__main__':
-    
-    t1 = time.time()
+
     Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
-    Nclusters = 1
-    Nstars, W0cluster, Mcluster, Rcluster = 20, 1.5, 100.|units.MSun, 1.|units.parsec
-    Rinit = 200.|units.parsec
+    Nclusters = 10
+    Nstars, W0cluster, Mcluster, Rcluster = 50, 1.5, 100.|units.MSun, 1.|units.parsec
+    Rinit = 1000.|units.parsec
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
     t_end, dt = 50.|units.Myr, 1.|units.Myr
 
@@ -307,6 +317,3 @@ if __name__ == '__main__':
 
     main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
          Mcluster, Rcluster, Rinit, parameters, t_end, dt)
-
-    t2 = time.time()
-    print('time elapsed: %.02f minutes'%((t2-t1)/60.))

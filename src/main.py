@@ -116,8 +116,6 @@ def gravity_code_setup(gravity_solver_str, galaxy_code,
         for cluster_bodies in cluster_bodies_list:
             stars_all.add_particles(cluster_bodies)
 
-	print('len(stars_all) = %i'%(len(stars_all)))
-
         parts = HierarchicalParticles(stars_all)
         
         converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
@@ -139,7 +137,7 @@ def gravity_code_setup(gravity_solver_str, galaxy_code,
         #gravity = bridge.Bridge(use_threading=False)
         gravity = bridge()
         gravity.add_system(nemesis, (galaxy_code,) )
-	gravity.add_particles(stars_all)
+        gravity.add_particles(stars_all)
         gravity.timestep = dt_bridge
         
     	return gravity

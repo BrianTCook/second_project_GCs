@@ -233,23 +233,21 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
             
             #for .gif of orbits
             
-            if gravity_solver_str == 'Brute':
-            
-                plt.figure()
-                plt.scatter(x, y, marker='*', s=2, color=star_colors)
-        
-                Rinit_in_pc = Rinit.value_in(units.parsec)
-                plt.xlim(-4*Rinit_in_pc, 4*Rinit_in_pc)
-                plt.ylim(-4*Rinit_in_pc, 4*Rinit_in_pc)
-                plt.annotate(gravity_solver_str, xy=(0.8, 0.8), xycoords='axes fraction')
-        
-                plt.xlabel('$x$ (pc)', fontsize=12)
-                plt.ylabel('$y$ (pc)', fontsize=12)
-                plt.title('Time: %.02f Myr'%(t.value_in(units.Myr)))
-                plt.tight_layout()
-                plt.savefig('frame_%s.png'%(str(i).rjust(4, '0')))
-                plt.close()        
+            plt.figure()
+            plt.scatter(x, y, marker='*', s=2, color=star_colors)
     
+            Rinit_in_pc = Rinit.value_in(units.parsec)
+            plt.xlim(-4*Rinit_in_pc, 4*Rinit_in_pc)
+            plt.ylim(-4*Rinit_in_pc, 4*Rinit_in_pc)
+            plt.annotate(gravity_solver_str, xy=(0.8, 0.8), xycoords='axes fraction')
+    
+            plt.xlabel('$x$ (pc)', fontsize=12)
+            plt.ylabel('$y$ (pc)', fontsize=12)
+            plt.title('Time: %.02f Myr'%(t.value_in(units.Myr)))
+            plt.tight_layout()
+            plt.savefig('frame_%s_%s.png'%(str(i).rjust(4, '0'), gravity_solver_str))
+            plt.close()        
+
             gravity.evolve_model(t, timestep=dt)
 
         gravity_solver_info.append([gravity_solver_str, clock_times,

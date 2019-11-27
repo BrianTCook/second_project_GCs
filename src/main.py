@@ -108,7 +108,7 @@ def timestep_func(ipart, jpart, eta=dt_param/2., _G=constants.G):
 
    	tau = eta/2./2.**0.5*(dr3/mu)**0.5
 
-	return eta|units.Myr #tau
+	return tau
 
 def radius(sys, eta=dt_param, _G=constants.G):
 
@@ -116,7 +116,6 @@ def radius(sys, eta=dt_param, _G=constants.G):
      	ra = ((_G*sys.total_mass()*dt**2/eta**2)**(1/3.))
 	ra = ra*((len(sys)+1)/2.)**0.75
 	return 100.*ra
-     
 
 def gravity_code_setup(gravity_solver_str, galaxy_code,
 		       cluster_codes, cluster_bodies_list):
@@ -242,7 +241,7 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
    
             #for figures 3 through 6, November 24
 
-            x = [ xx.value_in(units.parsec) for xx in gravity.particles.x ]
+            x = gravity.particles.x.value_in(units.parsec) 
             y = [ yy.value_in(units.parsec) for yy in gravity.particles.y ]
             z = [ zz.value_in(units.parsec) for zz in gravity.particles.z ]
             
@@ -276,13 +275,13 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
             plt.savefig('frame_%s_%s.png'%(str(i).rjust(4, '0'), gravity_solver_str))
             plt.close()        
 
-            if gravity_solver_str == 'Brute:
+            if gravity_solver_str == 'Brute':
 
                 gravity.evolve_model(t, timestep=dt)
 
             if gravity_solver_str == 'Nemesis':
                 
-                grvity.evolve_model(t)
+                gravity.evolve_model(t)
 
 	print(gravity_solver_str)
 	print(mean_radial_coords)
@@ -342,7 +341,7 @@ if __name__ == '__main__':
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
     t_end, dt = 40.|units.Myr, 1.|units.Myr
 
-    gravity_solvers = [ 'Nemesis', 'Brute' ]
+    gravity_solvers = [ 'Brute' ] #'Nemesis'
 
     main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
          Mcluster, Rcluster, Rinit, parameters, t_end, dt)

@@ -116,7 +116,7 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
         for cluster_bodies in cluster_bodies_list:
             stars_all.add_particles(cluster_bodies)
 
-        parts = HierarchicalParticles(stars)
+        parts = HierarchicalParticles(stars_all)
         
         converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
@@ -159,7 +159,7 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 
     for i, cluster_code in enumerate(cluster_codes):   
 
-        stars = cluster_code.particles
+        stars = cluster_code.particles.copy()
         cluster_color = np.random.rand(3,)
 
         for j in range(len(stars)):

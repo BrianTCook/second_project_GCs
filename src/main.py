@@ -78,6 +78,7 @@ def parent_worker():
 def sub_worker(parts):
     converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
     code = BHTree(converter_sub)
+    return code
 
 def py_worker():
     code=CalculateFieldForParticles(gravity_constant = constants.G)

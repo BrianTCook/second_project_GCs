@@ -11,13 +11,10 @@ import numpy as np
 import time
 import os
 
-#from globular_clusters_in_galaxy import parent_worker, sub_worker, py_worker
-from nemesis import Nemesis, HierarchicalParticles, system_type
+from nemesis import Nemesis, HierarchicalParticles
 
 #Circumvent a problem with using too many threads on OpenMPI
-#os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
-
-#chapter 7 AMUSE textbook
+os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
 class GalacticCenterGravityCode(object):
     def __init__(self, R, M, alpha):
@@ -335,9 +332,9 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 if __name__ == '__main__':
 
     Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
-    Nclusters = 40
-    Nstars, W0cluster, Mcluster, Rcluster = 100, 1.5, 100.|units.MSun, 1.|units.parsec
-    Rinit = 1000.|units.parsec
+    Nclusters = 2
+    Nstars, W0cluster, Mcluster, Rcluster = 20, 1.5, 100.|units.MSun, 1.|units.parsec
+    Rinit = 500.|units.parsec
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
     t_end, dt = 100.|units.Myr, 1.|units.Myr
 

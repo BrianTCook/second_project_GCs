@@ -92,10 +92,8 @@ def smaller_nbody_power_of_two(dt, conv):
     idt = np.floor(np.log2(nbdt))
     return conv.to_si( 2**idt | nbody_system.time)
 
-def gravity_code_setup(gravity_solver_str, cluster_codes):
-    
-    #just the galactic bulge
-    galaxy_code = GalacticCenterGravityCode(Rgal, Mgal, alpha)
+def gravity_code_setup(gravity_solver_str, galaxy_code,
+		       cluster_codes, cluster_bodies_list):
 
     if gravity_solver_str == 'Brute':
 
@@ -116,7 +114,7 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
         for cluster_bodies in cluster_bodies_list:
             stars_all.add_particles(cluster_bodies)
 
-        parts = HierarchicalParticles(stars)
+        parts = HierarchicalParticles(stars_all)
         
         converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
@@ -136,7 +134,6 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
 
         #gravity = bridge.Bridge(use_threading=False)
         gravity = bridge()
-        gravity.particles.add_particles(stars_all)
         gravity.add_system(nemesis, (galaxy_code,) )
         gravity.timestep = dt_bridge
         
@@ -152,14 +149,14 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
     cluster_bodies_list = [ cbc[0] for cbc in cluster_bodies_and_codes ]
     cluster_codes = [ cbc[1] for cbc in cluster_bodies_and_codes ]
 
-    star_colors = []
+    star_colors = []    
 
-    #just the galactic bulge, needed to set up initial conditions
+    #just the galactic bulge
     galaxy_code = GalacticCenterGravityCode(Rgal, Mgal, alpha)
 
     for i, cluster_code in enumerate(cluster_codes):   
 
-        stars = cluster_code.particles
+        stars = cluster_code.particles.copy()
         cluster_color = np.random.rand(3,)
 
         for j in range(len(stars)):
@@ -186,7 +183,8 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 
     for gravity_solver_str in gravity_solvers:
 
-        gravity = gravity_code_setup(gravity_solver_str, cluster_codes)
+        gravity = gravity_code_setup(gravity_solver_str, galaxy_code,
+                                     cluster_codes, cluster_bodies_list)
         
         sim_times_unitless = np.arange(0., t_end.value_in(units.Myr), dt.value_in(units.Myr))
         sim_times = [ t|units.Myr for t in sim_times_unitless]

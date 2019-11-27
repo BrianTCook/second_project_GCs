@@ -276,7 +276,13 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
             plt.savefig('frame_%s_%s.png'%(str(i).rjust(4, '0'), gravity_solver_str))
             plt.close()        
 
-            gravity.evolve_model(t, timestep=dt)
+            if gravity_solver_str == 'Brute:
+
+                gravity.evolve_model(t, timestep=dt)
+
+            if gravity_solver_str == 'Nemesis':
+                
+                grvity.evolve_model(t)
 
 	print(gravity_solver_str)
 	print(mean_radial_coords)

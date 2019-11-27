@@ -93,6 +93,14 @@ def smaller_nbody_power_of_two(dt, conv):
     idt = np.floor(np.log2(nbdt))
     return conv.to_si( 2**idt | nbody_system.time)
 
+def timestep_func(ipart, jpart, eta=dt_param/2., _G=constants.G):
+    dx, dy, dz = ipart.x-jpart.x, ipart.y-jpart.y, ipart.z-jpart.z
+    dr = np.sqrt(dx**2 + dy**2 + dz**2)
+    dr3 = dr**1.5
+    mu = _G*(ipart.mass + jpart.mass)
+    tau = eta/2./2.**0.5*(dr3/mu)**0.5
+    return tau
+
 def gravity_code_setup(gravity_solver_str, galaxy_code,
 		       cluster_codes, cluster_bodies_list):
 
@@ -126,7 +134,7 @@ def gravity_code_setup(gravity_solver_str, galaxy_code,
         
         nemesis = Nemesis( parent_worker, sub_worker, py_worker)
         nemesis.timestep = dt
-        nemesis.distfunc = dt_bridge #timestep
+        nemesis.distfunc = timestep_func
         nemesis.threshold = dt_nemesis
         nemesis.radius = 4.|units.parsec #radius
         nemesis.commit_parameters()

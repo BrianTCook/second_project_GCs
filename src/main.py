@@ -137,7 +137,6 @@ def gravity_code_setup(gravity_solver_str, galaxy_code,
         #gravity = bridge.Bridge(use_threading=False)
         gravity = bridge()
         gravity.add_system(nemesis, (galaxy_code,) )
-        gravity.add_particles(stars_all)
         gravity.timestep = dt_bridge
         
     	return gravity
@@ -152,11 +151,9 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
     cluster_bodies_list = [ cbc[0] for cbc in cluster_bodies_and_codes ]
     cluster_codes = [ cbc[1] for cbc in cluster_bodies_and_codes ]
 
-    '''
     bodies = Particles(0)
     for cluster_bodies in cluster_bodies_list:
 	bodies.add_particles( cluster_bodies )
-    '''
 
     star_colors = []    
 
@@ -236,7 +233,7 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
             
             #for .gif of orbits
             
-            if gravity_solver_str == 'Nemesis':
+            if gravity_solver_str == 'Brute':
             
                 plt.figure()
                 plt.scatter(x, y, marker='*', s=2, color=star_colors)
@@ -305,13 +302,13 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 if __name__ == '__main__':
 
     Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
-    Nclusters = 10
-    Nstars, W0cluster, Mcluster, Rcluster = 50, 1.5, 100.|units.MSun, 1.|units.parsec
+    Nclusters = 4
+    Nstars, W0cluster, Mcluster, Rcluster = 20, 1.5, 100.|units.MSun, 1.|units.parsec
     Rinit = 1000.|units.parsec
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
     t_end, dt = 50.|units.Myr, 1.|units.Myr
 
-    gravity_solvers = [ 'Nemesis', 'Brute' ]
+    gravity_solvers = ['Brute' ] #'Nemesis',
 
     main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
          Mcluster, Rcluster, Rinit, parameters, t_end, dt)

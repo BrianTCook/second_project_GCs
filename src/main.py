@@ -111,10 +111,10 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
 
     if gravity_solver_str == 'Nemesis':
 
-        stars = Particles(0)
+        stars_all = Particles(0)
         
-        for cluster_body in cluster_bodies:
-            stars.add_particles(cluster_bodies)
+        for cluster_bodies in cluster_bodies_list:
+            stars_all.add_particles(cluster_bodies)
 
         parts = HierarchicalParticles(stars)
         
@@ -146,9 +146,11 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
      R, Rinit, parameters, t_end, dt):
 
     #set up clusters
-    cluster_bodies_and_codes = [ make_king_model_cluster(Nstars, W0, M, R, parameters) for i in range(Nclusters) ] 
-    cluster_codes = [ cbc[0] for cbc in cluster_bodies_and_codes ]
-    cluster_bodies = [ cbc[1] for cbc in cluster_bodies_and_codes ]
+    cluster_bodies_and_codes = [ make_king_model_cluster(Nstars, W0, M, R, parameters) 
+                                 for i in range(Nclusters) ] 
+    
+    cluster_bodies_list = [ cbc[0] for cbc in cluster_bodies_and_codes ]
+    cluster_codes = [ cbc[1] for cbc in cluster_bodies_and_codes ]
 
     star_colors = []
 
@@ -157,10 +159,10 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 
     for i, cluster_code in enumerate(cluster_codes):   
 
-        stars = cluster_code.particles.copy()
+        stars = cluster_code.particles
         cluster_color = np.random.rand(3,)
 
-        for i in range(len(stars)):
+        for j in range(len(stars)):
 
             star_colors.append(cluster_color)
 

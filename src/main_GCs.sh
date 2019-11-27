@@ -2,11 +2,11 @@
 #'should put into ~/second_project_GCs for safekeeping'
 
 echo 'run script'
-#rm -rf logfile_main.txt
-./amuse.sh ~/Desktop/second_project_GCs/src/main.py #> logfile_main.txt
+./amuse.sh ~/Desktop/second_project_GCs/src/main.py 
 
 echo 'convert collection of .png files into .gif'
-convert -delay 10 'frame_*.png' -loop 0 GCs_in_background.gif
+convert -delay 10 'frame_*_Nemesis.png' -loop 0 GCs_in_background_nem.gif
+convert -delay 10 'frame_*_Brute.png' -loop 0 GCs_in_background_bru.gif
 rm -rf frame_*.png
 
 mv *.png ~/Desktop/second_project_GCs/figures/

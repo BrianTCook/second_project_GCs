@@ -16,7 +16,7 @@ import os
 from nemesis import Nemesis, HierarchicalParticles, system_type
 
 #Circumvent a problem with using too many threads on OpenMPI
-#os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
+os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
 #chapter 7 AMUSE textbook
 
@@ -300,13 +300,13 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 if __name__ == '__main__':
 
     Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
-    Nclusters = 4
+    Nclusters = 1
     Nstars, W0cluster, Mcluster, Rcluster = 20, 1.5, 100.|units.MSun, 1.|units.parsec
     Rinit = 1000.|units.parsec
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
     t_end, dt = 50.|units.Myr, 1.|units.Myr
 
-    gravity_solvers = [ 'Brute', 'Nemesis' ]
+    gravity_solvers = [ 'Nemesis' ]
 
     main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
          Mcluster, Rcluster, Rinit, parameters, t_end, dt)

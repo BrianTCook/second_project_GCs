@@ -2,7 +2,6 @@ from amuse.lab import *
 from amuse.ext.bridge import bridge
 from amuse.couple.bridge import CalculateFieldForParticles
 from amuse.ic.kingmodel import new_king_model
-#from amuse.community.phiGRAPE.interface import PhiGRAPE
 
 import matplotlib
 matplotlib.use('agg')
@@ -16,7 +15,7 @@ import os
 from nemesis import Nemesis, HierarchicalParticles, system_type
 
 #Circumvent a problem with using too many threads on OpenMPI
-os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
+#os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
 #chapter 7 AMUSE textbook
 
@@ -89,19 +88,35 @@ also for nemesis
 '''
 
 def smaller_nbody_power_of_two(dt, conv):
+
     nbdt = conv.to_nbody(dt).value_in(nbody_system.time)
     idt = np.floor(np.log2(nbdt))
+
     return conv.to_si( 2**idt | nbody_system.time)
 
 dt_param = 0.1
 
 def timestep_func(ipart, jpart, eta=dt_param/2., _G=constants.G):
-    dx, dy, dz = ipart.x-jpart.x, ipart.y-jpart.y, ipart.z-jpart.z
-    dr = np.sqrt(dx**2 + dy**2 + dz**2)
-    dr3 = dr**1.5
-    mu = _G*(ipart.mass + jpart.mass)
-    tau = eta/2./2.**0.5*(dr3/mu)**0.5
-    return tau
+    
+    	dx = ipart.x-jpart.x
+    	dy = ipart.y-jpart.y
+    	dz = ipart.z-jpart.z
+
+    	dr = np.sqrt(dx**2 + dy**2 + dz**2)
+    	dr3 = dr**1.5
+    	mu = _G*(ipart.mass + jpart.mass)
+
+   	tau = eta/2./2.**0.5*(dr3/mu)**0.5
+
+	return eta|units.Myr #tau
+
+def radius(sys, eta=dt_param, _G=constants.G):
+
+	#variable shouldn't be named radius
+     	ra = ((_G*sys.total_mass()*dt**2/eta**2)**(1/3.))
+	ra = ra*((len(sys)+1)/2.)**0.75
+	return 100.*ra
+     
 
 def gravity_code_setup(gravity_solver_str, galaxy_code,
 		       cluster_codes, cluster_bodies_list):
@@ -130,6 +145,7 @@ def gravity_code_setup(gravity_solver_str, galaxy_code,
         parts = HierarchicalParticles(stars_all)
         
         converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
+
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
         dt_nemesis = dt
         dt_bridge = 0.01 * dt
@@ -138,7 +154,8 @@ def gravity_code_setup(gravity_solver_str, galaxy_code,
         nemesis.timestep = dt
         nemesis.distfunc = timestep_func
         nemesis.threshold = dt_nemesis
-        nemesis.radius = 4.|units.parsec #radius
+        nemesis.radius = radius
+
         nemesis.commit_parameters()
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
@@ -146,7 +163,7 @@ def gravity_code_setup(gravity_solver_str, galaxy_code,
         channel_to_nemesis = stars_all.new_channel_to(nemesis.particles.all())
 
         #gravity = bridge.Bridge(use_threading=False)
-        gravity = bridge()
+        gravity = bridge(use_threading = False)
         gravity.add_system(nemesis, (galaxy_code,) )
         gravity.timestep = dt_bridge
         
@@ -313,7 +330,7 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 if __name__ == '__main__':
 
     Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
-    Nclusters = 2
+    Nclusters = 1
     Nstars, W0cluster, Mcluster, Rcluster = 50, 1.5, 100.|units.MSun, 1.|units.parsec
     Rinit = 1000.|units.parsec
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]

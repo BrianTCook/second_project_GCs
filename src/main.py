@@ -93,6 +93,8 @@ def smaller_nbody_power_of_two(dt, conv):
     idt = np.floor(np.log2(nbdt))
     return conv.to_si( 2**idt | nbody_system.time)
 
+dt_param = 0.1
+
 def timestep_func(ipart, jpart, eta=dt_param/2., _G=constants.G):
     dx, dy, dz = ipart.x-jpart.x, ipart.y-jpart.y, ipart.z-jpart.z
     dr = np.sqrt(dx**2 + dy**2 + dz**2)

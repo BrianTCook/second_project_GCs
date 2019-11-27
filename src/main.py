@@ -56,7 +56,7 @@ def make_king_model_cluster(N, W0, M, R, parameters=[]):
         setattr(code.parameters, name, value)
     code.particles.add_particles(bodies)
     
-    return code
+    return bodies, code
 
 def rand():
     
@@ -113,13 +113,10 @@ def gravity_code_setup(gravity_solver_str, cluster_codes):
 
         stars = Particles(0)
         
-        for cluster_code in cluster_codes:
-            converter_sub = nbody_system.nbody_to_si(cluster_code.mass, cluster_code.radius)
-            bodies = cluster_code
-            bodies.scale_to_standard(converter)
-            stars.add_particles(bodies)
+        for cluster_body in cluster_bodies:
+            stars.add_particles(cluster_bodies)
 
-        parts = HierarchicalParticles(stars_all)
+        parts = HierarchicalParticles(stars)
         
         converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
@@ -149,7 +146,9 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
      R, Rinit, parameters, t_end, dt):
 
     #set up clusters
-    cluster_codes = [ make_king_model_cluster(Nstars, W0, M, R, parameters) for i in range(Nclusters) ]
+    cluster_bodies_and_codes = [ make_king_model_cluster(Nstars, W0, M, R, parameters) for i in range(Nclusters) ] 
+    cluster_codes = [ cbc[0] for cbc in cluster_bodies_and_codes ]
+    cluster_bodies = [ cbc[1] for cbc in cluster_bodies_and_codes ]
 
     star_colors = []
 
@@ -225,21 +224,25 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
             mean_speed = np.sqrt(vxmean**2 + vymean**2 + vzmean**2)
             mean_speeds.append(mean_speed)
     
+            
             #for .gif of orbits
-            plt.figure()
-            plt.scatter(x, y, marker='*', s=2, color=star_colors)
-    
-            Rinit_in_pc = Rinit.value_in(units.parsec)
-            plt.xlim(-4*Rinit_in_pc, 4*Rinit_in_pc)
-            plt.ylim(-4*Rinit_in_pc, 4*Rinit_in_pc)
-            plt.annotate(gravity_solver_str, xy=(0.8, 0.8), xycoords='axes fraction')
-    
-            plt.xlabel('$x$ (pc)', fontsize=12)
-            plt.ylabel('$y$ (pc)', fontsize=12)
-            plt.title('Time: %.02f Myr'%(t.value_in(units.Myr)))
-            plt.tight_layout()
-            plt.savefig('frame_%s.png'%(str(i).rjust(4, '0')))
-            plt.close()        
+            
+            if gravity_solver_str == 'Nemesis':
+            
+                plt.figure()
+                plt.scatter(x, y, marker='*', s=2, color=star_colors)
+        
+                Rinit_in_pc = Rinit.value_in(units.parsec)
+                plt.xlim(-4*Rinit_in_pc, 4*Rinit_in_pc)
+                plt.ylim(-4*Rinit_in_pc, 4*Rinit_in_pc)
+                plt.annotate(gravity_solver_str, xy=(0.8, 0.8), xycoords='axes fraction')
+        
+                plt.xlabel('$x$ (pc)', fontsize=12)
+                plt.ylabel('$y$ (pc)', fontsize=12)
+                plt.title('Time: %.02f Myr'%(t.value_in(units.Myr)))
+                plt.tight_layout()
+                plt.savefig('frame_%s.png'%(str(i).rjust(4, '0')))
+                plt.close()        
     
             gravity.evolve_model(t, timestep=dt)
 

@@ -7,6 +7,7 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
+import random
 import numpy as np
 import time
 import os
@@ -14,7 +15,7 @@ import os
 from nemesis import Nemesis, HierarchicalParticles
 
 #Circumvent a problem with using too many threads on OpenMPI
-os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
+#os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
 class GalacticCenterGravityCode(object):
     def __init__(self, R, M, alpha):
@@ -194,7 +195,11 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
             star_colors.append(cluster_color)
 
         xrand, yrand, zrand = rand(), rand(), rand()
-        vxrand, vyrand, vzrand = rand(), rand(), rand()
+
+	#could also randomize which one comes last, but should be ok for now
+        vxrand = np.sqrt(2)*np.random.rand()
+	vyrand = np.sqrt(2)*np.random.rand()
+	vzrand = np.sqrt((1+0.001)-vxrand**2-vyrand**2)
 
         stars.x += xrand*Rinit # x in (-R_init, R_init)
         stars.y += yrand*Rinit
@@ -202,9 +207,11 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 
         R = Rinit*np.sqrt(xrand**2 + yrand**2 + zrand**2)
 
-        stars.vx = vxrand*galaxy_code.circular_velocity(R)
-        stars.vy = vyrand*galaxy_code.circular_velocity(R)
-        stars.vz = vzrand*galaxy_code.circular_velocity(R)
+	plusminus = [-1, 1]
+
+        stars.vx = random.choice(plusminus)*vxrand*galaxy_code.circular_velocity(R)
+        stars.vy = random.choice(plusminus)*vyrand*galaxy_code.circular_velocity(R)
+        stars.vz = random.choice(plusminus)*vzrand*galaxy_code.circular_velocity(R)
 
         channel = stars.new_channel_to(cluster_code.particles)
         channel.copy_attributes(['x','y','z','vx','vy','vz'])
@@ -332,11 +339,11 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 if __name__ == '__main__':
 
     Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
-    Nclusters = 2
-    Nstars, W0cluster, Mcluster, Rcluster = 20, 1.5, 100.|units.MSun, 1.|units.parsec
-    Rinit = 500.|units.parsec
+    Nclusters = 10
+    Nstars, W0cluster, Mcluster, Rcluster = 40, 1.5, 100.|units.MSun, 1.|units.parsec
+    Rinit = 1000.|units.parsec
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
-    t_end, dt = 100.|units.Myr, 1.|units.Myr
+    t_end, dt = 200.|units.Myr, 1.|units.Myr
 
     gravity_solvers = [ 'Brute' ] #'Nemesis'
 

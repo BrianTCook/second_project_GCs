@@ -2,6 +2,7 @@ from amuse.lab import *
 from amuse.ext.bridge import bridge
 from amuse.couple.bridge import CalculateFieldForParticles
 from amuse.ic.kingmodel import new_king_model
+from amuse.io import write_set_to_file, read_set_from_file
 
 import matplotlib
 matplotlib.use('agg')
@@ -12,7 +13,7 @@ import numpy as np
 import time
 import os
 
-from nemesis_copy import Nemesis, HierarchicalParticles
+from nemesis import Nemesis, HierarchicalParticles
 
 #Circumvent a problem with using too many threads on OpenMPI
 #os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
@@ -104,9 +105,9 @@ def timestep_func(ipart, jpart, eta=dt_param/2., _G=constants.G):
     	dr3 = dr**1.5
     	mu = _G*(ipart.mass + jpart.mass)
 
-   	tau = eta/2./2.**0.5*(dr3/mu)**0.5
+   	tau = eta #/2./2.**0.5*(dr3/mu)**0.5 #need an explanation for this!
 
-	return tau
+	return tau|units.Myr
 
 def radius(sys, eta=dt_param, _G=constants.G):
 
@@ -234,12 +235,12 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
         #total number of stars in the simulation
         Ntotal = len(bodies)
     
-        for i, t in enumerate(sim_times):
+        for j, t in enumerate(sim_times):
     
             clock_time = time.time()-t0
     
-            if i%5 == 0:
-                print('i=%i, time = %.02f seconds'%(i, clock_time))
+            if j%5 == 0:
+                print('i=%i, time = %.02f seconds'%(j, clock_time))
     
             clock_times.append(clock_time)
    
@@ -278,6 +279,10 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
             plt.tight_layout()
             plt.savefig('frame_%s_%s.png'%(str(i).rjust(4, '0'), gravity_solver_str))
             plt.close()        
+
+            #saves data at each timestep
+	    filename = gravity_solver_str + '_data.hdf5'
+	    write_set_to_file(gravity.particles, filename, "hdf5")
 
             if gravity_solver_str == 'Brute':
 
@@ -345,7 +350,7 @@ if __name__ == '__main__':
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
     t_end, dt = 40.|units.Myr, 1.|units.Myr
 
-    gravity_solvers = [ 'Nemesis', 'Brute' ]
+    gravity_solvers = [ 'Brute' ] #'Nemesis'
 
     main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
          Mcluster, Rcluster, Rinit, parameters, t_end, dt)

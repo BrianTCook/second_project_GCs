@@ -11,4 +11,5 @@ rm -rf frame_*.png
 
 mv *.png ~/Desktop/second_project_GCs/figures/
 mv *.gif ~/Desktop/second_project_GCs/figures/
+mv *.hdf5 ~/Desktop/second_project_GCs/src/
 cp main_GCs.sh ~/Desktop/second_project_GCs/src/

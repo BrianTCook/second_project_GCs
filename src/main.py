@@ -12,7 +12,7 @@ import numpy as np
 import time
 import os
 
-from nemesis import Nemesis, HierarchicalParticles
+from nemesis_copy import Nemesis, HierarchicalParticles
 
 #Circumvent a problem with using too many threads on OpenMPI
 #os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
@@ -343,9 +343,9 @@ if __name__ == '__main__':
     Nstars, W0cluster, Mcluster, Rcluster = 40, 1.5, 100.|units.MSun, 1.|units.parsec
     Rinit = 1000.|units.parsec
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
-    t_end, dt = 200.|units.Myr, 1.|units.Myr
+    t_end, dt = 40.|units.Myr, 1.|units.Myr
 
-    gravity_solvers = [ 'Brute' ] #'Nemesis'
+    gravity_solvers = [ 'Nemesis', 'Brute' ]
 
     main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
          Mcluster, Rcluster, Rinit, parameters, t_end, dt)

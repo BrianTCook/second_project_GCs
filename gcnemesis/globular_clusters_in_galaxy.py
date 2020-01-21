@@ -1,7 +1,7 @@
 import numpy
 
 import matplotlib
-#matplotlib.use('Agg')
+matplotlib.use('Agg')
 from matplotlib import pyplot
 from amuse.lab import *
 

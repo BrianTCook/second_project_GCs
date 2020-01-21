@@ -179,7 +179,14 @@ if __name__ in ('__main__', '__plot__'):
 
     N = 100
     Rvir = 1| units.parsec
-    star_cluster = initialize_star_cluster(N, Rvir)
+    
+    #there isn't a function with this name, made a king model isntead
+    #star_cluster = initialize_star_cluster(N, Rvir) 
+
+    M = 100.|units.MSun
+    W0 = 1.5
+    converter_cluster = nbody_system.nbody_to_si(M, Rvir)
+    star_cluster = new_king_model(N, W0, convert_nbody=converter_cluster)
 
     filename = "solar_system_with_moons.h5"
     solar_system = read_set_from_file(filename, "hdf5", close_file=True)

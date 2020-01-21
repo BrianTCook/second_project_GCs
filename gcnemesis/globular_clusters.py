@@ -17,10 +17,10 @@ from amuse.ext.basicgraph import UnionFind
 from amuse.community.twobody.twobody import TwoBody
 from amuse.community.hermite0.interface import Hermite
 from amuse.community.mercury.interface import Mercury
-from amuse.community.ph4.interface import ph4
-from amuse.community.phiGRAPE.interface import PhiGRAPE
-from amuse.community.huayno.interface import Huayno
-from amuse.community.mi6.interface import MI6
+#from amuse.community.ph4.interface import ph4
+#from amuse.community.phiGRAPE.interface import PhiGRAPE
+#from amuse.community.huayno.interface import Huayno
+#from amuse.community.mi6.interface import MI6
 
 from nemesis import Nemesis,HierarchicalParticles,system_type
 
@@ -65,7 +65,6 @@ def globular_clusters(N=10, L=10.| units.kpc, dv=1.0 | units.kms):
   cluster_population = make_galaxy_model(N, M_galaxy, R_galaxy)
   stars = initialize_globular_clusters(cluster_population, N)
   print stars.mass.in_(units.MSun)
-  xxx
 
   conv=nbody_system.nbody_to_si(M_galaxy, R_galaxy)
   conv_sub=nbody_system.nbody_to_si(1000.| units.MSun, 10.| units.parsec)
@@ -115,9 +114,11 @@ def globular_clusters(N=10, L=10.| units.kpc, dv=1.0 | units.kms):
       code=TwoBody(conv_sub)
     elif mode=="solarsystem":
       #code=Mercury(conv_sub)
-      code=Huayno(conv_sub)
+      #code=Huayno(conv_sub)
+      code=Hermite(conv_sub)
     elif mode=="nbody":
-      code=Huayno(conv_sub)
+      #code=Huayno(conv_sub)
+      code=Hermite(conv_sub)
       code.parameters.inttype_parameter=code.inttypes.SHARED4
     return code
       
@@ -134,7 +135,7 @@ def globular_clusters(N=10, L=10.| units.kpc, dv=1.0 | units.kms):
   nemesis.particles.add_particles(parts)
   nemesis.commit_particles()
 
-  tend=1.0 | units.Myr
+  tend=0.1 | units.Myr
   t=0|units.yr
   dtdiag=dt*2
   

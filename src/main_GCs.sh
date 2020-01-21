@@ -5,7 +5,7 @@ echo 'run script'
 ./amuse.sh ~/Desktop/second_project_GCs/src/main.py 
 
 echo 'convert collection of .png files into .gif'
-convert -delay 10 'frame_*_Nemesis.png' -loop 0 GCs_in_background_nem.gif
+#convert -delay 10 'frame_*_Nemesis.png' -loop 0 GCs_in_background_nem.gif
 convert -delay 10 'frame_*_Brute.png' -loop 0 GCs_in_background_bru.gif
 rm -rf frame_*.png
 

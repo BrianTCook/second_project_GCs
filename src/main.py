@@ -198,9 +198,9 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
         xrand, yrand, zrand = rand(), rand(), rand()
 
 	#could also randomize which one comes last, but should be ok for now
-        vxrand = np.sqrt(2)*np.random.rand()
-	vyrand = np.sqrt(2)*np.random.rand()
-	vzrand = np.sqrt((1+0.001)-vxrand**2-vyrand**2)
+        vxrand = np.sqrt(0.5)*np.random.rand()
+	vyrand = np.sqrt(0.5)*np.random.rand()
+	vzrand = np.sqrt((1.+0.0001)-vxrand**2-vyrand**2)
 
         stars.x += xrand*Rinit # x in (-R_init, R_init)
         stars.y += yrand*Rinit
@@ -246,7 +246,7 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
    
             #for figures 3 through 6, November 24
 
-            x = gravity.particles.x.value_in(units.parsec) 
+            x = [ xx.value_in(units.parsec) for xx in gravity.particles.x ]
             y = [ yy.value_in(units.parsec) for yy in gravity.particles.y ]
             z = [ zz.value_in(units.parsec) for zz in gravity.particles.z ]
             

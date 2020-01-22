@@ -309,6 +309,7 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
         gravity_solver_info.append([gravity_solver_str, clock_times,
                                     mean_radial_coords, mean_speeds])
 	
+	np.save('time_data_Nclusters=%i_%s.npy'%(Nclusters, gravity_solver_str), sim_times)
 	np.save('sixD_data_Nclusters=%i_%s.npy'%(Nclusters, gravity_solver_str), phase_space_data)
 
     cluster_code.stop()

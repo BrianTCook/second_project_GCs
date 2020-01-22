@@ -13,10 +13,12 @@ import numpy as np
 import time
 import os
 
+random.seed(73)
+
 from nemesis import Nemesis, HierarchicalParticles
 
 #Circumvent a problem with using too many threads on OpenMPI
-#os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
+os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
 class GalacticCenterGravityCode(object):
     def __init__(self, R, M, alpha):
@@ -289,7 +291,7 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
             plt.ylabel('$y$ (pc)', fontsize=12)
             plt.title('Time: %.02f Myr'%(t.value_in(units.Myr)))
             plt.tight_layout()
-            plt.savefig('frame_%s_%s.png'%(str(j).rjust(4, '0'), gravity_solver_str))
+            plt.savefig('frame_%s_%s_%i.png'%(str(j).rjust(4, '0'), gravity_solver_str, Nclusters))
             plt.close()        
 
             #saves data at each timestep
@@ -364,7 +366,7 @@ if __name__ == '__main__':
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
     t_end, dt = 100.|units.Myr, 1.|units.Myr
 
-    Nclusters_list = [ 1 ]
+    Nclusters_list = [ 10 ]
     gravity_solvers = [ 'Brute' ] #'Nemesis'
 
     for Nclusters in Nclusters_list:

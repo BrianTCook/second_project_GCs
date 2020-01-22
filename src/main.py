@@ -234,16 +234,19 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
     
         #total number of stars in the simulation
         Ntotal = len(bodies)
+
+	#create an R^3 matrix to house phase space data for all particles
+	phase_space_data = np.zeros((len(sim_times), 6, len(gravity.particles)))
     
         for j, t in enumerate(sim_times):
     
             clock_time = time.time()-t0
     
             if j%5 == 0:
-                print('i=%i, time = %.02f seconds'%(j, clock_time))
+                print('j=%i, time = %.02f seconds'%(j, clock_time))
     
             clock_times.append(clock_time)
-   
+
             #for figures 3 through 6, November 24
 
             x = [ xx.value_in(units.parsec) for xx in gravity.particles.x ]
@@ -254,6 +257,15 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
             vy = [ vyy.value_in(units.kms) for vyy in gravity.particles.vy ]
             vz = [ vzz.value_in(units.kms) for vzz in gravity.particles.vz ]
             
+    	    for k, star in enumerate(gravity.particles):
+
+		phase_space_data[j, 0, k] = x[k]
+		phase_space_data[j, 1, k] = y[k]
+		phase_space_data[j, 2, k] = z[k]
+		phase_space_data[j, 3, k] = vx[k]
+		phase_space_data[j, 4, k] = vy[k]
+		phase_space_data[j, 5, k] = vz[k] 
+
             xmean, ymean, zmean = np.sum(x)/Ntotal, np.sum(y)/Ntotal, np.sum(z)/Ntotal
             mean_rval = np.sqrt(xmean**2 + ymean**2 + zmean**2)
             mean_radial_coords.append(mean_rval)
@@ -277,7 +289,7 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
             plt.ylabel('$y$ (pc)', fontsize=12)
             plt.title('Time: %.02f Myr'%(t.value_in(units.Myr)))
             plt.tight_layout()
-            plt.savefig('frame_%s_%s.png'%(str(i).rjust(4, '0'), gravity_solver_str))
+            plt.savefig('frame_%s_%s.png'%(str(j).rjust(4, '0'), gravity_solver_str))
             plt.close()        
 
             #saves data at each timestep
@@ -296,7 +308,9 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 	print(mean_radial_coords)
         gravity_solver_info.append([gravity_solver_str, clock_times,
                                     mean_radial_coords, mean_speeds])
-    
+	
+	np.save('sixD_data_Nclusters=%i_%s.npy'%(Nclusters, gravity_solver_str), phase_space_data)
+
     cluster_code.stop()
     
     plt.figure()
@@ -344,13 +358,15 @@ def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
 if __name__ == '__main__':
 
     Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
-    Nclusters = 10
     Nstars, W0cluster, Mcluster, Rcluster = 40, 1.5, 100.|units.MSun, 1.|units.parsec
     Rinit = 1000.|units.parsec
     parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
-    t_end, dt = 40.|units.Myr, 1.|units.Myr
+    t_end, dt = 100.|units.Myr, 1.|units.Myr
 
+    Nclusters_list = [ 1 ]
     gravity_solvers = [ 'Brute' ] #'Nemesis'
 
-    main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
-         Mcluster, Rcluster, Rinit, parameters, t_end, dt)
+    for Nclusters in Nclusters_list:
+
+    	main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
+             Mcluster, Rcluster, Rinit, parameters, t_end, dt)

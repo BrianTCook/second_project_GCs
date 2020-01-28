@@ -223,7 +223,7 @@ def simulation(orbiter_name, code_name, Mgal, Rgal, alpha,
         gravity.evolve_model(t)
 
         filename = code_name + '_' + orbiter_name + '_data.hdf5'
-	    write_set_to_file(gravity.particles, filename, "hdf5")
+        write_set_to_file(gravity.particles, filename, "hdf5")
         
     gravity.stop()
     

@@ -8,7 +8,7 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
-from galpy.df impocrt quasiisothermaldf
+from galpy.df import quasiisothermaldf
 from galpy.potential import MWPotential2014, evaluateRforces, evaluatezforces, vcirc
 from galpy.util import bovy_conversion
 
@@ -256,7 +256,7 @@ def orbiter_nemesis(orbiter_name, code_name):
     return None, None
 
 def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
-                       NStars, W0, Mcluster, Rcluster, dBinary):
+                       Nstars, W0, Mcluster, Rcluster, dBinary):
     
     '''
     will need to ask SPZ if he meant for field, orbiter to be separate in non
@@ -296,7 +296,7 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
     
     galaxy_code = GalaxyGravityCode(potential)
     gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
-                                 NStars, W0, Mcluster, Rcluster, dBinary)
+                                 Nstars, W0, Mcluster, Rcluster, dBinary)
     
     Ntotal = len(gravity.particles)
     
@@ -410,7 +410,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     
     #clock times
     
-     fig, axs = plt.subplots(3, 1)
+    fig, axs = plt.subplots(3, 1)
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
@@ -432,6 +432,8 @@ if __name__ in '__main__':
     
     potential = MWPotential2014
     Rmax, Zmax = 5., 1. #in kpc
+    Nstars, W0 = 50, 1.5 #cluster parameters
+    Mcluster, Rcluster = 5e6|units.MSun, 10|units.parsec
     dBinary = 10.|units.parsec
     tend, dt = 100.|units.Myr, 1.|units.Myr
     
@@ -440,7 +442,7 @@ if __name__ in '__main__':
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:
-            simulation(orbiter_name, code_name, potential, Rmax, Zmax 
+            simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
                        Nstars, W0, Mcluster, Rcluster, dBinary, tend, dt)
             
     plotting_things(orbiter_names, code_names, tend, dt)

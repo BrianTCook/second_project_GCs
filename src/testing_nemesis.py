@@ -154,7 +154,7 @@ def orbiter_not_nemesis(orbiter_name, code_name, Nstars, W0, Mcluster, Rcluster,
         bodies, code = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
         
         '''
-        need to initialize initial phase space coordinates with AGAMA
+        need to initialize initial phase space coordinates with AGAMA or galpy
         '''
         
         return bodies, code
@@ -165,7 +165,7 @@ def orbiter_not_nemesis(orbiter_name, code_name, Nstars, W0, Mcluster, Rcluster,
         bodies_one, code_two = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
         
         '''
-        need to initialize initial phase space coordinates with AGAMA
+        need to initialize initial phase space coordinates with AGAMA or galpy
         '''
         
         mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()
@@ -191,7 +191,7 @@ def orbiter_nemesis(orbiter_name, code_name):
     
     return None, None
 
-def gravity_code_setup(orbiter_name, code_name, galaxy_code):
+def gravity_code_setup(orbiter_name, code_name, galaxy_code, NStars, W0, Mcluster, Rcluster, dBinary):
     
     '''
     will need to ask SPZ if he meant for field, orbiter to be separate in non
@@ -204,11 +204,13 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code):
         
         if code_name != 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code = orbiter_not_nemesis(orbiter_name)
+            orbiter_bodies, orbiter_code = orbiter_not_nemesis(orbiter_name, code_name, Nstars,
+                                                               W0, Mcluster, Rcluster, dBinary)
             
         if code_name == 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter_not_nemesis(orbiter_name)
+            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter_not_nemesis(orbiter_name, code_name, Nstars,
+                                                                                     W0, Mcluster, Rcluster, dBinary)
     
         gravity.particles.add_particles(orbiter_bodies)
     
@@ -228,7 +230,8 @@ def simulation(orbiter_name, code_name, potential, Nstars, W0,
                Mcluster, Rcluster, dBinary, tend, dt):
     
     galaxy_code = GalaxyGravityCode(potential)
-    gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code)
+    gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, 
+                                 NStars, W0, Mcluster, Rcluster, dBinary)
     
     Ntotal = len(gravity.particles)
     
@@ -277,24 +280,86 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     filename = code_name + '_' + orbiter_name + '_data.hdf5'
     star_data = read_set_from_file(filename)
     
-    
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     
     npanels_x = len(orbiter_names)
     
     '''
-    for i, orbiter_name in enumerate(orbiter_names):
-        plt.subplot(i)
+    3 by 1, a plot for each orbiter (single star, etc.)
+    each panel contains 3 curves, one for each gravity solver
+    '''
+    
+    #energies
+    
+    fig, axs = plt.subplots(3, 1)
+
+    for i, orbiter_name in enumerate(orbiter_names): 
+        
+        axs[0,i].set_title(orbiter_name)
         
         for code_name in code_names:
             
             energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
-            mean_radial_coords = np.savetxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt')
-            mean_speeds = np.savetxt(code_name + '_' + orbiter_name + '_mean_speeds.txt')
-            clock_times = np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt')
-            plt.plot()
+            axs[0,i].plot(sim_times_unitless, energies, label=code_name)
+            
+        axs[0,i].legend(loc='best')
+            
+    plt.savefig('testing_nemesis_energy.png')
+    plt.close()
     
-    '''
+    #mean radial coordinates
+    
+    fig, axs = plt.subplots(3, 1)
+
+    for i, orbiter_name in enumerate(orbiter_names): 
+        
+        axs[0,i].set_title(orbiter_name)
+        
+        for code_name in code_names:
+            
+            mean_radial_coords = np.savetxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt')
+            axs[0,i].plot(sim_times_unitless, mean_radial_coords, label=code_name)
+            
+        axs[0,i].legend(loc='best')
+            
+    plt.savefig('testing_nemesis_radialcoords.png')
+    plt.close()
+    
+    #mean speeds
+    
+    fig, axs = plt.subplots(3, 1)
+
+    for i, orbiter_name in enumerate(orbiter_names): 
+        
+        axs[0,i].set_title(orbiter_name)
+        
+        for code_name in code_names:
+            
+            mean_speeds = np.savetxt(code_name + '_' + orbiter_name + '_mean_speeds.txt')
+            axs[0,i].plot(sim_times_unitless, mean_speeds, label=code_name)
+            
+        axs[0,i].legend(loc='best')
+            
+    plt.savefig('testing_nemesis_speeds.png')
+    plt.close()
+    
+    #clock times
+    
+     fig, axs = plt.subplots(3, 1)
+
+    for i, orbiter_name in enumerate(orbiter_names): 
+        
+        axs[0,i].set_title(orbiter_name)
+        
+        for code_name in code_names:
+            
+            clock_times = np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt')
+            axs[0,i].plot(sim_times_unitless, clock_times, label=code_name)
+            
+        axs[0,i].legend(loc='best')
+            
+    plt.savefig('testing_nemesis_clocktimes.png')
+    plt.close()
     
     return 0
 
@@ -312,4 +377,4 @@ if __name__ in '__main__':
             simulation(orbiter_name, code_name, potential, Nstars, W0, 
                        Mcluster, Rcluster, dBinary, tend, dt)
             
-    plotting_things(orbiter_names, code_names)
+    plotting_things(orbiter_names, code_names, tend, dt)

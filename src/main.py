@@ -99,277 +99,277 @@ dt_param = 0.1
 
 def timestep_func(ipart, jpart, eta=dt_param/2., _G=constants.G):
     
-    	dx = ipart.x-jpart.x
-    	dy = ipart.y-jpart.y
-    	dz = ipart.z-jpart.z
+	dx = ipart.x-jpart.x
+	dy = ipart.y-jpart.y
+	dz = ipart.z-jpart.z
 
-    	dr = np.sqrt(dx**2 + dy**2 + dz**2)
-    	dr3 = dr**1.5
-    	mu = _G*(ipart.mass + jpart.mass)
+	dr = np.sqrt(dx**2 + dy**2 + dz**2)
+	dr3 = dr**1.5
+	mu = _G*(ipart.mass + jpart.mass)
 
-   	tau = eta #/2./2.**0.5*(dr3/mu)**0.5 #need an explanation for this!
+	tau = eta #/2./2.**0.5*(dr3/mu)**0.5 #need an explanation for this!
 
 	return tau|units.Myr
 
 def radius(sys, eta=dt_param, _G=constants.G):
 
 	#variable shouldn't be named radius
-     	ra = ((_G*sys.total_mass()*dt**2/eta**2)**(1/3.))
+	ra = ((_G*sys.total_mass()*dt**2/eta**2)**(1/3.))
 	ra = ra*((len(sys)+1)/2.)**0.75
 	return 100.*ra
 
 def gravity_code_setup(gravity_solver_str, galaxy_code,
 		       cluster_codes, cluster_bodies_list):
 
-    if gravity_solver_str == 'Brute':
+	if gravity_solver_str == 'Brute':
 
-        gravity = bridge()
+		gravity = bridge()
 
-        for i, cluster_code in enumerate(cluster_codes):  
-                
-        	other_clusters = cluster_codes[:i] + cluster_codes[i+1:]
-                other_things = tuple(other_clusters) + (galaxy_code,)
+		for i, cluster_code in enumerate(cluster_codes):  
 
-                #bridges each cluster with the bulge, not the other way around though
-                gravity.add_system(cluster_code, other_things)   
+			other_clusters = cluster_codes[:i] + cluster_codes[i+1:]
+			other_things = tuple(other_clusters) + (galaxy_code,)
 
-	return gravity     
+			#bridges each cluster with the bulge, not the other way around though
+			gravity.add_system(cluster_code, other_things)   
 
-    if gravity_solver_str == 'Nemesis':
+		return gravity     
 
-        stars_all = Particles(0)
-        
-        for cluster_bodies in cluster_bodies_list:
-            stars_all.add_particles(cluster_bodies)
+	if gravity_solver_str == 'Nemesis':
 
-        parts = HierarchicalParticles(stars_all)
-        
-        converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
+		stars_all = Particles(0)
 
-        dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
-        dt_nemesis = dt
-        dt_bridge = 0.01 * dt
-        
-        nemesis = Nemesis( parent_worker, sub_worker, py_worker)
-        nemesis.timestep = dt
-        nemesis.distfunc = timestep_func
-        nemesis.threshold = dt_nemesis
-        nemesis.radius = radius
+		for cluster_bodies in cluster_bodies_list:
+			stars_all.add_particles(cluster_bodies)
 
-        nemesis.commit_parameters()
-        nemesis.particles.add_particles(parts)
-        nemesis.commit_particles()
+		parts = HierarchicalParticles(stars_all)
 
-        channel_to_nemesis = stars_all.new_channel_to(nemesis.particles.all())
+		converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
 
-        #gravity = bridge.Bridge(use_threading=False)
-        gravity = bridge(use_threading = False)
-        gravity.add_system(nemesis, (galaxy_code,) )
-        gravity.timestep = dt_bridge
-        
-    	return gravity
+		dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
+		dt_nemesis = dt
+		dt_bridge = 0.01 * dt
+
+		nemesis = Nemesis( parent_worker, sub_worker, py_worker)
+		nemesis.timestep = dt
+		nemesis.distfunc = timestep_func
+		nemesis.threshold = dt_nemesis
+		nemesis.radius = radius
+
+		nemesis.commit_parameters()
+		nemesis.particles.add_particles(parts)
+		nemesis.commit_particles()
+
+		channel_to_nemesis = stars_all.new_channel_to(nemesis.particles.all())
+
+		#gravity = bridge.Bridge(use_threading=False)
+		gravity = bridge(use_threading = False)
+		gravity.add_system(nemesis, (galaxy_code,) )
+		gravity.timestep = dt_bridge
+
+		return gravity
 
 def main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0, M,
-     R, Rinit, parameters, t_end, dt):
+R, Rinit, parameters, t_end, dt):
 
-    #set up clusters
-    cluster_bodies_and_codes = [ make_king_model_cluster(Nstars, W0, M, R, parameters) 
-                                 for i in range(Nclusters) ] 
-    
-    cluster_bodies_list = [ cbc[0] for cbc in cluster_bodies_and_codes ]
-    cluster_codes = [ cbc[1] for cbc in cluster_bodies_and_codes ]
+	#set up clusters
+	cluster_bodies_and_codes = [ make_king_model_cluster(Nstars, W0, M, R, parameters) 
+			         for i in range(Nclusters) ] 
 
-    bodies = Particles(0)
-    for cluster_bodies in cluster_bodies_list:
-        bodies.add_particles( cluster_bodies )
+	cluster_bodies_list = [ cbc[0] for cbc in cluster_bodies_and_codes ]
+	cluster_codes = [ cbc[1] for cbc in cluster_bodies_and_codes ]
 
-    star_colors = []    
+	bodies = Particles(0)
+	for cluster_bodies in cluster_bodies_list:
+		bodies.add_particles( cluster_bodies )
 
-    #just the galactic bulge
-    galaxy_code = GalacticCenterGravityCode(Rgal, Mgal, alpha)
+	star_colors = []    
 
-    for i, cluster_code in enumerate(cluster_codes):   
+	#just the galactic bulge
+	galaxy_code = GalacticCenterGravityCode(Rgal, Mgal, alpha)
 
-        stars = cluster_code.particles.copy()
-        cluster_color = np.random.rand(3,)
+	for i, cluster_code in enumerate(cluster_codes):   
 
-        for j in range(len(stars)):
+		stars = cluster_code.particles.copy()
+		cluster_color = np.random.rand(3,)
 
-            star_colors.append(cluster_color)
+		for j in range(len(stars)):
 
-        xrand, yrand, zrand = rand(), rand(), rand()
+			star_colors.append(cluster_color)
+
+	xrand, yrand, zrand = rand(), rand(), rand()
 
 	#could also randomize which one comes last, but should be ok for now
-        vxrand = np.sqrt(0.5)*np.random.rand()
+	vxrand = np.sqrt(0.5)*np.random.rand()
 	vyrand = np.sqrt(0.5)*np.random.rand()
 	vzrand = np.sqrt((1.+0.0001)-vxrand**2-vyrand**2)
 
-        stars.x += xrand*Rinit # x in (-R_init, R_init)
-        stars.y += yrand*Rinit
-        stars.z += zrand*Rinit
+	stars.x += xrand*Rinit # x in (-R_init, R_init)
+	stars.y += yrand*Rinit
+	stars.z += zrand*Rinit
 
-        R = Rinit*np.sqrt(xrand**2 + yrand**2 + zrand**2)
+	R = Rinit*np.sqrt(xrand**2 + yrand**2 + zrand**2)
 
 	plusminus = [-1, 1]
 
-        stars.vx = random.choice(plusminus)*vxrand*galaxy_code.circular_velocity(R)
-        stars.vy = random.choice(plusminus)*vyrand*galaxy_code.circular_velocity(R)
-        stars.vz = random.choice(plusminus)*vzrand*galaxy_code.circular_velocity(R)
+	stars.vx = random.choice(plusminus)*vxrand*galaxy_code.circular_velocity(R)
+	stars.vy = random.choice(plusminus)*vyrand*galaxy_code.circular_velocity(R)
+	stars.vz = random.choice(plusminus)*vzrand*galaxy_code.circular_velocity(R)
 
-        channel = stars.new_channel_to(cluster_code.particles)
-        channel.copy_attributes(['x','y','z','vx','vy','vz'])
+	channel = stars.new_channel_to(cluster_code.particles)
+	channel.copy_attributes(['x','y','z','vx','vy','vz'])
 
-    gravity_solver_info = []
+	gravity_solver_info = []
 
-    for gravity_solver_str in gravity_solvers:
+	for gravity_solver_str in gravity_solvers:
 
-        gravity = gravity_code_setup(gravity_solver_str, galaxy_code,
-                                     cluster_codes, cluster_bodies_list)
-        
-        sim_times_unitless = np.arange(0., t_end.value_in(units.Myr), dt.value_in(units.Myr))
-        sim_times = [ t|units.Myr for t in sim_times_unitless]
-    
-        t0 = time.time()
-        clock_times = []
-        mean_radial_coords = []
-        mean_speeds = []
-    
-        #total number of stars in the simulation
-        Ntotal = len(bodies)
+		gravity = gravity_code_setup(gravity_solver_str, galaxy_code,
+	                     cluster_codes, cluster_bodies_list)
+
+	sim_times_unitless = np.arange(0., t_end.value_in(units.Myr), 					dt.value_in(units.Myr))
+	sim_times = [ t|units.Myr for t in sim_times_unitless]
+
+	t0 = time.time()
+	clock_times = []
+	mean_radial_coords = []
+	mean_speeds = []
+
+	#total number of stars in the simulation
+	Ntotal = len(bodies)
 
 	#create an R^3 matrix to house phase space data for all particles
 	phase_space_data = np.zeros((len(sim_times), 6, len(gravity.particles)))
-    
-        for j, t in enumerate(sim_times):
-    
-            clock_time = time.time()-t0
-    
-            if j%5 == 0:
-                print('j=%i, time = %.02f seconds'%(j, clock_time))
-    
-            clock_times.append(clock_time)
 
-            #for figures 3 through 6, November 24
+	for j, t in enumerate(sim_times):
 
-            x = [ xx.value_in(units.parsec) for xx in gravity.particles.x ]
-            y = [ yy.value_in(units.parsec) for yy in gravity.particles.y ]
-            z = [ zz.value_in(units.parsec) for zz in gravity.particles.z ]
-            
-            vx = [ vxx.value_in(units.kms) for vxx in gravity.particles.vx ]
-            vy = [ vyy.value_in(units.kms) for vyy in gravity.particles.vy ]
-            vz = [ vzz.value_in(units.kms) for vzz in gravity.particles.vz ]
-            
-    	    for k, star in enumerate(gravity.particles):
+		clock_time = time.time()-t0
 
-		phase_space_data[j, 0, k] = x[k]
-		phase_space_data[j, 1, k] = y[k]
-		phase_space_data[j, 2, k] = z[k]
-		phase_space_data[j, 3, k] = vx[k]
-		phase_space_data[j, 4, k] = vy[k]
-		phase_space_data[j, 5, k] = vz[k] 
+		if j%5 == 0:
+			print('j=%i, time = %.02f seconds'%(j, clock_time))
 
-            xmean, ymean, zmean = np.sum(x)/Ntotal, np.sum(y)/Ntotal, np.sum(z)/Ntotal
-            mean_rval = np.sqrt(xmean**2 + ymean**2 + zmean**2)
-            mean_radial_coords.append(mean_rval)
-    
-            vxmean, vymean, vzmean = np.sum(vx)/Ntotal, np.sum(vy)/Ntotal, np.sum(vz)/Ntotal
-            mean_speed = np.sqrt(vxmean**2 + vymean**2 + vzmean**2)
-            mean_speeds.append(mean_speed)
-    
-            
-            #for .gif of orbits
-            
-            plt.figure()
-            plt.scatter(x, y, marker='*', s=2, color=star_colors)
-    
-            Rinit_in_pc = Rinit.value_in(units.parsec)
-            plt.xlim(-4*Rinit_in_pc, 4*Rinit_in_pc)
-            plt.ylim(-4*Rinit_in_pc, 4*Rinit_in_pc)
-            plt.annotate(gravity_solver_str, xy=(0.8, 0.8), xycoords='axes fraction')
-    
-            plt.xlabel('$x$ (pc)', fontsize=12)
-            plt.ylabel('$y$ (pc)', fontsize=12)
-            plt.title('Time: %.02f Myr'%(t.value_in(units.Myr)))
-            plt.tight_layout()
-            plt.savefig('frame_%s_%s_%i.png'%(str(j).rjust(4, '0'), gravity_solver_str, Nclusters))
-            plt.close()        
+		clock_times.append(clock_time)
 
-            #saves data at each timestep
-	    filename = gravity_solver_str + '_data.hdf5'
-	    write_set_to_file(gravity.particles, filename, "hdf5")
+		#for figures 3 through 6, November 24
 
-            if gravity_solver_str == 'Brute':
+		x = [ xx.value_in(units.parsec) for xx in gravity.particles.x ]
+		y = [ yy.value_in(units.parsec) for yy in gravity.particles.y ]
+		z = [ zz.value_in(units.parsec) for zz in gravity.particles.z ]
 
-                gravity.evolve_model(t, timestep=dt)
+		vx = [ vxx.value_in(units.kms) for vxx in gravity.particles.vx ]
+		vy = [ vyy.value_in(units.kms) for vyy in gravity.particles.vy ]
+		vz = [ vzz.value_in(units.kms) for vzz in gravity.particles.vz ]
 
-            if gravity_solver_str == 'Nemesis':
-                
-                gravity.evolve_model(t)
+		for k, star in enumerate(gravity.particles):
+
+			phase_space_data[j, 0, k] = x[k]
+			phase_space_data[j, 1, k] = y[k]
+			phase_space_data[j, 2, k] = z[k]
+			phase_space_data[j, 3, k] = vx[k]
+			phase_space_data[j, 4, k] = vy[k]
+			phase_space_data[j, 5, k] = vz[k] 
+
+		xmean, ymean, zmean = np.sum(x)/Ntotal, np.sum(y)/Ntotal, np.sum(z)/Ntotal
+		mean_rval = np.sqrt(xmean**2 + ymean**2 + zmean**2)
+		mean_radial_coords.append(mean_rval)
+
+		vxmean, vymean, vzmean = np.sum(vx)/Ntotal, np.sum(vy)/Ntotal, np.sum(vz)/Ntotal
+		mean_speed = np.sqrt(vxmean**2 + vymean**2 + vzmean**2)
+		mean_speeds.append(mean_speed)
+
+
+		#for .gif of orbits
+
+		plt.figure()
+		plt.scatter(x, y, marker='*', s=2, color=star_colors)
+
+		Rinit_in_pc = Rinit.value_in(units.parsec)
+		plt.xlim(-4*Rinit_in_pc, 4*Rinit_in_pc)
+		plt.ylim(-4*Rinit_in_pc, 4*Rinit_in_pc)
+		plt.annotate(gravity_solver_str, xy=(0.8, 0.8), xycoords='axes fraction')
+
+		plt.xlabel('$x$ (pc)', fontsize=12)
+		plt.ylabel('$y$ (pc)', fontsize=12)
+		plt.title('Time: %.02f Myr'%(t.value_in(units.Myr)))
+		plt.tight_layout()
+		plt.savefig('frame_%s_%s_%i.png'%(str(j).rjust(4, '0'), gravity_solver_str, Nclusters))
+		plt.close()        
+
+		#saves data at each timestep
+		filename = gravity_solver_str + '_data.hdf5'
+		write_set_to_file(gravity.particles, filename, "hdf5")
+
+		if gravity_solver_str == 'Brute':
+
+			gravity.evolve_model(t, timestep=dt)
+
+		if gravity_solver_str == 'Nemesis':
+
+			gravity.evolve_model(t)
 
 	print(gravity_solver_str)
 	print(mean_radial_coords)
-        gravity_solver_info.append([gravity_solver_str, clock_times,
-                                    mean_radial_coords, mean_speeds])
-	
+	gravity_solver_info.append([gravity_solver_str, clock_times,
+				    mean_radial_coords, mean_speeds])
+
 	np.save('time_data_Nclusters=%i_%s.npy'%(Nclusters, gravity_solver_str), sim_times_unitless)
 	np.save('sixD_data_Nclusters=%i_%s.npy'%(Nclusters, gravity_solver_str), phase_space_data)
 
-    cluster_code.stop()
-    
-    plt.figure()
-    
-    for gs, clock, radii, speeds in gravity_solver_info:
+	cluster_code.stop()
 
-        #clock time versus simulation time
-        plt.plot(sim_times_unitless, clock, label=gs)
-        
-    plt.xlabel('Simulation time (Myr)')
-    plt.ylabel('Clock time (seconds)')
-    plt.legend(loc='best')
-    plt.tight_layout()
-    plt.savefig('clocktime.png')
-    plt.close()
-    
-    plt.figure()
+	plt.figure()
 
-    for gs, clock, radii, speeds in gravity_solver_info:
+	for gs, clock, radii, speeds in gravity_solver_info:
 
-        #<radial coordinate>
-        plt.plot(sim_times_unitless, mean_radial_coords, label=gs)
-        
-    plt.xlabel('Simulation time (Myr)')
-    plt.ylabel('Average distance from origin (pc)')
-    plt.legend(loc='best')
-    plt.tight_layout()
-    plt.savefig('radial_coords.png')
-    plt.close()
-    
-    plt.figure()
+		#clock time versus simulation time
+		plt.plot(sim_times_unitless, clock, label=gs)
 
-    for gs, clock, radii, speeds in gravity_solver_info:
-    
-        #<velocity>
-        plt.semilogy(sim_times_unitless, mean_speeds, label=gs)
-        
-    plt.xlabel('Simulation time (Myr)')
-    plt.ylabel('Average speed (km/s)')
-    plt.legend(loc='best')
-    plt.tight_layout()
-    plt.savefig('speeds.png')
-    plt.close()
+	plt.xlabel('Simulation time (Myr)')
+	plt.ylabel('Clock time (seconds)')
+	plt.legend(loc='best')
+	plt.tight_layout()
+	plt.savefig('clocktime.png')
+	plt.close()
+
+	plt.figure()
+
+	for gs, clock, radii, speeds in gravity_solver_info:
+
+		#<radial coordinate>
+		plt.plot(sim_times_unitless, mean_radial_coords, label=gs)
+
+	plt.xlabel('Simulation time (Myr)')
+	plt.ylabel('Average distance from origin (pc)')
+	plt.legend(loc='best')
+	plt.tight_layout()
+	plt.savefig('radial_coords.png')
+	plt.close()
+
+	plt.figure()
+
+	for gs, clock, radii, speeds in gravity_solver_info:
+
+		#<velocity>
+		plt.semilogy(sim_times_unitless, mean_speeds, label=gs)
+
+	plt.xlabel('Simulation time (Myr)')
+	plt.ylabel('Average speed (km/s)')
+	plt.legend(loc='best')
+	plt.tight_layout()
+	plt.savefig('speeds.png')
+	plt.close()
 
 if __name__ == '__main__':
 
-    Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
-    Nstars, W0cluster, Mcluster, Rcluster = 40, 1.5, 100.|units.MSun, 1.|units.parsec
-    Rinit = 1000.|units.parsec
-    parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
-    t_end, dt = 100.|units.Myr, 1.|units.Myr
+	Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
+	Nstars, W0cluster, Mcluster, Rcluster = 40, 1.5, 100.|units.MSun, 1.|units.parsec
+	Rinit = 1000.|units.parsec
+	parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
+	t_end, dt = 100.|units.Myr, 1.|units.Myr
 
-    Nclusters_list = [ 10 ]
-    gravity_solvers = [ 'Brute' ] #'Nemesis'
+	Nclusters_list = [ 10 ]
+	gravity_solvers = [ 'Brute' ] #'Nemesis'
 
-    for Nclusters in Nclusters_list:
+	for Nclusters in Nclusters_list:
 
-    	main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
-             Mcluster, Rcluster, Rinit, parameters, t_end, dt)
+		main(Rgal, Mgal, alpha, gravity_solvers, Nclusters, Nstars, W0cluster,
+	     Mcluster, Rcluster, Rinit, parameters, t_end, dt)

@@ -8,6 +8,9 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
+from galpy.potential import MWPotential2014, evaluateRforces, evaluatezforces, vcirc
+from galpy.util import bovy_conversion
+
 import random
 import numpy as np
 import time
@@ -20,25 +23,69 @@ from nemesis import Nemesis, HierarchicalParticles
 #Circumvent a problem with using too many threads on OpenMPI
 os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
+
 class GalacticCenterGravityCode(object):
+    
     def __init__(self, R, M, alpha):
+        
+        '''
+        have AMUSE units
+        '''
+        
         self.radius=R
         self.mass=M
         self.alpha=alpha
 
     def get_gravity_at_point(self, eps, x, y, z):
+        
         r2 = x**2+y**2+z**2
         r = r2**0.5
         m = self.mass*(r/self.radius)**self.alpha
+        
+        gal_r = x**2 + y**2
+        gal_phi = np.arctan(y/x)
+        gal_Z = z
+        
+        #220., 8. comes from rotation speed of 220 km/s at 8 kpc
+        fr = evaluateRforces(gal_r, gal_z, MWPotential2014, phi=gal_Phi)*bovy_conversion.force_in_kmsMyr(220.,8.)
+        fz = evaluatezforces(gal_r, gal_z, MWPotential2014, phi=gal_Phi)*bovy_conversion.force_in_kmsMyr(220.,8.)
+        
+        #km/s/Myr to km/s^2
+        fr /= 3.154e13
+        fz /= 3.154e13
+        
+        #give AMUSE units
+        fr = fr | (units.kms)/(units.s)
+        fz = fz | (units.kms)/(units.s)
+        
+        ax = fr * x/r
+        ay = fr * y/r
+        az = fz
+        
+        '''
+        might need for later
+        
         fr = constants.G*m/r2
         ax=-fr*x/r
         ay=-fr*y/r
         az=-fr*z/r
+        '''
+        
         return ax,ay,az
     
     def circular_velocity(self, r):
+        
+        '''
+        might need for later
+        
         m=self.mass*(r/self.radius)**self.alpha
         vc=(constants.G*m/r)**0.5
+        '''
+        
+        vc = vcirc(MWPotential2014, r)
+        #needs a unit right
+
+        
         return vc
     
 def getxv(converter, M1, a, e, ma=0):

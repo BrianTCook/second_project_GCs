@@ -8,6 +8,7 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
+from galpy.df impocrt quasiisothermaldf
 from galpy.potential import MWPotential2014, evaluateRforces, evaluatezforces, vcirc
 from galpy.util import bovy_conversion
 
@@ -129,9 +130,33 @@ def make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name, parameter
     
     return bodies, code
 
-def orbiter_not_nemesis(orbiter_name, code_name, Nstars, W0, Mcluster, Rcluster, dBinary):
+def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
+                        Nstars, W0, Mcluster, Rcluster, dBinary):
     
+
     converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    
+    '''
+    takes in R, Z value
+    returns VR, Vphi, VZ values
+    should get appropriate 6D initial phase space conditions
+    '''
+    
+    Rcoord = Rmax * np.random.random()
+    Zcoord = Zmax * np.random.random()
+    phicoord = 2*np.pi * np.random.random()
+    
+    
+    vels_init = quasiisothermaldf.sampleV(Rcoord, Zcoord, n=1)
+    vr_init, vphi_init, vz_init = vs[0,:]
+    
+    x_init = Rcoord*np.cos(phicoord)
+    y_init = Rcoord*np.sin(phicoord)
+    z_init = Zcoord
+    
+    vx_init = vr_init*np.cos(phicoord) - Rcoord*vphi_init*np.sin(phicoord)
+    vy_init = vr_init*np.sin(phi) + Rcoord*vphi_init*np.cos(phicoord)
+
     
     if orbiter_name == 'SingleStar':
         
@@ -147,6 +172,16 @@ def orbiter_not_nemesis(orbiter_name, code_name, Nstars, W0, Mcluster, Rcluster,
         
             code = BHTree(converter)
         
+        for body in bodies:
+            
+            #right place in phase space
+            body.x += x_init
+            body.y += y_init
+            body.z += z_init
+            body.vx += vx_init
+            body.vy += vy_init
+            body.vz += vz_init
+        
         return bodies, code
         
     if orbiter_name == 'SingleCluster':
@@ -157,12 +192,42 @@ def orbiter_not_nemesis(orbiter_name, code_name, Nstars, W0, Mcluster, Rcluster,
         need to initialize initial phase space coordinates with AGAMA or galpy
         '''
         
+        for body in bodies:
+            
+            #right place in phase space
+            body.x += x_init
+            body.y += y_init
+            body.z += z_init
+            body.vx += vx_init
+            body.vy += vy_init
+            body.vz += vz_init
+        
         return bodies, code
         
     if orbiter_name == 'BinaryCluster':
         
         bodies_one, code_one = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
         bodies_one, code_two = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
+        
+        for body in bodies_one:
+            
+            #right place in phase space
+            body.x += x_init
+            body.y += y_init
+            body.z += z_init
+            body.vx += vx_init
+            body.vy += vy_init
+            body.vz += vz_init
+            
+        for body in bodies_two:
+            
+            #right place in phase space
+            body.x += x_init
+            body.y += y_init
+            body.z += z_init
+            body.vx += vx_init
+            body.vy += vy_init
+            body.vz += vz_init
         
         '''
         need to initialize initial phase space coordinates with AGAMA or galpy
@@ -173,11 +238,11 @@ def orbiter_not_nemesis(orbiter_name, code_name, Nstars, W0, Mcluster, Rcluster,
         
         dBinary, vBinary = getxv(converter, total_mass, dBinary, eccentricity=0)
         
-        for star in bodies_one:
+        for body in bodies_one:
             star.position += dBinary * mass_one/total_mass
             star.velocity += dBinary * mass_one/total_mass
             
-        for star in bodies_two:
+        for body in bodies_two:
             star.position -= dBinary * mass_two/total_mass
             star.velocity -= dBinary * mass_two/total_mass
         

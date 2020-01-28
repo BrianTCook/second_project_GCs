@@ -132,7 +132,6 @@ def make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name, parameter
 
 def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
                         Nstars, W0, Mcluster, Rcluster, dBinary):
-    
 
     converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
     
@@ -146,17 +145,17 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
     Zcoord = Zmax * np.random.random()
     phicoord = 2*np.pi * np.random.random()
     
-    
     vels_init = quasiisothermaldf.sampleV(Rcoord, Zcoord, n=1)
     vr_init, vphi_init, vz_init = vs[0,:]
     
-    x_init = Rcoord*np.cos(phicoord)
-    y_init = Rcoord*np.sin(phicoord)
-    z_init = Zcoord
+    #convert from galpy/cylindrical to AMUSE/Cartesian units
+    x_init = (Rcoord*np.cos(phicoord))*1000. | units.parsec
+    y_init = Rcoord*np.sin(phicoord)*1000. | units.parsec
+    z_init = Zcoord*1000. | units.parsec
     
-    vx_init = vr_init*np.cos(phicoord) - Rcoord*vphi_init*np.sin(phicoord)
-    vy_init = vr_init*np.sin(phi) + Rcoord*vphi_init*np.cos(phicoord)
-
+    vx_init = (vr_init*np.cos(phicoord) - Rcoord*vphi_init*np.sin(phicoord)) | units.kms
+    vy_init = (vr_init*np.sin(phi) + Rcoord*vphi_init*np.cos(phicoord)) | units.kms
+    vz_init = vz_init | units.kms
     
     if orbiter_name == 'SingleStar':
         
@@ -256,7 +255,8 @@ def orbiter_nemesis(orbiter_name, code_name):
     
     return None, None
 
-def gravity_code_setup(orbiter_name, code_name, galaxy_code, NStars, W0, Mcluster, Rcluster, dBinary):
+def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
+                       NStars, W0, Mcluster, Rcluster, dBinary):
     
     '''
     will need to ask SPZ if he meant for field, orbiter to be separate in non
@@ -269,13 +269,13 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, NStars, W0, Mcluste
         
         if code_name != 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code = orbiter_not_nemesis(orbiter_name, code_name, Nstars,
-                                                               W0, Mcluster, Rcluster, dBinary)
+            orbiter_bodies, orbiter_code = orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
+                                                               Nstars, W0, Mcluster, Rcluster, dBinary)
             
         if code_name == 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter_not_nemesis(orbiter_name, code_name, Nstars,
-                                                                                     W0, Mcluster, Rcluster, dBinary)
+            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
+                                                                                     Nstars, W0, Mcluster, Rcluster, dBinary)
     
         gravity.particles.add_particles(orbiter_bodies)
     
@@ -291,11 +291,11 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, NStars, W0, Mcluste
 
     return gravity
 
-def simulation(orbiter_name, code_name, potential, Nstars, W0, 
-               Mcluster, Rcluster, dBinary, tend, dt):
+def simulation(orbiter_name, code_name, potential, Rmax, Zmax,  
+               Nstars, W0, Mcluster, Rcluster, dBinary, tend, dt):
     
     galaxy_code = GalaxyGravityCode(potential)
-    gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, 
+    gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
                                  NStars, W0, Mcluster, Rcluster, dBinary)
     
     Ntotal = len(gravity.particles)
@@ -431,6 +431,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 if __name__ in '__main__':
     
     potential = MWPotential2014
+    Rmax, Zmax = 5., 1. #in kpc
     dBinary = 10.|units.parsec
     tend, dt = 100.|units.Myr, 1.|units.Myr
     
@@ -439,7 +440,7 @@ if __name__ in '__main__':
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:
-            simulation(orbiter_name, code_name, potential, Nstars, W0, 
-                       Mcluster, Rcluster, dBinary, tend, dt)
+            simulation(orbiter_name, code_name, potential, Rmax, Zmax 
+                       Nstars, W0, Mcluster, Rcluster, dBinary, tend, dt)
             
     plotting_things(orbiter_names, code_names, tend, dt)

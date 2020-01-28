@@ -23,32 +23,25 @@ from nemesis import Nemesis, HierarchicalParticles
 #Circumvent a problem with using too many threads on OpenMPI
 os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
-
-class GalacticCenterGravityCode(object):
+class GalaxyGravityCode(object):
     
-    def __init__(self, R, M, alpha):
+    def __init__(self, Pot):
         
         '''
         have AMUSE units
         '''
         
-        self.radius=R
-        self.mass=M
-        self.alpha=alpha
+        self.potential = Pot
 
-    def get_gravity_at_point(self, eps, x, y, z):
-        
-        r2 = x**2+y**2+z**2
-        r = r2**0.5
-        m = self.mass*(r/self.radius)**self.alpha
+    def get_gravity_at_point(self, x, y, z):
         
         gal_r = x**2 + y**2
         gal_phi = np.arctan(y/x)
         gal_Z = z
         
         #220., 8. comes from rotation speed of 220 km/s at 8 kpc
-        fr = evaluateRforces(gal_r, gal_z, MWPotential2014, phi=gal_Phi)*bovy_conversion.force_in_kmsMyr(220.,8.)
-        fz = evaluatezforces(gal_r, gal_z, MWPotential2014, phi=gal_Phi)*bovy_conversion.force_in_kmsMyr(220.,8.)
+        fr = evaluateRforces(gal_r, gal_z, self.potential, phi=gal_Phi)*bovy_conversion.force_in_kmsMyr(220.,8.)
+        fz = evaluatezforces(gal_r, gal_z, self.potential, phi=gal_Phi)*bovy_conversion.force_in_kmsMyr(220.,8.)
         
         #km/s/Myr to km/s^2
         fr /= 3.154e13
@@ -82,9 +75,7 @@ class GalacticCenterGravityCode(object):
         vc=(constants.G*m/r)**0.5
         '''
         
-        vc = vcirc(MWPotential2014, r)
-        #needs a unit right
-
+        vc = vcirc(self.potential, r)  #needs a unit right
         
         return vc
     
@@ -233,10 +224,10 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code):
 
     return gravity
 
-def simulation(orbiter_name, code_name, Mgal, Rgal, alpha, 
-               Nstars, W0, Mcluster, Rcluster, dBinary, tend, dt):
+def simulation(orbiter_name, code_name, potential, Nstars, W0, 
+               Mcluster, Rcluster, dBinary, tend, dt):
     
-    galaxy_code = GalacticCenterGravityCode(Rgal, Mgal, alpha)
+    galaxy_code = GalaxyGravityCode(potential)
     gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code)
     
     Ntotal = len(gravity.particles)
@@ -309,8 +300,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
 if __name__ in '__main__':
     
-    Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
-    Nstars, W0cluster, Mcluster, Rcluster = 40, 1.5, 100.|units.MSun, 1.|units.parsec
+    potential = MWPotential2014
     dBinary = 10.|units.parsec
     tend, dt = 100.|units.Myr, 1.|units.Myr
     
@@ -319,6 +309,7 @@ if __name__ in '__main__':
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:
-            simulation(orbiter_name, code_name)
+            simulation(orbiter_name, code_name, potential, Nstars, W0, 
+                       Mcluster, Rcluster, dBinary, tend, dt)
             
     plotting_things(orbiter_names, code_names)

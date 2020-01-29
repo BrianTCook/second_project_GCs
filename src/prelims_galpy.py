@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from galpy.df import quasiisothermaldf
 from galpy.potential import MWPotential2014, evaluaterforces, evaluatezforces, vcirc, to_amuse
 from galpy.util import bovy_conversion, bovy_plot
+from galpy.actionAngle import actionAngleStaeckel
 
 from astropy import units as u
 
@@ -18,6 +19,12 @@ Rcoord = 5. * np.random.random() #kiloparsecs
 Zcoord = 1. * np.random.random() #kiloparsecs
 phicoord = 2 * np.pi * np.random.random() * u.radian
 
+aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
+qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
+vr, vphi, vz = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
+print(vr, vphi, vz)
+
+'''
 galaxy_code = to_amuse(MWPotential2014, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
 
 Mcluster, Rcluster = 5e6|units.MSun, 10.|units.parsec
@@ -55,4 +62,4 @@ plt.scatter(bodies.x.value_in(units.kpc), bodies.y.value_in(units.kpc), s=4, c='
 plt.xlabel('X (kpc)')
 plt.ylabel('Y (kpc)')
 plt.savefig('bodies_in_MWPotential2014.png')
-
+'''

@@ -3,6 +3,7 @@ from amuse.ext.bridge import bridge
 from amuse.couple.bridge import CalculateFieldForParticles
 from amuse.ic.kingmodel import new_king_model
 from amuse.io import write_set_to_file, read_set_from_file
+from amuse.units import quantities
 
 import matplotlib
 matplotlib.use('agg')
@@ -56,8 +57,8 @@ def make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name, parameter
     which nbodycode would you like to use?
     '''
     
-    converter = nbody_system.nbody_to_si(M,R)
-    bodies = new_king_model(N, W0, convert_nbody=converter)
+    converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    bodies = new_king_model(Nstars, W0, convert_nbody=converter)
     
     #sub_worker in Nemesis
     if code_name == 'Nbody':
@@ -149,7 +150,7 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
     if orbiter_name == 'BinaryCluster':
         
         bodies_one, code_one = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
-        bodies_one, code_two = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
+        bodies_two, code_two = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
         
         for body in bodies_one:
             #right place in phase space
@@ -176,15 +177,15 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
         mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()
         total_mass = mass_one + mass_two
         
-        dBinary, vBinary = getxv(converter, total_mass, dBinary, eccentricity=0)
+        dBinary, vBinary = getxv(converter, total_mass, dBinary, e=0)
         
         for body in bodies_one:
-            star.position += dBinary * mass_one/total_mass
-            star.velocity += dBinary * mass_one/total_mass
+            body.position += dBinary * mass_one/total_mass
+            body.velocity += vBinary * mass_one/total_mass
             
         for body in bodies_two:
-            star.position -= dBinary * mass_two/total_mass
-            star.velocity -= dBinary * mass_two/total_mass
+            body.position -= dBinary * mass_two/total_mass
+            body.velocity -= vBinary * mass_two/total_mass
         
         bodies = Particles(0)
         bodies.add_particles(bodies_one)
@@ -218,26 +219,25 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
             orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
                                                                                      Nstars, W0, Mcluster, Rcluster, dBinary)
     
-        gravity.particles.add_particles(orbiter_bodies)
+        #gravity.particles.add_particles(orbiter_bodies)
     
         #bridges clusters properly, independent of how many there are because
         #orbiter_code is not defined in binary case
         try:
-            gravity.add_system(orbiter_code, galaxy_code)
+            gravity.add_system(orbiter_code, (galaxy_code,))
         except:
-            gravity.add_system(orbiter_code_one, galaxy_code)
-            gravity.add_system(orbiter_code_two, galaxy_code)
-            gravity.add_system(orbiter_code_one, orbiter_code_two)
-            gravity.add_system(orbiter_code_two, orbiter_code_one)
+            gravity.add_system(orbiter_code_one, (galaxy_code,))
+            gravity.add_system(orbiter_code_two, (galaxy_code,))
+            gravity.add_system(orbiter_code_one, (orbiter_code_two,))
+            gravity.add_system(orbiter_code_two, (orbiter_code_one,))
 
-    return gravity
+    return orbiter_bodies, gravity
 
 def simulation(orbiter_name, code_name, potential, Rmax, Zmax,  
                Nstars, W0, Mcluster, Rcluster, dBinary, tend, dt):
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
-    gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
-                                 Nstars, W0, Mcluster, Rcluster, dBinary)
+    bodies, gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax, Nstars, W0, Mcluster, Rcluster, dBinary)
     
     channel_from_bodies_to_code = bodies.new_channel_to(gravity.particles)
     channel_from_code_to_bodies = gravity.particles.new_channel_to(bodies)
@@ -251,7 +251,7 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
     
     for j, t in enumerate(sim_times):
 
-        energy = gravity.kinetic_energy + gravity.potential_energy
+        energy = gravity.kinetic_energy.value_in(units.J) + gravity.potential_energy.value_in(units.J)
         energies.append(energy)
         
         x = [ xx.value_in(units.parsec) for xx in gravity.particles.x ]
@@ -273,10 +273,10 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
         gravity.evolve_model(t)
 
         filename = code_name + '_' + orbiter_name + '_data.hdf5'
-        write_set_to_file(gravity.particles, filename, "hdf5")
+        #write_set_to_file(gravity.particles, filename, "hdf5")
         
     channel_from_code_to_bodies.copy()
-    gravity.stop()
+    #gravity.stop()
     
     np.savetxt(code_name + '_' + orbiter_name + '_energies.txt', energies)
     np.savetxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt', mean_radial_coords)
@@ -377,13 +377,13 @@ if __name__ in '__main__':
     
     potential = MWPotential2014
     Rmax, Zmax = 5., 1. #in kpc
-    Nstars, W0 = 50, 1.5 #cluster parameters
+    Nstars, W0 = 40, 1.5 #cluster parameters
     Mcluster, Rcluster = 5e6|units.MSun, 10|units.parsec
     dBinary = 10.|units.parsec
     tend, dt = 100.|units.Myr, 1.|units.Myr
     
-    orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
-    code_names = [ 'Nbody', 'tree' ] # 'Nemesis'
+    orbiter_names = [ 'SingleCluster', 'BinaryCluster' ] #'SingleStar'
+    code_names = [ 'tree', 'Nbody' ] # 'Nemesis'
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:

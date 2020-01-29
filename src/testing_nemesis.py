@@ -89,10 +89,11 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
     Rcoord = Rmax * np.random.random()
     Zcoord = Zmax * np.random.random()
     phicoord = 2*np.pi * np.random.random()
-    
-    #need to fix, but want to make sure it's working
-    #vels_init = quasiisothermaldf.sampleV(Rcoord, Zcoord, n=1)
-    vr_init, vphi_init, vz_init = 50.*np.random.random(), 50.*np.random.random(), 50.*np.random.random() #vs[0,:]
+
+    #using Staeckel, whatever that means
+    aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
+    qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
+    vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
     
     #convert from galpy/cylindrical to AMUSE/Cartesian units
     x_init = (Rcoord*np.cos(phicoord))*1000. | units.parsec

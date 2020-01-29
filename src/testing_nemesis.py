@@ -109,7 +109,7 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
         bodies[0].mass = 1|units.MSun
         
         #right place in phase space
-	print(bodies[0])
+        print(bodies[0])
         bodies[0].x = [ x_init|units.kpc ]
         bodies[0].y = y_init|units.kpc
         bodies[0].z = z_init|units.kpc

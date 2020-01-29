@@ -209,12 +209,12 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
         
         gravity = bridge()
         
-        if code_name != 'BinaryCluster':
+        if orbiter_name != 'BinaryCluster':
             
             orbiter_bodies, orbiter_code = orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
                                                                Nstars, W0, Mcluster, Rcluster, dBinary)
             
-        if code_name == 'BinaryCluster':
+        if orbiter_name == 'BinaryCluster':
             
             orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
                                                                                      Nstars, W0, Mcluster, Rcluster, dBinary)

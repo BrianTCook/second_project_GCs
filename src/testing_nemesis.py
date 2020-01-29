@@ -248,8 +248,12 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
     
     energies, mean_radial_coords, mean_speeds, clock_times = [], [], [], []
     
+    t0 = time.time()
+    
     for j, t in enumerate(sim_times):
 
+        clock_times.append(time.time()-t0) #will be in seconds
+        
         energy = gravity.kinetic_energy.value_in(units.J) + gravity.potential_energy.value_in(units.J)
         energies.append(energy)
         
@@ -381,13 +385,12 @@ if __name__ in '__main__':
     dBinary = 10.|units.parsec
     tend, dt = 100.|units.Myr, 1.|units.Myr
     
-    orbiter_names = [ 'SingleCluster', 'BinaryCluster' ] #'SingleStar'
+    orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
     code_names = [ 'tree', 'Nbody' ] # 'Nemesis'
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:
-            print('hello world!')
-            	#simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
-            	#           Nstars, W0, Mcluster, Rcluster, dBinary, tend, dt)
+            	simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
+            	           Nstars, W0, Mcluster, Rcluster, dBinary, tend, dt)
             
     plotting_things(orbiter_names, code_names, tend, dt)

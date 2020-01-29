@@ -9,7 +9,7 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
 from galpy.df import quasiisothermaldf
-from galpy.potential import MWPotential2014, evaluateRforces, evaluatezforces, vcirc
+from galpy.potential import MWPotential2014, evaluateRforces, evaluatezforces, to_amuse
 from galpy.util import bovy_conversion
 
 import random
@@ -23,62 +23,6 @@ from nemesis import Nemesis, HierarchicalParticles
 
 #Circumvent a problem with using too many threads on OpenMPI
 os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
-
-class GalaxyGravityCode(object):
-    
-    def __init__(self, Pot):
-        
-        '''
-        have AMUSE units
-        '''
-        
-        self.potential = Pot
-
-    def get_gravity_at_point(self, x, y, z):
-        
-        gal_r = x**2 + y**2
-        gal_phi = np.arctan(y/x)
-        gal_Z = z
-        
-        #220., 8. comes from rotation speed of 220 km/s at 8 kpc
-        fr = evaluateRforces(gal_r, gal_z, self.potential, phi=gal_Phi)*bovy_conversion.force_in_kmsMyr(220.,8.)
-        fz = evaluatezforces(gal_r, gal_z, self.potential, phi=gal_Phi)*bovy_conversion.force_in_kmsMyr(220.,8.)
-        
-        #km/s/Myr to km/s^2
-        fr /= 3.154e13
-        fz /= 3.154e13
-        
-        #give AMUSE units
-        fr = fr | (units.kms)/(units.s)
-        fz = fz | (units.kms)/(units.s)
-        
-        ax = fr * x/r
-        ay = fr * y/r
-        az = fz
-        
-        '''
-        might need for later
-        
-        fr = constants.G*m/r2
-        ax=-fr*x/r
-        ay=-fr*y/r
-        az=-fr*z/r
-        '''
-        
-        return ax,ay,az
-    
-    def circular_velocity(self, r):
-        
-        '''
-        might need for later
-        
-        m=self.mass*(r/self.radius)**self.alpha
-        vc=(constants.G*m/r)**0.5
-        '''
-        
-        vc = vcirc(self.potential, r)  #needs a unit right
-        
-        return vc
     
 def getxv(converter, M1, a, e, ma=0):
     
@@ -145,8 +89,9 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
     Zcoord = Zmax * np.random.random()
     phicoord = 2*np.pi * np.random.random()
     
-    vels_init = quasiisothermaldf.sampleV(Rcoord, Zcoord, n=1)
-    vr_init, vphi_init, vz_init = vs[0,:]
+    #need to fix, but want to make sure it's working
+    #vels_init = quasiisothermaldf.sampleV(Rcoord, Zcoord, n=1)
+    vr_init, vphi_init, vz_init = 50.*np.random.random(), 50.*np.random.random(), 50.*np.random.random() #vs[0,:]
     
     #convert from galpy/cylindrical to AMUSE/Cartesian units
     x_init = (Rcoord*np.cos(phicoord))*1000. | units.parsec
@@ -294,9 +239,12 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
 def simulation(orbiter_name, code_name, potential, Rmax, Zmax,  
                Nstars, W0, Mcluster, Rcluster, dBinary, tend, dt):
     
-    galaxy_code = GalaxyGravityCode(potential)
+    galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
                                  Nstars, W0, Mcluster, Rcluster, dBinary)
+    
+    channel_from_bodies_to_code = bodies.new_channel_to(gravity.particles)
+    channel_from_code_to_bodies = gravity.particles.new_channel_to(bodies)
     
     Ntotal = len(gravity.particles)
     
@@ -331,6 +279,7 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
         filename = code_name + '_' + orbiter_name + '_data.hdf5'
         write_set_to_file(gravity.particles, filename, "hdf5")
         
+    channel_from_code_to_bodies.copy()
     gravity.stop()
     
     np.savetxt(code_name + '_' + orbiter_name + '_energies.txt', energies)

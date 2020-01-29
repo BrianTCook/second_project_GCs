@@ -9,9 +9,9 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
-from galpy.df import quasiisothermaldf
-from galpy.potential import MWPotential2014, evaluateRforces, evaluatezforces, to_amuse
-from galpy.util import bovy_conversion
+#from galpy.df import quasiisothermaldf
+#from galpy.potential import MWPotential2014, evaluateRforces, evaluatezforces, to_amuse
+#from galpy.util import bovy_conversion
 
 import random
 import numpy as np
@@ -387,7 +387,7 @@ if __name__ in '__main__':
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:
-		print('hello world!')
+            print('hello world!')
             	#simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
             	#           Nstars, W0, Mcluster, Rcluster, dBinary, tend, dt)
             

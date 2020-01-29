@@ -9,9 +9,9 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
-#from galpy.df import quasiisothermaldf
-#from galpy.potential import MWPotential2014, evaluateRforces, evaluatezforces, to_amuse
-#from galpy.util import bovy_conversion
+from galpy.df import quasiisothermaldf
+from galpy.potential import MWPotential2014, evaluateRforces, evaluatezforces, to_amuse
+from galpy.util import bovy_conversion
 
 import random
 import numpy as np
@@ -106,16 +106,15 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
     if orbiter_name == 'SingleStar':
         
         bodies = Particles(1)
-        bodies.mass = [ 1|units.MSun ]
+        bodies.mass = 1|units.MSun
         
         #right place in phase space
-        star = bodies[0]
-        star.x = x_init|units.kpc
-        star.y = y_init|units.kpc
-        star.z = z_init|units.kpc
-        star.vx = vx_init|units.kms
-        star.vy = vy_init|units.kms
-        star.vz = vz_init|units.kms
+        bodies.x = x_init|units.kpc
+        bodies.y = y_init|units.kpc
+        bodies.z = z_init|units.kpc
+        bodies.vx = vx_init|units.kms
+        bodies.vy = vy_init|units.kms
+        bodies.vz = vz_init|units.kms
         
         #sub_worker in Nemesis, should not matter for SingleStar
         if code_name == 'Nbody':
@@ -301,7 +300,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     
     #energies
     
-    fig, axs = plt.subplots(3, 1)
+    fig, axs = plt.subplots(1, 3)
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
@@ -319,7 +318,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     
     #mean radial coordinates
     
-    fig, axs = plt.subplots(3, 1)
+    fig, axs = plt.subplots(1, 3)
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
@@ -327,7 +326,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            mean_radial_coords = np.savetxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt')
+            mean_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt')
             axs[i].plot(sim_times_unitless, mean_radial_coords, label=code_name)
             
         axs[i].legend(loc='best')
@@ -337,7 +336,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     
     #mean speeds
     
-    fig, axs = plt.subplots(3, 1)
+    fig, axs = plt.subplots(1, 3)
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
@@ -345,7 +344,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            mean_speeds = np.savetxt(code_name + '_' + orbiter_name + '_mean_speeds.txt')
+            mean_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_mean_speeds.txt')
             axs[i].plot(sim_times_unitless, mean_speeds, label=code_name)
             
         axs[i].legend(loc='best')
@@ -355,7 +354,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     
     #clock times
     
-    fig, axs = plt.subplots(3, 1)
+    fig, axs = plt.subplots(1, 3)
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
@@ -363,7 +362,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            clock_times = np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt')
+            clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
             axs[i].plot(sim_times_unitless, clock_times, label=code_name)
             
         axs[i].legend(loc='best')

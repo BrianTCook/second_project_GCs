@@ -107,6 +107,14 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
         bodies = Particles(1)
         bodies.mass = [ 1|units.MSun ]
         
+        #right place in phase space
+        bodies.x = [x_init|units.kpc]
+        bodies.y = [y_init|units.kpc]
+        bodies.z = [z_init|units.kpc]
+        bodies.vx = [vx_init|units.kms]
+        bodies.vy = [vy_init|units.kms]
+        bodies.vz = [vz_init|units.kms]
+        
         #sub_worker in Nemesis, should not matter for SingleStar
         if code_name == 'Nbody':
             
@@ -115,77 +123,73 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
         if code_name == 'tree':
         
             code = BHTree(converter)
-            
-    #right place in phase space
-    bodies.x += x_init
-    bodies.y += y_init
-    bodies.z += z_init
-    bodies.vx += vx_init
-    bodies.vy += vy_init
-    bodies.vz += vz_init
-
-    return bodies, code
+        
+        return bodies, code
         
     if orbiter_name == 'SingleCluster':
         
         bodies, code = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
         
-    '''
-    need to initialize initial phase space coordinates with AGAMA or galpy
-    '''
-
-    #right place in phase space
-    bodies.x += x_init
-    bodies.y += y_init
-    bodies.z += z_init
-    bodies.vx += vx_init
-    bodies.vy += vy_init
-    bodies.vz += vz_init
-        
-    return bodies, code
+        '''
+        need to initialize initial phase space coordinates with AGAMA or galpy
+        '''
+    
+        for body in bodies:
+            #right place in phase space
+            body.x += x_init
+            body.y += y_init
+            body.z += z_init
+            body.vx += vx_init
+            body.vy += vy_init
+            body.vz += vz_init
+                
+        return bodies, code
         
     if orbiter_name == 'BinaryCluster':
         
         bodies_one, code_one = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
         bodies_one, code_two = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
         
-    #right place in phase space
-    bodies_one.x += x_init
-    bodies_one.y += y_init
-    bodies_one.z += z_init
-    bodies_one.vx += vx_init
-    bodies_one.vy += vy_init
-    bodies_one.vz += vz_init
-
-    bodies_two.x += x_init
-    bodies_two.y += y_init
-    bodies_two.z += z_init
-    bodies_two.vx += vx_init
-    bodies_two.vy += vy_init
-    bodies_two.vz += vz_init
-
-    '''
-    need to initialize initial phase space coordinates with AGAMA or galpy
-    '''
+        for body in bodies_one:
+            #right place in phase space
+            body.x += x_init
+            body.y += y_init
+            body.z += z_init
+            body.vx += vx_init
+            body.vy += vy_init
+            body.vz += vz_init
+    
+        for body in bodies_two:
+            #right place in phase space
+            body.x += x_init
+            body.y += y_init
+            body.z += z_init
+            body.vx += vx_init
+            body.vy += vy_init
+            body.vz += vz_init
+    
+        '''
+        need to initialize initial phase space coordinates with AGAMA or galpy
+        '''
+            
+        mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()
+        total_mass = mass_one + mass_two
         
-    mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()
-    total_mass = mass_one + mass_two
-    
-    dBinary, vBinary = getxv(converter, total_mass, dBinary, eccentricity=0)
-    
-    for body in bodies_one:
-        star.position += dBinary * mass_one/total_mass
-        star.velocity += dBinary * mass_one/total_mass
+        dBinary, vBinary = getxv(converter, total_mass, dBinary, eccentricity=0)
         
-    for body in bodies_two:
-        star.position -= dBinary * mass_two/total_mass
-        star.velocity -= dBinary * mass_two/total_mass
-    
-    bodies = Particles(0)
-    bodies.add_particles(bodies_one)
-    bodies.add_particles(bodies_two)
-    
-    return bodies, code_one, code_two #need to be different so they're bridged
+        for body in bodies_one:
+            star.position += dBinary * mass_one/total_mass
+            star.velocity += dBinary * mass_one/total_mass
+            
+        for body in bodies_two:
+            star.position -= dBinary * mass_two/total_mass
+            star.velocity -= dBinary * mass_two/total_mass
+        
+        bodies = Particles(0)
+        bodies.add_particles(bodies_one)
+        bodies.add_particles(bodies_two)
+        
+        return bodies, code_one, code_two #need to be different so they're bridged
 
 def orbiter_nemesis(orbiter_name, code_name):
     

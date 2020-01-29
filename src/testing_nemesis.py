@@ -67,7 +67,7 @@ def make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name, parameter
     if code_name == 'tree':
     
         code = BHTree(converter)
-
+        
     for name,value in parameters:
         setattr(code.parameters, name, value)
     code.particles.add_particles(bodies)
@@ -108,13 +108,13 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
         bodies.mass = [ 1|units.MSun ]
         
         #right place in phase space
-	star = bodies[0]
+        star = bodies[0]
         star.x = x_init|units.kpc
-	star.y = y_init|units.kpc
-	star.z = z_init|units.kpc
-	star.vx = vx_init|units.kms
-	star.vy = vy_init|units.kms
-	star.vz = vz_init|units.kms
+        star.y = y_init|units.kpc
+        star.z = z_init|units.kpc
+        star.vx = vx_init|units.kms
+        star.vy = vy_init|units.kms
+        star.vz = vz_init|units.kms
         
         #sub_worker in Nemesis, should not matter for SingleStar
         if code_name == 'Nbody':

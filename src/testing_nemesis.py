@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from galpy.df import quasiisothermaldf
 from galpy.potential import MWPotential2014, evaluateRforces, evaluatezforces, to_amuse
 from galpy.util import bovy_conversion
+from galpy.actionAngle import actionAngleStaeckel
 
 import random
 import numpy as np

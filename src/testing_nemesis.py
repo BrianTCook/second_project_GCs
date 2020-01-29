@@ -272,7 +272,7 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
                 
         gravity.evolve_model(t)
 
-        filename = code_name + '_' + orbiter_name + '_data.hdf5'
+        #filename = code_name + '_' + orbiter_name + '_data.hdf5'
         #write_set_to_file(gravity.particles, filename, "hdf5")
         
     channel_from_code_to_bodies.copy()
@@ -287,8 +287,8 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
 
 def plotting_things(orbiter_names, code_names, tend, dt):
     
-    filename = code_name + '_' + orbiter_name + '_data.hdf5'
-    star_data = read_set_from_file(filename)
+    #filename = code_name + '_' + orbiter_name + '_data.hdf5'
+    #star_data = read_set_from_file(filename)
     
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     
@@ -305,14 +305,14 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        axs[0,i].set_title(orbiter_name)
+        axs[i].set_title(orbiter_name)
         
         for code_name in code_names:
             
             energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
-            axs[0,i].plot(sim_times_unitless, energies, label=code_name)
+            axs[i].plot(sim_times_unitless, energies, label=code_name)
             
-        axs[0,i].legend(loc='best')
+        axs[i].legend(loc='best')
             
     plt.savefig('testing_nemesis_energy.png')
     plt.close()
@@ -323,14 +323,14 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        axs[0,i].set_title(orbiter_name)
+        axs[i].set_title(orbiter_name)
         
         for code_name in code_names:
             
             mean_radial_coords = np.savetxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt')
-            axs[0,i].plot(sim_times_unitless, mean_radial_coords, label=code_name)
+            axs[i].plot(sim_times_unitless, mean_radial_coords, label=code_name)
             
-        axs[0,i].legend(loc='best')
+        axs[i].legend(loc='best')
             
     plt.savefig('testing_nemesis_radialcoords.png')
     plt.close()
@@ -341,14 +341,14 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        axs[0,i].set_title(orbiter_name)
+        axs[i].set_title(orbiter_name)
         
         for code_name in code_names:
             
             mean_speeds = np.savetxt(code_name + '_' + orbiter_name + '_mean_speeds.txt')
-            axs[0,i].plot(sim_times_unitless, mean_speeds, label=code_name)
+            axs[i].plot(sim_times_unitless, mean_speeds, label=code_name)
             
-        axs[0,i].legend(loc='best')
+        axs[i].legend(loc='best')
             
     plt.savefig('testing_nemesis_speeds.png')
     plt.close()
@@ -359,14 +359,14 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        axs[0,i].set_title(orbiter_name)
+        axs[i].set_title(orbiter_name)
         
         for code_name in code_names:
             
             clock_times = np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt')
-            axs[0,i].plot(sim_times_unitless, clock_times, label=code_name)
+            axs[i].plot(sim_times_unitless, clock_times, label=code_name)
             
-        axs[0,i].legend(loc='best')
+        axs[i].legend(loc='best')
             
     plt.savefig('testing_nemesis_clocktimes.png')
     plt.close()
@@ -387,7 +387,8 @@ if __name__ in '__main__':
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:
-            simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
-                       Nstars, W0, Mcluster, Rcluster, dBinary, tend, dt)
+		print('hello world!')
+            	#simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
+            	#           Nstars, W0, Mcluster, Rcluster, dBinary, tend, dt)
             
     plotting_things(orbiter_names, code_names, tend, dt)

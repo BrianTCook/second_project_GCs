@@ -74,7 +74,7 @@ def make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name, parameter
         
         parts = HierarchicalParticles(bodies)
 
-        converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
+        converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
         
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
         dt_nemesis = dt
@@ -99,7 +99,7 @@ def make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name, parameter
     return bodies, code
 
 def parent_worker():
-    converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
+    converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
     code = Hermite(converter_parent)
     code.parameters.epsilon_squared=0.| units.kpc**2
     code.parameters.end_time_accuracy_factor=0.
@@ -206,7 +206,7 @@ def orbiter(orbiter_name, code_name, Rmax, Zmax,
             
             parts = HierarchicalParticles(bodies)
 
-            converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
+            converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
             
             dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
             dt_nemesis = dt
@@ -346,7 +346,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
         
             parts = HierarchicalParticles(orbiter_bodies)
 
-            converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
+            converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
             dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
             dt_nemesis = dt
             dt_bridge = 0.01 * dt

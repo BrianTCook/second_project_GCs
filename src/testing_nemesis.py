@@ -318,7 +318,6 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
             orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rmax, Zmax,
                                                                          Nstars, W0, Mcluster, Rcluster, sepBinary)
     
-        #gravity.particles.add_particles(orbiter_bodies)
     
         #bridges clusters properly, independent of how many there are because
         #orbiter_code is not defined in binary case
@@ -367,6 +366,8 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
             #gravity.particles.add_particles(orbiter_bodies)
             gravity.add_system(nemesis, (galaxy_code,))
 
+    gravity.particles.add_particles(orbiter_bodies)
+    
     return orbiter_bodies, gravity
 
 def simulation(orbiter_name, code_name, potential, Rmax, Zmax,  

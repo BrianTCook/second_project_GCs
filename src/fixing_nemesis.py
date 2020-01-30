@@ -126,6 +126,14 @@ vx_init = (vr_init*np.cos(phicoord) - Rcoord*vphi_init*np.sin(phicoord)) | units
 vy_init = (vr_init*np.sin(phicoord) + Rcoord*vphi_init*np.cos(phicoord)) | units.kms
 vz_init = vz_init | units.kms
 
+print('x_init is', x_init)
+print('y_init is', y_init)
+print('z_init is', z_init)
+print('vx_init is', vx_init)
+print('vy_init is', vy_init)
+print('vz_init is', vz_init)
+
+
 for star in stars_all:
     
     star.x += x_init
@@ -223,8 +231,8 @@ for j, t in enumerate(sim_times):
 	plt.scatter(x, y, marker='*', s=2, color='k')
 
 	Rinit_in_pc = Rinit.value_in(units.parsec)
-	plt.xlim(-4*Rinit_in_pc, 4*Rinit_in_pc)
-	plt.ylim(-4*Rinit_in_pc, 4*Rinit_in_pc)
+	#plt.xlim(-3*Rinit_in_pc, 3*Rinit_in_pc)
+	#plt.ylim(-3*Rinit_in_pc, 3*Rinit_in_pc)
 	plt.annotate(gravity_solver_str, xy=(0.8, 0.8), xycoords='axes fraction')
 
 	plt.xlabel('$x$ (pc)', fontsize=12)

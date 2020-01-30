@@ -544,6 +544,9 @@ if __name__ in '__main__':
             print(orbiter_name, code_name)
             print('')
             
+            if 'orbiter_name' == 'SingleStar' and code_name == 'nemesis':
+                continue
+            
             simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
                        Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
             

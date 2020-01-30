@@ -203,6 +203,7 @@ def orbiter(orbiter_name, code_name, Rmax, Zmax,
         
             code = BHTree(converter)
             
+        '''
         if code_name == 'nemesis':
             
             parts = HierarchicalParticles(bodies)
@@ -224,6 +225,7 @@ def orbiter(orbiter_name, code_name, Rmax, Zmax,
             nemesis.commit_particles()
             
             code = nemesis
+        '''
         
         return bodies, code
         
@@ -362,7 +364,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
             nemesis.particles.add_particles(parts)
             nemesis.commit_particles()
             
-            gravity.particles.add_particles(orbiter_bodies)
+            #gravity.particles.add_particles(orbiter_bodies)
             gravity.add_system(nemesis, (galaxy_code,))
 
     return orbiter_bodies, gravity

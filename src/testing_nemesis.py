@@ -388,7 +388,7 @@ if __name__ in '__main__':
     Nstars, W0 = 200, 1.5 #cluster parameters
     Mcluster, Rcluster = 1e6|units.MSun, 20.|units.parsec
     sepBinary = 80.|units.parsec
-    tend, dt = 200.|units.Myr, 1.|units.Myr
+    tend, dt = 50.|units.Myr, 1.|units.Myr
     
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
     code_names = [ 'tree', 'Nbody' ] # 'Nemesis'

@@ -70,13 +70,87 @@ def make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name, parameter
     
         code = BHTree(converter)
         
+    if code_name == 'nemesis':
+        
+        parts = HierarchicalParticles(bodies)
+
+        converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
+        
+        dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
+        dt_nemesis = dt
+        dt_bridge = 0.01 * dt
+        
+        nemesis = Nemesis(parent_worker, sub_worker, py_worker)
+        nemesis.timestep = dt
+        nemesis.distfunc = distance_function
+        nemesis.threshold = dt_nemesis
+        nemesis.radius = radius
+        
+        nemesis.commit_parameters()
+        nemesis.particles.add_particles(parts)
+        nemesis.commit_particles()
+        
+        code = nemesis
+        
     for name,value in parameters:
         setattr(code.parameters, name, value)
     code.particles.add_particles(bodies)
     
     return bodies, code
 
-def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
+def parent_worker():
+    converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
+    code = Hermite(converter_parent)
+    code.parameters.epsilon_squared=0.| units.kpc**2
+    code.parameters.end_time_accuracy_factor=0.
+    code.parameters.dt_param=0.1
+    #print code.parameters.dt_dia.in_(units.yr)
+    return code
+
+def sub_worker(parts):
+    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    code = BHTree(converter_sub)
+    return code
+
+def py_worker():
+    code=CalculateFieldForParticles(gravity_constant = constants.G)
+    return code
+
+'''
+also for nemesis
+'''
+
+def smaller_nbody_power_of_two(dt, conv):
+
+    nbdt = conv.to_nbody(dt).value_in(nbody_system.time)
+    idt = np.floor(np.log2(nbdt))
+
+    return conv.to_si( 2**idt | nbody_system.time)
+
+dt_param = 0.1
+
+def distance_function(ipart, jpart, eta=dt_param/2., _G=constants.G):
+    
+	dx = ipart.x-jpart.x
+	dy = ipart.y-jpart.y
+	dz = ipart.z-jpart.z
+
+	dr = np.sqrt(dx**2 + dy**2 + dz**2)
+	dr3 = dr**1.5
+	mu = _G*(ipart.mass + jpart.mass)
+
+	tau = eta/2./2.**0.5*(dr3/mu)**0.5 #need an explanation for this!
+
+	return tau
+
+def radius(sys, eta=dt_param, _G=constants.G):
+
+	#variable shouldn't be named radius
+	ra = ((_G*sys.total_mass()*dt**2/eta**2)**(1/3.))
+	ra = ra*((len(sys)+1)/2.)**0.75
+	return 100.*ra
+
+def orbiter(orbiter_name, code_name, Rmax, Zmax,
                         Nstars, W0, Mcluster, Rcluster, sepBinary):
 
     converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
@@ -127,6 +201,28 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
         if code_name == 'tree':
         
             code = BHTree(converter)
+            
+        if code_name == 'nemesis':
+            
+            parts = HierarchicalParticles(bodies)
+
+            converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
+            
+            dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
+            dt_nemesis = dt
+            dt_bridge = 0.01 * dt
+            
+            nemesis = Nemesis( parent_worker, sub_worker, py_worker)
+            nemesis.timestep = dt
+            nemesis.distfunc = distance_function
+            nemesis.threshold = dt_nemesis
+            nemesis.radius = radius
+            
+            nemesis.commit_parameters()
+            nemesis.particles.add_particles(parts)
+            nemesis.commit_particles()
+            
+            code = nemesis
         
         return bodies, code
         
@@ -197,10 +293,6 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
         
         return bodies, code_one, code_two #need to be different so they're bridged
 
-def orbiter_nemesis(orbiter_name, code_name):
-    
-    return None, None
-
 def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
                        Nstars, W0, Mcluster, Rcluster, sepBinary):
     
@@ -215,13 +307,13 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
         
         if orbiter_name != 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code = orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
-                                                               Nstars, W0, Mcluster, Rcluster, sepBinary)
+            orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rmax, Zmax,
+                                                   Nstars, W0, Mcluster, Rcluster, sepBinary)
             
         if orbiter_name == 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
-                                                                                     Nstars, W0, Mcluster, Rcluster, sepBinary)
+            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rmax, Zmax,
+                                                                         Nstars, W0, Mcluster, Rcluster, sepBinary)
     
         #gravity.particles.add_particles(orbiter_bodies)
     
@@ -234,6 +326,42 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
             gravity.add_system(orbiter_code_two, (galaxy_code,))
             gravity.add_system(orbiter_code_one, (orbiter_code_two,))
             gravity.add_system(orbiter_code_two, (orbiter_code_one,))
+            
+    if code_name == 'Nemesis':
+        
+        gravity = bridge()
+        
+        if orbiter_name != 'BinaryCluster':
+            
+            #orbiter code is nemesis here, check orbiter fn definition
+            orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rmax, Zmax,
+                                                   Nstars, W0, Mcluster, Rcluster, sepBinary)
+            
+        if orbiter_name == 'BinaryCluster':
+            
+            #don't end up using orbiter_code_one, orbiter_code_two
+            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rmax, Zmax,
+                                                                         Nstars, W0, Mcluster, Rcluster, sepBinary)
+            
+        
+            parts = HierarchicalParticles(orbiter_bodies)
+
+            converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)m
+            dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
+            dt_nemesis = dt
+            dt_bridge = 0.01 * dt
+            
+            nemesis = Nemesis( parent_worker, sub_worker, py_worker)
+            nemesis.timestep = dt
+            nemesis.distfunc = distance_function
+            nemesis.threshold = dt_nemesis
+            nemesis.radius = radius
+            
+            nemesis.commit_parameters()
+            nemesis.particles.add_particles(parts)
+            nemesis.commit_particles()
+            
+            gravity.add_system(nemesis, (galaxy_code,))
 
     return orbiter_bodies, gravity
 

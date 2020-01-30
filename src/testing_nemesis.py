@@ -377,7 +377,7 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
     #channel_from_bodies_to_code = bodies.new_channel_to(gravity.particles)
     #channel_from_code_to_bodies = gravity.particles.new_channel_to(bodies)
     
-    Ntotal = len(gravity.particles)
+    Ntotal = len(bodies)
     
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]

@@ -449,8 +449,11 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
-            axs[i].plot(sim_times_unitless, energies, label=code_name)
+            try:
+                energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
+                axs[i].plot(sim_times_unitless, energies, label=code_name)
+            except:
+                continue
             
         axs[i].legend(loc='best')
             
@@ -467,8 +470,11 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            mean_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt')
-            axs[i].plot(sim_times_unitless, mean_radial_coords, label=code_name)
+            try:
+                mean_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt')
+                axs[i].plot(sim_times_unitless, mean_radial_coords, label=code_name)
+            except:
+                continue
             
         axs[i].legend(loc='best')
             
@@ -485,8 +491,11 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            mean_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_mean_speeds.txt')
-            axs[i].plot(sim_times_unitless, mean_speeds, label=code_name)
+            try:
+                mean_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_mean_speeds.txt')
+                axs[i].plot(sim_times_unitless, mean_speeds, label=code_name)
+            except:
+                continue
             
         axs[i].legend(loc='best')
             
@@ -503,8 +512,11 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
-            axs[i].plot(sim_times_unitless, clock_times, label=code_name)
+            try:
+                clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
+                axs[i].plot(sim_times_unitless, clock_times, label=code_name)
+            except:
+                continue
             
         axs[i].legend(loc='best')
             
@@ -532,7 +544,7 @@ if __name__ in '__main__':
             print(orbiter_name, code_name)
             print('')
             
-            simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
-                       Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
+            #simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
+            #           Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
             
     plotting_things(orbiter_names, code_names, tend, dt)

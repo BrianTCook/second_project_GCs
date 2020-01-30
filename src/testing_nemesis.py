@@ -362,9 +362,13 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
             nemesis.commit_parameters()
             nemesis.particles.add_particles(parts)
             nemesis.commit_particles()
-            
-            #gravity.particles.add_particles(orbiter_bodies)
+
+
+            print('nemesis.particles are', nemesis.particles)
+
             gravity.add_system(nemesis, (galaxy_code,))
+    
+            print('gravity.particles are', gravity.particles)
     
     return orbiter_bodies, gravity
 
@@ -374,8 +378,8 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     bodies, gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax, Nstars, W0, Mcluster, Rcluster, sepBinary)
     
-    #channel_from_bodies_to_code = bodies.new_channel_to(gravity.particles)
-    #channel_from_code_to_bodies = gravity.particles.new_channel_to(bodies)
+    channel_from_bodies_to_code = bodies.new_channel_to(gravity.particles)
+    channel_from_code_to_bodies = gravity.particles.new_channel_to(bodies)
     
     Ntotal = len(bodies)
     
@@ -414,7 +418,7 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
         #filename = code_name + '_' + orbiter_name + '_data.hdf5'
         #write_set_to_file(gravity.particles, filename, "hdf5")
         
-    #channel_from_code_to_bodies.copy()
+    channel_from_code_to_bodies.copy()
     #gravity.stop()
     
     np.savetxt(code_name + '_' + orbiter_name + '_energies.txt', energies)

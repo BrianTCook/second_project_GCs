@@ -333,43 +333,42 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
         
         gravity = bridge()
         
+        #just don't use orbiter_code here, just replace it with nemesis
         if orbiter_name != 'BinaryCluster':
             
-            #orbiter code is nemesis here, check orbiter fn definition
             orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rmax, Zmax,
                                                    Nstars, W0, Mcluster, Rcluster, sepBinary)
             
         if orbiter_name == 'BinaryCluster':
             
-            #don't end up using orbiter_code_one, orbiter_code_two
             orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rmax, Zmax,
                                                                          Nstars, W0, Mcluster, Rcluster, sepBinary)
             
         
-            parts = HierarchicalParticles(orbiter_bodies)
+        parts = HierarchicalParticles(orbiter_bodies)
 
-            converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
-            dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
-            dt_nemesis = dt
-            dt_bridge = 0.01 * dt
-            
-            nemesis = Nemesis( parent_worker, sub_worker, py_worker)
-            nemesis.timestep = dt
-            nemesis.distfunc = distance_function
-            nemesis.threshold = dt_nemesis
-            nemesis.radius = radius
-            
-            nemesis.commit_parameters()
-            nemesis.particles.add_particles(parts)
-            nemesis.commit_particles()
+        converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
+        dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
+        dt_nemesis = dt
+        dt_bridge = 0.01 * dt
+        
+        nemesis = Nemesis( parent_worker, sub_worker, py_worker)
+        nemesis.timestep = dt
+        nemesis.distfunc = distance_function
+        nemesis.threshold = dt_nemesis
+        nemesis.radius = radius
+        
+        nemesis.commit_parameters()
+        nemesis.particles.add_particles(parts)
+        nemesis.commit_particles()
 
 
-            print('nemesis.particles are', nemesis.particles)
+        print('nemesis.particles are', nemesis.particles)
 
-            gravity.add_system(nemesis, (galaxy_code,))
-    
-            print('gravity.particles are', gravity.particles)
-    
+        gravity.add_system(nemesis, (galaxy_code,))
+
+        print('gravity.particles are', gravity.particles)
+
     return orbiter_bodies, gravity
 
 def simulation(orbiter_name, code_name, potential, Rmax, Zmax,  

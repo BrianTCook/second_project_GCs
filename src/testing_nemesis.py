@@ -301,7 +301,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
     Nemesis gravity solvers?
     '''
     
-    if code_name != 'Nemesis':
+    if code_name != 'nemesis':
         
         gravity = bridge()
         
@@ -327,7 +327,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
             gravity.add_system(orbiter_code_one, (orbiter_code_two,))
             gravity.add_system(orbiter_code_two, (orbiter_code_one,))
             
-    if code_name == 'Nemesis':
+    if code_name == 'nemesis':
         
         gravity = bridge()
         
@@ -346,7 +346,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
         
             parts = HierarchicalParticles(orbiter_bodies)
 
-            converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)m
+            converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
             dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
             dt_nemesis = dt
             dt_bridge = 0.01 * dt
@@ -519,7 +519,7 @@ if __name__ in '__main__':
     tend, dt = 50.|units.Myr, 1.|units.Myr
     
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
-    code_names = [ 'tree', 'Nbody' ] # 'Nemesis'
+    code_names = [ 'nemesis', 'tree', 'Nbody' ]
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:

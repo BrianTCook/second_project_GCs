@@ -544,7 +544,7 @@ if __name__ in '__main__':
             print(orbiter_name, code_name)
             print('')
             
-            #simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
-            #           Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
+            simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
+                       Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
             
     plotting_things(orbiter_names, code_names, tend, dt)

@@ -4,7 +4,10 @@ from amuse.couple.bridge import CalculateFieldForParticles
 from amuse.ic.kingmodel import new_king_model
 from amuse.io import write_set_to_file, read_set_from_file
 
+from galpy.df import quasiisothermaldf
 from galpy.potential import MWPotential2014, to_amuse
+from galpy.util import bovy_conversion
+from galpy.actionAngle import actionAngleStaeckel
 
 import matplotlib
 matplotlib.use('agg')
@@ -22,7 +25,8 @@ from nemesis import Nemesis, HierarchicalParticles
 #Circumvent a problem with using too many threads on OpenMPI
 os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
-Mgal, Rgal, alpha = 1.6e10|units.MSun, 1000.|units.parsec, 1.2
+Rmax, Zmax = 5., 1. #in kiloparsecs
+Mgal, Rgal = 1.6e10|units.MSun, 1000.|units.parsec
 Nstars, W0, Mcluster, Rcluster = 40, 1.5, 100.|units.MSun, 1.|units.parsec
 Rinit = 1000.|units.parsec
 parameters = [('epsilon_squared', 0.01|(units.parsec**2))]
@@ -103,6 +107,34 @@ def radius(sys, eta=dt_param, _G=constants.G):
 
 converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
 stars_all = new_king_model(Nstars, W0, convert_nbody=converter)
+
+Rcoord = Rmax * np.random.random()
+Zcoord = Zmax * np.random.random()
+phicoord = 2*np.pi * np.random.random()
+
+#using Staeckel, whatever that means
+aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
+qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
+vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
+
+#convert from galpy/cylindrical to AMUSE/Cartesian units
+x_init = (Rcoord*np.cos(phicoord)) | units.kpc
+y_init = Rcoord*np.sin(phicoord) | units.kpc
+z_init = Zcoord | units.kpc
+
+vx_init = (vr_init*np.cos(phicoord) - Rcoord*vphi_init*np.sin(phicoord)) | units.kms
+vy_init = (vr_init*np.sin(phicoord) + Rcoord*vphi_init*np.cos(phicoord)) | units.kms
+vz_init = vz_init | units.kms
+
+for star in stars_all:
+    
+    star.x += x_init
+    star.y += y_init
+    star.z += z_init
+    star.vx += vx_init
+    star.vy += vy_init
+    star.vz += vz_init
+
 parts = HierarchicalParticles(stars_all)
 
 converter_parent = nbody_system.nbody_to_si(Mgal, Rgal)
@@ -130,9 +162,12 @@ gravity = bridge()
 gravity.add_system(nemesis, (galaxy_code,) )
 gravity.timestep = dt_bridge
 
+channel_from_bodies_to_code = stars_all.new_channel_to(gravity.particles)
+channel_from_code_to_bodies = gravity.particles.new_channel_to(stars_all)
+
 gravity_solver_str = 'nemesis'
 
-sim_times_unitless = np.arange(0., t_end.value_in(units.Myr), 					dt.value_in(units.Myr))
+sim_times_unitless = np.arange(0., t_end.value_in(units.Myr), dt.value_in(units.Myr))
 sim_times = [ t|units.Myr for t in sim_times_unitless]
 
 t0 = time.time()
@@ -200,6 +235,8 @@ for j, t in enumerate(sim_times):
 	plt.close()        
 
 	gravity.evolve_model(t)
+
+channel_from_code_to_bodies.copy()
 
 '''
 print(gravity_solver_str)

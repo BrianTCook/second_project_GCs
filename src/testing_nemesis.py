@@ -524,6 +524,10 @@ if __name__ in '__main__':
     for orbiter_name in orbiter_names:
         for code_name in code_names:
             
+            print('')
+            print(orbiter_name, code_name)
+            print('')
+            
             if orbiter_name == 'SingleStar' and code_name == 'nemesis':
                 
                 continue

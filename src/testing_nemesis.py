@@ -180,8 +180,8 @@ def orbiter_not_nemesis(orbiter_name, code_name, Rmax, Zmax,
         total_mass = mass_one + mass_two
         
         dBinary, vBinary = getxv(converter, total_mass, sepBinary, e=0)
-    	print('dBinary is', dBinary)
-    	print('vBinary is', vBinary)
+        print('dBinary is', dBinary)
+        print('vBinary is', vBinary)
         
         for body in bodies_one:
             body.position += dBinary * mass_one/total_mass
@@ -395,7 +395,7 @@ if __name__ in '__main__':
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:
-            	simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
-            	           Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
+                simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
+                           Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
             
     plotting_things(orbiter_names, code_names, tend, dt)

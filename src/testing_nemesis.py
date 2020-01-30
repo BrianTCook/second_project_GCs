@@ -523,7 +523,12 @@ if __name__ in '__main__':
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:
-                simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
-                           Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
+            
+            if orbiter_name == 'SingleStar' and code_name == 'nemesis':
+                
+                continue
+            
+            simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
+                       Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
             
     plotting_things(orbiter_names, code_names, tend, dt)

@@ -362,6 +362,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
             nemesis.particles.add_particles(parts)
             nemesis.commit_particles()
             
+            gravity.particles.add_particles(orbiter_bodies)
             gravity.add_system(nemesis, (galaxy_code,))
 
     return orbiter_bodies, gravity

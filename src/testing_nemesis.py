@@ -65,10 +65,12 @@ def make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name, parameter
     if code_name == 'Nbody':
         
         code = Hermite(converter)
+        code.particles.add_particles(bodies)
         
     if code_name == 'tree':
     
         code = BHTree(converter)
+        code.particles.add_particles(bodies)
         
     if code_name == 'nemesis':
         
@@ -94,7 +96,6 @@ def make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name, parameter
         
     for name,value in parameters:
         setattr(code.parameters, name, value)
-    code.particles.add_particles(bodies)
     
     return bodies, code
 

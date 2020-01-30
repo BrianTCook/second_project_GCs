@@ -453,7 +453,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
                 axs[i].plot(sim_times_unitless, energies, label=code_name)
             except:
-                continue
+                print('oh no!')
             
         axs[i].legend(loc='best')
             
@@ -474,7 +474,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 mean_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt')
                 axs[i].plot(sim_times_unitless, mean_radial_coords, label=code_name)
             except:
-                continue
+                print('oh no!')
             
         axs[i].legend(loc='best')
             
@@ -495,7 +495,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 mean_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_mean_speeds.txt')
                 axs[i].plot(sim_times_unitless, mean_speeds, label=code_name)
             except:
-                continue
+                print('oh no!')
             
         axs[i].legend(loc='best')
             
@@ -516,7 +516,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
                 axs[i].plot(sim_times_unitless, clock_times, label=code_name)
             except:
-                continue
+                print('oh no!')
             
         axs[i].legend(loc='best')
             

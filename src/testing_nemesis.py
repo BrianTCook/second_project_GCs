@@ -203,7 +203,6 @@ def orbiter(orbiter_name, code_name, Rmax, Zmax,
         
             code = BHTree(converter)
             
-        '''
         if code_name == 'nemesis':
             
             parts = HierarchicalParticles(bodies)
@@ -225,7 +224,6 @@ def orbiter(orbiter_name, code_name, Rmax, Zmax,
             nemesis.commit_particles()
             
             code = nemesis
-        '''
         
         return bodies, code
         
@@ -533,10 +531,6 @@ if __name__ in '__main__':
             print('')
             print(orbiter_name, code_name)
             print('')
-            
-            if orbiter_name == 'SingleStar' and code_name == 'nemesis':
-                
-                continue
             
             simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
                        Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)

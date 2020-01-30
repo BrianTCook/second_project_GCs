@@ -375,10 +375,7 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     bodies, gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax, Nstars, W0, Mcluster, Rcluster, sepBinary)
     
-    print('bodies are', bodies)
-    print('gravity particles are', gravity.particles)
-    
-    channel_from_bodies_to_code = bodies.new_channel_to(gravity.particles)
+    #channel_from_bodies_to_code = bodies.new_channel_to(gravity.particles)
     channel_from_code_to_bodies = gravity.particles.new_channel_to(bodies)
     
     Ntotal = len(gravity.particles)

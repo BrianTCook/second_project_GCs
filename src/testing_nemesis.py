@@ -173,6 +173,10 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
     vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
     
+    print('vr_init is', vr_init)
+    print('vphi_init is', vphi_init)
+    print('vz_init is', vz_init)
+    
     #convert from galpy/cylindrical to AMUSE/Cartesian units
     x_init = Rcoord*np.cos(phicoord) | units.kpc
     y_init = Rcoord*np.sin(phicoord) | units.kpc
@@ -341,7 +345,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         #just don't use orbiter_code here, just replace it with nemesis
         if orbiter_name != 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord
+            orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
                                                    Nstars, W0, Mcluster, Rcluster, sepBinary)
             
         if orbiter_name == 'BinaryCluster':

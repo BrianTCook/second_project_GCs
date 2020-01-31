@@ -389,6 +389,9 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
     
     t0 = time.time()
     
+    #create an R^3 matrix to house phase space data for all particles
+	phase_space_data = np.zeros((len(sim_times), 6, len(gravity.particles)))
+    
     for j, t in enumerate(sim_times):
 
         clock_times.append(time.time()-t0) #will be in seconds

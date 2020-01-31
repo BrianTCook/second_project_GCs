@@ -153,8 +153,8 @@ def radius(sys, eta=dt_param, _G=constants.G):
     ra = ra*((len(sys)+1)/2.)**0.75
     return 100.*ra
 
-def orbiter(orbiter_name, code_name, Rmax, Zmax,
-                        Nstars, W0, Mcluster, Rcluster, sepBinary):
+def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
+            Nstars, W0, Mcluster, Rcluster, sepBinary):
 
     converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
     
@@ -164,9 +164,9 @@ def orbiter(orbiter_name, code_name, Rmax, Zmax,
     should get appropriate 6D initial phase space conditions
     '''
     
-    Rcoord = Rmax * np.random.random()
-    Zcoord = Zmax * np.random.random()
-    phicoord = 2*np.pi * np.random.random()
+    #Rcoord = Rmax * np.random.random()
+    #Zcoord = Zmax * np.random.random()
+    #phicoord = 2*np.pi * np.random.random()
 
     #using Staeckel, whatever that means
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
@@ -174,13 +174,18 @@ def orbiter(orbiter_name, code_name, Rmax, Zmax,
     vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
     
     #convert from galpy/cylindrical to AMUSE/Cartesian units
-    x_init = (Rcoord*np.cos(phicoord))*1000. | units.parsec
-    y_init = Rcoord*np.sin(phicoord)*1000. | units.parsec
-    z_init = Zcoord*1000. | units.parsec
+    x_init = Rcoord*np.cos(phicoord) | units.kpc
+    y_init = Rcoord*np.sin(phicoord) | units.kpc
+    z_init = Zcoord | units.kpc
     
     vx_init = (vr_init*np.cos(phicoord) - Rcoord*vphi_init*np.sin(phicoord)) | units.kms
     vy_init = (vr_init*np.sin(phicoord) + Rcoord*vphi_init*np.cos(phicoord)) | units.kms
     vz_init = vz_init | units.kms
+    
+    pos_vec, vel_vec = [ x_init, y_init, z_init ], [ vx_init, vy_init, vz_init ]
+    
+    print('initial spatial coordinates: ', pos_vec)
+    print('initial velocity coordinates: ', vel_vec)
     
     if orbiter_name == 'SingleStar':
         
@@ -189,12 +194,12 @@ def orbiter(orbiter_name, code_name, Rmax, Zmax,
         
         #right place in phase space
         print(bodies[0])
-        bodies[0].x = [ x_init|units.kpc ]
-        bodies[0].y = [ y_init|units.kpc ]
-        bodies[0].z = [ z_init|units.kpc ]
-        bodies[0].vx = [ vx_init|units.kms ]
-        bodies[0].vy = [ vy_init|units.kms ]
-        bodies[0].vz = [ vz_init|units.kms ]
+        bodies[0].x = [ x_init ]
+        bodies[0].y = [ y_init ]
+        bodies[0].z = [ z_init ]
+        bodies[0].vx = [ vx_init ]
+        bodies[0].vy = [ vy_init ]
+        bodies[0].vz = [ vz_init ]
         
         #sub_worker in Nemesis, should not matter for SingleStar
         if code_name == 'Nbody':
@@ -296,7 +301,7 @@ def orbiter(orbiter_name, code_name, Rmax, Zmax,
         
         return bodies, code_one, code_two #need to be different so they're bridged
 
-def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
+def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phicoord,
                        Nstars, W0, Mcluster, Rcluster, sepBinary):
     
     '''
@@ -310,12 +315,12 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
         
         if orbiter_name != 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rmax, Zmax,
+            orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
                                                    Nstars, W0, Mcluster, Rcluster, sepBinary)
             
         if orbiter_name == 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rmax, Zmax,
+            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
                                                                          Nstars, W0, Mcluster, Rcluster, sepBinary)
     
     
@@ -336,12 +341,12 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
         #just don't use orbiter_code here, just replace it with nemesis
         if orbiter_name != 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rmax, Zmax,
+            orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord
                                                    Nstars, W0, Mcluster, Rcluster, sepBinary)
             
         if orbiter_name == 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rmax, Zmax,
+            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
                                                                          Nstars, W0, Mcluster, Rcluster, sepBinary)
             
         
@@ -350,7 +355,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
         converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
         dt_nemesis = dt
-        dt_bridge = 0.01 * dt
+        dt_bridge = 0.1 * dt
         
         nemesis = Nemesis( parent_worker, sub_worker, py_worker)
         nemesis.timestep = dt
@@ -371,11 +376,11 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax,
 
     return orbiter_bodies, gravity
 
-def simulation(orbiter_name, code_name, potential, Rmax, Zmax,  
+def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,  
                Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt):
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
-    bodies, gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rmax, Zmax, Nstars, W0, Mcluster, Rcluster, sepBinary)
+    bodies, gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phicoord, Nstars, W0, Mcluster, Rcluster, sepBinary)
     
     channel_from_bodies_to_code = bodies.new_channel_to(gravity.particles)
     channel_from_code_to_bodies = gravity.particles.new_channel_to(bodies)
@@ -544,9 +549,15 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 if __name__ in '__main__':
     
     potential = MWPotential2014
-    Rmax, Zmax = 5., 1. #in kpc
-    Nstars, W0 = 200, 1.5 #cluster parameters
-    Mcluster, Rcluster = 1e6|units.MSun, 20.|units.parsec
+    Rmin, Rmax = 0.5, 5. #in kpc
+    Zmin, Zmax = 0.5, 3. #in kpc
+    
+    Rcoord = (Rmax-Rmin)*np.random.random() + Rmin
+    Zcoord = (Zmax-Zmin)*np.random.random() + Zmin
+    phicoord = 2*np.pi*np.random.random()
+    
+    Nstars, W0 = 100, 1.5 #cluster parameters
+    Mcluster, Rcluster = float(Nstars)|units.MSun, 20.|units.parsec
     sepBinary = 80.|units.parsec
     tend, dt = 50.|units.Myr, 1.|units.Myr
     
@@ -563,8 +574,8 @@ if __name__ in '__main__':
             if orbiter_name == 'SingleStar' and code_name == 'nemesis':
                 continue
             
-            #simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
-                       #Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
+            simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord, 
+                       Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
             maps(orbiter_name, code_name)
             
     plotting_things(orbiter_names, code_names, tend, dt)

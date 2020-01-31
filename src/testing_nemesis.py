@@ -14,6 +14,8 @@ from galpy.potential import MWPotential2014, evaluateRforces, evaluatezforces, t
 from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 
+from phase_space_mapping import maps
+
 import random
 import numpy as np
 import time
@@ -402,6 +404,15 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
         vy = [ vyy.value_in(units.kms) for vyy in gravity.particles.vy ]
         vz = [ vzz.value_in(units.kms) for vzz in gravity.particles.vz ]
         
+        for k, star in enumerate(gravity.particles):
+            
+            phase_space_data[j,0,k] = x[k]
+            phase_space_data[j,1,k] = y[k]
+            phase_space_data[j,2,k] = z[k]
+            phase_space_data[j,3,k] = vx[k]
+            phase_space_data[j,4,k] = vy[k]
+            phase_space_data[j,5,k] = vz[k]
+        
         xmean, ymean, zmean = np.sum(x)/Ntotal, np.sum(y)/Ntotal, np.sum(z)/Ntotal
         mean_rval = np.sqrt(xmean**2 + ymean**2 + zmean**2)
         mean_radial_coords.append(mean_rval)
@@ -418,6 +429,8 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
     channel_from_code_to_bodies.copy()
     #gravity.stop()
     
+    np.save('time_data_%s_%s.npy'%(orbiter_name, code_name), sim_times_unitless)
+    np.save('sixD_data_%s_%s.npy'%(orbiter_name, code_name), phase_space_data)
     np.savetxt(code_name + '_' + orbiter_name + '_energies.txt', energies)
     np.savetxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt', mean_radial_coords)
     np.savetxt(code_name + '_' + orbiter_name + '_mean_speeds.txt', mean_speeds)
@@ -549,5 +562,6 @@ if __name__ in '__main__':
             
             simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
                        Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
+            maps(orbiter_name, code_name)
             
     plotting_things(orbiter_names, code_names, tend, dt)

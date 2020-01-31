@@ -174,10 +174,10 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
     
     #220 km/s at 8 kpc, convert back to km/s
-    to_kms = 3.086e13 / 3.154e16
-    vr_init *= bovy_conversion.velocity_in_kpcGyr*(220., 8.) * to_kms
-    vphi_init *= bovy_conversion.velocity_in_kpcGyr*(220., 8.) * to_kms
-    vz_init *= bovy_conversion.velocity_in_kpcGyr*(220., 8.) * to_kms
+    to_kms = bovy_conversion.velocity_in_kpcGyr(220., 8.) * 0.9785
+    vr_init *= to_kms
+    vphi_init *= to_kms
+    vz_init *= to_kms
     
     print('vr_init is', vr_init)
     print('vphi_init is', vphi_init)
@@ -560,8 +560,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 if __name__ in '__main__':
     
     potential = MWPotential2014
-    Rmin, Rmax = 0.5, 5. #in kpc
-    Zmin, Zmax = 0.5, 3. #in kpc
+    Rmin, Rmax = 0.1, 1. #in kpc
+    Zmin, Zmax = 0.1, 1. #in kpc
     
     Rcoord = (Rmax-Rmin)*np.random.random() + Rmin
     Zcoord = (Zmax-Zmin)*np.random.random() + Zmin
@@ -572,7 +572,7 @@ if __name__ in '__main__':
     sepBinary = 80.|units.parsec
     tend, dt = 50.|units.Myr, 1.|units.Myr
     
-    orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
+    orbiter_names = [ 'SingleCluster', 'BinaryCluster' ] # 'SingleStar',
     code_names = [ 'nemesis', 'tree', 'Nbody' ]
     
     for orbiter_name in orbiter_names:

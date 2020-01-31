@@ -390,7 +390,7 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
     t0 = time.time()
     
     #create an R^3 matrix to house phase space data for all particles
-    phase_space_data = np.zeros((len(sim_times), 6, len(gravity.particles)))
+    phase_space_data = np.zeros((len(sim_times), 6, len(bodies)))
     
     for j, t in enumerate(sim_times):
 
@@ -432,8 +432,8 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
     channel_from_code_to_bodies.copy()
     #gravity.stop()
     
-    np.save('time_data_%s_%s.npy'%(orbiter_name, code_name), sim_times_unitless)
-    np.save('sixD_data_%s_%s.npy'%(orbiter_name, code_name), phase_space_data)
+    np.save('time_data_%s_%s.npy'%(code_name, orbiter_name), sim_times_unitless)
+    np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
     np.savetxt(code_name + '_' + orbiter_name + '_energies.txt', energies)
     np.savetxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt', mean_radial_coords)
     np.savetxt(code_name + '_' + orbiter_name + '_mean_speeds.txt', mean_speeds)
@@ -563,8 +563,8 @@ if __name__ in '__main__':
             if orbiter_name == 'SingleStar' and code_name == 'nemesis':
                 continue
             
-            simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
-                       Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
+            #simulation(orbiter_name, code_name, potential, Rmax, Zmax, 
+                       #Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
             maps(orbiter_name, code_name)
             
     plotting_things(orbiter_names, code_names, tend, dt)

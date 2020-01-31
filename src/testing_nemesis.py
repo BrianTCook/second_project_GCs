@@ -134,24 +134,24 @@ dt_param = 0.1
 
 def distance_function(ipart, jpart, eta=dt_param/2., _G=constants.G):
     
-	dx = ipart.x-jpart.x
-	dy = ipart.y-jpart.y
-	dz = ipart.z-jpart.z
+    dx = ipart.x-jpart.x
+    dy = ipart.y-jpart.y
+    dz = ipart.z-jpart.z
 
-	dr = np.sqrt(dx**2 + dy**2 + dz**2)
-	dr3 = dr**1.5
-	mu = _G*(ipart.mass + jpart.mass)
+    dr = np.sqrt(dx**2 + dy**2 + dz**2)
+    dr3 = dr**1.5
+    mu = _G*(ipart.mass + jpart.mass)
 
-	tau = eta/2./2.**0.5*(dr3/mu)**0.5 #need an explanation for this!
+    tau = eta/2./2.**0.5*(dr3/mu)**0.5 #need an explanation for this!
 
-	return tau
+    return tau
 
 def radius(sys, eta=dt_param, _G=constants.G):
 
-	#variable shouldn't be named radius
-	ra = ((_G*sys.total_mass()*dt**2/eta**2)**(1/3.))
-	ra = ra*((len(sys)+1)/2.)**0.75
-	return 100.*ra
+    #variable shouldn't be named radius
+    ra = ((_G*sys.total_mass()*dt**2/eta**2)**(1/3.))
+    ra = ra*((len(sys)+1)/2.)**0.75
+    return 100.*ra
 
 def orbiter(orbiter_name, code_name, Rmax, Zmax,
                         Nstars, W0, Mcluster, Rcluster, sepBinary):
@@ -390,7 +390,7 @@ def simulation(orbiter_name, code_name, potential, Rmax, Zmax,
     t0 = time.time()
     
     #create an R^3 matrix to house phase space data for all particles
-	phase_space_data = np.zeros((len(sim_times), 6, len(gravity.particles)))
+    phase_space_data = np.zeros((len(sim_times), 6, len(gravity.particles)))
     
     for j, t in enumerate(sim_times):
 

@@ -173,6 +173,12 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
     vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
     
+    #220 km/s at 8 kpc, convert back to km/s
+    to_kms = 3.086e13 / 3.154e16
+    vr_init *= bovy_conversion.velocity_in_kpcGyr*(220., 8.) * to_kms
+    vphi_init *= bovy_conversion.velocity_in_kpcGyr*(220., 8.) * to_kms
+    vz_init *= bovy_conversion.velocity_in_kpcGyr*(220., 8.) * to_kms
+    
     print('vr_init is', vr_init)
     print('vphi_init is', vphi_init)
     print('vz_init is', vz_init)
@@ -182,8 +188,9 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     y_init = Rcoord*np.sin(phicoord) | units.kpc
     z_init = Zcoord | units.kpc
     
-    vx_init = (vr_init*np.cos(phicoord) - Rcoord*vphi_init*np.sin(phicoord)) | units.kms
-    vy_init = (vr_init*np.sin(phicoord) + Rcoord*vphi_init*np.cos(phicoord)) | units.kms
+    #vphi = R \dot{\phi}? assuming yes for now
+    vx_init = (vr_init*np.cos(phicoord) - vphi_init*np.sin(phicoord)) | units.kms
+    vy_init = (vr_init*np.sin(phicoord) + vphi_init*np.cos(phicoord)) | units.kms
     vz_init = vz_init | units.kms
     
     pos_vec, vel_vec = [ x_init, y_init, z_init ], [ vx_init, vy_init, vz_init ]

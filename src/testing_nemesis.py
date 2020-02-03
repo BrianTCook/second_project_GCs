@@ -193,12 +193,12 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         bodies[0].mass = 1|units.MSun
         
         #right place in phase space
-        bodies[0].x += x_init|units.kpc
-        bodies[0].y += y_init|units.kpc
-        bodies[0].z += z_init|units.kpc
-        bodies[0].vx += vx_init|units.kms
-        bodies[0].vy += vy_init|units.kms
-        bodies[0].vz += vz_init|units.kms
+        bodies[0].x = x_init|units.kpc
+        bodies[0].y = y_init|units.kpc
+        bodies[0].z = z_init|units.kpc
+        bodies[0].vx = vx_init|units.kms
+        bodies[0].vy = vy_init|units.kms
+        bodies[0].vz = vz_init|units.kms
         
         #sub_worker in Nemesis, should not matter for SingleStar
         if code_name == 'Nbody':

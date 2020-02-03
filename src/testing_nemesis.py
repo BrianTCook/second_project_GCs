@@ -587,7 +587,7 @@ if __name__ in '__main__':
                 continue
             
             simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord, 
-                       vr_init, vphi_init, vz_init, vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
+                       vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
             maps(orbiter_name, code_name)
             
     plotting_things(orbiter_names, code_names, tend, dt)

@@ -318,10 +318,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
                                                    vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
             
             gravity.add_system(orbiter_code, (galaxy_code,))
-            
-            if len(gravity.particles) == 0:
-                gravity.particles = orbiter_bodies
-            
+
         if orbiter_name == 'BinaryCluster':
             
             orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
@@ -386,10 +383,6 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
     energies, mean_radial_coords, mean_speeds, clock_times = [], [], [], []
     
     t0 = time.time()
-    
-    print('&&&&&&&&&&&&&&&&&&&&&')
-    print('gravity.particles are', gravity.particles)
-    print('&&&&&&&&&&&&&&&&&&&&&')
     
     #create an R^3 matrix to house phase space data for all particles
     phase_space_data = np.zeros((len(sim_times), 6, len(bodies)))
@@ -564,7 +557,7 @@ if __name__ in '__main__':
     vphi_init *= to_kms
     vz_init *= to_kms
     
-    Nstars, W0 = 50, 1.5 #cluster parameters
+    Nstars, W0 = 25, 1.5 #cluster parameters
     Mcluster, Rcluster = float(Nstars)|units.MSun, 20.|units.parsec
     sepBinary = 80.|units.parsec
     tend, dt = 20.|units.Myr, 1.|units.Myr

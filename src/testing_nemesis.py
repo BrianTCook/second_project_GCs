@@ -195,8 +195,8 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
         #right place in phase space
         print(bodies[0])
-        bodies[0].position = [ x_init, y_init, z_init ]
-        bodies[0].velocity = [ vx_init, vy_init, vz_init ]
+        bodies[0].position = [ x_init, y_init, z_init ] | units.kpc
+        bodies[0].velocity = [ vx_init, vy_init, vz_init ] | units.kms
         
         #sub_worker in Nemesis, should not matter for SingleStar
         if code_name == 'Nbody':
@@ -241,8 +241,8 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     
         for body in bodies:
             #right place in phase space
-            body.position += [ x_init, y_init, z_init ]
-            body.velocity += [ vx_init, vy_init, vz_init ]
+            body.position += [ x_init, y_init, z_init ] | units.kpc
+            body.velocity += [ vx_init, vy_init, vz_init ] | units.kms
                 
         return bodies, code
         
@@ -253,14 +253,14 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
         for body in bodies_one:
             #right place in phase space
-            body.position += [ x_init, y_init, z_init ]
-            body.velocity += [ vx_init, vy_init, vz_init ]
+            body.position += [ x_init, y_init, z_init ] | units.kpc
+            body.velocity += [ vx_init, vy_init, vz_init ] | units.kms
     
         for body in bodies_two:
             #right place in phase space
-            body.position += [ x_init, y_init, z_init ]
-            body.velocity += [ vx_init, vy_init, vz_init ]
-    
+            body.position += [ x_init, y_init, z_init ] | units.kpc
+            body.velocity += [ vx_init, vy_init, vz_init ] | units.kms
+            
         '''
         need to initialize initial phase space coordinates with AGAMA or galpy
         '''
@@ -306,7 +306,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
             gravity.add_system(orbiter_code, (galaxy_code,))
             
             if len(gravity.particles) == 0:
-                gravity.particles.add_particles(orbiter_bodies)
+                gravity.particles = orbiter_bodies
             
         if orbiter_name == 'BinaryCluster':
             

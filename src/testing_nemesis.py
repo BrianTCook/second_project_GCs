@@ -174,7 +174,7 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     vy_init = (vr_init*np.sin(phicoord) + vphi_init*np.cos(phicoord)) | units.kms
     vz_init = vz_init | units.kms
     
-    pos_vec, vel_vec = (x_init, y_init, z_init), (vx_init, vy_init, vz_init)
+    pos_vec, vel_vec = (x_init, y_init, z_init)|units.kpc, (vx_init, vy_init, vz_init)|units.kms
     
     print('-----------------------------')
     print('-----------------------------')
@@ -193,9 +193,12 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         bodies[0].mass = 1|units.MSun
         
         #right place in phase space
-        print(bodies[0])
-        bodies[0].position = (x_init, y_init, z_init) | units.kpc
-        bodies[0].velocity = (vx_init, vy_init, vz_init) | units.kms
+        bodies[0].x += x_init|units.kpc
+        bodies[0].y += y_init|units.kpc
+        bodies[0].z += z_init|units.kpc
+        bodies[0].vx += vx_init|units.kms
+        bodies[0].vy += vy_init|units.kms
+        bodies[0].vz += vz_init|units.kms
         
         #sub_worker in Nemesis, should not matter for SingleStar
         if code_name == 'Nbody':
@@ -240,8 +243,12 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     
         for body in bodies:
             #right place in phase space
-            body.position += (x_init, y_init, z_init) | units.kpc
-            body.velocity += (vx_init, vy_init, vz_init) | units.kms
+            body.x += x_init|units.kpc
+            body.y += y_init|units.kpc
+            body.z += z_init|units.kpc
+            body.vx += vx_init|units.kms
+            body.vy += vy_init|units.kms
+            body.vz += vz_init|units.kms
                 
         return bodies, code
         
@@ -252,13 +259,21 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
         for body in bodies_one:
             #right place in phase space
-            body.position += (x_init, y_init, z_init) | units.kpc
-            body.velocity += (vx_init, vy_init, vz_init) | units.kms
+            body.x += x_init|units.kpc
+            body.y += y_init|units.kpc
+            body.z += z_init|units.kpc
+            body.vx += vx_init|units.kms
+            body.vy += vy_init|units.kms
+            body.vz += vz_init|units.kms
     
         for body in bodies_two:
             #right place in phase space
-            body.position += (x_init, y_init, z_init) | units.kpc
-            body.velocity += (vx_init, vy_init, vz_init) | units.kms
+            body.x += x_init|units.kpc
+            body.y += y_init|units.kpc
+            body.z += z_init|units.kpc
+            body.vx += vx_init|units.kms
+            body.vy += vy_init|units.kms
+            body.vz += vz_init|units.kms
             
         '''
         need to initialize initial phase space coordinates with AGAMA or galpy

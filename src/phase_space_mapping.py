@@ -24,7 +24,6 @@ def maps(code_name, orbiter_name):
         x,y,z = w_all['x'].tolist(), w_all['y'].tolist(), w_all['z'].tolist()
         vx,vy,vz = w_all['vx'].tolist(), w_all['vy'].tolist(), w_all['vz'].tolist()
         
-        
         if i%5 == 0:
             
             print('i = %i'%(i))

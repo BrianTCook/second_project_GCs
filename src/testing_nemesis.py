@@ -164,21 +164,6 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     should get appropriate 6D initial phase space conditions
     '''
     
-    #Rcoord = Rmax * np.random.random()
-    #Zcoord = Zmax * np.random.random()
-    #phicoord = 2*np.pi * np.random.random()
-
-    #using Staeckel, whatever that means
-    aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
-    qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
-    vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
-    
-    #220 km/s at 8 kpc, convert back to km/s
-    to_kms = bovy_conversion.velocity_in_kpcGyr(220., 8.) * 0.9785
-    vr_init *= to_kms
-    vphi_init *= to_kms
-    vz_init *= to_kms
-    
     #convert from galpy/cylindrical to AMUSE/Cartesian units
     x_init = Rcoord*np.cos(phicoord) | units.kpc
     y_init = Rcoord*np.sin(phicoord) | units.kpc
@@ -196,7 +181,8 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     print('-----------------------------')
     print('orbiter_name: ', orbiter_name)
     print('code_name: ', code_name)
-    print('initial spatial coordinates: ', pos_vec)
+    print('initial spatial coordinates (cylindrical): ', [])
+    print('initial spatial coordinates (Cartesian): ', pos_vec)
     print('initial velocity coordinates: ', vel_vec)
     print('-----------------------------')
     print('-----------------------------')

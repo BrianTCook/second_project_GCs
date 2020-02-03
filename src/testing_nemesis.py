@@ -567,13 +567,13 @@ if __name__ in '__main__':
     Zcoord = (Zmax-Zmin)*np.random.random() + Zmin
     phicoord = 2*np.pi*np.random.random()
     
-    Nstars, W0 = 100, 1.5 #cluster parameters
+    Nstars, W0 = 50, 1.5 #cluster parameters
     Mcluster, Rcluster = float(Nstars)|units.MSun, 20.|units.parsec
     sepBinary = 80.|units.parsec
-    tend, dt = 50.|units.Myr, 1.|units.Myr
+    tend, dt = 20.|units.Myr, 1.|units.Myr
     
-    orbiter_names = [ 'SingleCluster', 'BinaryCluster' ] # 'SingleStar',
-    code_names = [ 'nemesis', 'tree', 'Nbody' ]
+    orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ] #,
+    code_names = [ 'tree', 'Nbody' ]  #'nemesis',
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:

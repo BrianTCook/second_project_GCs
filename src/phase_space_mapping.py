@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 
 def maps(code_name, orbiter_name):
 
-    gravity_solver_str = 'tree'
-    Nclusters = 10
+    print('???????')
+    print('now mapping: %s %s '%(orbiter_name, code_name))
+    print('???????')
     
-    #data_dir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
     filename_time = 'time_data_%s_%s.npy'%(orbiter_name, code_name)
     filename_phase = 'sixD_data_%s_%s.npy'%(orbiter_name, code_name)    
     
@@ -24,72 +24,81 @@ def maps(code_name, orbiter_name):
         x,y,z = w_all['x'].tolist(), w_all['y'].tolist(), w_all['z'].tolist()
         vx,vy,vz = w_all['vx'].tolist(), w_all['vy'].tolist(), w_all['vz'].tolist()
         
+        
+        if i%5 == 0:
+            
+            print('i = %i'%(i))
+            print('!!!!!!!!!!!!!!!!!')
+            print('median spatial coordinates in kpc: %.02f, %.02f, %.02f'%(np.median(x), np.median(y), np.median(z)))
+            print('median spatial coordinates in km/s: %.02f, %.02f, %.02f'%(np.median(vx), np.median(vy), np.median(vz)))
+            print('!!!!!!!!!!!!!!!!!')
+        
         fig, axs = plt.subplots(5, 5)
         
         #first column
         
         axs[0, 0].scatter(x, y, s=2)
         axs[0, 0].set(xlabel='x', ylabel='y')
-        axs[0, 0].set_xlim(-10, 10)
-        axs[0, 0].set_ylim(-10, 10)
+        axs[0, 0].set_xlim(-5, 5)
+        axs[0, 0].set_ylim(-5, 5)
         
         axs[1, 0].scatter(x, z, s=2)
         axs[1, 0].set(xlabel='x', ylabel='z')
-        axs[1, 0].set_xlim(-10, 10)
-        axs[1, 0].set_ylim(-10, 10)
+        axs[1, 0].set_xlim(-5, 5)
+        axs[1, 0].set_ylim(-5, 5)
         
         axs[2, 0].scatter(x, vx,s=2)
         axs[2, 0].set(xlabel='x', ylabel='vx')
-        axs[2, 0].set_xlim(-10, 10)
+        axs[2, 0].set_xlim(-5, 5)
         axs[2, 0].set_ylim(-400, 400)
         
         axs[3, 0].scatter(x, vy, s=2)
         axs[3, 0].set(xlabel='z', ylabel='vy')
-        axs[3, 0].set_xlim(-10, 10)
+        axs[3, 0].set_xlim(-5, 5)
         axs[3, 0].set_ylim(-400, 400)
         
         axs[4, 0].scatter(x, vz, s=2)
         axs[4, 0].set(xlabel='x', ylabel='vz')
-        axs[4, 0].set_xlim(-10, 10)
+        axs[4, 0].set_xlim(-5, 5)
         axs[4, 0].set_ylim(-400, 400)
         
         #second column
         
         axs[1, 1].scatter(y, z, s=2)
         axs[1, 1].set(xlabel='y', ylabel='z')
-        axs[1, 1].set_xlim(-10, 10)
-        axs[1, 1].set_ylim(-10, 10)
+        axs[1, 1].set_xlim(-5, 5)
+        axs[1, 1].set_ylim(-5, 5)
         
         axs[2, 1].scatter(y, vx, s=2)
         axs[2, 1].set(xlabel='y', ylabel='vx')
-        axs[2, 1].set_xlim(-10, 10)
+        axs[2, 1].set_xlim(-5, 5)
         axs[2, 1].set_ylim(-400, 400)
         
         axs[3, 1].scatter(y, vy, s=2)
         axs[3, 1].set(xlabel='y', ylabel='vy')
-        axs[3, 1].set_xlim(-10, 10)
+        axs[3, 1].set_xlim(-5, 5)
         axs[3, 1].set_ylim(-400, 400)
         
         axs[4, 1].scatter(vy, vz, s=2)
         axs[4, 1].set(xlabel='y', ylabel='vz')
-        axs[4, 1].set_xlim(-1000, 1000)
+        axs[4, 1].set_xlim(-5, 5)
         axs[4, 1].set_ylim(-400, 400)
         
         #third column
         
         axs[2, 2].scatter(z, vx, s=2)
         axs[2, 2].set(xlabel='z', ylabel='vx')
-        axs[2, 2].set_xlim(-10, 10)
+        axs[2, 2].set_xlim(-5, 5)
         axs[2, 2].set_ylim(-400, 400)
         
         axs[3, 2].scatter(z, vy, s=2)
         axs[3, 2].set(xlabel='z', ylabel='vy')
-        axs[3, 2].set_xlim(-10, 10)
+        axs[3, 2].set_xlim(-5, 5)
         axs[3, 2].set_ylim(-400, 400)
         
         axs[4, 2].scatter(z, vz, s=2)
         axs[4, 2].set(xlabel='z', ylabel='vz')
-        axs[4, 2].set_xlim(-10, 10)
+        axs[4, 2].set_xlim(-5, 5)
         axs[4, 2].set_ylim(-400, 400)
         
         #fourth column

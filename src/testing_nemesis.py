@@ -237,7 +237,7 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
     if orbiter_name == 'SingleCluster':
         
-        bodies, code = make_king_model_cluster(vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, code_name)
+        bodies, code = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
         
         '''
         need to initialize initial phase space coordinates with AGAMA or galpy
@@ -256,8 +256,8 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
     if orbiter_name == 'BinaryCluster':
         
-        bodies_one, code_one = make_king_model_cluster(vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, code_name)
-        bodies_two, code_two = make_king_model_cluster(vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, code_name)
+        bodies_one, code_one = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
+        bodies_two, code_two = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
         
         for body in bodies_one:
             #right place in phase space

@@ -30,44 +30,44 @@ def maps(code_name, orbiter_name):
         
         axs[0, 0].scatter(x, y, s=2)
         axs[0, 0].set(xlabel='x', ylabel='y')
-        axs[0, 0].set_xlim(-1000, 1000)
-        axs[0, 0].set_ylim(-1000, 1000)
+        axs[0, 0].set_xlim(-10, 10)
+        axs[0, 0].set_ylim(-10, 10)
         
         axs[1, 0].scatter(x, z, s=2)
         axs[1, 0].set(xlabel='x', ylabel='z')
-        axs[1, 0].set_xlim(-1000, 1000)
-        axs[1, 0].set_ylim(-1000, 1000)
+        axs[1, 0].set_xlim(-10, 10)
+        axs[1, 0].set_ylim(-10, 10)
         
         axs[2, 0].scatter(x, vx,s=2)
         axs[2, 0].set(xlabel='x', ylabel='vx')
-        axs[2, 0].set_xlim(-1000, 1000)
+        axs[2, 0].set_xlim(-10, 10)
         axs[2, 0].set_ylim(-400, 400)
         
         axs[3, 0].scatter(x, vy, s=2)
         axs[3, 0].set(xlabel='z', ylabel='vy')
-        axs[3, 0].set_xlim(-1000, 1000)
+        axs[3, 0].set_xlim(-10, 10)
         axs[3, 0].set_ylim(-400, 400)
         
         axs[4, 0].scatter(x, vz, s=2)
         axs[4, 0].set(xlabel='x', ylabel='vz')
-        axs[4, 0].set_xlim(-1000, 1000)
+        axs[4, 0].set_xlim(-10, 10)
         axs[4, 0].set_ylim(-400, 400)
         
         #second column
         
         axs[1, 1].scatter(y, z, s=2)
         axs[1, 1].set(xlabel='y', ylabel='z')
-        axs[1, 1].set_xlim(-1000, 1000)
-        axs[1, 1].set_ylim(-1000, 1000)
+        axs[1, 1].set_xlim(-10, 10)
+        axs[1, 1].set_ylim(-10, 10)
         
         axs[2, 1].scatter(y, vx, s=2)
         axs[2, 1].set(xlabel='y', ylabel='vx')
-        axs[2, 1].set_xlim(-1000, 1000)
+        axs[2, 1].set_xlim(-10, 10)
         axs[2, 1].set_ylim(-400, 400)
         
         axs[3, 1].scatter(y, vy, s=2)
         axs[3, 1].set(xlabel='y', ylabel='vy')
-        axs[3, 1].set_xlim(-1000, 1000)
+        axs[3, 1].set_xlim(-10, 10)
         axs[3, 1].set_ylim(-400, 400)
         
         axs[4, 1].scatter(vy, vz, s=2)
@@ -79,17 +79,17 @@ def maps(code_name, orbiter_name):
         
         axs[2, 2].scatter(z, vx, s=2)
         axs[2, 2].set(xlabel='z', ylabel='vx')
-        axs[2, 2].set_xlim(-1000, 1000)
+        axs[2, 2].set_xlim(-10, 10)
         axs[2, 2].set_ylim(-400, 400)
         
         axs[3, 2].scatter(z, vy, s=2)
         axs[3, 2].set(xlabel='z', ylabel='vy')
-        axs[3, 2].set_xlim(-1000, 1000)
+        axs[3, 2].set_xlim(-10, 10)
         axs[3, 2].set_ylim(-400, 400)
         
         axs[4, 2].scatter(z, vz, s=2)
         axs[4, 2].set(xlabel='z', ylabel='vz')
-        axs[4, 2].set_xlim(-1000, 1000)
+        axs[4, 2].set_xlim(-10, 10)
         axs[4, 2].set_ylim(-400, 400)
         
         #fourth column

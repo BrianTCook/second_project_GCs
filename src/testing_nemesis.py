@@ -550,8 +550,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 if __name__ in '__main__':
     
     potential = MWPotential2014
-    Rmin, Rmax = 0.1, 1. #in kpc
-    Zmin, Zmax = 0.1, 1. #in kpc
+    Rmin, Rmax = 1., 5. #in kpc
+    Zmin, Zmax = 0.5, 2. #in kpc
     
     Rcoord = (Rmax-Rmin)*np.random.random() + Rmin
     Zcoord = (Zmax-Zmin)*np.random.random() + Zmin
@@ -574,7 +574,7 @@ if __name__ in '__main__':
     tend, dt = 20.|units.Myr, 1.|units.Myr
     
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ] #,
-    code_names = [ 'tree', 'Nbody' ]  #'nemesis',
+    code_names = [ 'tree', 'Nbody', 'nemesis' ]
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:

@@ -303,22 +303,16 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
             orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
                                                    vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
             
-        if orbiter_name == 'BinaryCluster':
-            
-            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
-                                                                         vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
-    
-        #bridges clusters properly, independent of how many there are because
-        #orbiter_code is not defined in binary case
-        try:
-            print('got to SingleStar or SingleCluster properly')
             gravity.add_system(orbiter_code, (galaxy_code,))
             
             if len(gravity.particles) == 0:
                 gravity.particles.add_particles(orbiter_bodies)
             
-        except:
-            print('got to BinaryCluster properly')
+        if orbiter_name == 'BinaryCluster':
+            
+            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
+                                                                         vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
+    
             gravity.add_system(orbiter_code_one, (galaxy_code,))
             gravity.add_system(orbiter_code_two, (galaxy_code,))
             gravity.add_system(orbiter_code_one, (orbiter_code_two,))
@@ -357,12 +351,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
 
-
-        print('nemesis.particles are', nemesis.particles)
-
         gravity.add_system(nemesis, (galaxy_code,))
-
-        print('gravity.particles are', gravity.particles)
 
     return orbiter_bodies, gravity
 

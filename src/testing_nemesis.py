@@ -154,7 +154,7 @@ def radius(sys, eta=dt_param, _G=constants.G):
     return 100.*ra
 
 def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
-            Nstars, W0, Mcluster, Rcluster, sepBinary):
+            vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary):
 
     converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
     
@@ -251,7 +251,7 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
     if orbiter_name == 'SingleCluster':
         
-        bodies, code = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
+        bodies, code = make_king_model_cluster(vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, code_name)
         
         '''
         need to initialize initial phase space coordinates with AGAMA or galpy
@@ -270,8 +270,8 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
     if orbiter_name == 'BinaryCluster':
         
-        bodies_one, code_one = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
-        bodies_two, code_two = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
+        bodies_one, code_one = make_king_model_cluster(vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, code_name)
+        bodies_two, code_two = make_king_model_cluster(vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, code_name)
         
         for body in bodies_one:
             #right place in phase space
@@ -317,7 +317,7 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         return bodies, code_one, code_two #need to be different so they're bridged
 
 def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phicoord,
-                       Nstars, W0, Mcluster, Rcluster, sepBinary):
+                       vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary):
     
     '''
     will need to ask SPZ if he meant for field, orbiter to be separate in non
@@ -331,12 +331,12 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         if orbiter_name != 'BinaryCluster':
             
             orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
-                                                   Nstars, W0, Mcluster, Rcluster, sepBinary)
+                                                   vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
             
         if orbiter_name == 'BinaryCluster':
             
             orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
-                                                                         Nstars, W0, Mcluster, Rcluster, sepBinary)
+                                                                         vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
     
     
         #bridges clusters properly, independent of how many there are because
@@ -357,12 +357,12 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         if orbiter_name != 'BinaryCluster':
             
             orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
-                                                   Nstars, W0, Mcluster, Rcluster, sepBinary)
+                                                   vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
             
         if orbiter_name == 'BinaryCluster':
             
             orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
-                                                                         Nstars, W0, Mcluster, Rcluster, sepBinary)
+                                                                         vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
             
         
         parts = HierarchicalParticles(orbiter_bodies)
@@ -392,10 +392,10 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
     return orbiter_bodies, gravity
 
 def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,  
-               Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt):
+               vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt):
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
-    bodies, gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phicoord, Nstars, W0, Mcluster, Rcluster, sepBinary)
+    bodies, gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
     
     channel_from_bodies_to_code = bodies.new_channel_to(gravity.particles)
     channel_from_code_to_bodies = gravity.particles.new_channel_to(bodies)
@@ -571,6 +571,17 @@ if __name__ in '__main__':
     Zcoord = (Zmax-Zmin)*np.random.random() + Zmin
     phicoord = 2*np.pi*np.random.random()
     
+    #using Staeckel, whatever that means
+    aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
+    qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
+    vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
+    
+    #220 km/s at 8 kpc, convert back to km/s
+    to_kms = bovy_conversion.velocity_in_kpcGyr(220., 8.) * 0.9785
+    vr_init *= to_kms
+    vphi_init *= to_kms
+    vz_init *= to_kms
+    
     Nstars, W0 = 50, 1.5 #cluster parameters
     Mcluster, Rcluster = float(Nstars)|units.MSun, 20.|units.parsec
     sepBinary = 80.|units.parsec
@@ -590,7 +601,7 @@ if __name__ in '__main__':
                 continue
             
             simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord, 
-                       Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
+                       vr_init, vphi_init, vz_init, vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
             maps(orbiter_name, code_name)
             
     plotting_things(orbiter_names, code_names, tend, dt)

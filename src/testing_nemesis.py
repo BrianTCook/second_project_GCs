@@ -179,10 +179,6 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     vphi_init *= to_kms
     vz_init *= to_kms
     
-    print('vr_init is', vr_init)
-    print('vphi_init is', vphi_init)
-    print('vz_init is', vz_init)
-    
     #convert from galpy/cylindrical to AMUSE/Cartesian units
     x_init = Rcoord*np.cos(phicoord) | units.kpc
     y_init = Rcoord*np.sin(phicoord) | units.kpc
@@ -195,8 +191,16 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     
     pos_vec, vel_vec = [ x_init, y_init, z_init ], [ vx_init, vy_init, vz_init ]
     
+    print('-----------------------------')
+    print('-----------------------------')
+    print('-----------------------------')
+    print('orbiter_name: ', orbiter_name)
+    print('code_name: ', code_name)
     print('initial spatial coordinates: ', pos_vec)
     print('initial velocity coordinates: ', vel_vec)
+    print('-----------------------------')
+    print('-----------------------------')
+    print('-----------------------------')
     
     if orbiter_name == 'SingleStar':
         

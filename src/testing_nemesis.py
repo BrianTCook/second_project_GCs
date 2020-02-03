@@ -195,12 +195,8 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
         #right place in phase space
         print(bodies[0])
-        bodies[0].x = [ x_init ]
-        bodies[0].y = [ y_init ]
-        bodies[0].z = [ z_init ]
-        bodies[0].vx = [ vx_init ]
-        bodies[0].vy = [ vy_init ]
-        bodies[0].vz = [ vz_init ]
+        bodies[0].position = [ x_init, y_init, z_init ]
+        bodies[0].velocity = [ vx_init, vy_init, vz_init ]
         
         #sub_worker in Nemesis, should not matter for SingleStar
         if code_name == 'Nbody':
@@ -245,12 +241,8 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     
         for body in bodies:
             #right place in phase space
-            body.x += x_init
-            body.y += y_init
-            body.z += z_init
-            body.vx += vx_init
-            body.vy += vy_init
-            body.vz += vz_init
+            body.position += [ x_init, y_init, z_init ]
+            body.velocity += [ vx_init, vy_init, vz_init ]
                 
         return bodies, code
         
@@ -261,21 +253,13 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
         for body in bodies_one:
             #right place in phase space
-            body.x += x_init
-            body.y += y_init
-            body.z += z_init
-            body.vx += vx_init
-            body.vy += vy_init
-            body.vz += vz_init
+            body.position += [ x_init, y_init, z_init ]
+            body.velocity += [ vx_init, vy_init, vz_init ]
     
         for body in bodies_two:
             #right place in phase space
-            body.x += x_init
-            body.y += y_init
-            body.z += z_init
-            body.vx += vx_init
-            body.vy += vy_init
-            body.vz += vz_init
+            body.position += [ x_init, y_init, z_init ]
+            body.velocity += [ vx_init, vy_init, vz_init ]
     
         '''
         need to initialize initial phase space coordinates with AGAMA or galpy
@@ -324,12 +308,17 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
             orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
                                                                          vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
     
-    
         #bridges clusters properly, independent of how many there are because
         #orbiter_code is not defined in binary case
         try:
+            print('got to SingleStar or SingleCluster properly')
             gravity.add_system(orbiter_code, (galaxy_code,))
+            
+            if len(gravity.particles) == 0:
+                gravity.particles.add_particles(orbiter_bodies)
+            
         except:
+            print('got to BinaryCluster properly')
             gravity.add_system(orbiter_code_one, (galaxy_code,))
             gravity.add_system(orbiter_code_two, (galaxy_code,))
             gravity.add_system(orbiter_code_one, (orbiter_code_two,))

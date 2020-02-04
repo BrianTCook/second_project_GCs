@@ -193,12 +193,12 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         bodies[0].mass = 1|units.MSun
         
         #right place in phase space
-        bodies[0].x = x_init|units.kpc
-        bodies[0].y = y_init|units.kpc
-        bodies[0].z = z_init|units.kpc
-        bodies[0].vx = vx_init|units.kms
-        bodies[0].vy = vy_init|units.kms
-        bodies[0].vz = vz_init|units.kms
+        bodies[0].x = x_init
+        bodies[0].y = y_init
+        bodies[0].z = z_init
+        bodies[0].vx = vx_init
+        bodies[0].vy = vy_init
+        bodies[0].vz = vz_init
         
         #sub_worker in Nemesis, should not matter for SingleStar
         if code_name == 'Nbody':
@@ -243,12 +243,12 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     
         for body in bodies:
             #right place in phase space
-            body.x += x_init|units.kpc
-            body.y += y_init|units.kpc
-            body.z += z_init|units.kpc
-            body.vx += vx_init|units.kms
-            body.vy += vy_init|units.kms
-            body.vz += vz_init|units.kms
+            body.x += x_init
+            body.y += y_init
+            body.z += z_init
+            body.vx += vx_init
+            body.vy += vy_init
+            body.vz += vz_init
                 
         return bodies, code
         
@@ -259,21 +259,21 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
         for body in bodies_one:
             #right place in phase space
-            body.x += x_init|units.kpc
-            body.y += y_init|units.kpc
-            body.z += z_init|units.kpc
-            body.vx += vx_init|units.kms
-            body.vy += vy_init|units.kms
-            body.vz += vz_init|units.kms
+            body.x += x_init
+            body.y += y_init
+            body.z += z_init
+            body.vx += vx_init
+            body.vy += vy_init
+            body.vz += vz_init
     
         for body in bodies_two:
             #right place in phase space
-            body.x += x_init|units.kpc
-            body.y += y_init|units.kpc
-            body.z += z_init|units.kpc
-            body.vx += vx_init|units.kms
-            body.vy += vy_init|units.kms
-            body.vz += vz_init|units.kms
+            body.x += x_init
+            body.y += y_init
+            body.z += z_init
+            body.vx += vx_init
+            body.vy += vy_init
+            body.vz += vz_init
             
         '''
         need to initialize initial phase space coordinates with AGAMA or galpy
@@ -324,8 +324,8 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
             orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
                                                                          vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
     
-            gravity.add_system(orbiter_code_one, (galaxy_code,))
-            gravity.add_system(orbiter_code_two, (galaxy_code,))
+            #gravity.add_system(orbiter_code_one, (galaxy_code,))
+            #gravity.add_system(orbiter_code_two, (galaxy_code,))
             gravity.add_system(orbiter_code_one, (orbiter_code_two,))
             gravity.add_system(orbiter_code_two, (orbiter_code_one,))
             
@@ -394,9 +394,9 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
         energy = gravity.kinetic_energy.value_in(units.J) + gravity.potential_energy.value_in(units.J)
         energies.append(energy)
         
-        x = [ xx.value_in(units.parsec) for xx in gravity.particles.x ]
-        y = [ yy.value_in(units.parsec) for yy in gravity.particles.y ]
-        z = [ zz.value_in(units.parsec) for zz in gravity.particles.z ]
+        x = [ xx.value_in(units.kpc) for xx in gravity.particles.x ]
+        y = [ yy.value_in(units.kpc) for yy in gravity.particles.y ]
+        z = [ zz.value_in(units.kpc) for zz in gravity.particles.z ]
         
         vx = [ vxx.value_in(units.kms) for vxx in gravity.particles.vx ]
         vy = [ vyy.value_in(units.kms) for vyy in gravity.particles.vy ]
@@ -562,7 +562,7 @@ if __name__ in '__main__':
     sepBinary = 80.|units.parsec
     tend, dt = 20.|units.Myr, 1.|units.Myr
     
-    orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ] #,
+    orbiter_names = [ 'SingleCluster', 'BinaryCluster' ] #'SingleStar'
     code_names = [ 'tree', 'Nbody', 'nemesis' ]
     
     for orbiter_name in orbiter_names:

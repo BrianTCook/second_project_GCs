@@ -53,7 +53,8 @@ def getxv(converter, M1, a, e, ma=0):
     
     return x, v
 
-def make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name, parameters=[]):
+def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
+                            Nstars, W0, Mcluster, Rcluster, code_name, parameters=[]):
 
     '''
     sets up a cluster with mass M and radius R
@@ -62,6 +63,30 @@ def make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name, parameter
     
     converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
     bodies = new_king_model(Nstars, W0, convert_nbody=converter)
+
+    '''
+    takes in R, Z value
+    returns VR, Vphi, VZ values
+    should get appropriate 6D initial phase space conditions
+    '''
+    
+    #convert from galpy/cylindrical to AMUSE/Cartesian units
+    x_init = Rcoord*np.cos(phicoord) | units.kpc
+    y_init = Rcoord*np.sin(phicoord) | units.kpc
+    z_init = Zcoord | units.kpc
+    
+    #vphi = R \dot{\phi}? assuming yes for now
+    vx_init = (vr_init*np.cos(phicoord) - vphi_init*np.sin(phicoord)) | units.kms
+    vy_init = (vr_init*np.sin(phicoord) + vphi_init*np.cos(phicoord)) | units.kms
+    vz_init = vz_init | units.kms
+    
+    #initializing phase space coordinates
+    bodies.x += x_init
+    bodies.y += y_init
+    bodies.z += z_init
+    bodies.vx += vx_init
+    bodies.vy += vy_init
+    bodies.vz += vz_init
     
     #sub_worker in Nemesis
     if code_name == 'Nbody':
@@ -242,46 +267,17 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
     if orbiter_name == 'SingleCluster':
         
-        bodies, code = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
+        bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init,
+                                               Nstars, W0, Mcluster, Rcluster, code_name)
         
-        '''
-        need to initialize initial phase space coordinates with AGAMA or galpy
-        '''
-        
-        stars = code.particles.copy()
-        
-        #initializing phase space coordinates
-        stars.x += x_init
-        stars.y += y_init
-        stars.z += z_init
-        stars.vx += vx_init
-        stars.vy += vy_init
-        stars.vz += vz_init
-        
-        return stars, code
+        return bodies, code
         
     if orbiter_name == 'BinaryCluster':
         
-        bodies_one, code_one = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
-        bodies_two, code_two = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
-        
-        stars_one = code_one.particles.copy()
-        stars_two = code_two.particles.copy()
-        
-        #initializing phase space coordinates
-        stars_one.x += x_init
-        stars_one.y += y_init
-        stars_one.z += z_init
-        stars_one.vx += vx_init
-        stars_one.vy += vy_init
-        stars_one.vz += vz_init
-        
-        stars_two.x += x_init
-        stars_two.y += y_init
-        stars_two.z += z_init
-        stars_two.vx += vx_init
-        stars_two.vy += vy_init
-        stars_two.vz += vz_init
+        bodies_one, code_one = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init,
+                                               Nstars, W0, Mcluster, Rcluster, code_name)
+        bodies_two, code_two = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init,
+                                               Nstars, W0, Mcluster, Rcluster, code_name)
             
         #initialize binary system
         mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()

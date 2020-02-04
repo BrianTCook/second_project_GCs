@@ -579,6 +579,8 @@ if __name__ in '__main__':
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
     code_names = [ 'tree', 'Nbody', 'nemesis' ] 
     
+    t0 = time.time()
+    
     for orbiter_name in orbiter_names:
         for code_name in code_names:
             
@@ -588,6 +590,11 @@ if __name__ in '__main__':
             
             simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord, 
                        vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
+            
+            print('current time: %.03f minutes'%((time.time()-t0)/60.))
+            
             maps(orbiter_name, code_name)
+            
+            print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
     plotting_things(orbiter_names, code_names, tend, dt)

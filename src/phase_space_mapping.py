@@ -14,8 +14,7 @@ def maps(code_name, orbiter_name):
     sim_times = np.load(filename_time)
     phase_space_data = np.load(filename_phase)
     ntimes, ndim, nparticles = phase_space_data.shape
-    print(ntimes, ndim, nparticles)
-    
+
     for i, t in enumerate(sim_times):
     
         w_all = pd.DataFrame(np.rot90(phase_space_data[i,:,:]), 

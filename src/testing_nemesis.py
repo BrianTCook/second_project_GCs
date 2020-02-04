@@ -382,7 +382,7 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]
     
-    energies, mean_radial_coords, mean_speeds, clock_times = [], [], [], []
+    energies, median_radial_coords, median_speeds, clock_times = [], [], [], []
     
     t0 = time.time()
     
@@ -413,13 +413,11 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
             phase_space_data[j,4,k] = vy[k]
             phase_space_data[j,5,k] = vz[k]
         
-        xmean, ymean, zmean = np.sum(x)/Ntotal, np.sum(y)/Ntotal, np.sum(z)/Ntotal
-        mean_rval = np.sqrt(xmean**2 + ymean**2 + zmean**2)
-        mean_radial_coords.append(mean_rval)
+        rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for k in range(Ntotal) ]
+        median_radial_coords.append(np.median(rvals))
         
-        vxmean, vymean, vzmean = np.sum(vx)/Ntotal, np.sum(vy)/Ntotal, np.sum(vz)/Ntotal
-        mean_speed = np.sqrt(vxmean**2 + vymean**2 + vzmean**2)
-        mean_speeds.append(mean_speed)
+        speeds = [ np.sqrt(vx[i]**2 + vy[i]**2 + vz[i]**2) for k in range(Ntotal) ]
+        median_speeds.append(np.median(speeds))
                 
         gravity.evolve_model(t)
 
@@ -434,8 +432,8 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
     np.save('time_data_%s_%s.npy'%(code_name, orbiter_name), sim_times_unitless)
     np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
     np.savetxt(code_name + '_' + orbiter_name + '_energies.txt', energies)
-    np.savetxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt', mean_radial_coords)
-    np.savetxt(code_name + '_' + orbiter_name + '_mean_speeds.txt', mean_speeds)
+    np.savetxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt', median_radial_coords)
+    np.savetxt(code_name + '_' + orbiter_name + '_median_speeds.txt', median_speeds)
     np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
     
     return 0
@@ -467,6 +465,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
             try:
                 energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
                 axs[i].plot(sim_times_unitless, energies, label=code_name)
+                axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
+                axs[i].set_ylabel('Energy (J)', fontsize=12)
             except:
                 print('oh no!')
             
@@ -475,7 +475,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     plt.savefig('testing_nemesis_energy.png')
     plt.close()
     
-    #mean radial coordinates
+    #median radial coordinates
     
     fig, axs = plt.subplots(1, 3)
 
@@ -486,17 +486,20 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         for code_name in code_names:
             
             try:
-                mean_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_mean_radial_coords.txt')
-                axs[i].plot(sim_times_unitless, mean_radial_coords, label=code_name)
+                median_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt')
+                axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
+                axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
+                axs[i].set_ylabel('Median Galactocentric Distance (kpc)', fontsize=12)
             except:
                 print('oh no!')
             
         axs[i].legend(loc='best')
             
+    plt.tight_layout()
     plt.savefig('testing_nemesis_radialcoords.png')
     plt.close()
     
-    #mean speeds
+    #median speeds
     
     fig, axs = plt.subplots(1, 3)
 
@@ -507,8 +510,10 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         for code_name in code_names:
             
             try:
-                mean_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_mean_speeds.txt')
-                axs[i].plot(sim_times_unitless, mean_speeds, label=code_name)
+                median_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_median_speeds.txt')
+                axs[i].plot(sim_times_unitless, median_speeds, label=code_name)
+                axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
+                axs[i].set_ylabel('Median Speed (km/s)', fontsize=12)
             except:
                 print('oh no!')
             
@@ -530,6 +535,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
             try:
                 clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
                 axs[i].plot(sim_times_unitless, clock_times, label=code_name)
+                axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
+                axs[i].set_ylabel('Clock Time (s)', fontsize=12)
             except:
                 print('oh no!')
             
@@ -551,7 +558,7 @@ if __name__ in '__main__':
     Zcoord = (Zmax-Zmin)*np.random.random() + Zmin
     
     
-    #using Staeckel, whatever that means
+    #using Staeckel, whatever that medians
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
     qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
     vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
@@ -564,10 +571,10 @@ if __name__ in '__main__':
     
     print('initial coordinates: R, phi, Z, vr, vphi, vz: ', Rcoord, phicoord, Zcoord, vr_init, vphi_init, vz_init)
     
-    Nstars, W0 = 25, 1.5 #cluster parameters
-    Mcluster, Rcluster = float(Nstars)|units.MSun, 20.|units.parsec
-    sepBinary = 80.|units.parsec
-    tend, dt = 20.|units.Myr, 1.|units.Myr
+    Nstars, W0 = 100, 1.5 #cluster parameters
+    Mcluster, Rcluster = float(Nstars)|units.MSun, 10.|units.parsec
+    sepBinary = 40.|units.parsec
+    tend, dt = 500.|units.Myr, 1.|units.Myr
     
     orbiter_names = [ 'BinaryCluster' ] #'SingleStar', 'SingleCluster'
     code_names = [ 'tree', 'Nbody' ] #'nemesis'

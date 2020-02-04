@@ -3,10 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def maps(code_name, orbiter_name):
-
-    print('???????')
-    print('now mapping: %s %s '%(orbiter_name, code_name))
-    print('???????')
     
     filename_time = 'time_data_%s_%s.npy'%(orbiter_name, code_name)
     filename_phase = 'sixD_data_%s_%s.npy'%(orbiter_name, code_name)    
@@ -25,14 +21,6 @@ def maps(code_name, orbiter_name):
         
         x,y,z = w_all['x'].tolist(), w_all['y'].tolist(), w_all['z'].tolist()
         vx,vy,vz = w_all['vx'].tolist(), w_all['vy'].tolist(), w_all['vz'].tolist()
-        
-        if i%5 == 0:
-            
-            print('i = %i'%(i))
-            print('!!!!!!!!!!!!!!!!!')
-            print('median spatial coordinates in kpc: %.02f, %.02f, %.02f'%(np.median(x), np.median(y), np.median(z)))
-            print('median spatial coordinates in km/s: %.02f, %.02f, %.02f'%(np.median(vx), np.median(vy), np.median(vz)))
-            print('!!!!!!!!!!!!!!!!!')
         
         fig, axs = plt.subplots(5, 5)
         
@@ -124,8 +112,8 @@ def maps(code_name, orbiter_name):
         # Hide x labels and tick labels for top plots and y ticks for right plots.
         for ax in axs.flat:
             ax.label_outer()
-        
-        plt.tight_layout()
+            
+        plt.title('Time = %.02f Myr'%(t), fontsize=14)
         plt.savefig('phase_space_map_frame=%s_%s_%s.png'%(str(i).rjust(4, '0'), code_name, orbiter_name))
         plt.close()
     

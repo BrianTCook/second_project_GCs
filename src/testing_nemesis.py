@@ -566,8 +566,8 @@ if __name__ in '__main__':
     sepBinary = 80.|units.parsec
     tend, dt = 20.|units.Myr, 1.|units.Myr
     
-    orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
-    code_names = [ 'tree', 'Nbody', 'nemesis' ]
+    orbiter_names = [ 'SingleCluster', 'BinaryCluster' ] #'SingleStar'
+    code_names = [ 'tree', 'Nbody' ] #'nemesis'
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:

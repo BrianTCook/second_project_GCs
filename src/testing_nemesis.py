@@ -205,12 +205,12 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         if code_name == 'Nbody':
             
             code = Hermite(converter)
-            code.add_particles(bodies)
+            code.particles.add_particles(bodies)
             
         if code_name == 'tree':
         
             code = BHTree(converter)
-            code.add_particles(bodies)
+            code.particles.add_particles(bodies)
             
         if code_name == 'nemesis':
             

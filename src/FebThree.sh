@@ -8,9 +8,14 @@ echo 'convert .png files to .gif'
 convert -delay 10 'phase_space_map_frame=*_SingleStar_tree.png' -loop 0 map_tree_singlestar.gif
 convert -delay 10 'phase_space_map_frame=*_BinaryCluster_tree.png' -loop 0 map_tree_binarycluster.gif
 convert -delay 10 'phase_space_map_frame=*_SingleCluster_tree.png' -loop 0 map_tree_singlecluster.gif
+
 convert -delay 10 'phase_space_map_frame=*_SingleStar_Nbody.png' -loop 0 map_Nbody_singlestar.gif
 convert -delay 10 'phase_space_map_frame=*_BinaryCluster_Nbody.png' -loop 0 map_Nbody_binarycluster.gif
 convert -delay 10 'phase_space_map_frame=*_SingleCluster_Nbody.png' -loop 0 map_Nbody_singlecluster.gif
+
+convert -delay 10 'phase_space_map_frame=*_SingleStar_nemesis.png' -loop 0 map_nemesis_singlestar.gif
+convert -delay 10 'phase_space_map_frame=*_BinaryCluster_nemesis.png' -loop 0 map_nemesis_binarycluster.gif
+convert -delay 10 'phase_space_map_frame=*_SingleCluster_nemesis.png' -loop 0 map_nemesis_singlecluster.gif
 
 rm -rf phase_space_map_frame=*.png
 

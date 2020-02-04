@@ -80,7 +80,7 @@ def maps(code_name, orbiter_name):
         axs[3, 1].set_xlim(-5, 5)
         axs[3, 1].set_ylim(-400, 400)
         
-        axs[4, 1].scatter(vy, vz, s=2)
+        axs[4, 1].scatter(y, vz, s=2)
         axs[4, 1].set(xlabel='y', ylabel='vz')
         axs[4, 1].set_xlim(-5, 5)
         axs[4, 1].set_ylim(-400, 400)

@@ -287,17 +287,17 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         print('dBinary is', dBinary)
         print('vBinary is', vBinary)
         
-        stars_one.position += dBinary * mass_one/total_mass
-        stars_one.velocity += vBinary * mass_one/total_mass
+        bodies_one.position += dBinary * mass_one/total_mass
+        bodies_one.velocity += vBinary * mass_one/total_mass
 
-        stars_two.position -= dBinary * mass_two/total_mass
-        stars_two.velocity -= vBinary * mass_two/total_mass
+        bodies_two.position -= dBinary * mass_two/total_mass
+        bodies_two.velocity -= vBinary * mass_two/total_mass
         
-        all_stars = Particles(0)
-        all_stars.add_particles(stars_one)
-        all_stars.add_particles(stars_two)
+        all_bodies = Particles(0)
+        all_bodies.add_particles(bodies_one)
+        all_bodies.add_particles(bodies_two)
         
-        return all_stars, code_one, code_two #need to be different so they're bridged
+        return all_bodies, code_one, code_two #need to be different so they're bridged
 
 def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phicoord,
                        vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary):
@@ -569,7 +569,7 @@ if __name__ in '__main__':
     sepBinary = 80.|units.parsec
     tend, dt = 20.|units.Myr, 1.|units.Myr
     
-    orbiter_names = [ 'SingleCluster', 'BinaryCluster' ] #'SingleStar'
+    orbiter_names = [ 'BinaryCluster' ] #'SingleStar', 'SingleCluster'
     code_names = [ 'tree', 'Nbody' ] #'nemesis'
     
     for orbiter_name in orbiter_names:

@@ -114,7 +114,7 @@ def maps(code_name, orbiter_name):
         for ax in axs.flat:
             ax.label_outer()
             
-        fig.title('Time = %.02f Myr'%(t), fontsize=14)
+        fig.suptitle('Time = %.02f Myr'%(t), fontsize=14)
         plt.savefig('phase_space_map_frame=%s_%s_%s.png'%(str(i).rjust(4, '0'), code_name, orbiter_name))
         plt.close()
     

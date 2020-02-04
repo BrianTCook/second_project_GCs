@@ -80,7 +80,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     vy_init = (vr_init*np.sin(phicoord) + vphi_init*np.cos(phicoord)) | units.kms
     vz_init = vz_init | units.kms
     
-    pos_vec, vel_vec = (x_init, y_init, z_init)|units.kpc, (vx_init, vy_init, vz_init)|units.kms
+    pos_vec, vel_vec = (x_init, y_init, z_init), (vx_init, vy_init, vz_init)
     
     print('-----------------------------')
     print('-----------------------------')

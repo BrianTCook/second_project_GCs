@@ -190,6 +190,7 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     if orbiter_name == 'SingleStar':
         
         bodies = Particles(1)
+        
         bodies[0].mass = 1|units.MSun
         
         #right place in phase space
@@ -204,10 +205,12 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         if code_name == 'Nbody':
             
             code = Hermite(converter)
+            code.add_particles(bodies)
             
         if code_name == 'tree':
         
             code = BHTree(converter)
+            code.add_particles(bodies)
             
         if code_name == 'nemesis':
             
@@ -240,45 +243,43 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         '''
         need to initialize initial phase space coordinates with AGAMA or galpy
         '''
-    
-        for body in bodies:
-            #right place in phase space
-            body.x += x_init
-            body.y += y_init
-            body.z += z_init
-            body.vx += vx_init
-            body.vy += vy_init
-            body.vz += vz_init
-                
-        return bodies, code
+        
+        stars = code.particles.copy()
+        
+        #initializing phase space coordinates
+        stars.x += x_init
+        stars.y += y_init
+        stars.z += z_init
+        stars.vx += vx_init
+        stars.vy += vy_init
+        stars.vz += vz_init
+        
+        return stars, code
         
     if orbiter_name == 'BinaryCluster':
         
         bodies_one, code_one = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
         bodies_two, code_two = make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name)
         
-        for body in bodies_one:
-            #right place in phase space
-            body.x += x_init
-            body.y += y_init
-            body.z += z_init
-            body.vx += vx_init
-            body.vy += vy_init
-            body.vz += vz_init
-    
-        for body in bodies_two:
-            #right place in phase space
-            body.x += x_init
-            body.y += y_init
-            body.z += z_init
-            body.vx += vx_init
-            body.vy += vy_init
-            body.vz += vz_init
+        stars_one = code_one.particles.copy()
+        stars_two = code_two.particles.copy()
+        
+        #initializing phase space coordinates
+        stars_one.x += x_init
+        stars_one.y += y_init
+        stars_one.z += z_init
+        stars_one.vx += vx_init
+        stars_one.vy += vy_init
+        stars_one.vz += vz_init
+        
+        stars_two.x += x_init
+        stars_two.y += y_init
+        stars_two.z += z_init
+        stars_two.vx += vx_init
+        stars_two.vy += vy_init
+        stars_two.vz += vz_init
             
-        '''
-        need to initialize initial phase space coordinates with AGAMA or galpy
-        '''
-            
+        #initialize binary system
         mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()
         total_mass = mass_one + mass_two
         
@@ -286,19 +287,17 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         print('dBinary is', dBinary)
         print('vBinary is', vBinary)
         
-        for body in bodies_one:
-            body.position += dBinary * mass_one/total_mass
-            body.velocity += vBinary * mass_one/total_mass
-            
-        for body in bodies_two:
-            body.position -= dBinary * mass_two/total_mass
-            body.velocity -= vBinary * mass_two/total_mass
+        stars_one.position += dBinary * mass_one/total_mass
+        stars_one.velocity += vBinary * mass_one/total_mass
+
+        stars_two.position -= dBinary * mass_two/total_mass
+        stars_two.velocity -= vBinary * mass_two/total_mass
         
-        bodies = Particles(0)
-        bodies.add_particles(bodies_one)
-        bodies.add_particles(bodies_two)
+        all_stars = Particles(0)
+        all_stars.add_particles(stars_one)
+        all_stars.add_particles(stars_two)
         
-        return bodies, code_one, code_two #need to be different so they're bridged
+        return all_stars, code_one, code_two #need to be different so they're bridged
 
 def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phicoord,
                        vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary):
@@ -324,8 +323,8 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
             orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
                                                                          vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
     
-            #gravity.add_system(orbiter_code_one, (galaxy_code,))
-            #gravity.add_system(orbiter_code_two, (galaxy_code,))
+            gravity.add_system(orbiter_code_one, (galaxy_code,))
+            gravity.add_system(orbiter_code_two, (galaxy_code,))
             gravity.add_system(orbiter_code_one, (orbiter_code_two,))
             gravity.add_system(orbiter_code_two, (orbiter_code_one,))
             
@@ -370,10 +369,13 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
                vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt):
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
+    
     bodies, gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
     
-    channel_from_bodies_to_code = bodies.new_channel_to(gravity.particles)
-    channel_from_code_to_bodies = gravity.particles.new_channel_to(bodies)
+    stars = gravity.particles.copy()
+    
+    channel = stars.new_channel_to(gravity.particles)
+    channel.copy_attributes(['x','y','z','vx','vy','vz'])
     
     Ntotal = len(bodies)
     
@@ -423,9 +425,11 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
 
         #filename = code_name + '_' + orbiter_name + '_data.hdf5'
         #write_set_to_file(gravity.particles, filename, "hdf5")
-        
-    channel_from_code_to_bodies.copy()
-    #gravity.stop()
+     
+    try:
+        gravity.stop()
+    except:
+        'gravity cannot be stopped!'
     
     np.save('time_data_%s_%s.npy'%(code_name, orbiter_name), sim_times_unitless)
     np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
@@ -562,7 +566,7 @@ if __name__ in '__main__':
     sepBinary = 80.|units.parsec
     tend, dt = 20.|units.Myr, 1.|units.Myr
     
-    orbiter_names = [ 'SingleCluster', 'BinaryCluster' ] #'SingleStar'
+    orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
     code_names = [ 'tree', 'Nbody', 'nemesis' ]
     
     for orbiter_name in orbiter_names:

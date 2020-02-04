@@ -413,10 +413,10 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
             phase_space_data[j,4,k] = vy[k]
             phase_space_data[j,5,k] = vz[k]
         
-        rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for k in range(Ntotal) ]
+        rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for i in range(Ntotal) ]
         median_radial_coords.append(np.median(rvals))
         
-        speeds = [ np.sqrt(vx[i]**2 + vy[i]**2 + vz[i]**2) for k in range(Ntotal) ]
+        speeds = [ np.sqrt(vx[i]**2 + vy[i]**2 + vz[i]**2) for i in range(Ntotal) ]
         median_speeds.append(np.median(speeds))
                 
         gravity.evolve_model(t)

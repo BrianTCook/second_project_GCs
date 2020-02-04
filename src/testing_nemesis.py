@@ -70,6 +70,19 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     should get appropriate 6D initial phase space conditions
     '''
     
+    pos_vec, vel_vec = (x_init, y_init, z_init)|units.kpc, (vx_init, vy_init, vz_init)|units.kms
+    
+    print('-----------------------------')
+    print('-----------------------------')
+    print('-----------------------------')
+    print('orbiter_name: ', orbiter_name)
+    print('code_name: ', code_name)
+    print('initial spatial coordinates (Cartesian): ', pos_vec)
+    print('initial velocity coordinates: ', vel_vec)
+    print('-----------------------------')
+    print('-----------------------------')
+    print('-----------------------------')
+    
     #convert from galpy/cylindrical to AMUSE/Cartesian units
     x_init = Rcoord*np.cos(phicoord) | units.kpc
     y_init = Rcoord*np.sin(phicoord) | units.kpc
@@ -86,7 +99,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     bodies.z += z_init
     bodies.vx += vx_init
     bodies.vy += vy_init
-    bodies.vz += vz_init
+    #bodies.vz += vz_init
     
     #sub_worker in Nemesis
     if code_name == 'Nbody':
@@ -200,19 +213,6 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     vx_init = (vr_init*np.cos(phicoord) - vphi_init*np.sin(phicoord)) | units.kms
     vy_init = (vr_init*np.sin(phicoord) + vphi_init*np.cos(phicoord)) | units.kms
     vz_init = vz_init | units.kms
-    
-    pos_vec, vel_vec = (x_init, y_init, z_init)|units.kpc, (vx_init, vy_init, vz_init)|units.kms
-    
-    print('-----------------------------')
-    print('-----------------------------')
-    print('-----------------------------')
-    print('orbiter_name: ', orbiter_name)
-    print('code_name: ', code_name)
-    print('initial spatial coordinates (Cartesian): ', pos_vec)
-    print('initial velocity coordinates: ', vel_vec)
-    print('-----------------------------')
-    print('-----------------------------')
-    print('-----------------------------')
     
     if orbiter_name == 'SingleStar':
         

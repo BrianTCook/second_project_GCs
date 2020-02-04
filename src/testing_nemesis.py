@@ -547,8 +547,9 @@ if __name__ in '__main__':
     Zmin, Zmax = 0.5, 2. #in kpc
     
     Rcoord = (Rmax-Rmin)*np.random.random() + Rmin
-    Zcoord = (Zmax-Zmin)*np.random.random() + Zmin
     phicoord = 2*np.pi*np.random.random()
+    Zcoord = (Zmax-Zmin)*np.random.random() + Zmin
+    
     
     #using Staeckel, whatever that means
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
@@ -560,6 +561,8 @@ if __name__ in '__main__':
     vr_init *= to_kms
     vphi_init *= to_kms
     vz_init *= to_kms
+    
+    print('initial coordinates: R, phi, Z, vr, vphi, vz: ', Rcoord, phicoord, Zcoord, vr_init, vphi_init, vz_init)
     
     Nstars, W0 = 25, 1.5 #cluster parameters
     Mcluster, Rcluster = float(Nstars)|units.MSun, 20.|units.parsec

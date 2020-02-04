@@ -68,11 +68,13 @@ def make_king_model_cluster(Nstars, W0, Mcluster, Rcluster, code_name, parameter
         
         code = Hermite(converter)
         code.particles.add_particles(bodies)
+        code.commit_particles()
         
     if code_name == 'tree':
     
         code = BHTree(converter)
         code.particles.add_particles(bodies)
+        code.commit_particles()
         
     if code_name == 'nemesis':
         
@@ -206,11 +208,13 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
             
             code = Hermite(converter)
             code.particles.add_particles(bodies)
+            code.commit_particles()
             
         if code_name == 'tree':
         
             code = BHTree(converter)
             code.particles.add_particles(bodies)
+            code.commit_particles()
             
         if code_name == 'nemesis':
             
@@ -575,9 +579,6 @@ if __name__ in '__main__':
             print('')
             print(orbiter_name, code_name)
             print('')
-            
-            if orbiter_name == 'SingleStar' and code_name == 'nemesis':
-                continue
             
             simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord, 
                        vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)

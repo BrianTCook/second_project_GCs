@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 
 def maps(code_name, orbiter_name):
     
+    print('!!!!!!!!!!!!!!!!!!!!')
+    print('now mapping: %s, %s'%(code_name, orbiter_name))
+    print('!!!!!!!!!!!!!!!!!!!!')
+    
     filename_time = 'time_data_%s_%s.npy'%(orbiter_name, code_name)
     filename_phase = 'sixD_data_%s_%s.npy'%(orbiter_name, code_name)    
     
@@ -16,8 +20,6 @@ def maps(code_name, orbiter_name):
     
         w_all = pd.DataFrame(np.rot90(phase_space_data[i,:,:]), 
                              columns=['x', 'y', 'z', 'vx', 'vy', 'vz'])
-        
-        print('w_all is', w_all)
         
         x,y,z = w_all['x'].tolist(), w_all['y'].tolist(), w_all['z'].tolist()
         vx,vy,vz = w_all['vx'].tolist(), w_all['vy'].tolist(), w_all['vz'].tolist()

@@ -585,7 +585,7 @@ if __name__ in '__main__':
     sepBinary = 10.|units.parsec
     tend, dt = 20.|units.Myr, 1.|units.Myr
     
-    orbiter_names = [ 'BinaryCluster' ] #'SingleStar', 'SingleCluster',
+    orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
     code_names = [ 'tree', 'Nbody' ]
     
     t0 = time.time()
@@ -602,7 +602,9 @@ if __name__ in '__main__':
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
-            #maps(orbiter_name, code_name)
+            if orbiter_name == 'BinaryCluster':
+                
+                maps(orbiter_name, code_name)
             
             #print('current time: %.03f minutes'%((time.time()-t0)/60.))
             

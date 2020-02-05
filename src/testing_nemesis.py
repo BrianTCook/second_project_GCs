@@ -298,6 +298,12 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         bodies_two.position -= dBinary * mass_two/total_mass
         bodies_two.velocity -= vBinary * mass_two/total_mass
         
+        plt.figure()
+        plt.scatter(bodies_one.x.value_in(units.kpc), bodies_one.y.value_in(units.kpc), c='b', label='one')
+        plt.scatter(bodies_two.x.value_in(units.kpc), bodies_two.y.value_in(units.kpc), c='b', label='two')
+        plt.legend(loc='best')
+        plt.savefig('initial_binary.png')
+        
         all_bodies = Particles(0)
         all_bodies.add_particles(bodies_one)
         all_bodies.add_particles(bodies_two)

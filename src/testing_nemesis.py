@@ -397,6 +397,11 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
     
     t0 = time.time()
     
+    plt.figure()
+    plt.scatter(stars.x.value_in(units.kpc), stars.y.value_in(units.kpc), c='b', label='all')
+    plt.legend(loc='best')
+    plt.savefig('initial_binary_two.png')
+    
     #create an R^3 matrix to house phase space data for all particles
     phase_space_data = np.zeros((len(sim_times), 6, len(bodies)))
     

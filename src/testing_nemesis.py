@@ -285,7 +285,12 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
         dBinary, vBinary = getxv(converter, total_mass, sepBinary, e=0)
         print('dBinary is', dBinary)
+        print('position adjustment for one: ', dBinary * mass_one/total_mass)
+        print('position adjustment for two: ', -dBinary * mass_two/total_mass)
+        print('----')
         print('vBinary is', vBinary)
+        print('velocity adjustment for one: ', vBinary * mass_one/total_mass)
+        print('velocity adjustment for two: ', -vBinary * mass_two/total_mass)
         
         bodies_one.position += dBinary * mass_one/total_mass
         bodies_one.velocity += vBinary * mass_one/total_mass
@@ -573,7 +578,7 @@ if __name__ in '__main__':
     
     Nstars, W0 = int(float(1e2)), 1.5 #cluster parameters
     Mcluster, Rcluster = float(Nstars)|units.MSun, 1.|units.parsec
-    sepBinary = 4.|units.parsec
+    sepBinary = 10.|units.parsec
     tend, dt = 20.|units.Myr, 1.|units.Myr
     
     orbiter_names = [ 'BinaryCluster' ] #'SingleStar', 'SingleCluster',

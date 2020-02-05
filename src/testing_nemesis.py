@@ -298,14 +298,6 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         bodies_two.position -= dBinary * mass_two/total_mass
         bodies_two.velocity -= vBinary * mass_two/total_mass
         
-        '''
-        plt.figure()
-        plt.scatter(bodies_one.x.value_in(units.kpc), bodies_one.y.value_in(units.kpc), c='b', label='one')
-        plt.scatter(bodies_two.x.value_in(units.kpc), bodies_two.y.value_in(units.kpc), c='b', label='two')
-        plt.legend(loc='best')
-        plt.savefig('initial_binary.png')
-        '''
-        
         all_bodies = Particles(0)
         all_bodies.add_particles(bodies_one)
         all_bodies.add_particles(bodies_two)
@@ -575,7 +567,6 @@ if __name__ in '__main__':
     phicoord = 2*np.pi*np.random.random()
     Zcoord = (Zmax-Zmin)*np.random.random() + Zmin
     
-    
     #using Staeckel, whatever that medians
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
     qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
@@ -611,8 +602,8 @@ if __name__ in '__main__':
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
-            maps(orbiter_name, code_name)
+            #maps(orbiter_name, code_name)
             
-            print('current time: %.03f minutes'%((time.time()-t0)/60.))
+            #print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
     plotting_things(orbiter_names, code_names, tend, dt)

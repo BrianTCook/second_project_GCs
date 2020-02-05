@@ -298,11 +298,13 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         bodies_two.position -= dBinary * mass_two/total_mass
         bodies_two.velocity -= vBinary * mass_two/total_mass
         
+        '''
         plt.figure()
         plt.scatter(bodies_one.x.value_in(units.kpc), bodies_one.y.value_in(units.kpc), c='b', label='one')
         plt.scatter(bodies_two.x.value_in(units.kpc), bodies_two.y.value_in(units.kpc), c='b', label='two')
         plt.legend(loc='best')
         plt.savefig('initial_binary.png')
+        '''
         
         all_bodies = Particles(0)
         all_bodies.add_particles(bodies_one)
@@ -383,9 +385,7 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
     
     bodies, gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
     
-    stars = gravity.particles.copy()
-    
-    channel = stars.new_channel_to(gravity.particles)
+    channel = bodies.new_channel_to(gravity.particles)
     channel.copy_attributes(['x','y','z','vx','vy','vz'])
     
     Ntotal = len(bodies)
@@ -397,10 +397,12 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
     
     t0 = time.time()
     
+    '''
     plt.figure()
     plt.scatter(bodies.x.value_in(units.kpc), bodies.y.value_in(units.kpc), c='b', label='all')
     plt.legend(loc='best')
     plt.savefig('initial_binary_two.png')
+    '''
     
     #create an R^3 matrix to house phase space data for all particles
     phase_space_data = np.zeros((len(sim_times), 6, len(bodies)))

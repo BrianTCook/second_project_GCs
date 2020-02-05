@@ -580,10 +580,10 @@ if __name__ in '__main__':
     
     print('initial coordinates: R, phi, Z, vr, vphi, vz: ', Rcoord, phicoord, Zcoord, vr_init, vphi_init, vz_init)
     
-    Nstars, W0 = int(float(1e2)), 1.5 #cluster parameters
+    Nstars, W0 = 50, 1.5 #cluster parameters
     Mcluster, Rcluster = float(Nstars)|units.MSun, 1.|units.parsec
-    sepBinary = 10.|units.parsec
-    tend, dt = 20.|units.Myr, 1.|units.Myr
+    sepBinary = 8.|units.parsec
+    tend, dt = 80.|units.Myr, 1.|units.Myr
     
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
     code_names = [ 'tree', 'Nbody' ]

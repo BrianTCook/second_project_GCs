@@ -571,13 +571,13 @@ if __name__ in '__main__':
     
     print('initial coordinates: R, phi, Z, vr, vphi, vz: ', Rcoord, phicoord, Zcoord, vr_init, vphi_init, vz_init)
     
-    Nstars, W0 = 100, 1.5 #cluster parameters
-    Mcluster, Rcluster = float(Nstars)|units.MSun, 10.|units.parsec
-    sepBinary = 40.|units.parsec
-    tend, dt = 100.|units.Myr, 1.|units.Myr
+    Nstars, W0 = int(float(1e2)), 1.5 #cluster parameters
+    Mcluster, Rcluster = float(Nstars)|units.MSun, 1.|units.parsec
+    sepBinary = 4.|units.parsec
+    tend, dt = 20.|units.Myr, 1.|units.Myr
     
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
-    code_names = [ 'tree', 'Nbody', 'nemesis' ] 
+    code_names = [ 'tree', 'Nbody' ]
     
     t0 = time.time()
     
@@ -593,8 +593,8 @@ if __name__ in '__main__':
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
-            maps(orbiter_name, code_name)
+            #maps(orbiter_name, code_name)
             
-            print('current time: %.03f minutes'%((time.time()-t0)/60.))
+            #print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
     plotting_things(orbiter_names, code_names, tend, dt)

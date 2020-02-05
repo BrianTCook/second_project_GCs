@@ -23,6 +23,7 @@ def maps(code_name, orbiter_name):
         x,y,z = w_all['x'].tolist(), w_all['y'].tolist(), w_all['z'].tolist()
         vx,vy,vz = w_all['vx'].tolist(), w_all['vy'].tolist(), w_all['vz'].tolist()
         
+        '''
         fig, axs = plt.subplots(5, 5)
         
         #first column
@@ -116,6 +117,14 @@ def maps(code_name, orbiter_name):
             
         fig.suptitle('Time = %.02f Myr'%(t), fontsize=14)
         plt.savefig('phase_space_map_frame=%s_%s_%s.png'%(str(i).rjust(4, '0'), code_name, orbiter_name))
+        '''
+        
+        plt.figure()
+        plt.scatter(x, y, 'k')
+        plt.xlabel('x (kpc)', fontsize=12)
+        plt.ylabel('y (kpc)', fontsize=12)
+        plt.title('time = %.02f Myr'%(t), fontsize=16)
+        plt.savefig('snapshot_%s_%s_%i.png'%(orbiter_name, code_name, i))
         plt.close()
     
     return 0

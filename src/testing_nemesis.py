@@ -330,8 +330,8 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
     
             gravity.add_system(orbiter_code_one, (galaxy_code,))
             gravity.add_system(orbiter_code_two, (galaxy_code,))
-            gravity.add_system(orbiter_code_one, (orbiter_code_two,))
-            gravity.add_system(orbiter_code_two, (orbiter_code_one,))
+            #gravity.add_system(orbiter_code_one, (orbiter_code_two,))
+            #gravity.add_system(orbiter_code_two, (orbiter_code_one,))
             
     if code_name == 'nemesis':
         

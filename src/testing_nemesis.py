@@ -489,7 +489,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 
                 e0 = energies[0]
                 scaled_energies = [ e/e0 for e in energies ]                
-                axs[i].plot(sim_times_unitless, energies, label=code_name)
+                axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
                     
             except:
                 print('oh no!')
@@ -618,7 +618,7 @@ if __name__ in '__main__':
     tend, dt = 100.|units.Myr, 1.|units.Myr
     
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
-    code_names = [ 'tree', 'Nbody' ]
+    code_names = [ 'tree', 'Nbody' ] #'nemesis'
     
     t0 = time.time()
     

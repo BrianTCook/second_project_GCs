@@ -472,6 +472,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
+        axs[i].set_ylim(0.8, 1.2)
+        
         if orbiter_name == 'SingleCluster':
                 
             axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
@@ -495,7 +497,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 print('oh no!')
             
         axs[i].legend(loc='best')
-            
+   
+    plt.tight_layout()         
     plt.savefig('testing_nemesis_energy.png')
     plt.close()
     
@@ -554,7 +557,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 print('oh no!')
             
         axs[i].legend(loc='best')
-            
+       
+    plt.tight_layout() 
     plt.savefig('testing_nemesis_speeds.png')
     plt.close()
     
@@ -583,7 +587,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 print('oh no!')
             
         axs[i].legend(loc='best')
-            
+       
+    plt.tight_layout() 
     plt.savefig('testing_nemesis_clocktimes.png')
     plt.close()
     

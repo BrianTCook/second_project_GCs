@@ -465,7 +465,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     
     #energies
     
-    plt.rc('text', usetex=True)
+    #plt.rc('text', usetex=True)
     plt.rc('font', family='serif')
     
     fig, axs = plt.subplots(1, 3)
@@ -612,13 +612,13 @@ if __name__ in '__main__':
     
     print('initial coordinates: R, phi, Z, vr, vphi, vz: ', Rcoord, phicoord, Zcoord, vr_init, vphi_init, vz_init)
     
-    Nstars, W0 = 100, 1.5 #cluster parameters
-    Mcluster, Rcluster = float(Nstars)|units.MSun, 1.|units.parsec
+    Nstars, W0 = 200, 1.5 #cluster parameters
+    Mcluster, Rcluster = float(Nstars)|units.MSun, 3.|units.parsec
     sepBinary = 20.|units.parsec
     tend, dt = 100.|units.Myr, 1.|units.Myr
     
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
-    code_names = [ 'tree', 'Nbody', 'nemesis' ]
+    code_names = [ 'tree', 'Nbody' ]
     
     t0 = time.time()
     
@@ -638,6 +638,6 @@ if __name__ in '__main__':
                 
                 maps(orbiter_name, code_name)
             
-            #print('current time: %.03f minutes'%((time.time()-t0)/60.))
+            print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
     plotting_things(orbiter_names, code_names, tend, dt)

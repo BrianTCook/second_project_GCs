@@ -3,7 +3,9 @@
 echo 'run script'
 python3 testing_nemesis.py
 
-echo 'no gifs, just run the simulation and get the energy/\av{w} plots'
+echo 'create BinaryCluster gifs'
+convert -delay 10 'snapshot_Nbody_*.png' -loop Nbody.gif
+convert -delay 10 'snapshot_tree_*.png' -loop tree.gif
 
 mv *.txt ../data
 mv *.npy ../data

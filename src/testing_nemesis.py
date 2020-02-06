@@ -466,13 +466,21 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     #energies
     
     plt.rc('text', usetex=True)
-    plt.rc('font', family='serif'r)
+    plt.rc('font', family='serif')
     
     fig, axs = plt.subplots(1, 3)
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        axs[i].set_title(orbiter_name)
+        if orbiter_name == 'SingleCluster':
+                
+            axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
+        
+        if orbiter_name == 'SingleStar':
+        
+            axs[i].set_ylabel('Energy/Energy($t=0$)', fontsize=12)
+        
+        axs[i].set_title(orbiter_name, fontsize=8)
         
         for code_name in code_names:
             
@@ -482,14 +490,6 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 e0 = energies[0]
                 scaled_energies = [ e/e0 for e in energies ]                
                 axs[i].plot(sim_times_unitless, energies, label=code_name)
-
-                if orbiter_name == 'SingleCluster':
-                
-                    axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
-                
-                if orbiter_name == 'SingleStar':
-                
-                    axs[i].set_ylabel('Energy/Energy($t=0$)', fontsize=12)
                     
             except:
                 print('oh no!')
@@ -505,21 +505,21 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        axs[i].set_title(orbiter_name)
+        if orbiter_name == 'SingleCluster':
+                
+            axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
+        
+        if orbiter_name == 'SingleStar':
+        
+            axs[i].set_ylabel('Median Radial Coordinate (kpc)', fontsize=12)
+        
+        axs[i].set_title(orbiter_name, fontsize=8)
         
         for code_name in code_names:
             
             try:
                 median_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt')
                 axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
-                
-                if orbiter_name == 'SingleCluster':
-                
-                    axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
-                    
-                if orbiter_name == 'SingleStar':
-                    
-                    axs[i].set_ylabel('Median Galactocentric Distance (kpc)', fontsize=12)
             except:
                 print('oh no!')
             
@@ -535,22 +535,21 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        axs[i].set_title(orbiter_name)
+        if orbiter_name == 'SingleCluster':
+                
+            axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
+        
+        if orbiter_name == 'SingleStar':
+        
+            axs[i].set_ylabel('Median Speed (km/s)', fontsize=12)
+        
+        axs[i].set_title(orbiter_name, fontsize=8)
         
         for code_name in code_names:
             
             try:
                 median_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_median_speeds.txt')
-                axs[i].plot(sim_times_unitless, median_speeds, label=code_name)
-                
-                if orbiter_name == 'SingleCluster':
-                
-                    axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
-                
-                if orbiter_name == 'SingleStar':
-                
-                    axs[i].set_ylabel('Median Speed (km/s)', fontsize=12)
-                    
+                axs[i].plot(sim_times_unitless, median_speeds, label=code_name)                    
             except:
                 print('oh no!')
             
@@ -565,22 +564,21 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        axs[i].set_title(orbiter_name)
+        if orbiter_name == 'SingleCluster':
+                
+            axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
+            
+        if orbiter_name == 'SingleStar':
+            
+            axs[i].set_ylabel('Clock Time (s)', fontsize=12)
+        
+        axs[i].set_title(orbiter_name, fontsize=8)
         
         for code_name in code_names:
             
             try:
                 clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
-                axs[i].plot(sim_times_unitless, clock_times, label=code_name)
-                
-                if orbiter_name == 'SingleCluster':
-                
-                    axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
-                    
-                if orbiter_name == 'SingleStar':
-                    
-                    axs[i].set_ylabel('Clock Time (s)', fontsize=12)
-                    
+                axs[i].plot(sim_times_unitless, clock_times, label=code_name)                    
             except:
                 print('oh no!')
             

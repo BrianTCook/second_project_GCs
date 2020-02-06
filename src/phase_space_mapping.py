@@ -124,7 +124,7 @@ def maps(code_name, orbiter_name):
         plt.xlabel('x (kpc)', fontsize=12)
         plt.ylabel('y (kpc)', fontsize=12)
         plt.title('time = %.02f Myr'%(t), fontsize=16)
-        plt.savefig('snapshot_%s_%s_%i.png'%(orbiter_name, code_name, i))
+        plt.savefig('snapshot_%s_%s_%s.png'%(orbiter_name, code_name, str(i).rjust(4, '0')))
         plt.close()
     
     return 0

@@ -122,8 +122,6 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         '''
         
         parts = HierarchicalParticles(bodies)
-
-        converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
         
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
         dt_nemesis = dt
@@ -205,7 +203,9 @@ def radius(sys, eta=0.1, _G=constants.G):
 def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
             vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary):
 
-    converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
+    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    converter = converter_sub
     
     '''
     takes in R, Z value
@@ -253,9 +253,6 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         if code_name == 'nemesis':
             
             parts = HierarchicalParticles(bodies)
-
-            converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
-            converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
             
             dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
             dt_nemesis = dt
@@ -324,6 +321,10 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
     Nemesis gravity solvers?
     '''
     
+    converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
+    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    converter = converter_sub
+    
     if code_name != 'nemesis':
         
         gravity = bridge.Bridge(use_threading=False)
@@ -358,9 +359,6 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
             
         
         parts = HierarchicalParticles(orbiter_bodies)
-
-        converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
-        converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
         
         dt = smaller_nbody_power_of_two(1. | units.Myr, converter_parent)
         dt_nemesis = dt
@@ -405,7 +403,12 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
     return orbiter_bodies, nemesis #gravity
 
 def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,  
-               vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt):
+               vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, 
+               Mgalaxy, Rgalaxy, sepBinary, tend, dt):
+    
+    converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
+    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    converter = converter_sub
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     
@@ -655,6 +658,7 @@ if __name__ in '__main__':
     
     Nstars, W0 = 200, 1.5 #cluster parameters
     Mcluster, Rcluster = float(Nstars)|units.MSun, 3.|units.parsec
+    Mgalaxy, Rgalaxy = float(1e11)|units.MSun, 10.|units.kpc
     sepBinary = 20.|units.parsec
     tend, dt = 100.|units.Myr, 1.|units.Myr
     dt_param = 0.1 #for nemesis
@@ -672,7 +676,7 @@ if __name__ in '__main__':
             print('')
             
             simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord, 
-                       vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt)
+                       vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, Mgalaxy, Rgalaxy, sepBinary, tend, dt)
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             

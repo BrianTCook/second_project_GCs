@@ -205,15 +205,24 @@ class Nemesis(object):
     
     for p in self.particles:
       self.set_parent_particle_radius(p)
-      
+     
+    print('-----')
+    print('gets to def commit_particles(self):')  
+    print('-----') 
+    
     for parent in self.subcodes.keys():
+        print('-----')
+        print('gets to for parent in self.subcodes.keys():')
+        print('-----')
       if parent.subsystem is self.subcodes[parent].particles:
         continue
       code=self.subcodes.pop(parent)
       del code
     for parent in self.particles.compound_particles():
+      print('-----')
+      print('gets to for parent in self.particles.compound_particles():')
+      print('-----')
       if not self.subcodes.has_key(parent):
-        print('gets here!')
         sys=parent.subsystem
         code=self.subcode_factory(sys)
         code.parameters.begin_time=self.model_time

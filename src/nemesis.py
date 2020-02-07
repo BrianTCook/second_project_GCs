@@ -211,9 +211,9 @@ class Nemesis(object):
     print('-----') 
     
     for parent in self.subcodes.keys():
-        print('-----')
-        print('gets to for parent in self.subcodes.keys():')
-        print('-----')
+      print('-----')
+      print('gets to for parent in self.subcodes.keys():')
+      print('-----')
       if parent.subsystem is self.subcodes[parent].particles:
         continue
       code=self.subcodes.pop(parent)

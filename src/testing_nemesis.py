@@ -1,6 +1,6 @@
 from amuse.lab import *
-from amuse.ext.bridge import bridge
-from amuse.couple import bridge as bridge_couple
+#from amuse.ext.bridge import bridge
+from amuse.couple import bridge
 from amuse.couple.bridge import CalculateFieldForParticles
 from amuse.ic.kingmodel import new_king_model
 from amuse.io import write_set_to_file, read_set_from_file
@@ -324,7 +324,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
     
     if code_name != 'nemesis':
         
-        gravity = bridge()
+        gravity = bridge.Bridge(use_threading=False)
         
         if orbiter_name != 'BinaryCluster':
             
@@ -374,7 +374,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
 
-        gravity = bridge()
+        gravity = bridge.Bridge(use_threading=False)
         gravity.add_system(nemesis, (galaxy_code,))
         gravity.timestep = dt_bridge
 
@@ -445,7 +445,7 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
         #filename = code_name + '_' + orbiter_name + '_data.hdf5'
         #write_set_to_file(gravity.particles, filename, "hdf5")
      
-        channel.copy()
+        #channel.copy()
         
     try:
         gravity.stop()

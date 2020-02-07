@@ -377,13 +377,13 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
 
         print('nemesis.subcodes are: ', nemesis.subcodes)
 
-        gravity = bridge.Bridge(use_threading=False)
-        gravity.add_system(nemesis, (galaxy_code,))
-        gravity.timestep = dt_bridge
-        gravity.commit_parameters()
-        gravity.commit_particles()
+        #gravity = bridge.Bridge(use_threading=False)
+        #gravity.add_system(nemesis, (galaxy_code,))
+        #gravity.timestep = dt_bridge
+        #gravity.commit_parameters()
+        #gravity.commit_particles()
 
-    return orbiter_bodies, gravity
+    return orbiter_bodies, nemesis #gravity
 
 def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,  
                vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary, tend, dt):

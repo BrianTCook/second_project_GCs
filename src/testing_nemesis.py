@@ -375,6 +375,8 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
 
+        print('nemesis.subcodes are: ', nemesis.subcodes)
+
         gravity = bridge.Bridge(use_threading=False)
         gravity.add_system(nemesis, (galaxy_code,))
         gravity.timestep = dt_bridge

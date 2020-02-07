@@ -146,6 +146,8 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     return bodies, code
 
 def parent_worker():
+    Mgalaxy, Rgalaxy = float(1e11)|units.MSun, 10.|units.kpc
+    converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     code = Hermite(converter_parent)
     code.parameters.epsilon_squared=0.| units.kpc**2
     code.parameters.end_time_accuracy_factor=0.
@@ -154,6 +156,8 @@ def parent_worker():
     return code
 
 def sub_worker(parts):
+    Mcluster, Rcluster = 100.|units.MSun, 3.|units.parsec
+    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
     mode = system_type(parts)
     code = BHTree(converter_sub)
     #code.parameters.inttype_parameter=code.inttypes.SHARED4

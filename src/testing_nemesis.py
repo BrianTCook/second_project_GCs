@@ -377,7 +377,8 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
 
         print('nemesis.particles.compound_particles: ', nemesis.particles.compound_particles)
         
-        for parent in nemesis.particles.compound_particles:
+        for parent in nemesis.particles.compound_particles():
+            print('parent is: ', parent)
             if not nemesis.subcodes.has_key(parent):
                 sys = parent.subsystem
                 code = nemesis.subcode_factory(sys)

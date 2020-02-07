@@ -213,6 +213,7 @@ class Nemesis(object):
       del code
     for parent in self.particles.compound_particles():
       if not self.subcodes.has_key(parent):
+        print('gets here!')
         sys=parent.subsystem
         code=self.subcode_factory(sys)
         code.parameters.begin_time=self.model_time

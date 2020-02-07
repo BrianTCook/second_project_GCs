@@ -667,6 +667,10 @@ if __name__ in '__main__':
     tend, dt = 100.|units.Myr, 1.|units.Myr
     dt_param = 0.1 #for nemesis
     
+    converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
+    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    converter = converter_sub
+    
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
     code_names = [ 'nemesis' ]
     

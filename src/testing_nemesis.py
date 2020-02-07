@@ -357,13 +357,16 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
             
         
         parts = HierarchicalParticles(orbiter_bodies)
+        
+        print('parts.simple_particles(): ', parts.simple_particles())
+        print('parts.compount_particles(): ', parts.compound_particles())
 
         converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
         dt = smaller_nbody_power_of_two(1. | units.Myr, converter_parent)
         dt_nemesis = dt
         print('dt_nemesis: ', dt.in_(units.Myr))
         dt_bridge = 0.01*dt
-        dt_param = 0.1
+        dt_param = 0.1c
         
         nemesis = Nemesis( parent_worker, sub_worker, py_worker)
         nemesis.timestep = dt
@@ -375,7 +378,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
 
-        print('nemesis.particles.compound_particles(): ', nemesis.particles.compount_particles())
+        print('nemesis.particles.compound_particles(): ', nemesis.particles.compound_particles())
         print('nemesis.subcodes are: ', nemesis.subcodes)
 
         #gravity = bridge.Bridge(use_threading=False)

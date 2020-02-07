@@ -116,6 +116,10 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         
     if code_name == 'nemesis':
         
+        '''
+        ends up not being used?
+        '''
+        
         parts = HierarchicalParticles(bodies)
 
         converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
@@ -123,6 +127,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
         dt_nemesis = dt
         dt_bridge = 0.01 * dt
+        dt_param = 0.1
         
         nemesis = Nemesis(parent_worker, sub_worker, py_worker)
         nemesis.timestep = dt
@@ -170,8 +175,6 @@ def smaller_nbody_power_of_two(dt, conv):
 
     return conv.to_si( 2**idt | nbody_system.time)
 
-dt_param = 0.1
-
 def distance_function(ipart, jpart, eta=dt_param/2., _G=constants.G):
     
     dx = ipart.x-jpart.x
@@ -191,7 +194,7 @@ def radius(sys, eta=dt_param, _G=constants.G):
     #variable shouldn't be named radius
     ra = ((_G*sys.total_mass()*dt**2/eta**2)**(1/3.))
     ra = ra*((len(sys)+1)/2.)**0.75
-    return 100.*ra
+    return 3.*ra #is this the roche-lobe radius?
 
 def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
             vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary):
@@ -333,8 +336,6 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
             
     if code_name == 'nemesis':
         
-        gravity = bridge()
-        
         #just don't use orbiter_code here, just replace it with nemesis
         if orbiter_name != 'BinaryCluster':
             
@@ -350,9 +351,10 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         parts = HierarchicalParticles(orbiter_bodies)
 
         converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
-        dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
+        dt = smaller_nbody_power_of_two(1. | units.Myr, converter_parent)
         dt_nemesis = dt
-        dt_bridge = 0.1 * dt
+        print('dt_nemesis: ', dt.in_(units.Myr))
+        dt_bridge = 0.01*dt
         
         nemesis = Nemesis( parent_worker, sub_worker, py_worker)
         nemesis.timestep = dt
@@ -364,7 +366,9 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
 
+        gravity = bridge.Bridge(use_threading=False)
         gravity.add_system(nemesis, (galaxy_code,))
+        gravity.timestep = dt_bridge
 
     return orbiter_bodies, gravity
 
@@ -393,6 +397,9 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
     plt.legend(loc='best')
     plt.savefig('initial_binary_two.png')
     '''
+    
+    if code_name == 'nemesis':
+        channel_to_nemesis = bodies.new_channel_to(gravity.particles.all())
     
     #create an R^3 matrix to house phase space data for all particles
     phase_space_data = np.zeros((len(sim_times), 6, len(bodies)))
@@ -433,6 +440,9 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
         #filename = code_name + '_' + orbiter_name + '_data.hdf5'
         #write_set_to_file(gravity.particles, filename, "hdf5")
      
+        if code_name == 'nemesis':
+            channel_to_nemesis.copy()
+        
     try:
         gravity.stop()
     except:

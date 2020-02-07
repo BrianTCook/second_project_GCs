@@ -156,7 +156,7 @@ def parent_worker():
     #print code.parameters.dt_dia.in_(units.yr)
     return code
 
-def sub_worker(parts):
+def sub_worker():
     converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
     code = BHTree(converter_sub)
     code.parameters.inttype_parameter=code.inttypes.SHARED4
@@ -377,6 +377,10 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
 
         print('nemesis.particles.compound_particles: ', nemesis.particles.compound_particles)
         
+        '''
+        this should be done by sub_worker
+        
+        
         for parent in nemesis.particles.compound_particles():
             print('parent is: ', parent)
             if not nemesis.subcodes.has_key(parent):
@@ -386,6 +390,8 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
                 code.particles.add_particles(sys)
                 parent.subsystem = code.particles
                 nemesis.subcodes[parent]=code
+                
+        '''
         
         print('nemesis.subcodes are: ', nemesis.subcodes)
 

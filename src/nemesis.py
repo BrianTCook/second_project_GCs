@@ -218,6 +218,9 @@ class Nemesis(object):
         continue
       code=self.subcodes.pop(parent)
       del code
+    print('!!!!')
+    print('self.particles.compound_particles(): ', self.particles.compound_particles())
+    print('!!!!')
     for parent in self.particles.compound_particles():
       print('-----')
       print('gets to for parent in self.particles.compound_particles():')

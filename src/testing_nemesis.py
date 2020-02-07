@@ -621,7 +621,7 @@ if __name__ in '__main__':
     tend, dt = 100.|units.Myr, 1.|units.Myr
     
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
-    code_names = [ 'tree', 'Nbody' ] #'nemesis'
+    code_names = [ 'nemesis' ]
     
     t0 = time.time()
     

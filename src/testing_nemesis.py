@@ -176,7 +176,7 @@ def smaller_nbody_power_of_two(dt, conv):
 
     return conv.to_si( 2**idt | nbody_system.time)
 
-def distance_function(ipart, jpart, eta=dt_param/2., _G=constants.G):
+def distance_function(ipart, jpart, eta=0.1/2., _G=constants.G):
     
     dx = ipart.x-jpart.x
     dy = ipart.y-jpart.y

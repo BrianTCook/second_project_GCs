@@ -374,7 +374,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
 
-        gravity = bridge_couple.Bridge(use_threading=False)
+        gravity = bridge()
         gravity.add_system(nemesis, (galaxy_code,))
         gravity.timestep = dt_bridge
 
@@ -405,9 +405,6 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
     plt.legend(loc='best')
     plt.savefig('initial_binary_two.png')
     '''
-    
-    if code_name == 'nemesis':
-        channel_to_nemesis = bodies.new_channel_to(gravity.particles.all())
     
     #create an R^3 matrix to house phase space data for all particles
     phase_space_data = np.zeros((len(sim_times), 6, len(bodies)))
@@ -448,8 +445,7 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
         #filename = code_name + '_' + orbiter_name + '_data.hdf5'
         #write_set_to_file(gravity.particles, filename, "hdf5")
      
-        if code_name == 'nemesis':
-            channel_to_nemesis.copy()
+        channel.copy()
         
     try:
         gravity.stop()

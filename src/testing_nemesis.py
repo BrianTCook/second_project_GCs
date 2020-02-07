@@ -1,5 +1,6 @@
 from amuse.lab import *
 from amuse.ext.bridge import bridge
+from amuse.couple import bridge as bridge_couple
 from amuse.couple.bridge import CalculateFieldForParticles
 from amuse.ic.kingmodel import new_king_model
 from amuse.io import write_set_to_file, read_set_from_file
@@ -253,6 +254,7 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
             dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
             dt_nemesis = dt
             dt_bridge = 0.01 * dt
+            dt_param = 0.1
             
             nemesis = Nemesis( parent_worker, sub_worker, py_worker)
             nemesis.timestep = dt
@@ -355,6 +357,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         dt_nemesis = dt
         print('dt_nemesis: ', dt.in_(units.Myr))
         dt_bridge = 0.01*dt
+        dt_param = 0.1
         
         nemesis = Nemesis( parent_worker, sub_worker, py_worker)
         nemesis.timestep = dt
@@ -366,7 +369,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
 
-        gravity = bridge.Bridge(use_threading=False)
+        gravity = bridge_couple.Bridge(use_threading=False)
         gravity.add_system(nemesis, (galaxy_code,))
         gravity.timestep = dt_bridge
 

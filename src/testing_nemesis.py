@@ -632,6 +632,7 @@ if __name__ in '__main__':
     Mcluster, Rcluster = float(Nstars)|units.MSun, 3.|units.parsec
     sepBinary = 20.|units.parsec
     tend, dt = 100.|units.Myr, 1.|units.Myr
+    dt_param = 0.1 #for nemesis
     
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
     code_names = [ 'nemesis' ]

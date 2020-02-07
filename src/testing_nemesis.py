@@ -190,7 +190,12 @@ def distance_function(ipart, jpart, eta=0.1/2., _G=constants.G):
 
     return tau
 
-def radius(sys, eta=dt_param, _G=constants.G):
+'''
+eta = should be dt_param or dt_param/2. but it's not being defined for whatever reason
+'''
+
+
+def radius(sys, eta=0.1, _G=constants.G):
 
     #variable shouldn't be named radius
     ra = ((_G*sys.total_mass()*dt**2/eta**2)**(1/3.))

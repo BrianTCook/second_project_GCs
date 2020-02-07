@@ -148,7 +148,6 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     return bodies, code
 
 def parent_worker():
-    converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
     code = Hermite(converter_parent)
     code.parameters.epsilon_squared=0.| units.kpc**2
     code.parameters.end_time_accuracy_factor=0.
@@ -156,10 +155,10 @@ def parent_worker():
     #print code.parameters.dt_dia.in_(units.yr)
     return code
 
-def sub_worker():
-    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+def sub_worker(parts):
+    mode = system_type(parts)
     code = BHTree(converter_sub)
-    code.parameters.inttype_parameter=code.inttypes.SHARED4
+    #code.parameters.inttype_parameter=code.inttypes.SHARED4
     return code
 
 def py_worker():
@@ -256,11 +255,13 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
             parts = HierarchicalParticles(bodies)
 
             converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
+            converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
             
             dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
             dt_nemesis = dt
             dt_bridge = 0.01 * dt
             dt_param = 0.1
+            
             
             nemesis = Nemesis( parent_worker, sub_worker, py_worker)
             nemesis.timestep = dt
@@ -359,6 +360,8 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         parts = HierarchicalParticles(orbiter_bodies)
 
         converter_parent = nbody_system.nbody_to_si(Mcluster, Rcluster)
+        converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+        
         dt = smaller_nbody_power_of_two(1. | units.Myr, converter_parent)
         dt_nemesis = dt
         print('dt_nemesis: ', dt.in_(units.Myr))

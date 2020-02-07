@@ -159,6 +159,7 @@ def parent_worker():
 def sub_worker(parts):
     converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
     code = BHTree(converter_sub)
+    code.parameters.inttype_parameter=code.inttypes.SHARED4
     return code
 
 def py_worker():

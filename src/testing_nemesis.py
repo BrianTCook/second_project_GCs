@@ -381,24 +381,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
 
-        print('nemesis.particles.compound_particles: ', nemesis.particles.compound_particles)
-        
-        '''
-        this should be done by sub_worker
-        
-        
-        for parent in nemesis.particles.compound_particles():
-            print('parent is: ', parent)
-            if not nemesis.subcodes.has_key(parent):
-                sys = parent.subsystem
-                code = nemesis.subcode_factory(sys)
-                code.parameters.begin_time = nemesis.model_time
-                code.particles.add_particles(sys)
-                parent.subsystem = code.particles
-                nemesis.subcodes[parent]=code
-                
-        '''
-        
+        print('nemesis.particles.compound_particles: ', nemesis.particles.compound_particles)        
         print('nemesis.subcodes are: ', nemesis.subcodes)
 
         #gravity = bridge.Bridge(use_threading=False)

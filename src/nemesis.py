@@ -95,7 +95,10 @@ class HierarchicalParticles(ParticlesOverlay):
       
     ParticlesOverlay.__init__(self,*args,**kwargs)
     
-  print('sys is: ', sys)
+  print('--------')
+  print('sys needs to be defined for add_particles')
+  print('sys: ', sys)
+  print('--------')
     
   def add_particles(self,sys):
       
@@ -107,11 +110,6 @@ class HierarchicalParticles(ParticlesOverlay):
     return parts   
  
   def add_subsystem(self, sys, recenter=True):
-    
-    print('--------')
-    print('gets to add_subsystem')
-    print('sys: ', sys)
-    print('--------')
     
     if len(sys)==1:
       return self.add_particles(sys)[0]

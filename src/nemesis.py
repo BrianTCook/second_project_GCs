@@ -269,6 +269,8 @@ class Nemesis(object):
           print('-----')
       
       if not self.subcodes.has_key(parent):
+          
+        print('does it get here?')
         sys=parent.subsystem
         code=self.subcode_factory(sys)
         code.parameters.begin_time=self.model_time

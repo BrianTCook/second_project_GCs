@@ -189,7 +189,10 @@ class Nemesis(object):
       sys=p.subsystem
     
     if self.radius is None:
+    
+      #sets the Rcluster value
       p.radius=sys.virial_radius()
+      
     else:
       if callable(self.radius): 
         p.radius=self.radius(sys)
@@ -210,7 +213,8 @@ class Nemesis(object):
       print('-----')
         
       simple=self.particles.simple_particles()
-      simple.sub_worker_radius=simple.radius
+      simple.sub_worker_radius=simple.radius #is this different than Roche radius
+      #simple.sub_worker_radius = 3.*simple.radius * (2 * Mgalaxy/simple.total_mass())**(1/3.)
     
     for i, p in enumerate(self.particles):
         
@@ -219,13 +223,18 @@ class Nemesis(object):
       if i == 0:
           print('-----')
           print('setting parent_particle_radius')
+          print('-----')
     
-    for parent in self.subcodes.keys():
-      print('-----')
-      print('gets to for parent in self.subcodes.keys():')
-      print('-----')
+    for j, parent in enumerate(self.subcodes.keys()):
+        
+      if j == 0:
+          print('-----')
+          print('gets to for parent in self.subcodes.keys():')
+          print('-----')
+          
       if parent.subsystem is self.subcodes[parent].particles:
-        continue
+          continue
+      
       code=self.subcodes.pop(parent)
       del code
       
@@ -233,11 +242,13 @@ class Nemesis(object):
     print('self.particles.compound_particles(): ', self.particles.compound_particles())
     print('!!!!')
     
-    for parent in self.particles.compound_particles():
+    for k, parent in enumerate(self.particles.compound_particles()):
         
-      print('-----')
-      print('gets to for parent in self.particles.compound_particles():')
-      print('-----')
+      if k == 0:
+          
+          print('-----')
+          print('gets to for parent in self.particles.compound_particles():')
+          print('-----')
       
       if not self.subcodes.has_key(parent):
         sys=parent.subsystem

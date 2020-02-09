@@ -359,6 +359,8 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         
         parts = HierarchicalParticles(orbiter_bodies)
         
+        print(HierachicalParticles.add_subsystem(bodies))
+        
         dt = smaller_nbody_power_of_two(1. | units.Myr, converter_parent)
         dt_nemesis = dt
         print('dt_nemesis: ', dt.in_(units.Myr))

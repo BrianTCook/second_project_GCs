@@ -8,6 +8,8 @@ from amuse.lab import *
 from amuse.couple import bridge
 from amuse.ext.solarsystem import new_solar_system
 
+from galpy.potential import MWPotential2014, to_amuse
+
 from amuse.ext.rotating_bridge import Rotating_Bridge
 from amuse.community.galaxia.interface import BarAndSpirals3D
 from amuse.ext.composition_methods import *
@@ -213,7 +215,7 @@ if __name__ in ('__main__', '__plot__'):
 
     
     sun_pos = [-8400.0, 0.0, 17.0] | units.parsec
-    MWG = inte.galaxy()
+    MWG = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None) #inte.galaxy()
     vc = MWG.get_velcirc(sun_pos[0], sun_pos[1], sun_pos[2]) 
     sun_vel = [11.352, (12.24+vc.value_in(units.kms)), 7.41] | units.kms
     

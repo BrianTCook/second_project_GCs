@@ -273,8 +273,7 @@ class Nemesis(object):
           newparent=self.particles.add_subsystem(sys)
           newparent.sub_worker_radius=sys[0].radius
         self.set_parent_particle_radius(newparent)
-print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec)
-
+        print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec))
       
   def handle_collision(self, coll_time,corr_time,coll_set):
     print("collision:", len(coll_set))

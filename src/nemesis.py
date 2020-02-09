@@ -260,7 +260,7 @@ class Nemesis(object):
       code=self.subcodes.pop(parent)
       del code
     
-    for k, parent in enumerate(self.particles.simple_particles()):
+    for k, parent in enumerate(self.particles.compound_particles()):
         
       if k == 0:
           

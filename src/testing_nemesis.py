@@ -656,7 +656,7 @@ if __name__ in '__main__':
     print('initial coordinates: R, phi, Z, vr, vphi, vz: ', Rcoord, phicoord, Zcoord, vr_init, vphi_init, vz_init)
     
     Nstars, W0 = 200, 1.5 #cluster parameters
-    Mcluster, Rcluster = float(Nstars)|units.MSun, 3.|units.parsec, 10.|units.kpc
+    Mcluster, Rcluster = float(Nstars)|units.MSun, 3.|units.parsec
     sepBinary = 20.|units.parsec
     tend, dt = 100.|units.Myr, 1.|units.Myr
     dt_param = 0.1 #for nemesis

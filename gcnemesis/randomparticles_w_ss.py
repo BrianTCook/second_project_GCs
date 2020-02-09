@@ -16,10 +16,10 @@ from amuse.ext.basicgraph import UnionFind
 from amuse.community.twobody.twobody import TwoBody
 from amuse.community.hermite0.interface import Hermite
 from amuse.community.mercury.interface import Mercury
-from amuse.community.ph4.interface import ph4
-from amuse.community.phiGRAPE.interface import PhiGRAPE
+#from amuse.community.ph4.interface import ph4
+#from amuse.community.phiGRAPE.interface import PhiGRAPE
 from amuse.community.huayno.interface import Huayno
-from amuse.community.mi6.interface import MI6
+#from amuse.community.mi6.interface import MI6
 
 from nemesis import Nemesis,HierarchicalParticles,system_type
 
@@ -39,10 +39,10 @@ def binary(m1=1.|units.MSun,m2=.0001| units.MSun,r1=None,r2=None,ecc=0,rmin=100 
   rmax=a*(1+ecc)
   r0=rmax
 
-  print 'semimajor axis:', a.in_(units.AU)
-  print 'initial separation:',r0.in_(units.AU)
-  print 'rmax:',rmax.in_(units.AU)
-  print 'period:', P.in_(units.yr)
+  print('semimajor axis:', a.in_(units.AU))
+  print('initial separation:',r0.in_(units.AU))
+  print('rmax:',rmax.in_(units.AU))
+  print('period:', P.in_(units.yr))
   
   h=(a*mu*(1-ecc**2))**0.5
   v0=h/r0
@@ -87,7 +87,7 @@ def randomparticles_w_ss(N=20,L=1000.| units.AU,dv=2.5 | units.kms):
   conv_sub=nbody_system.nbody_to_si(1.| units.MSun,50.| units.AU)
 
   dt=smaller_nbody_power_of_two(1000. | units.day,conv)
-  print dt.in_(units.day)
+  print(dt.in_(units.day))
 
   dt_param=0.02
   LL=L.value_in(units.AU)
@@ -144,7 +144,7 @@ def randomparticles_w_ss(N=20,L=1000.| units.AU,dv=2.5 | units.kms):
     code.parameters.epsilon_squared=0.| units.AU**2
     code.parameters.end_time_accuracy_factor=0.
     code.parameters.dt_param=0.001
-    print code.parameters.dt_dia.in_(units.yr)
+    print(code.parameters.dt_dia.in_(units.yr))
     return code
   
   
@@ -203,8 +203,8 @@ def randomparticles_w_ss(N=20,L=1000.| units.AU,dv=2.5 | units.kms):
   while t< tend-dtdiag/2:
     t+=dtdiag
     nemesis.evolve_model(t)  
-    print t.in_(units.yr),
-    print len(nemesis.particles),
+    print(t.in_(units.yr))
+    print(len(nemesis.particles))
 
     time.append( t.value_in(units.yr) )
 
@@ -219,7 +219,7 @@ def randomparticles_w_ss(N=20,L=1000.| units.AU,dv=2.5 | units.kms):
     totalE.append(abs((E0-E)/E0))
     totalA.append(abs((A0-A)/A0))
     totalP.append(abs(P0-P))
-    print totalE[-1],(E-E1)/E
+    print(totalE[-1],(E-E1)/E)
 #    print allparts.potential_energy(),nemesis.potential_energy
   
     ss=nemesis.particles.all()

@@ -95,6 +95,8 @@ class HierarchicalParticles(ParticlesOverlay):
       
     ParticlesOverlay.__init__(self,*args,**kwargs)
     
+  print('sys is: ', sys)
+    
   def add_particles(self,sys):
       
     parts=ParticlesOverlay.add_particles(self,sys)

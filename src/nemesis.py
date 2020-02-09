@@ -100,7 +100,7 @@ class HierarchicalParticles(ParticlesOverlay):
   def add_subsystem(self, sys, recenter=True):
     if len(sys)==1:
       return self.add_particles(sys)[0]
-    p=Particle()
+    p=Particles()
     self.assign_parent_attributes(sys, p, relative=False, recenter=recenter)
     parent=self.add_particle(p)
     parent.subsystem=sys

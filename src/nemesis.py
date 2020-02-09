@@ -95,11 +95,6 @@ class HierarchicalParticles(ParticlesOverlay):
       
     ParticlesOverlay.__init__(self,*args,**kwargs)
     
-  print('--------')
-  print('sys needs to be defined for add_particles')
-  print('sys: ', sys)
-  print('--------')
-    
   def add_particles(self,sys):
       
     parts=ParticlesOverlay.add_particles(self,sys)
@@ -171,6 +166,8 @@ class HierarchicalParticles(ParticlesOverlay):
         parts.add_particle(parent)
         
       else:
+          
+        print('does it ever get here?')
           
         subsys=parts.add_particles(parent.subsystem)
         subsys.position+=parent.position

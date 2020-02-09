@@ -662,7 +662,7 @@ if __name__ in '__main__':
     dt_param = 0.1 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass
-    Mgalaxy, Rgalaxy = potential.mass(Rcoord, Zcoord), Rcoord|units.kpc #just for parent purposes
+    Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)

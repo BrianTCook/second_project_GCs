@@ -257,6 +257,7 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
             dt_bridge = 0.01 * dt
             dt_param = 0.1
             
+            print
             
             nemesis = Nemesis( parent_worker, sub_worker, py_worker)
             nemesis.timestep = dt

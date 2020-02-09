@@ -101,8 +101,6 @@ class HierarchicalParticles(ParticlesOverlay):
     
     if not hasattr(sys,"subsystem"):
       parts.subsystem=None   
-    
-    print('particles are: ', parts)
       
     return parts   
  
@@ -209,7 +207,7 @@ def potential_energy_particles(particles, get_potential):
 class Nemesis(object):
   def __init__(self,parent_code_factory,subcode_factory, worker_code_factory,
                 use_threading=True):
-    self.parent_code=parent_code_factory()
+    self.parent_code=parent_code_factory #why did it have parentheses around it originally?
     self.subcode_factory=subcode_factory
     self.worker_code_factory=worker_code_factory
     self.particles=HierarchicalParticles(self.parent_code.particles)

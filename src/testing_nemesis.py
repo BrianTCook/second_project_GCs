@@ -652,9 +652,7 @@ if __name__ in '__main__':
     vr_init *= to_kms
     vphi_init *= to_kms
     vz_init *= to_kms
-    
-    print('initial coordinates: R, phi, Z, vr, vphi, vz: ', Rcoord, phicoord, Zcoord, vr_init, vphi_init, vz_init)
-    
+
     Nstars, W0 = 200, 1.5 #cluster parameters
     Mcluster, Rcluster = float(Nstars)|units.MSun, 3.|units.parsec
     sepBinary = 20.|units.parsec
@@ -685,7 +683,7 @@ if __name__ in '__main__':
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
-            if orbiter_name == 'BinaryCluster':
+            if orbiter_name == 'BinaryCluster': #should be the same for all three and captures all gravity info
                 
                 maps(orbiter_name, code_name)
             

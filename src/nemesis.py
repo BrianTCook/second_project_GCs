@@ -260,7 +260,7 @@ class Nemesis(object):
       code=self.subcodes.pop(parent)
       del code
     
-    for k, parent in enumerate(self.particles.compound_particles()):
+    for k, parent in enumerate(self.particles.simple_particles()):
         
       if k == 0:
           
@@ -339,6 +339,7 @@ class Nemesis(object):
         print( "radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec))
       
   def handle_collision(self, coll_time,corr_time,coll_set):
+    
     print("collision:", len(coll_set))
 
     subsystems=self.particles.compound_particles()

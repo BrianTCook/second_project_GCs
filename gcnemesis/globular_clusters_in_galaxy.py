@@ -141,7 +141,7 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
   Mmax = 20 | units.MSun
   cluster_population = make_galaxy_model(N, M_galaxy, R_galaxy, Mmin, Mmax)
   stars = initialize_globular_clusters(cluster_population, N)
-  print "Stars:", len(stars), stars.mass.sum().in_(units.MSun), stars.mass.max().in_(units.MSun), stars.mass.mean().in_(units.MSun)
+  print("Stars:", len(stars), stars.mass.sum().in_(units.MSun), stars.mass.max().in_(units.MSun), stars.mass.mean().in_(units.MSun))
 
   stellar = SeBa()
   stellar.particles.add_particles(stars)
@@ -152,7 +152,7 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
 
   dt=smaller_nbody_power_of_two(0.1 | units.Myr, conv)
   dt_nemesis=dt
-  print dt.in_(units.Myr)
+  print(dt.in_(units.Myr))
   dt_bridge = 0.01*dt
 
   #dt_param=0.02
@@ -205,7 +205,7 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
     code.parameters.end_time_accuracy_factor=0.
     #code.parameters.dt_param=0.001
     code.parameters.dt_param=0.1
-    print code.parameters.dt_dia.in_(units.yr)
+    print(code.parameters.dt_dia.in_(units.yr))
     return code
   
   
@@ -276,15 +276,15 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
     t+=dtdiag
     gravity.evolve_model(t)  
     #nemesis.evolve_model(t)  
-    print t.in_(units.Myr),
-    print len(nemesis.particles),
+    print(t.in_(units.Myr))
+    print(len(nemesis.particles))
 
     m = stars.mass.sum()
     stellar.evolve_model(t)
     channel_from_stellar.copy()
     dm = m-stars.mass.sum()
     totaldM.append(totaldM[-1]+dm)
-    print "dM=", totaldM[-1].in_(units.MSun), dm.in_(units.MSun),
+    print("dM=", totaldM[-1].in_(units.MSun), dm.in_(units.MSun))
     channel_to_nemesis.copy()
     
     time.append( t.value_in(units.yr) )
@@ -303,7 +303,7 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
     totalE.append(abs((E0-E)/E0))
     totalA.append(abs((A0-A)/A0))
     totalP.append(abs(P0-P))
-    print "dE=", totalE[-1],(E-E1)/E
+    print("dE=", totalE[-1],(E-E1)/E)
 #    print allparts.potential_energy(),nemesis.potential_energy
   
     ss=nemesis.particles.all()
@@ -312,7 +312,7 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
     y=(ss.z).value_in(units.kpc)
     lowm=numpy.where( ss.mass.value_in(units.MSun) < 1)[0]
     highm=numpy.where( ss.mass.value_in(units.MSun) >= 1)[0]
-    print "N=", len(ss), len(highm), len(lowm)
+    print("N=", len(ss), len(highm), len(lowm))
     
     xcm=nemesis.particles.x.value_in(units.kpc)
     ycm=nemesis.particles.y.value_in(units.kpc)

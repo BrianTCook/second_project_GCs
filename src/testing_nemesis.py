@@ -358,12 +358,10 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
             
         
         parts = HierarchicalParticles(orbiter_bodies)
+        
         '''
         need add_subsystem and assign_subsystem in HierarchicalParticles I think
         '''
-        
-        print(parts.add_subsystem())
-        print(parts.assign_subsystem())
         
         dt = smaller_nbody_power_of_two(1. | units.Myr, converter_parent)
         dt_nemesis = dt

@@ -668,8 +668,8 @@ if __name__ in '__main__':
     converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
     converter = converter_sub
     
-    orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
-    code_names = [ 'nemesis' ]
+    orbiter_names = [ 'SingleCluster', 'BinaryCluster' ] #'SingleStar',
+    code_names = [ 'nemesis' ] #'tree', 'Nbody'
     
     t0 = time.time()
     

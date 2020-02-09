@@ -90,13 +90,21 @@ class correction_for_compound_particles(object):
     return (phi-_phi[0])
 
 class HierarchicalParticles(ParticlesOverlay):
+    
   def __init__(self, *args,**kwargs):
     ParticlesOverlay.__init__(self,*args,**kwargs)
+    
   def add_particles(self,sys):
+      
     parts=ParticlesOverlay.add_particles(self,sys)
+    
     if not hasattr(sys,"subsystem"):
-      parts.subsystem=None
-    return parts    
+      parts.subsystem=None   
+    
+    print('particles are: ', particles)
+      
+    return parts   
+ 
   def add_subsystem(self, sys, recenter=True):
     
     print('--------')
@@ -113,9 +121,11 @@ class HierarchicalParticles(ParticlesOverlay):
     parent.subsystem=sys
     print('parent is: ', parent)
     return parent
+
   def assign_subsystem(self, sys, parent, relative=True, recenter=True):
     self.assign_parent_attributes(sys,parent,relative,recenter)
     parent.subsystem=sys
+    
   def assign_parent_attributes(self,sys,parent, relative=True, recenter=True):
     parent.mass=sys.total_mass()
     if relative:
@@ -127,26 +137,18 @@ class HierarchicalParticles(ParticlesOverlay):
       parent.position+=sys.center_of_mass()
       parent.velocity+=sys.center_of_mass_velocity()
       sys.move_to_center()
+      
   def recenter_subsystems(self):
     for parent in self.compound_particles():
       parent.position+=parent.subsystem.center_of_mass()
       parent.velocity+=parent.subsystem.center_of_mass_velocity()
       parent.subsystem.move_to_center()  
+      
   def compound_particles(self):
-    
-    print('~~~~~~~~~')
-    print('gets to compound_particles_definition')
-    print('looks through subsystem to find lambda x: x is not None')
-    print('~~~~~~~~~')
       
     return self.select( lambda x: x is not None, ["subsystem"])
 
   def simple_particles(self):
-      
-    print('~~~~~~~~~')
-    print('gets to simple_particles_definition')
-    print('looks through subsystem to find lambda x: x is None')
-    print('~~~~~~~~~')
       
     return self.select( lambda x: x is None, ["subsystem"])
 
@@ -229,6 +231,7 @@ class Nemesis(object):
         p.radius=self.radius
 
   def commit_particles(self):
+      
     self.particles.recenter_subsystems()
     
     print('-----')
@@ -236,10 +239,6 @@ class Nemesis(object):
     print('-----') 
     
     if not hasattr(self.particles,"sub_worker_radius"):
-        
-      print('-----')
-      print('did not have attributes sub_worker_radius')
-      print('-----')
         
       simple=self.particles.simple_particles()
       simple.sub_worker_radius=simple.radius #is this different than Roche radius
@@ -297,10 +296,6 @@ class Nemesis(object):
 
   def commit_parameters(self):
       
-    print('------')
-    print('what the heck does pass do?')
-    print('------')
-      
     pass
 
   def evolve_model(self, tend, timestep=None):
@@ -319,8 +314,9 @@ class Nemesis(object):
     to_remove=Particles()
     sys_to_add=[]
     
-    print('------')
+    print('~~~~~~')
     print('subsystems[0] is: ', subsystems[0])
+    print('~~~~~~')
     
     for parent in subsystems:
       subsys=parent.subsystem

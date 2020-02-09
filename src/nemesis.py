@@ -92,6 +92,7 @@ class correction_for_compound_particles(object):
 class HierarchicalParticles(ParticlesOverlay):
     
   def __init__(self, *args,**kwargs):
+      
     ParticlesOverlay.__init__(self,*args,**kwargs)
     
   def add_particles(self,sys):
@@ -101,7 +102,7 @@ class HierarchicalParticles(ParticlesOverlay):
     if not hasattr(sys,"subsystem"):
       parts.subsystem=None   
     
-    print('particles are: ', particles)
+    print('particles are: ', parts)
       
     return parts   
  

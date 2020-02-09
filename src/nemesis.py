@@ -122,6 +122,11 @@ class HierarchicalParticles(ParticlesOverlay):
     return parent
 
   def assign_subsystem(self, sys, parent, relative=True, recenter=True):
+      
+    print('-ahh-ahh-ahh-ahh-ahh-ahh-')
+    print('gets to assign_subsystem')
+    print('-ahh-ahh-ahh-ahh-ahh-ahh-')
+      
     self.assign_parent_attributes(sys,parent,relative,recenter)
     parent.subsystem=sys
     
@@ -146,14 +151,14 @@ class HierarchicalParticles(ParticlesOverlay):
   def compound_particles(self):
       
     cp = self.select( lambda x: x is not None, ["subsystem"] )
-    print('cp is: ', cp)
+    print('len(cp) is: ', len(cp))
     
     return cp
 
   def simple_particles(self):
       
     sp = self.select( lambda x: x is None, ["subsystem"] )
-    print('sp is: ', sp)
+    print('len(sp) is: ', len(sp))
       
     return sp
 

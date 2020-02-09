@@ -23,6 +23,8 @@ from amuse.community.huayno.interface import Huayno
 from amuse.community.bhtree.interface import BHTree
 from amuse.community.mi6.interface import MI6
 
+from galpy.potential import MWPotential2014, to_amuse
+
 from nemesis import Nemesis,HierarchicalParticles,system_type
 from amuse.couple import bridge
 from galactic_model import IntegrateOrbit
@@ -173,7 +175,7 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
                          phase_bar= phi_bar, phase_spiral= phi_sp, 
                          omega_spiral= OS, omega_bar= OB, 
                          amplitude= A, m=m, mass_bar= M )
-  MWG = galaxy.galaxy()
+  MWG = to_amuse(MWPotential2014, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None) #galaxy.galaxy()
   
   def radius(sys,eta=dt_param,_G=constants.G):
     radius=((_G*sys.total_mass()*dt**2/eta**2)**(1./3.))

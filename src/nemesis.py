@@ -98,12 +98,20 @@ class HierarchicalParticles(ParticlesOverlay):
       parts.subsystem=None
     return parts    
   def add_subsystem(self, sys, recenter=True):
+    
+    print('--------')
+    print('gets to add_subsystem')
+    print('sys: ', sys)
+    print('--------')
+    
     if len(sys)==1:
       return self.add_particles(sys)[0]
-    p=Particles()
+  
+    p=Particle()
     self.assign_parent_attributes(sys, p, relative=False, recenter=recenter)
     parent=self.add_particle(p)
     parent.subsystem=sys
+    print('parent is: ', parent)
     return parent
   def assign_subsystem(self, sys, parent, relative=True, recenter=True):
     self.assign_parent_attributes(sys,parent,relative,recenter)

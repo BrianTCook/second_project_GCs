@@ -5,6 +5,7 @@ from amuse.couple.bridge import CalculateFieldForParticles
 from amuse.ic.kingmodel import new_king_model
 from amuse.io import write_set_to_file, read_set_from_file
 from amuse.units import quantities
+from amuse.community.mercury.interface import Mercury
 
 import matplotlib
 matplotlib.use('agg')
@@ -105,7 +106,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     #sub_worker in Nemesis
     if code_name == 'Nbody':
         
-        code = Hermite(converter)
+        code = Mercury(converter)
         code.particles.add_particles(bodies)
         code.commit_particles()
         
@@ -146,7 +147,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     return bodies, code
 
 def parent_worker():
-    code = Hermite(converter_parent)
+    code = Mercury(converter_parent)
     code.parameters.epsilon_squared=0.| units.kpc**2
     code.parameters.end_time_accuracy_factor=0.
     code.parameters.dt_param=0.1
@@ -238,7 +239,7 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         #sub_worker in Nemesis, should not matter for SingleStar
         if code_name == 'Nbody':
             
-            code = Hermite(converter)
+            code = Mercury(converter)
             code.particles.add_particles(bodies)
             code.commit_particles()
             

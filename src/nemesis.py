@@ -146,11 +146,17 @@ class HierarchicalParticles(ParticlesOverlay):
       
   def compound_particles(self):
       
-    return self.select( lambda x: x is not None, ["subsystem"])
+    cp = self.select( lambda x: x is not None, ["subsystem"] )
+    print('cp is: ', cp)
+    
+    return cp
 
   def simple_particles(self):
       
-    return self.select( lambda x: x is None, ["subsystem"])
+    sp = self.select( lambda x: x is None, ["subsystem"] )
+    print('sp is: ', sp)
+      
+    return sp
 
   def all(self):
       

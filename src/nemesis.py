@@ -125,18 +125,39 @@ class HierarchicalParticles(ParticlesOverlay):
       parent.velocity+=parent.subsystem.center_of_mass_velocity()
       parent.subsystem.move_to_center()  
   def compound_particles(self):
+    
+    print('~~~~~~~~~')
+    print('gets to compound_particles_definition')
+    print('looks through subsystem to find lambda x: x is not None')
+    print('~~~~~~~~~')
+      
     return self.select( lambda x: x is not None, ["subsystem"])
+
   def simple_particles(self):
+      
+    print('~~~~~~~~~')
+    print('gets to simple_particles_definition')
+    print('looks through subsystem to find lambda x: x is None')
+    print('~~~~~~~~~')
+      
     return self.select( lambda x: x is None, ["subsystem"])
+
   def all(self):
+      
     parts=Particles()
+    
     for parent in self:
+        
       if parent.subsystem is None:   
+          
         parts.add_particle(parent)
+        
       else:
+          
         subsys=parts.add_particles(parent.subsystem)
         subsys.position+=parent.position
         subsys.velocity+=parent.velocity
+        
     return parts
 
 

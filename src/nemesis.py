@@ -151,15 +151,13 @@ class HierarchicalParticles(ParticlesOverlay):
   def compound_particles(self):
       
     cp = self.select( lambda x: x is not None, ["subsystem"] )
-    print('len(cp) is: ', len(cp))
     
     return cp
 
   def simple_particles(self):
       
     sp = self.select( lambda x: x is None, ["subsystem"] )
-    print('len(sp) is: ', len(sp))
-      
+    
     return sp
 
   def all(self):
@@ -244,10 +242,6 @@ class Nemesis(object):
       
     self.particles.recenter_subsystems()
     
-    print('-----')
-    print('gets to def commit_particles(self):')  
-    print('-----') 
-    
     if not hasattr(self.particles,"sub_worker_radius"):
         
       simple=self.particles.simple_particles()
@@ -258,27 +252,13 @@ class Nemesis(object):
         
       self.set_parent_particle_radius(p)
     
-      if i == 0:
-          print('-----')
-          print('setting parent_particle_radius')
-          print('-----')
-    
     for j, parent in enumerate(self.subcodes.keys()):
         
-      if j == 0:
-          print('-----')
-          print('gets to for parent in self.subcodes.keys():')
-          print('-----')
-          
       if parent.subsystem is self.subcodes[parent].particles:
           continue
       
       code=self.subcodes.pop(parent)
       del code
-      
-    print('!!!!')
-    print('self.particles.compound_particles(): ', self.particles.compound_particles())
-    print('!!!!')
     
     for k, parent in enumerate(self.particles.compound_particles()):
         
@@ -297,10 +277,6 @@ class Nemesis(object):
         self.subcodes[parent]=code
 
   def recommit_particles(self):
-      
-    print('-----')
-    print('gets to recommit_particles (not sure what it is for)')
-    print('-----')
       
     self.commit_particles()
 

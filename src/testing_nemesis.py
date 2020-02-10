@@ -239,7 +239,7 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         #sub_worker in Nemesis, should not matter for SingleStar
         if code_name == 'Nbody':
             
-            code = Mercury(converter)
+            code = Hermite(converter) #Mercury acts weird for SingleStar
             code.particles.add_particles(bodies)
             code.commit_particles()
             
@@ -383,11 +383,11 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         print('nemesis.particles.compound_particles: ', nemesis.particles.compound_particles)        
         print('nemesis.subcodes are: ', nemesis.subcodes)
 
-        #gravity = bridge.Bridge(use_threading=False)
-        #gravity.add_system(nemesis, (galaxy_code,))
-        #gravity.timestep = dt_bridge
+        gravity = bridge.Bridge(use_threading=False)
+        gravity.add_system(nemesis, (galaxy_code,))
+        gravity.timestep = dt_bridge
 
-    return orbiter_bodies, nemesis #gravity
+    return orbiter_bodies, gravity
 
 def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,  
                vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, 
@@ -641,10 +641,10 @@ if __name__ in '__main__':
     vphi_init *= to_kms
     vz_init *= to_kms
 
-    Nstars, W0 = 200, 1.5 #cluster parameters
+    Nstars, W0 = 100, 1.5 #cluster parameters
     Mcluster, Rcluster = float(Nstars)|units.MSun, 3.|units.parsec
     sepBinary = 20.|units.parsec
-    tend, dt = 100.|units.Myr, 1.|units.Myr
+    tend, dt = 80.|units.Myr, 1.|units.Myr
     dt_param = 0.1 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass
@@ -654,8 +654,8 @@ if __name__ in '__main__':
     converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
     converter = converter_sub
     
-    orbiter_names = [ 'SingleCluster', 'BinaryCluster' ] #'SingleStar',
-    code_names = [ 'nemesis' ] #'tree', 'Nbody'
+    orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
+    code_names = [ 'Nbody', 'tree' ] #'nemesis'
     
     t0 = time.time()
     

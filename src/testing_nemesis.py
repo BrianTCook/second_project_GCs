@@ -28,7 +28,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
             random_number_one, random_number_two, random_number_three):
 
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = young_massive_cluster(0., 0., 0.) #just getting the cluster scale converter
+    _, _, converter_sub = young_massive_cluster(0.6, 0.6, 0.6) #just getting the cluster scale converter
     converter = converter_sub
     
     '''
@@ -151,7 +151,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     '''
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = young_massive_cluster(0., 0., 0.) #just getting the cluster scale converter
+    _, _, converter_sub = young_massive_cluster(0.6, 0.6, 0.6) #just getting the cluster scale converter
     converter = converter_sub
     
     if code_name != 'nemesis':
@@ -228,7 +228,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, random_numbers, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = young_massive_cluster(0., 0., 0.) #just getting the cluster scale converter
+    _, _, converter_sub = young_massive_cluster(0.6, 0.6, 0.6) #just getting the cluster scale converter
     converter = converter_sub
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)

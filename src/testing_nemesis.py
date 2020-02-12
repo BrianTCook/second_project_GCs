@@ -354,7 +354,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
             except:
                 print('oh no!')
             
-        axs[i].legend(loc='best')
+        axs[i].legend(loc='upper right')
    
     plt.tight_layout()         
     plt.savefig('testing_nemesis_energy.png')
@@ -384,7 +384,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
             except:
                 print('oh no!')
             
-        axs[i].legend(loc='best')
+        axs[i].legend(loc='upper right')
             
     plt.tight_layout()
     plt.savefig('testing_nemesis_radialcoords.png')
@@ -414,7 +414,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
             except:
                 print('oh no!')
             
-        axs[i].legend(loc='best')
+        axs[i].legend(loc='upper right')
        
     plt.tight_layout() 
     plt.savefig('testing_nemesis_speeds.png')
@@ -440,11 +440,12 @@ def plotting_things(orbiter_names, code_names, tend, dt):
             
             try:
                 clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
-                axs[i].plot(sim_times_unitless, clock_times, label=code_name)                    
+                axs[i].semilogy(sim_times_unitless, clock_times, label=code_name)
+                axs[i].set_ylim(1e-1, 1e4) #1/10th of a second to three hours         
             except:
                 print('oh no!')
             
-        axs[i].legend(loc='best')
+        axs[i].legend(loc='upper right')
        
     plt.tight_layout() 
     plt.savefig('testing_nemesis_clocktimes.png')

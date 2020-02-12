@@ -67,7 +67,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     #sub_worker in Nemesis
     if code_name == 'Nbody':
         
-        code = Mercury(converter)
+        code = Hermite(converter)
         code.particles.add_particles(bodies)
         code.commit_particles()
         

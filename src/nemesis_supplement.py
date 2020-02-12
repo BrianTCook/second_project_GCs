@@ -40,7 +40,7 @@ def getxv(converter, M1, a, e, ma=0):
     return x, v
 
 def parent_worker():
-    code = Mercury(converter_parent)
+    code = Hermite(converter_parent)
     code.parameters.epsilon_squared=0.| units.kpc**2
     code.parameters.end_time_accuracy_factor=0.
     code.parameters.dt_param=0.1

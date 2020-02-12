@@ -7,6 +7,7 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
 from galpy.potential import MWPotential2014, to_amuse
+from galpy.util import bovy_conversion
 
 from phase_space_mapping import maps
 from cluster_maker import young_massive_cluster
@@ -44,6 +45,17 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
     Rcoord = (Rmax-Rmin)*random_number_one + Rmin
     phicoord = 2*np.pi*random_number_two
     Zcoord = (Zmax-Zmin)*random_number_three + Zmin
+    
+    #using Staeckel
+    aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
+    qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
+    vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
+    
+    #220 km/s at 8 kpc, convert back to km/s
+    to_kms = bovy_conversion.velocity_in_kpcGyr(220., 8.) * 0.9785
+    vr_init *= to_kms
+    vphi_init *= to_kms
+    vz_init *= to_kms
     
     #convert from galpy/cylindrical to AMUSE/Cartesian units
     x_init = Rcoord*np.cos(phicoord) | units.kpc

@@ -6,6 +6,14 @@ Created on Wed Feb 12 13:51:30 2020
 @author: BrianTCook
 """
 
+from amuse.lab import*
+from amuse.couple import bridge
+from amuse.couple.bridge import CalculateFieldForParticles
+from amuse.units import quantities
+from amuse.community.mercury.interface import Mercury
+
+import numpy as np
+
 def getxv(converter, M1, a, e, ma=0):
     
     '''

@@ -6,8 +6,10 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
+from galpy.df import quasiisothermaldf
 from galpy.potential import MWPotential2014, to_amuse
 from galpy.util import bovy_conversion
+from galpy.actionAngle import actionAngleStaeckel
 
 from phase_space_mapping import maps
 from cluster_maker import young_massive_cluster
@@ -455,7 +457,7 @@ if __name__ in '__main__':
     potential = MWPotential2014 #galpy
     
     sepBinary = 20.|units.parsec
-    tend, dt = 80.|units.Myr, 1.|units.Myr
+    tend, dt = 100.|units.Myr, 1.|units.Myr
     dt_param = 0.1 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass

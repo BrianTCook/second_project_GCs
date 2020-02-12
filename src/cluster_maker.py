@@ -161,6 +161,11 @@ def young_massive_cluster(random_number_one, random_number_two, random_number_th
     phicoord = 2*np.pi*random_number_two
     Zcoord = (Zmax-Zmin)*random_number_three + Zmin
     
+    print('---------------------------------------')
+    print('3D cylindrical coordinates (R, phi, Z):')
+    print(Rcoord, phicoord, Zcoord)
+    print('---------------------------------------')
+    
     #using Staeckel, whatever that medians
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
     qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)

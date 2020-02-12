@@ -153,6 +153,11 @@ def young_massive_cluster(random_number_one, random_number_two, random_number_th
     with appropriate ICs in 6D phase space
     '''
     
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    print('The three random numbers are')
+    print(random_number_one, random_number_two, random_number_three)
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    
     #YMCs are distributed throughout the MW
     Rmin, Rmax = 0., 15. 
     Zmin, Zmax = -8., 8.

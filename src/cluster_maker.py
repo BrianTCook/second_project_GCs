@@ -49,7 +49,6 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     print('-----------------------------')
     print('-----------------------------')
     print('-----------------------------')
-    print('orbiter_name: ', orbiter_name)
     print('code_name: ', code_name)
     print('initial spatial coordinates (Cartesian): ', pos_vec)
     print('initial velocity coordinates: ', vel_vec)

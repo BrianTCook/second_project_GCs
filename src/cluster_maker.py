@@ -11,6 +11,7 @@ from amuse.ic.kingmodel import new_king_model
 from amuse.community.mercury.interface import Mercury
 
 from galpy.df import quasiisothermaldf
+from galpy.potential import MWPotential2014
 from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 

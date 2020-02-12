@@ -17,6 +17,7 @@ from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 
 from phase_space_mapping import maps
+from cluster_maker import young_massive_cluster
 
 import random
 import numpy as np
@@ -26,184 +27,16 @@ import os
 random.seed(73)
 
 from nemesis import Nemesis, HierarchicalParticles
+from nemesis_supplement import getxv, parent_worker, sub_worker, py_worker, smaller_nbody_power_of_two, distance_function, radius
 
 #Circumvent a problem with using too many threads on OpenMPI
 os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
-    
-def getxv(converter, M1, a, e, ma=0):
-    
-    '''
-    Get initial phase space coordinates (position and velocity) for an object around a central body
-    
-    converter - AMUSE unit converter
-    M1        - Mass of the central body in AMUSE mass units
-    a         - Semi-major axis of the orbit in AMUSE length units
-    e         - Eccentricity of the orbit
-    ma        - Mean anomaly of the orbit
-    
-    Returns: (x, v), the position and velocity vector of the orbit in AMUSE length and AMUSE length / time units
-    '''
-    
-    kepler = Kepler(converter)
-    kepler.initialize_code()
-    kepler.initialize_from_elements(M1, a, e, mean_anomaly=ma) #Intoducing the attributes of the orbit
-    
-    x = quantities.as_vector_quantity(kepler.get_separation_vector()) #Grabbing the initial position and velocity
-    v = quantities.as_vector_quantity(kepler.get_velocity_vector())
-    
-    kepler.stop()
-    
-    return x, v
 
-def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                            Nstars, W0, Mcluster, Rcluster, code_name, parameters=[]):
-
-    '''
-    sets up a cluster with mass M and radius R
-    which nbodycode would you like to use?
-    '''
-    
-    converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
-    bodies = new_king_model(Nstars, W0, convert_nbody=converter)
-
-    '''
-    takes in R, Z value
-    returns VR, Vphi, VZ values
-    should get appropriate 6D initial phase space conditions
-    '''
-    
-    #convert from galpy/cylindrical to AMUSE/Cartesian units
-    x_init = Rcoord*np.cos(phicoord) | units.kpc
-    y_init = Rcoord*np.sin(phicoord) | units.kpc
-    z_init = Zcoord | units.kpc
-    
-    #vphi = R \dot{\phi}? assuming yes for now
-    vx_init = (vr_init*np.cos(phicoord) - vphi_init*np.sin(phicoord)) | units.kms
-    vy_init = (vr_init*np.sin(phicoord) + vphi_init*np.cos(phicoord)) | units.kms
-    vz_init = vz_init #| units.kms
-    
-    pos_vec, vel_vec = (x_init, y_init, z_init), (vx_init, vy_init, vz_init)
-    
-    print('-----------------------------')
-    print('-----------------------------')
-    print('-----------------------------')
-    print('orbiter_name: ', orbiter_name)
-    print('code_name: ', code_name)
-    print('initial spatial coordinates (Cartesian): ', pos_vec)
-    print('initial velocity coordinates: ', vel_vec)
-    print('-----------------------------')
-    print('-----------------------------')
-    print('-----------------------------')
-    
-    #initializing phase space coordinates
-    bodies.x += x_init
-    bodies.y += y_init
-    bodies.z += z_init
-    bodies.vx += vx_init
-    bodies.vy += vy_init
-    bodies.vz += vz_init
-    
-    #sub_worker in Nemesis
-    if code_name == 'Nbody':
-        
-        code = Mercury(converter)
-        code.particles.add_particles(bodies)
-        code.commit_particles()
-        
-    if code_name == 'tree':
-    
-        code = BHTree(converter)
-        code.particles.add_particles(bodies)
-        code.commit_particles()
-        
-    if code_name == 'nemesis':
-        
-        '''
-        ends up not being used?
-        '''
-        
-        parts = HierarchicalParticles(bodies)
-        
-        dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
-        dt_nemesis = dt
-        dt_bridge = 0.01 * dt
-        dt_param = 0.1
-        
-        nemesis = Nemesis(parent_worker, sub_worker, py_worker)
-        nemesis.timestep = dt
-        nemesis.distfunc = distance_function
-        nemesis.threshold = dt_nemesis
-        nemesis.radius = radius
-        
-        nemesis.commit_parameters()
-        nemesis.particles.add_particles(parts)
-        nemesis.commit_particles()
-        
-        code = nemesis
-        
-    for name,value in parameters:
-        setattr(code.parameters, name, value)
-    
-    return bodies, code
-
-def parent_worker():
-    code = Mercury(converter_parent)
-    code.parameters.epsilon_squared=0.| units.kpc**2
-    code.parameters.end_time_accuracy_factor=0.
-    code.parameters.dt_param=0.1
-    return code
-
-def sub_worker(parts):
-    code = BHTree(converter_sub)
-    code.parameters.inttype_parameter=code.inttypes.SHARED4
-    return code
-
-def py_worker():
-    code=CalculateFieldForParticles(gravity_constant = constants.G)
-    return code
-
-'''
-also for nemesis
-'''
-
-def smaller_nbody_power_of_two(dt, conv):
-
-    nbdt = conv.to_nbody(dt).value_in(nbody_system.time)
-    idt = np.floor(np.log2(nbdt))
-
-    return conv.to_si( 2**idt | nbody_system.time)
-
-def distance_function(ipart, jpart, eta=0.1/2., _G=constants.G):
-    
-    dx = ipart.x-jpart.x
-    dy = ipart.y-jpart.y
-    dz = ipart.z-jpart.z
-
-    dr = np.sqrt(dx**2 + dy**2 + dz**2)
-    dr3 = dr**1.5
-    mu = _G*(ipart.mass + jpart.mass)
-
-    tau = eta/2./2.**0.5*(dr3/mu)**0.5 #need an explanation for this!
-
-    return tau
-
-'''
-eta = should be dt_param or dt_param/2. but it's not being defined for whatever reason
-'''
-
-
-def radius(sys, eta=0.1, _G=constants.G):
-
-    #variable shouldn't be named radius
-    ra = ((_G*sys.total_mass()*dt**2/eta**2)**(1/3.))
-    ra = ra*((len(sys)+1)/2.)**0.75
-    return 3.*ra #is this the roche-lobe radius?
-
-def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
-            vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary):
+def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
+            random_number_one, random_number_two, random_number_three):
 
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    _, _, converter_sub = young_massive_cluster(0., 0., 0.) #just getting the cluster scale converter
     converter = converter_sub
     
     '''
@@ -211,6 +44,14 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
     returns VR, Vphi, VZ values
     should get appropriate 6D initial phase space conditions
     '''
+    
+    #YMCs are distributed throughout the MW, good for this test
+    Rmin, Rmax = 0., 15. 
+    Zmin, Zmax = -8., 8.
+    
+    Rcoord = (Rmax-Rmin)*random_number_one + Rmin
+    phicoord = 2*np.pi*random_number_two
+    Zcoord = (Zmax-Zmin)*random_number_three + Zmin
     
     #convert from galpy/cylindrical to AMUSE/Cartesian units
     x_init = Rcoord*np.cos(phicoord) | units.kpc
@@ -276,17 +117,14 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
     if orbiter_name == 'SingleCluster':
         
-        bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init,
-                                               Nstars, W0, Mcluster, Rcluster, code_name)
+        bodies, code, _ = young_massive_cluster(random_number_one, random_number_two, random_number_three)
         
         return bodies, code
         
     if orbiter_name == 'BinaryCluster':
         
-        bodies_one, code_one = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init,
-                                               Nstars, W0, Mcluster, Rcluster, code_name)
-        bodies_two, code_two = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init,
-                                               Nstars, W0, Mcluster, Rcluster, code_name)
+        bodies_one, code_one, _ = young_massive_cluster(random_number_one, random_number_two, random_number_three)
+        bodies_two, code_two, _ = young_massive_cluster(random_number_one, random_number_two, random_number_three)
             
         #initialize binary system
         mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()
@@ -313,8 +151,7 @@ def orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
         
         return all_bodies, code_one, code_two #need to be different so they're bridged
 
-def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phicoord,
-                       vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary):
+def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sep_binary, random_numbers):
     
     '''
     will need to ask SPZ if he meant for field, orbiter to be separate in non
@@ -322,7 +159,7 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
     '''
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    _, _, converter_sub = young_massive_cluster(0., 0., 0.) #just getting the cluster scale converter
     converter = converter_sub
     
     if code_name != 'nemesis':
@@ -331,16 +168,20 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         
         if orbiter_name != 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
-                                                   vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy,
+                                         Rgalaxy, sepBinary, r1, r2, r3) for r1, r2, r3 in random_numbers ]
+            
+            orbiter_bodies, orbiter_code = list_of_orbiters[0]
             
             gravity.add_system(orbiter_code, (galaxy_code,))
 
         if orbiter_name == 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
-                                                                         vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
-    
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
+                                         r1, r2, r3) for r1, r2, r3 in random_numbers ]
+            
+            orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
+            
             gravity.add_system(orbiter_code_one, (orbiter_code_two, galaxy_code))
             gravity.add_system(orbiter_code_two, (orbiter_code_one, galaxy_code))
             
@@ -349,15 +190,18 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
         #just don't use orbiter_code here, just replace it with nemesis
         if orbiter_name != 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
-                                                   vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, 
+                                         Rgalaxy, sepBinary, r1, r2, r3) for r1, r2, r3 in random_numbers ]
             
+            orbiter_bodies, orbiter_code = list_of_orbiters[0]
+
         if orbiter_name == 'BinaryCluster':
             
-            orbiter_bodies, orbiter_code_one, orbiter_code_two = orbiter(orbiter_name, code_name, Rcoord, Zcoord, phicoord,
-                                                                         vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
+                                         r1, r2, r3) for r1, r2, r3 in random_numbers ]
             
-        
+            orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
+            
         parts = HierarchicalParticles(orbiter_bodies)
         
         '''
@@ -389,17 +233,16 @@ def gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phi
 
     return orbiter_bodies, gravity
 
-def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,  
-               vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, 
-               Mgalaxy, Rgalaxy, sepBinary, tend, dt):
+def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, random_numbers, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    _, _, converter_sub = young_massive_cluster(0., 0., 0.) #just getting the cluster scale converter
     converter = converter_sub
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     
-    bodies, gravity = gravity_code_setup(orbiter_name, code_name, galaxy_code, Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, sepBinary)
+    bodies, gravity = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
+                                         galaxy_code, sepbinary, random_numbers)
     
     channel = bodies.new_channel_to(gravity.particles)
     channel.copy_attributes(['x','y','z','vx','vy','vz'])
@@ -412,13 +255,6 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
     energies, median_radial_coords, median_speeds, clock_times = [], [], [], []
     
     t0 = time.time()
-    
-    '''
-    plt.figure()
-    plt.scatter(bodies.x.value_in(units.kpc), bodies.y.value_in(units.kpc), c='b', label='all')
-    plt.legend(loc='best')
-    plt.savefig('initial_binary_two.png')
-    '''
     
     #create an R^3 matrix to house phase space data for all particles
     phase_space_data = np.zeros((len(sim_times), 6, len(bodies)))
@@ -455,11 +291,6 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
         median_speeds.append(np.median(speeds))
                 
         gravity.evolve_model(t)
-
-        #filename = code_name + '_' + orbiter_name + '_data.hdf5'
-        #write_set_to_file(gravity.particles, filename, "hdf5")
-     
-        #channel.copy()
         
     try:
         gravity.stop()
@@ -477,11 +308,7 @@ def simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord,
 
 def plotting_things(orbiter_names, code_names, tend, dt):
     
-    #filename = code_name + '_' + orbiter_name + '_data.hdf5'
-    #star_data = read_set_from_file(filename)
-    
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
-    
     npanels_x = len(orbiter_names)
     
     '''
@@ -491,7 +318,6 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     
     #energies
     
-    #plt.rc('text', usetex=True)
     plt.rc('font', family='serif')
     
     fig, axs = plt.subplots(1, 3)
@@ -622,38 +448,18 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
 if __name__ in '__main__':
     
-    potential = MWPotential2014
-    Rmin, Rmax = 1., 5. #in kpc
-    Zmin, Zmax = 0.5, 2. #in kpc
+    potential = MWPotential2014 #galpy
     
-    Rcoord = (Rmax-Rmin)*np.random.random() + Rmin
-    phicoord = 2*np.pi*np.random.random()
-    Zcoord = (Zmax-Zmin)*np.random.random() + Zmin
-    
-    #using Staeckel, whatever that medians
-    aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
-    qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
-    vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
-    
-    #220 km/s at 8 kpc, convert back to km/s
-    to_kms = bovy_conversion.velocity_in_kpcGyr(220., 8.) * 0.9785
-    vr_init *= to_kms
-    vphi_init *= to_kms
-    vz_init *= to_kms
-
-    Nstars, W0 = 100, 1.5 #cluster parameters
-    Mcluster, Rcluster = float(Nstars)|units.MSun, 3.|units.parsec
     sepBinary = 20.|units.parsec
     tend, dt = 80.|units.Myr, 1.|units.Myr
     dt_param = 0.1 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
-    
-    converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
-    converter = converter_sub
-    
+
+    Norbiters = 1
+    random_numbers = [ [ np.random.random(), np.random(), np.random() ] for i in range(Norbiters) ]
+
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
     code_names = [ 'Nbody', 'tree' ] #'nemesis'
     
@@ -666,8 +472,7 @@ if __name__ in '__main__':
             print(orbiter_name, code_name)
             print('')
             
-            simulation(orbiter_name, code_name, potential, Rcoord, Zcoord, phicoord, 
-                       vr_init, vphi_init, vz_init, Nstars, W0, Mcluster, Rcluster, Mgalaxy, Rgalaxy, sepBinary, tend, dt)
+            simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, random_numbers, tend, dt)
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             

@@ -185,6 +185,8 @@ def young_massive_cluster(random_number_one, random_number_two, random_number_th
     bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
                                            Nstars, W0, Mcluster, Rcluster, code_name, parameters=[])
     
+    print('created a YMC')
+    
     return bodies, code, converter_sub
 
 def globular_cluster(random_number_one, random_number_two, random_number_three):

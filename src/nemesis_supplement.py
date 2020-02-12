@@ -7,10 +7,10 @@ Created on Wed Feb 12 13:51:30 2020
 """
 
 from amuse.lab import*
-from amuse.couple import bridge
 from amuse.couple.bridge import CalculateFieldForParticles
 from amuse.units import quantities
 from amuse.community.mercury.interface import Mercury
+from amuse.units import units,nbody_system
 
 import numpy as np
 

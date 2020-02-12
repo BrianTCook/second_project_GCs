@@ -1,20 +1,12 @@
 from amuse.lab import *
 #from amuse.ext.bridge import bridge
 from amuse.couple import bridge
-from amuse.couple.bridge import CalculateFieldForParticles
-from amuse.ic.kingmodel import new_king_model
-from amuse.io import write_set_to_file, read_set_from_file
-from amuse.units import quantities
-from amuse.community.mercury.interface import Mercury
 
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
-from galpy.df import quasiisothermaldf
-from galpy.potential import MWPotential2014, evaluateRforces, evaluatezforces, to_amuse
-from galpy.util import bovy_conversion
-from galpy.actionAngle import actionAngleStaeckel
+from galpy.potential import MWPotential2014, to_amuse
 
 from phase_space_mapping import maps
 from cluster_maker import young_massive_cluster

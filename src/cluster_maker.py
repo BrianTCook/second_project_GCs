@@ -7,18 +7,14 @@ Created on Wed Feb 12 13:29:47 2020
 """
 
 from amuse.lab import *
-from amuse.couple import bridge
 from amuse.ic.kingmodel import new_king_model
-from amuse.units import quantities
 from amuse.community.mercury.interface import Mercury
 
 from galpy.df import quasiisothermaldf
-from galpy.potential import MWPotential2014, to_amuse
 from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 
 import numpy as np
-import math
 
 def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
                             Nstars, W0, Mcluster, Rcluster, code_name, parameters=[]):

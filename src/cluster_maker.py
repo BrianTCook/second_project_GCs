@@ -42,7 +42,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     #vphi = R \dot{\phi}? assuming yes for now
     vx_init = (vr_init*np.cos(phicoord) - vphi_init*np.sin(phicoord)) | units.kms
     vy_init = (vr_init*np.sin(phicoord) + vphi_init*np.cos(phicoord)) | units.kms
-    vz_init = vz_init #| units.kms
+    vz_init = vz_init | units.kms
     
     pos_vec, vel_vec = (x_init, y_init, z_init), (vx_init, vy_init, vz_init)
     
@@ -151,11 +151,6 @@ def young_massive_cluster(random_number_one, random_number_two, random_number_th
     takes 3 random numbers and generates YMC
     with appropriate ICs in 6D phase space
     '''
-    
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    print('The three random numbers are')
-    print(random_number_one, random_number_two, random_number_three)
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     
     #YMCs are distributed throughout the MW
     Rmin, Rmax = 0., 15. 

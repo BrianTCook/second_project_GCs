@@ -458,7 +458,7 @@ if __name__ in '__main__':
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
 
     Norbiters = 1
-    random_numbers = [ [ np.random.random(), np.random.random(), np.random.random() ] for i in range(Norbiters) ]
+    random_numbers = np.random.rand(Norbiters, 3) #needed to initalize orbiter spatial coordinates
 
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
     code_names = [ 'Nbody', 'tree' ] #'nemesis'

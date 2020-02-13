@@ -71,7 +71,7 @@ def radial_coords():
         y_YMC, x_YMC = np.histogram(MW_OC_rvals)
         x_YMC = [ 0.5*(x_YMC[i]+x_YMC[i+1]) for i in range(len(x_YMC)-1) ]
         
-        y_OC, x_OC = np.histogram(MW_OC_rvals)
+        y_GC, x_GC = np.histogram(MW_OC_rvals)
         x_GC = [ 0.5*(x_GC[i]+x_GC[i+1]) for i in range(len(x_GC)-1) ]
         
         #fit a cubic spline to each

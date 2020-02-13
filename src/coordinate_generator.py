@@ -30,8 +30,8 @@ def azimuthal_coords():
         simulation_GC_phivals = 2*np.pi * np.random.rand(1000)
         
         np.savetxt('simulation_OC_phivals.txt', simulation_OC_phivals)
-        np.savetxt('simulation_YMC_phivals.txt', simulation_OC_phivals)
-        np.savetxt('simulation_GsC_phivals.txt', simulation_OC_phivals)
+        np.savetxt('simulation_YMC_phivals.txt', simulation_YMC_phivals)
+        np.savetxt('simulation_GC_phivals.txt', simulation_GC_phivals)
     
     return simulation_OC_phivals, simulation_YMC_phivals, simulation_GC_phivals
     
@@ -113,8 +113,8 @@ def radial_coords():
                 simulation_GC_rvals.append(x_proposed)
         
         np.savetxt('simulation_OC_rvals.txt', simulation_OC_rvals)
-        np.savetxt('simulation_YMC_rvals.txt', simulation_OC_rvals)
-        np.savetxt('simulation_GsC_rvals.txt', simulation_OC_rvals)
+        np.savetxt('simulation_YMC_rvals.txt', simulation_YMC_rvals)
+        np.savetxt('simulation_GC_rvals.txt', simulation_GC_rvals)
         
     return simulation_OC_rvals, simulation_YMC_rvals, simulation_GC_rvals
         

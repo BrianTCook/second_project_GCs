@@ -61,17 +61,17 @@ def radial_coords():
         MW_GC_rvals = np.abs( np.random.normal(loc=0., scale=4., size=157) )
         
         np.savetxt('MW_OC_rvals.txt', MW_OC_rvals)
-        np.savetxt('MW_YMC_rvals.txt', MW_OC_rvals)
-        np.savetxt('MW_GsC_rvals.txt', MW_OC_rvals)
+        np.savetxt('MW_YMC_rvals.txt', MW_YMC_rvals)
+        np.savetxt('MW_GC_rvals.txt', MW_GC_rvals)
         
         #generating histograms of r values for each cluster type
         y_OC, x_OC = np.histogram(MW_OC_rvals)
         x_OC = [ 0.5*(x_OC[i]+x_OC[i+1]) for i in range(len(x_OC)-1) ]
         
-        y_YMC, x_YMC = np.histogram(MW_OC_rvals)
+        y_YMC, x_YMC = np.histogram(MW_YMC_rvals)
         x_YMC = [ 0.5*(x_YMC[i]+x_YMC[i+1]) for i in range(len(x_YMC)-1) ]
         
-        y_GC, x_GC = np.histogram(MW_OC_rvals)
+        y_GC, x_GC = np.histogram(MW_GC_rvals)
         x_GC = [ 0.5*(x_GC[i]+x_GC[i+1]) for i in range(len(x_GC)-1) ]
         
         #fit a cubic spline to each
@@ -140,17 +140,17 @@ def zed_coords():
         MW_GC_zvals = np.random.normal(loc=0., scale=1., size=157)
         
         np.savetxt('MW_OC_zvals.txt', MW_OC_zvals)
-        np.savetxt('MW_YMC_zvals.txt', MW_OC_zvals)
-        np.savetxt('MW_GsC_zvals.txt', MW_OC_zvals)
+        np.savetxt('MW_YMC_zvals.txt', MW_YMC_zvals)
+        np.savetxt('MW_GC_zvals.txt', MW_GC_zvals)
         
         #generating normalized histograms of r values for each cluster type
         y_OC, x_OC = np.histogram(MW_OC_zvals, density=True)
         x_OC = [ 0.5*(x_OC[i]+x_OC[i+1]) for i in range(len(x_OC)-1) ]
         
-        y_YMC, x_YMC = np.histogram(MW_OC_zvals, density=True)
+        y_YMC, x_YMC = np.histogram(MW_YMC_zvals, density=True)
         x_YMC = [ 0.5*(x_YMC[i]+x_YMC[i+1]) for i in range(len(x_YMC)-1) ]
         
-        y_OC, x_OC = np.histogram(MW_OC_zvals, density=True)
+        y_GC, x_GC = np.histogram(MW_GC_zvals, density=True)
         x_GC = [ 0.5*(x_GC[i]+x_GC[i+1]) for i in range(len(x_GC)-1) ]
         
         #fit a cubic spline to each
@@ -192,8 +192,8 @@ def zed_coords():
                 simulation_GC_zvals.append(x_proposed)
         
         np.savetxt('simulation_OC_zvals.txt', simulation_OC_zvals)
-        np.savetxt('simulation_YMC_zvals.txt', simulation_OC_zvals)
-        np.savetxt('simulation_GsC_zvals.txt', simulation_OC_zvals)
+        np.savetxt('simulation_YMC_zvals.txt', simulation_YMC_zvals)
+        np.savetxt('simulation_GC_zvals.txt', simulation_GC_zvals)
       
     return simulation_OC_zvals, simulation_YMC_zvals, simulation_GC_zvals
 

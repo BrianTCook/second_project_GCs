@@ -85,7 +85,7 @@ def radial_coords():
         #fill them in using random sampling
         simulation_OC_rvals, simulation_YMC_rvals, simulation_GC_rvals = [], [], []
         
-        while len(simulation_OC_zvals) < 1537:
+        while len(simulation_OC_rvals) < 1537:
             
             x_proposed = (max_x_OC - min_x_OC)*np.random.random() + min_x_OC
             y_proposed = np.random.random()

@@ -116,7 +116,7 @@ def radial_coords():
         np.savetxt('simulation_YMC_rvals.txt', simulation_OC_rvals)
         np.savetxt('simulation_GsC_rvals.txt', simulation_OC_rvals)
         
-    return 1
+    return MW_OC_rvals, MW_YMC_rvals, MW_GC_rvals, simulation_OC_rvals, simulation_YMC_rvals, simulation_GC_rvals
         
 def zed_coords():
     
@@ -195,5 +195,10 @@ def zed_coords():
         np.savetxt('simulation_YMC_zvals.txt', simulation_OC_zvals)
         np.savetxt('simulation_GsC_zvals.txt', simulation_OC_zvals)
       
-    return 1
+    return MW_OC_zvals, MW_YMC_zvals, MW_GC_zvals, simulation_OC_zvals, simulation_YMC_zvals, simulation_GC_zvals
 
+if __name__ in '__main__':
+    
+    _,_,_,_,_,_ = azimuthal_coords()
+    _,_,_,_,_,_ = radial_coords()
+    _,_,_,_,_,_ = zed_coords()

@@ -110,7 +110,7 @@ def radial_coords():
             
             if y_proposed <= GC_spline(x_proposed):
                 
-                simulation_GC_zvals.append(x_proposed)
+                simulation_GC_rvals.append(x_proposed)
         
         np.savetxt('simulation_OC_rvals.txt', simulation_OC_rvals)
         np.savetxt('simulation_YMC_rvals.txt', simulation_OC_rvals)

@@ -66,13 +66,13 @@ def radial_coords():
         
         #generating histograms of r values for each cluster type
         y_OC, x_OC = np.histogram(MW_OC_rvals)
-        x_OC = [ 0.5*(x_OC[i]+x_OC[i+1]) for i in range(len(MW_OC_rvals)-1) ]
+        x_OC = [ 0.5*(x_OC[i]+x_OC[i+1]) for i in range(len(x_OC)-1) ]
         
         y_YMC, x_YMC = np.histogram(MW_OC_rvals)
-        x_YMC = [ 0.5*(x_YMC[i]+x_YMC[i+1]) for i in range(len(MW_YMC_rvals)-1) ]
+        x_YMC = [ 0.5*(x_YMC[i]+x_YMC[i+1]) for i in range(len(x_OC)-1) ]
         
         y_OC, x_OC = np.histogram(MW_OC_rvals)
-        x_GC = [ 0.5*(x_GC[i]+x_GC[i+1]) for i in range(len(MW_GC_rvals)-1) ]
+        x_GC = [ 0.5*(x_GC[i]+x_GC[i+1]) for i in range(len(x_OC)-1) ]
         
         #fit a cubic spline to each
         OC_spline, YMC_spline, GC_spline = CubicSpline(x_OC, y_OC), CubicSpline(x_YMC, y_YMC), CubicSpline(x_GC, y_GC)
@@ -145,13 +145,13 @@ def zed_coords():
         
         #generating normalized histograms of r values for each cluster type
         y_OC, x_OC = np.histogram(MW_OC_zvals, density=True)
-        x_OC = [ 0.5*(x_OC[i]+x_OC[i+1]) for i in range(len(MW_OC_zvals)-1) ]
+        x_OC = [ 0.5*(x_OC[i]+x_OC[i+1]) for i in range(len(x_OC)-1) ]
         
         y_YMC, x_YMC = np.histogram(MW_OC_zvals, density=True)
-        x_YMC = [ 0.5*(x_YMC[i]+x_YMC[i+1]) for i in range(len(MW_YMC_zvals)-1) ]
+        x_YMC = [ 0.5*(x_YMC[i]+x_YMC[i+1]) for i in range(len(x_OC)-1) ]
         
         y_OC, x_OC = np.histogram(MW_OC_zvals, density=True)
-        x_GC = [ 0.5*(x_GC[i]+x_GC[i+1]) for i in range(len(MW_GC_zvals)-1) ]
+        x_GC = [ 0.5*(x_GC[i]+x_GC[i+1]) for i in range(len(x_OC)-1) ]
         
         #fit a cubic spline to each
         OC_spline, YMC_spline, GC_spline = CubicSpline(x_OC, y_OC), CubicSpline(x_YMC, y_YMC), CubicSpline(x_GC, y_GC)

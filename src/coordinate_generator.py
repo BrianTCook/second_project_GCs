@@ -33,7 +33,7 @@ def azimuthal_coords():
         np.savetxt('simulation_YMC_phivals.txt', simulation_OC_phivals)
         np.savetxt('simulation_GsC_phivals.txt', simulation_OC_phivals)
     
-    return 1
+    return simulation_OC_phivals, simulation_YMC_phivals, simulation_GC_phivals
     
 '''
 creating lists of rvals and zvals from GMM of MW distributions
@@ -116,7 +116,7 @@ def radial_coords():
         np.savetxt('simulation_YMC_rvals.txt', simulation_OC_rvals)
         np.savetxt('simulation_GsC_rvals.txt', simulation_OC_rvals)
         
-    return MW_OC_rvals, MW_YMC_rvals, MW_GC_rvals, simulation_OC_rvals, simulation_YMC_rvals, simulation_GC_rvals
+    return simulation_OC_rvals, simulation_YMC_rvals, simulation_GC_rvals
         
 def zed_coords():
     
@@ -195,10 +195,12 @@ def zed_coords():
         np.savetxt('simulation_YMC_zvals.txt', simulation_OC_zvals)
         np.savetxt('simulation_GsC_zvals.txt', simulation_OC_zvals)
       
-    return MW_OC_zvals, MW_YMC_zvals, MW_GC_zvals, simulation_OC_zvals, simulation_YMC_zvals, simulation_GC_zvals
+    return simulation_OC_zvals, simulation_YMC_zvals, simulation_GC_zvals
 
 if __name__ in '__main__':
     
-    _,_,_,_,_,_ = azimuthal_coords()
-    _,_,_,_,_,_ = radial_coords()
-    _,_,_,_,_,_ = zed_coords()
+    OC_phi, YMC_phi, GC_phi = azimuthal_coords()
+    OC_r, YMC_r, GC_r = radial_coords()
+    OC_z, YMC_z, GC_z = zed_coords()
+    
+    print('hello world!')

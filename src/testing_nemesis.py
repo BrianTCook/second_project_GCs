@@ -161,7 +161,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
         
         return all_bodies, code_one, code_two #need to be different so they're bridged
 
-def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sep_binary, 
+def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
                        rvals_OC, phivals_OC, zvals_OC):
     
     '''
@@ -254,7 +254,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     
     bodies, gravity = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
-                                         galaxy_code, sep_binary, rvals_OC, phivals_OC, zvals_OC)
+                                         galaxy_code, sepBinary, rvals_OC, phivals_OC, zvals_OC)
     
     channel = bodies.new_channel_to(gravity.particles)
     channel.copy_attributes(['x','y','z','vx','vy','vz'])

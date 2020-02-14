@@ -357,7 +357,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         axs[i].legend(loc='upper right')
    
     plt.tight_layout()         
-    plt.savefig('testing_nemesis_energy.png')
+    plt.savefig('testing_nemesis_energy.pdf')
     plt.close()
     
     #median radial coordinates
@@ -387,7 +387,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         axs[i].legend(loc='upper right')
             
     plt.tight_layout()
-    plt.savefig('testing_nemesis_radialcoords.png')
+    plt.savefig('testing_nemesis_radialcoords.pdf')
     plt.close()
     
     #median speeds
@@ -417,7 +417,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         axs[i].legend(loc='upper right')
        
     plt.tight_layout() 
-    plt.savefig('testing_nemesis_speeds.png')
+    plt.savefig('testing_nemesis_speeds.pdf')
     plt.close()
     
     #clock times
@@ -448,7 +448,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         axs[i].legend(loc='upper right')
        
     plt.tight_layout() 
-    plt.savefig('testing_nemesis_clocktimes.png')
+    plt.savefig('testing_nemesis_clocktimes.pdf')
     plt.close()
     
     return 0

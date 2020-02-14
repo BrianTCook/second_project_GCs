@@ -50,7 +50,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
     should get appropriate 6D initial phase space conditions
     '''
     
-    Rcoord, phicoord, zcoord = r_input, phi_input, z_input
+    Rcoord, phicoord, Zcoord = r_input, phi_input, z_input
     
     #using Staeckel
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)

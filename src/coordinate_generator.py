@@ -19,11 +19,16 @@ def azimuthal_coords():
     try:
         
         data_directory = '/home/brian/Desktop/second_project_GCs/data/'
+        
+        print(data_directory+'simulation_OC_phivals.txt')
+        
         simulation_OC_phivals = np.loadtxt(data_directory+'simulation_OC_phivals.txt')
         simulation_YMC_phivals = np.loadtxt(data_directory+'simulation_YMC_phivals.txt')
         simulation_GC_phivals = np.loadtxt(data_directory+'simulation_GC_phivals.txt')
         
     except:
+        
+        print('should not be getting here on virtual machine!')
         
         simulation_OC_phivals = 2*np.pi * np.random.rand(1537)
         simulation_YMC_phivals = 2*np.pi * np.random.rand(1000)

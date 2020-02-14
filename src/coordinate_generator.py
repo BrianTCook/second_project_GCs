@@ -18,7 +18,7 @@ def azimuthal_coords():
     
     try:
         
-        data_directory = '~/Desktop/second_project_GCs/data/'
+        data_directory = '/home/brian/Desktop/second_project_GCs/data/'
         simulation_OC_phivals = np.loadtxt(data_directory+'simulation_OC_phivals.txt')
         simulation_YMC_phivals = np.loadtxt(data_directory+'simulation_YMC_phivals.txt')
         simulation_GC_phivals = np.loadtxt(data_directory+'simulation_GC_phivals.txt')
@@ -43,7 +43,7 @@ def radial_coords():
     
     try:
         
-        data_directory = '~/Desktop/second_project_GCs/data/'
+        data_directory = '/home/brian/Desktop/second_project_GCs/data/'
         
         MW_OC_rvals = np.loadtxt(data_directory+'MW_OC_rvals.txt')
         MW_YMC_rvals = np.loadtxt(data_directory+'MW_YMC_rvals.txt')
@@ -122,7 +122,7 @@ def zed_coords():
     
     try:
         
-        data_directory = '~/Desktop/second_project_GCs/data/'
+        data_directory = '/home/brian/Desktop/second_project_GCs/data/'
         
         MW_OC_zvals = np.loadtxt(data_directory+'MW_OC_zvals.txt')
         MW_YMC_zvals = np.loadtxt(data_directory+'MW_YMC_zvals.txt')

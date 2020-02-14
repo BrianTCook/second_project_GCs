@@ -107,7 +107,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     
     return bodies, code
 
-def open_cluster(random_number_one, random_number_two, random_number_three):
+def open_cluster(r_input, phi_input, z_input):
     
     '''
     takes 3 random numbers and generates open cluster
@@ -115,12 +115,7 @@ def open_cluster(random_number_one, random_number_two, random_number_three):
     '''
     
     #OCs are limited to the galactic disk
-    Rmin, Rmax = 0., 15. 
-    Zmin, Zmax = -1., 1.
-    
-    Rcoord = (Rmax-Rmin)*random_number_one + Rmin
-    phicoord = 2*np.pi*random_number_two
-    Zcoord = (Zmax-Zmin)*random_number_three + Zmin
+    Rcoord, phicoord, Zcoord = r_input, phi_input, z_input
     
     #using Staeckel
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
@@ -145,7 +140,7 @@ def open_cluster(random_number_one, random_number_two, random_number_three):
     
     return bodies, code, converter_sub
 
-def young_massive_cluster(random_number_one, random_number_two, random_number_three):
+def young_massive_cluster(r_input, phi_input, z_input):
     
     '''
     takes 3 random numbers and generates YMC
@@ -153,18 +148,8 @@ def young_massive_cluster(random_number_one, random_number_two, random_number_th
     '''
     
     #YMCs are distributed throughout the MW
-    Rmin, Rmax = 0., 15. 
-    Zmin, Zmax = -8., 8.
-    
-    Rcoord = (Rmax-Rmin)*random_number_one + Rmin
-    phicoord = 2*np.pi*random_number_two
-    Zcoord = (Zmax-Zmin)*random_number_three + Zmin
-    
-    print('---------------------------------------')
-    print('3D cylindrical coordinates (R, phi, Z):')
-    print(Rcoord, phicoord, Zcoord)
-    print('---------------------------------------')
-    
+    Rcoord, phicoord, Zcoord = r_input, phi_input, z_input
+
     #using Staeckel, whatever that medians
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
     qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
@@ -188,7 +173,7 @@ def young_massive_cluster(random_number_one, random_number_two, random_number_th
     
     return bodies, code, converter_sub
 
-def globular_cluster(random_number_one, random_number_two, random_number_three):
+def globular_cluster(r_input, phi_input, z_input):
     
     '''
     takes 3 random numbers and generates globular cluster
@@ -196,12 +181,7 @@ def globular_cluster(random_number_one, random_number_two, random_number_three):
     '''
     
     #GCs are distributed throughout the MW's halo
-    Rmin, Rmax = 0., 15. 
-    Zmin, Zmax = -8., 8.
-    
-    Rcoord = (Rmax-Rmin)*random_number_one + Rmin
-    phicoord = 2*np.pi*random_number_two
-    Zcoord = (Zmax-Zmin)*random_number_three + Zmin
+    Rcoord, phicoord, Zcoord = r_input, phi_input, z_input
     
     #using Staeckel
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)

@@ -12,7 +12,9 @@ from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 
 from phase_space_mapping import maps
-from cluster_maker import young_massive_cluster
+from cluster_maker import open_cluster, young_massive_cluster, globular_cluster
+
+from coordinate_generator import radial_coords, zed_coords
 
 import random
 import numpy as np
@@ -28,10 +30,10 @@ from nemesis_supplement import getxv, parent_worker, sub_worker, py_worker, smal
 os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
 def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-            random_number_one, random_number_two, random_number_three):
+            r_input, phi_input, z_input):
 
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = young_massive_cluster(0.6, 0.6, 0.6) #just getting the cluster scale converter
+    _, _, converter_sub = open_cluster(0.6, 0.6, 0.6) #just getting the cluster scale converter
     converter = converter_sub
     
     '''
@@ -40,13 +42,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
     should get appropriate 6D initial phase space conditions
     '''
     
-    #YMCs are distributed throughout the MW, good for this test
-    Rmin, Rmax = 0., 15. 
-    Zmin, Zmax = -8., 8.
-    
-    Rcoord = (Rmax-Rmin)*random_number_one + Rmin
-    phicoord = 2*np.pi*random_number_two
-    Zcoord = (Zmax-Zmin)*random_number_three + Zmin
+    Rcoord, phicoord, zcoord = r_input, phi_input, z_input
     
     #using Staeckel
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
@@ -123,14 +119,14 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
         
     if orbiter_name == 'SingleCluster':
         
-        bodies, code, _ = young_massive_cluster(random_number_one, random_number_two, random_number_three)
+        bodies, code, _ = open_cluster(r_input, phi_input, z_input)
         
         return bodies, code
         
     if orbiter_name == 'BinaryCluster':
         
-        bodies_one, code_one, _ = young_massive_cluster(random_number_one, random_number_two, random_number_three)
-        bodies_two, code_two, _ = young_massive_cluster(random_number_one, random_number_two, random_number_three)
+        bodies_one, code_one, _ = open_cluster(r_input, phi_input, z_input)
+        bodies_two, code_two, _ = open_cluster(r_input, phi_input, z_input)
             
         #initialize binary system
         mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()
@@ -157,7 +153,8 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
         
         return all_bodies, code_one, code_two #need to be different so they're bridged
 
-def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sep_binary, random_numbers):
+def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sep_binary, 
+                       rvals_OC, phivals_OC, zvals_OC):
     
     '''
     will need to ask SPZ if he meant for field, orbiter to be separate in non
@@ -165,7 +162,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     '''
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = young_massive_cluster(0.6, 0.6, 0.6) #just getting the cluster scale converter
+    _, _, converter_sub = open_cluster(0.6, 0.6, 0.6) #just getting the cluster scale converter
     converter = converter_sub
     
     if code_name != 'nemesis':
@@ -174,8 +171,8 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         
         if orbiter_name != 'BinaryCluster':
             
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy,
-                                         Rgalaxy, sepBinary, r1, r2, r3) for r1, r2, r3 in random_numbers ]
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, r, phi, z) 
+                                 for r, phi, z in zip(rvals_OC, phivals_OC, zvals_OC) ]
             
             orbiter_bodies, orbiter_code = list_of_orbiters[0]
             
@@ -183,8 +180,8 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
 
         if orbiter_name == 'BinaryCluster':
             
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                         r1, r2, r3) for r1, r2, r3 in random_numbers ]
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, r, phi, z) 
+                                 for r, phi, z in zip(rvals_OC, phivals_OC, zvals_OC) ]
             
             orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
             
@@ -196,15 +193,15 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         #just don't use orbiter_code here, just replace it with nemesis
         if orbiter_name != 'BinaryCluster':
             
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, 
-                                         Rgalaxy, sepBinary, r1, r2, r3) for r1, r2, r3 in random_numbers ]
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, r, phi, z) 
+                                 for r, phi, z in zip(rvals_OC, phivals_OC, zvals_OC) ]
             
             orbiter_bodies, orbiter_code = list_of_orbiters[0]
 
         if orbiter_name == 'BinaryCluster':
             
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                         r1, r2, r3) for r1, r2, r3 in random_numbers ]
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, r, phi, z) 
+                                 for r, phi, z in zip(rvals_OC, phivals_OC, zvals_OC) ]
             
             orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
             
@@ -239,16 +236,17 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
 
     return orbiter_bodies, gravity
 
-def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, random_numbers, tend, dt):
+def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
+               rvals_OC, phivals_OC, zvals_OC, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = young_massive_cluster(0.6, 0.6, 0.6) #just getting the cluster scale converter
+    _, _, converter_sub = open_cluster(0.6, 0.6, 0.6) #just getting the cluster scale converter
     converter = converter_sub
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     
     bodies, gravity = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
-                                         galaxy_code, sepBinary, random_numbers)
+                                         galaxy_code, sep_binary, rvals_OC, phivals_OC, zvals_OC)
     
     channel = bodies.new_channel_to(gravity.particles)
     channel.copy_attributes(['x','y','z','vx','vy','vz'])
@@ -464,8 +462,15 @@ if __name__ in '__main__':
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
 
+    r_OC, r_YMC, r_GC = radial_coords()
+    phi_OC, phi_YMC, phi_GC = azimuthal_coords()
+    z_OC, z_YMC, z_GC = zed_coords()
+    
     Norbiters = 1
-    random_numbers = np.random.rand(Norbiters, 3) #needed to initalize orbiter spatial coordinates
+    
+    rvals_OC = [ r_OC[i] for i in range(Norbiters) ]
+    phivals_OC = [ phi_OC[i] for i in range(Norbiters) ]
+    zvals_OC = [ z_OC[i] for i in range(Norbiters) ]     
 
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
     code_names = [ 'Nbody', 'tree' ] #'nemesis'
@@ -479,7 +484,8 @@ if __name__ in '__main__':
             print(orbiter_name, code_name)
             print('')
             
-            simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, random_numbers, tend, dt)
+            simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
+                       sepBinary, rvals_OC, phivals_OC, zvals_OC, tend, dt)
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             

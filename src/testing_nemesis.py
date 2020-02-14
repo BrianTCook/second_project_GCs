@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Feb 14 14:05:09 2020
+
+@author: BrianTCook
+"""
+
 from amuse.lab import *
 #from amuse.ext.bridge import bridge
 from amuse.couple import bridge

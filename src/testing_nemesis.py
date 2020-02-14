@@ -22,7 +22,7 @@ from galpy.actionAngle import actionAngleStaeckel
 from phase_space_mapping import maps
 from cluster_maker import open_cluster, young_massive_cluster, globular_cluster
 
-from coordinate_generator import radial_coords, zed_coords
+from coordinate_generator import radial_coords, azimuthal_coords, zed_coords
 
 import random
 import numpy as np

@@ -13,7 +13,7 @@ plt.hist(r_YMC, density=True, cumulative=False, histtype='step', label='Young Ma
 plt.hist(r_GC, density=True, cumulative=False, histtype='step', label='Globular Clusters')
 plt.xlabel(r'$r$ (kpc)', fontsize=16)
 plt.ylabel(r'Probability Density', fontsize=16)
-plt.legend(loc='lower right')
+plt.legend(loc='upper right')
 plt.savefig('radial_coord_distribution.pdf')
 plt.close()
 
@@ -23,6 +23,6 @@ plt.hist(z_YMC, density=True, cumulative=False, histtype='step', label='Young Ma
 plt.hist(z_GC, density=True, cumulative=False, histtype='step', label='Globular Clusters')
 plt.xlabel(r'$z$ (kpc)', fontsize=16)
 plt.ylabel(r'Probability Density', fontsize=16)
-plt.legend(loc='lower right')
+plt.legend(loc='upper right')
 plt.savefig('zed_coord_distribution.pdf')
 plt.close()

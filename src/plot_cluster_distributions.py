@@ -9,13 +9,26 @@ from coordinate_generator import radial_coords, zed_coords
 r_OC, r_YMC, r_GC = radial_coords()
 z_OC, z_YMC, z_GC = zed_coords()
 
-y_r_OC, x_r_OC = np.histogram(r_OC, bins=40, density=True)
-y_r_YMC, x_r_YMC = np.histogram(r_YMC, bins=40, density=True)
-y_r_GC, x_r_GC = np.histogram(r_GC, bins=40, density=True)
+print(r_GC)
+print(z_GC)
 
-y_z_OC, x_z_OC = np.histogram(z_OC, bins=40, density=True)
-y_z_YMC, x_z_YMC = np.histogram(z_YMC, bins=40, density=True)
-y_z_GC, x_z_GC = np.histogram(z_GC, bins=40, density=True)
+plt.figure()
+plt.hist(r_GC)
+plt.savefig('r_GC.png')
+plt.close()
+
+plt.figure()
+plt.hist(z_GC)
+plt.savefig('z_GC.png')
+plt.close()
+
+y_r_OC, x_r_OC = np.histogram(r_OC, bins=20, density=True)
+y_r_YMC, x_r_YMC = np.histogram(r_YMC, bins=20, density=True)
+y_r_GC, x_r_GC = np.histogram(r_GC, bins=20, density=True)
+
+y_z_OC, x_z_OC = np.histogram(z_OC, bins=20, density=True)
+y_z_YMC, x_z_YMC = np.histogram(z_YMC, bins=20, density=True)
+y_z_GC, x_z_GC = np.histogram(z_GC, bins=20, density=True)
 
 N_OC, N_YMC, N_GC = len(x_r_OC), len(x_r_YMC), len(x_r_GC)
 

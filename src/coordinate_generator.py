@@ -60,15 +60,17 @@ def radial_coords():
         
     except:
     '''
-        
+    
+    data_directory = '/home/brian/Desktop/second_project_gcs/data/'    
+    
     #will need to update these from a catalog at some point
     MW_OC_rvals = np.abs( np.random.normal(loc=0., scale=4., size=1537) )
     MW_YMC_rvals = np.abs( np.random.normal(loc=0., scale=4., size=12) )
-    MW_GC_rvals = np.abs( np.random.normal(loc=0., scale=4., size=157) )
     
     np.savetxt('MW_OC_rvals.txt', MW_OC_rvals)
     np.savetxt('MW_YMC_rvals.txt', MW_YMC_rvals)
-    np.savetxt('MW_GC_rvals.txt', MW_GC_rvals)
+    
+    MW_GC_rvals = np.loadtxt(data_directory+'MW_GC_rvals.txt')
     
     #generating histograms of r values for each cluster type
     y_OC, x_OC = np.histogram(MW_OC_rvals)
@@ -142,10 +144,13 @@ def zed_coords():
     except:
     '''
         
+    data_directory = '/home/brian/Desktop/second_project_gcs/data/'
+    
     #will need to update these from a catalog at some point
     MW_OC_zvals = np.random.normal(loc=0., scale=1., size=1537)
     MW_YMC_zvals = np.random.normal(loc=0., scale=1., size=12)
-    MW_GC_zvals = np.random.normal(loc=0., scale=1., size=157)
+    
+    MW_GC_zvals = np.loadtxt(data_directory+'MW_GC_zvals.txt')
     
     np.savetxt('MW_OC_zvals.txt', MW_OC_zvals)
     np.savetxt('MW_YMC_zvals.txt', MW_YMC_zvals)

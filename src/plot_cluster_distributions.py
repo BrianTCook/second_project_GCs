@@ -9,8 +9,7 @@ from coordinate_generator import radial_coords, zed_coords
 r_OC, r_YMC, r_GC = radial_coords()
 z_OC, z_YMC, z_GC = zed_coords()
 
-print(r_GC)
-print(z_GC)
+print(z_GC[0])
 
 plt.figure()
 plt.hist(r_GC)

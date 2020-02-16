@@ -35,3 +35,6 @@ def harris_coord_converter():
     
     return 1
 
+if __name__ in '__main__':
+	harris_coord_converter()
+

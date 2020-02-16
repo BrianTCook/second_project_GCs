@@ -9,6 +9,7 @@ takes globular cluster coordinates given in Harris (1996) and converts from Cart
 """
 
 import numpy as np
+import pandas as pd
 
 def harris_coord_converter():
     
@@ -17,17 +18,17 @@ def harris_coord_converter():
     '''
     
     data_directory = '/home/brian/Desktop/second_project_gcs/data/'
-    harris_array = np.loadtxt(data_directory+'mwgc.txt')
+    harris_df = pd.read_csv(data_directory+'mwgc.txt')
+    harris_df.columns = [ 'ID', 'Name', 'RA', 'DEC', 'L', 'B', 'R_Sun', 'R_gc', 'X', 'Y', 'Z' ]
     
-    print(harris_array)
+    print(harris_df)
+    
+    xvals, yvals, zvals = harris_df['X'].tolist(), harris_df['Y'].tolist(), harris_df['Z'].tolist()
+    
+    rvals = [ np.sqrt(xvals[i]**2 + yvals[i]**2) for i in range(len(harris_df.index)) ]
+    phivals = [ np.arctan(yvals[i]/xvals[i]) for i in range(len(harris_df.index)) ]
     
     '''
-    xvals, yvals, zvals = harris_array[:,0], harris_array[:,1], harris_array[:,2]
-    
-    rvals = [ np.sqrt(x[i]**2 + y[i]**2) for i in range(len(harris_df.index)) ]
-    phivals = [ np.arctan(yvals[i]/xvals[i]) for i in range(len(harris_df.index)) ]
-    zvals = zvals
-    
     np.savetxt('MW_GC_rvals.txt', rvals)
     np.savetxt('MW_GC_phivals.txt', phivals)
     np.savetxt('MW_GC_zvals.txt', zvals)
@@ -36,5 +37,6 @@ def harris_coord_converter():
     return 1
 
 if __name__ in '__main__':
-	harris_coord_converter()
+    harris_coord_converter()
+    print('hello world!')
 

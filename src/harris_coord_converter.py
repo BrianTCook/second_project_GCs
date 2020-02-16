@@ -27,6 +27,10 @@ def harris_coord_converter():
     rvals = [ np.sqrt(xvals[i]**2 + yvals[i]**2) for i in range(len(harris_df.index)) ]
     phivals = [ np.arctan(yvals[i]/xvals[i]) for i in range(len(harris_df.index)) ]
     
+    rvals = [ float(r) for r in rvals ]
+    phivals = [ float(phi) for phi in phivals ]
+    zvals = [ float(z) for z in zvals ]
+    
     np.savetxt('MW_GC_rvals.txt', rvals)
     np.savetxt('MW_GC_phivals.txt', phivals)
     np.savetxt('MW_GC_zvals.txt', zvals)
@@ -35,5 +39,7 @@ def harris_coord_converter():
 
 if __name__ in '__main__':
     harris_coord_converter()
+    ahh = np.loadtxt('MW_GC_zvals.txt')
+    print(ahh[0])
     print('hello world!')
 

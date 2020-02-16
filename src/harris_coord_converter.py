@@ -17,22 +17,19 @@ def harris_coord_converter():
     harris_array loads in a .txt file
     '''
     
-    data_directory = '/home/brian/Desktop/second_project_gcs/data/'
-    harris_df = pd.read_csv(data_directory+'mwgc.txt', delimiter='\s+')
-    harris_df.columns = [ 'ID', 'Name', 'RA', 'DEC', 'L', 'B', 'R_Sun', 'R_gc', 'X', 'Y', 'Z' ]
-    
-    print(harris_df)
+    #data_directory = '/home/brian/Desktop/second_project_gcs/data/'
+    data_directory = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/'
+    harris_df = pd.read_csv(data_directory+'harris_GC_data.csv', header=None)
+    harris_df.columns = [ 'ID', 'Name', '?', 'RA', 'DEC', 'L', 'B', 'R_Sun', 'R_gc', 'X', 'Y', 'Z' ]
     
     xvals, yvals, zvals = harris_df['X'].tolist(), harris_df['Y'].tolist(), harris_df['Z'].tolist()
     
     rvals = [ np.sqrt(xvals[i]**2 + yvals[i]**2) for i in range(len(harris_df.index)) ]
     phivals = [ np.arctan(yvals[i]/xvals[i]) for i in range(len(harris_df.index)) ]
     
-    '''
     np.savetxt('MW_GC_rvals.txt', rvals)
     np.savetxt('MW_GC_phivals.txt', phivals)
     np.savetxt('MW_GC_zvals.txt', zvals)
-    '''
     
     return 1
 

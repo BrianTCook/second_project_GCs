@@ -18,7 +18,7 @@ def harris_coord_converter():
     '''
     
     data_directory = '/home/brian/Desktop/second_project_gcs/data/'
-    harris_df = pd.read_csv(data_directory+'mwgc.txt')
+    harris_df = pd.read_csv(data_directory+'mwgc.txt', delimiter='\s+')
     harris_df.columns = [ 'ID', 'Name', 'RA', 'DEC', 'L', 'B', 'R_Sun', 'R_gc', 'X', 'Y', 'Z' ]
     
     print(harris_df)

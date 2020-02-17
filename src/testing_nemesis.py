@@ -354,6 +354,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
                 
                 e0 = energies[0]
+                print('e0 is: %.04e joules'%e0)
                 scaled_energies = [ e/e0 for e in energies ]                
                 axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
                     
@@ -386,7 +387,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
             
             try:
                 median_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt')
-                axs[i].semilogy(sim_times_unitless, median_radial_coords, label=code_name)
+                axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
             except:
                 print('oh no!')
             
@@ -446,8 +447,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
             
             try:
                 clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
-                axs[i].plot(sim_times_unitless, clock_times, label=code_name)
-                axs[i].set_ylim(1e-1, 1e4) #1/10th of a second to three hours         
+                axs[i].semilogy(sim_times_unitless, clock_times, label=code_name)
+                axs[i].set_ylim(1e-1, 5e3) #1/10th of a second to three hours         
             except:
                 print('oh no!')
             

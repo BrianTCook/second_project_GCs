@@ -139,8 +139,6 @@ def open_cluster(r_input, phi_input, z_input, code_name):
     Nstars, W0 = int(1e3), 1.5
     Mcluster, Rcluster = float(Nstars)|units.MSun, 1.|units.parsec
     
-    code_name = 'tree'
-    
     converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
     
     bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
@@ -174,8 +172,6 @@ def young_massive_cluster(r_input, phi_input, z_input, code_name):
     
     converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
     
-    code_name = 'tree'
-    
     bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
                                            Nstars, W0, Mcluster, Rcluster, code_name, parameters=[])
     
@@ -206,8 +202,6 @@ def globular_cluster(r_input, phi_input, z_input, code_name):
     Mcluster, Rcluster = float(Nstars)|units.MSun, 10.|units.parsec
     
     converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
-    
-    code_name = 'tree'
     
     bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
                                            Nstars, W0, Mcluster, Rcluster, code_name, parameters=[])

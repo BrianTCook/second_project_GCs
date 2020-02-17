@@ -139,7 +139,7 @@ def open_cluster(r_input, phi_input, z_input, code_name):
     vphi_init *= to_kms
     vz_init *= to_kms
     
-    Nstars, W0 = int(1e3), 1.5
+    Nstars, W0 = int(1e2), 1.5
     Mcluster, Rcluster = float(Nstars)|units.MSun, 1.|units.parsec
     
     converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)

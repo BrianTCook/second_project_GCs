@@ -336,7 +336,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        axs[i].set_ylim(0.8, 1.2)
+        #axs[i].set_ylim(0.8, 1.2)
         
         if orbiter_name == 'SingleCluster':
                 
@@ -465,7 +465,7 @@ if __name__ in '__main__':
     potential = MWPotential2014 #galpy
     
     sepBinary = 20.|units.parsec
-    tend, dt = 20.|units.Myr, 1.|units.Myr
+    tend, dt = 100.|units.Myr, 1.|units.Myr
     dt_param = 0.1 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass

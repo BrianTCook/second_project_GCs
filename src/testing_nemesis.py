@@ -170,7 +170,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     '''
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = open_cluster(0.6, 0.6, 0.6) #just getting the cluster scale converter
+    _, _, converter_sub = open_cluster(0.6, 0.6, 0.6, 'tree') #just getting the cluster scale converter
     converter = converter_sub
     
     if code_name != 'nemesis':

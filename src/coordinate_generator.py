@@ -44,31 +44,21 @@ creating lists of rvals and zvals from GMM of MW distributions
 
 def radial_coords():
     
-    '''
-    try:
-        
-        data_directory = '/home/brian/Desktop/second_project_gcs/data/'
-        
-        MW_OC_rvals = np.loadtxt(data_directory+'MW_OC_rvals.txt')
-        MW_YMC_rvals = np.loadtxt(data_directory+'MW_YMC_rvals.txt')
-        MW_GC_rvals = np.loadtxt(data_directory+'MW_GC_rvals.txt')
-        
-        simulation_OC_rvals = np.loadtxt(data_directory+'simulation_OC_rvals.txt')
-        simulation_YMC_rvals = np.loadtxt(data_directory+'simulation_YMC_rvals.txt')
-        simulation_GC_rvals = np.loadtxt(data_directory+'simulation_GC_rvals.txt')
-    
-        
-    except:
-    '''
-    
     data_directory = '/home/brian/Desktop/second_project_gcs/data/'    
     
-    #will need to update these from a catalog at some point
-    MW_OC_rvals = np.abs( np.random.normal(loc=0., scale=4., size=1537) )
-    MW_YMC_rvals = np.abs( np.random.normal(loc=0., scale=4., size=12) )
+    try:
     
-    np.savetxt('MW_OC_rvals.txt', MW_OC_rvals)
-    np.savetxt('MW_YMC_rvals.txt', MW_YMC_rvals)
+        MW_OC_rvals = np.loadtxt(data_directory+'MW_OC_rvals.txt')
+        MW_YMC_rvals = np.loadtxt(data_directory+'MW_YMC_rvals.txt')
+        
+    except:
+    
+        #will need to update these from a catalog at some point
+        MW_OC_rvals = np.abs( np.random.normal(loc=0., scale=4., size=1537) )
+        MW_YMC_rvals = np.abs( np.random.normal(loc=0., scale=4., size=12) )
+        
+        np.savetxt('MW_OC_rvals.txt', MW_OC_rvals)
+        np.savetxt('MW_YMC_rvals.txt', MW_YMC_rvals)
     
     MW_GC_rvals = np.loadtxt(data_directory+'MW_GC_rvals.txt')
     
@@ -127,34 +117,24 @@ def radial_coords():
     return simulation_OC_rvals, simulation_YMC_rvals, simulation_GC_rvals
         
 def zed_coords():
+        
+    data_directory = '/home/brian/Desktop/second_project_gcs/data/'    
     
-    '''
     try:
-        
-        data_directory = '/home/brian/Desktop/second_project_gcs/data/'
-        
+    
         MW_OC_zvals = np.loadtxt(data_directory+'MW_OC_zvals.txt')
         MW_YMC_zvals = np.loadtxt(data_directory+'MW_YMC_zvals.txt')
-        MW_GC_zvals = np.loadtxt(data_directory+'MW_GC_zvals.txt')
-    
-        simulation_OC_zvals = np.loadtxt(data_directory+'simulation_OC_zvals.txt')
-        simulation_YMC_zvals = np.loadtxt(data_directory+'simulation_YMC_zvals.txt')
-        simulation_GC_zvals = np.loadtxt(data_directory+'simulation_GC_zvals.txt')
         
     except:
-    '''
-        
-    data_directory = '/home/brian/Desktop/second_project_gcs/data/'
     
-    #will need to update these from a catalog at some point
-    MW_OC_zvals = np.random.normal(loc=0., scale=1., size=1537)
-    MW_YMC_zvals = np.random.normal(loc=0., scale=1., size=12)
+        #will need to update these from a catalog at some point
+        MW_OC_zvals = np.abs( np.random.normal(loc=0., scale=4., size=1537) )
+        MW_YMC_zvals = np.abs( np.random.normal(loc=0., scale=4., size=12) )
+        
+        np.savetxt('MW_OC_zvals.txt', MW_OC_zvals)
+        np.savetxt('MW_YMC_zvals.txt', MW_YMC_zvals)
     
     MW_GC_zvals = np.loadtxt(data_directory+'MW_GC_zvals.txt')
-    
-    np.savetxt('MW_OC_zvals.txt', MW_OC_zvals)
-    np.savetxt('MW_YMC_zvals.txt', MW_YMC_zvals)
-    np.savetxt('MW_GC_zvals.txt', MW_GC_zvals)
     
     #generating normalized histograms of r values for each cluster type
     y_OC, x_OC = np.histogram(MW_OC_zvals, density=True)

@@ -448,7 +448,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
             try:
                 clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
                 axs[i].semilogy(sim_times_unitless, clock_times, label=code_name)
-                axs[i].set_ylim(1e-1, 5e3) #1/10th of a second to three hours         
+                axs[i].set_ylim(1e-1, 5e3) #1/10th of a second to ~1.5 hours
             except:
                 print('oh no!')
             

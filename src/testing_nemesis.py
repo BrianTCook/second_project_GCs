@@ -488,9 +488,9 @@ if __name__ in '__main__':
     for orbiter_name in orbiter_names:
         for code_name in code_names:
             
-            print('')
+            print('\\\\\\\\\\\\\\\\\\\\\\\\')
             print(orbiter_name, code_name)
-            print('')
+            print('\\\\\\\\\\\\\\\\\\\\\\\\')
             
             simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
                        sepBinary, rvals_OC, phivals_OC, zvals_OC, tend, dt)
@@ -499,7 +499,8 @@ if __name__ in '__main__':
             
             if orbiter_name == 'BinaryCluster': #should be the same for all three and captures all gravity info
                 
-                maps(orbiter_name, code_name)
+                #maps(orbiter_name, code_name)
+                continue
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             

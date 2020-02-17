@@ -54,15 +54,18 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     
     pos_vec, vel_vec = (x_init, y_init, z_init), (vx_init, vy_init, vz_init)
     
-    print('-----------------------------')
-    print('-----------------------------')
-    print('-----------------------------')
-    print('code_name: ', code_name)
-    print('initial spatial coordinates (Cartesian): ', pos_vec)
-    print('initial velocity coordinates: ', vel_vec)
-    print('-----------------------------')
-    print('-----------------------------')
-    print('-----------------------------')
+    if abs(Rcoord - 0.6) > 1e-3:
+    
+        #don't want to print sub_worker converter cases
+        print('-----------------------------')
+        print('-----------------------------')
+        print('-----------------------------')
+        print('code_name: ', code_name)
+        print('initial spatial coordinates (Cartesian): ', pos_vec)
+        print('initial velocity coordinates: ', vel_vec)
+        print('-----------------------------')
+        print('-----------------------------')
+        print('-----------------------------')
     
     #initializing phase space coordinates
     bodies.x += x_init

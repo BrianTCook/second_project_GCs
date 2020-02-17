@@ -115,7 +115,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     
     return bodies, code
 
-def open_cluster(r_input, phi_input, z_input):
+def open_cluster(r_input, phi_input, z_input, code_name):
     
     '''
     takes 3 random numbers and generates open cluster
@@ -148,7 +148,7 @@ def open_cluster(r_input, phi_input, z_input):
     
     return bodies, code, converter_sub
 
-def young_massive_cluster(r_input, phi_input, z_input):
+def young_massive_cluster(r_input, phi_input, z_input, code_name):
     
     '''
     takes 3 random numbers and generates YMC
@@ -181,7 +181,7 @@ def young_massive_cluster(r_input, phi_input, z_input):
     
     return bodies, code, converter_sub
 
-def globular_cluster(r_input, phi_input, z_input):
+def globular_cluster(r_input, phi_input, z_input, code_name):
     
     '''
     takes 3 random numbers and generates globular cluster

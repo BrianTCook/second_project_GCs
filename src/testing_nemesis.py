@@ -41,7 +41,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
             r_input, phi_input, z_input):
 
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = open_cluster(0.6, 0.6, 0.6) #just getting the cluster scale converter
+    _, _, converter_sub = open_cluster(0.6, 0.6, 0.6, 'tree') #just getting the cluster scale converter
     converter = converter_sub
     
     '''
@@ -127,14 +127,14 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
         
     if orbiter_name == 'SingleCluster':
         
-        bodies, code, _ = open_cluster(r_input, phi_input, z_input)
+        bodies, code, _ = open_cluster(r_input, phi_input, z_input, code_name)
         
         return bodies, code
         
     if orbiter_name == 'BinaryCluster':
         
-        bodies_one, code_one, _ = open_cluster(r_input, phi_input, z_input)
-        bodies_two, code_two, _ = open_cluster(r_input, phi_input, z_input)
+        bodies_one, code_one, _ = open_cluster(r_input, phi_input, z_input, code_name)
+        bodies_two, code_two, _ = open_cluster(r_input, phi_input, z_input, code_name)
             
         #initialize binary system
         mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()
@@ -248,7 +248,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
                rvals_OC, phivals_OC, zvals_OC, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = open_cluster(0.6, 0.6, 0.6) #just getting the cluster scale converter
+    _, _, converter_sub = open_cluster(0.6, 0.6, 0.6, 'tree') #just getting the cluster scale converter
     converter = converter_sub
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
@@ -336,7 +336,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        axs[i].set_ylim(0., 1.5)
+        axs[i].set_ylim(0.8, 1.2)
         
         if orbiter_name == 'SingleCluster':
                 
@@ -386,7 +386,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
             
             try:
                 median_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt')
-                axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
+                axs[i].semilogy(sim_times_unitless, median_radial_coords, label=code_name)
             except:
                 print('oh no!')
             

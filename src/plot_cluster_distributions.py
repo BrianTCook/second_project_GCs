@@ -9,6 +9,7 @@ from coordinate_generator import radial_coords, zed_coords
 r_OC, r_YMC, r_GC = radial_coords()
 z_OC, z_YMC, z_GC = zed_coords()
 
+'''
 y_r_OC, x_r_OC = np.histogram(r_OC, bins=0, density=True)
 y_r_YMC, x_r_YMC = np.histogram(r_YMC, bins=4, density=True)
 y_r_GC, x_r_GC = np.histogram(r_GC, bins=40, density=True)
@@ -18,15 +19,19 @@ y_z_YMC, x_z_YMC = np.histogram(z_YMC, bins=20, density=True)
 y_z_GC, x_z_GC = np.histogram(z_GC, bins=20, density=True)
 
 N_OC, N_YMC, N_GC = len(x_r_OC), len(x_r_YMC), len(x_r_GC)
+'''
 
 plt.figure()
-plt.scatter(r_OC, z_OC, label='Open Clusters')
-plt.scatter(r_YMC, z_YMC, label='Young Massive Clusters')
-plt.scatter(r_GC, z_GC, label='Globular Clusters')
+plt.scatter(r_OC, np.abs(z_OC), s=1, label='Open Clusters')
+plt.scatter(r_YMC, np.abs(z_YMC), s=1, label='Young Massive Clusters')
+plt.scatter(r_GC, np.abs(z_GC), s=1, label='Globular Clusters')
 plt.legend(loc='best')
+plt.gca().set_xscale('log')
+plt.gca().set_yscale('log')
 plt.xlabel(r'$r$ (kpc)', fontsize=16)
-plt.ylabel(r'$z$ (kpc)', fontsize=16)
+plt.ylabel(r'$|z|$ (kpc)', fontsize=16)
 plt.title('Star Cluster Distribution', fontsize=12)
+plt.tight_layout()
 plt.savefig('clusters_scatter.pdf')
 plt.close()
 

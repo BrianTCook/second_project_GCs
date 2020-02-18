@@ -41,7 +41,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
             r_input, phi_input, z_input):
 
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = open_cluster(0.6, 0.6, 0.6, 'tree') #just getting the cluster scale converter
+    _, _, converter_sub = open_cluster(10., 10., 10., 'tree') #just getting the cluster scale converter
     converter = converter_sub
     
     '''
@@ -170,7 +170,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     '''
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = open_cluster(0.6, 0.6, 0.6, 'tree') #just getting the cluster scale converter
+    _, _, converter_sub = open_cluster(10., 10., 10., 'tree') #just getting the cluster scale converter
     converter = converter_sub
     
     if code_name != 'nemesis':
@@ -248,7 +248,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
                rvals_OC, phivals_OC, zvals_OC, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = open_cluster(0.6, 0.6, 0.6, 'tree') #just getting the cluster scale converter
+    _, _, converter_sub = star_cluster(10., 10., 10., 'tree') #just getting the cluster scale converter
     converter = converter_sub
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
@@ -477,9 +477,13 @@ if __name__ in '__main__':
     
     Norbiters = 1
     
-    rvals_OC = [ r_OC[i] for i in range(Norbiters) ]
-    phivals_OC = [ phi_OC[i] for i in range(Norbiters) ]
-    zvals_OC = [ z_OC[i] for i in range(Norbiters) ]     
+    rvals = np.loadtxt('cluster_rvals.txt')
+    phivals = np.loadtxt('cluster_phivals.txt')
+    zvals = np.loadtxt('cluster_zvals.txt')
+    
+    rvals = rvals[:Norbiters]
+    phivals = phivals[:Norbiters]
+    zvals = zvals[:Norbiters]    
 
     orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
     code_names = [ 'Nbody', 'tree' ] #'nemesis'
@@ -494,7 +498,7 @@ if __name__ in '__main__':
             print('\\\\\\\\\\\\\\\\\\\\\\\\')
             
             simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
-                       sepBinary, rvals_OC, phivals_OC, zvals_OC, tend, dt)
+                       sepBinary, rvals, phivals, zvals, tend, dt)
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             

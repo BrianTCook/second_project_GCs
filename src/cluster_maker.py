@@ -33,16 +33,44 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     which nbodycode would you like to use?
     '''
     
-    mZams_flag, Nstars = 0, 10
-        
+    if abs(Rcoord - 10.) > 1e-3:
+    
+            #don't want to print sub_worker converter cases
+            print('-----------------------------')
+            print('-----------------------------')
+            print('-----------------------------')
+            print('code_name: ', code_name)
+            print('initial spatial coordinates (Cartesian): ', pos_vec)
+            print('initial velocity coordinates: ', vel_vec)
+            print('-----------------------------')
+            print('-----------------------------')
+            print('-----------------------------')
+
+    mZams_flag, Nstars = 0, 1
+    Mmin_star, Mmax_star = 0.1, 100.    
+    
     while mZams_flag == 0:
         
-        mZams = new_Salpeter_mass_distirbution(Nstars, Mmin, Mmax)
-        
-        
+        if abs(Rcoord - 10.) < 1e-3:
     
-    converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
-    bodies = new_king_model(Nstars, W0, convert_nbody=converter)
+            #don't want to go through while loop if cluster is just for sub_worker
+            converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
+            bodies = new_king_model(Nstars, W0, convert_nbody=converter)
+            bodies.mass = [Mcluster]
+            mZams_flag = 1
+        
+        mZams = new_Salpeter_mass_distirbution(Nstars, Mmin_star|units.MSun, Mmax|units.MSun)
+        mass_difference_ratio = (Mcluster - mZams.sum())/Mcluster
+        
+        if np.abs(mass_difference_ratio - 1.) > 0.01:
+            Nstars -= 1
+        if np.abs(mass) < -0.01:
+            Nstars += 1
+        else:
+            converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
+            bodies = new_king_model(Nstars, W0, convert_nbody=converter)
+            bodies.mass = mZams
+            mZams_flag = 1
 
     '''
     takes in R, Z value
@@ -61,19 +89,6 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     vz_init = vz_init | units.kms
     
     pos_vec, vel_vec = (x_init, y_init, z_init), (vx_init, vy_init, vz_init)
-    
-    if abs(Rcoord - 0.6) > 1e-3:
-    
-        #don't want to print sub_worker converter cases
-        print('-----------------------------')
-        print('-----------------------------')
-        print('-----------------------------')
-        print('code_name: ', code_name)
-        print('initial spatial coordinates (Cartesian): ', pos_vec)
-        print('initial velocity coordinates: ', vel_vec)
-        print('-----------------------------')
-        print('-----------------------------')
-        print('-----------------------------')
     
     #initializing phase space coordinates
     bodies.x += x_init
@@ -136,6 +151,9 @@ def star_cluster(r_input, phi_input, z_input, mass_index, code_name):
     #limit to within 100 pc of the galactic center
     Rcoord, phicoord, Zcoord = r_input, phi_input, z_input
     
+    masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
+    Mcluster = masses[mass_index]|units.MSun
+    
     #using Staeckel
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
     qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
@@ -147,10 +165,11 @@ def star_cluster(r_input, phi_input, z_input, mass_index, code_name):
     vphi_init *= to_kms
     vz_init *= to_kms
     
-    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
+    #just for converter, right?
+    converter_sub = nbody_system.nbody_to_si(Mcluster, 10|units.parsec)
     
     bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                                           Nstars, W0, Mcluster, Rcluster, code_name, parameters=[])
+                                           Mcluster, code_name, parameters=[])
     
     return bodies, code, converter_sub
 

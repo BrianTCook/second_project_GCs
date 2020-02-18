@@ -26,12 +26,20 @@ from galpy.actionAngle import actionAngleStaeckel
 import numpy as np
 
 def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                            Nstars, W0, Mcluster, Rcluster, code_name, parameters=[]):
+                            W0, Mcluster, code_name, parameters=[]):
 
     '''
     sets up a cluster with mass M and radius R
     which nbodycode would you like to use?
     '''
+    
+    mZams_flag, Nstars = 0, 10
+        
+    while mZams_flag == 0:
+        
+        mZams = new_Salpeter_mass_distirbution(Nstars, Mmin, Mmax)
+        
+        
     
     converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
     bodies = new_king_model(Nstars, W0, convert_nbody=converter)
@@ -118,14 +126,14 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     
     return bodies, code
 
-def open_cluster(r_input, phi_input, z_input, code_name):
+def star_cluster(r_input, phi_input, z_input, mass_index, code_name):
     
     '''
     takes 3 random numbers and generates open cluster
     with appropriate ICs in 6D phase space
     '''
     
-    #OCs are limited to the galactic disk
+    #limit to within 100 pc of the galactic center
     Rcoord, phicoord, Zcoord = r_input, phi_input, z_input
     
     #using Staeckel
@@ -139,9 +147,6 @@ def open_cluster(r_input, phi_input, z_input, code_name):
     vphi_init *= to_kms
     vz_init *= to_kms
     
-    Nstars, W0 = int(1e2), 1.5
-    Mcluster, Rcluster = float(Nstars)|units.MSun, 1.|units.parsec
-    
     converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
     
     bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
@@ -149,64 +154,5 @@ def open_cluster(r_input, phi_input, z_input, code_name):
     
     return bodies, code, converter_sub
 
-def young_massive_cluster(r_input, phi_input, z_input, code_name):
-    
-    '''
-    takes 3 random numbers and generates YMC
-    with appropriate ICs in 6D phase space
-    '''
-    
-    #YMCs are distributed throughout the MW
-    Rcoord, phicoord, Zcoord = r_input, phi_input, z_input
-
-    #using Staeckel, whatever that medians
-    aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
-    qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
-    vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
-    
-    #220 km/s at 8 kpc, convert back to km/s
-    to_kms = bovy_conversion.velocity_in_kpcGyr(220., 8.) * 0.9785
-    vr_init *= to_kms
-    vphi_init *= to_kms
-    vz_init *= to_kms
-    
-    Nstars, W0 = int(1e5), 1.5
-    Mcluster, Rcluster = float(Nstars)|units.MSun, 10.|units.parsec
-    
-    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
-    
-    bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                                           Nstars, W0, Mcluster, Rcluster, code_name, parameters=[])
-    
-    return bodies, code, converter_sub
-
-def globular_cluster(r_input, phi_input, z_input, code_name):
-    
-    '''
-    takes 3 random numbers and generates globular cluster
-    with appropriate ICs in 6D phase space
-    '''
-    
-    #GCs are distributed throughout the MW's halo
-    Rcoord, phicoord, Zcoord = r_input, phi_input, z_input
-    
-    #using Staeckel
-    aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
-    qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
-    vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
-    
-    #220 km/s at 8 kpc, convert back to km/s
-    to_kms = bovy_conversion.velocity_in_kpcGyr(220., 8.) * 0.9785
-    vr_init *= to_kms
-    vphi_init *= to_kms
-    vz_init *= to_kms
-    
-    Nstars, W0 = int(1e5), 1.5
-    Mcluster, Rcluster = float(Nstars)|units.MSun, 10.|units.parsec
-    
-    converter_sub = nbody_system.nbody_to_si(Mcluster, Rcluster)
-    
-    bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                                           Nstars, W0, Mcluster, Rcluster, code_name, parameters=[])
-    
-    return bodies, code, converter_sub
+if __name__ in '__main__':
+    cluster_mass_distribution()

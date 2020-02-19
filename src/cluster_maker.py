@@ -34,7 +34,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     which nbodycode would you like to use?
     '''
 
-    mZams_flag, Nstars = 0, 5
+    mZams_flag, Nstars = 0, 100
     Mmin_star, Mmax_star = 0.1, 100.    
     
     while mZams_flag == 0:
@@ -49,6 +49,8 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         
         mZams = new_salpeter_mass_distribution(Nstars, Mmin_star|units.MSun, Mmax_star|units.MSun)
         mass_difference_ratio = (Mcluster - mZams.sum())/Mcluster
+        
+        print('Nstars = %i'%(Nstars))
         
         if mass_difference_ratio > 0.01:
             Nstars -= 1

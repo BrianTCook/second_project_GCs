@@ -47,16 +47,14 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
             bodies.mass = [Mcluster]
             mZams_flag = 1
         
-        mZams = new_salpeter_mass_distribution(Nstars, Mmin_star|units.MSun, Mmax_star|units.MSun)
-        print('Mcluster is', Mcluster)
-        print('mZams.sum() is', mZams.sum())
+        mZams = new_salpeter_mass_distribution(Nstars, Mmin_star|units.MSun, Mmax_star|units.MSun))
         mass_difference_ratio = (Mcluster - mZams.sum())/Mcluster
         
         if mass_difference_ratio > 0.01:
             Nstars -= 1
         if mass_difference_ratio < -0.01:
             Nstars += 1
-        else:
+        if np.abs(mass_distribution_ratio) <= 0.01:
             print('Mclusters, Nstars are', Mcluster, Nstars)
             converter = nbody_system.nbody_to_si(Mcluster, 1.|units.parsec)
             bodies = new_king_model(Nstars, W0, convert_nbody=converter)

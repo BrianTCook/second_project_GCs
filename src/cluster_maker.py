@@ -52,9 +52,9 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         print('mZams.sum() is', mZams.sum())
         mass_difference_ratio = (Mcluster - mZams.sum())/Mcluster
         
-        if np.abs(mass_difference_ratio) > 0.01:
+        if mass_difference_ratio > 0.01:
             Nstars -= 1
-        if np.abs(mass_difference_ratio) < -0.01:
+        if mass_difference_ratio < -0.01:
             Nstars += 1
         else:
             print('Mclusters, Nstars are', Mcluster, Nstars)

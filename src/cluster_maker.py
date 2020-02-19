@@ -34,19 +34,6 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     '''
     
     print('gets to make_king_model_cluster fine')
-    
-    if abs(Rcoord - 10.) > 1e-3:
-    
-            #don't want to print sub_worker converter cases
-            print('-----------------------------')
-            print('-----------------------------')
-            print('-----------------------------')
-            print('code_name: ', code_name)
-            print('initial spatial coordinates (Cartesian): ', pos_vec)
-            print('initial velocity coordinates: ', vel_vec)
-            print('-----------------------------')
-            print('-----------------------------')
-            print('-----------------------------')
 
     mZams_flag, Nstars = 0, 1
     Mmin_star, Mmax_star = 0.1, 100.    

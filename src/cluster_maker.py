@@ -25,8 +25,7 @@ from galpy.actionAngle import actionAngleStaeckel
 
 import numpy as np
 
-def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                            W0, Mcluster, code_name, parameters=[]):
+def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, W0, Mcluster, code_name, parameters=[]):
 
     '''
     sets up a cluster with mass M and radius R

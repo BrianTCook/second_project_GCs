@@ -168,6 +168,8 @@ def star_cluster(rvals, phivals, zvals, masses, index, code_name):
     vphi_init *= to_kms
     vz_init *= to_kms
     
+    W0 = 1.5
+    
     #just for converter, right?
     converter_sub = nbody_system.nbody_to_si(Mcluster, 10|units.parsec)
     

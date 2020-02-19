@@ -49,15 +49,15 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
             bodies.mass = [Mcluster]
             mZams_flag = 1
         
-        mZams = new_salpeter_mass_dsitribution(Nstars, Mmin_star|units.MSun, Mmax|units.MSun)
+        mZams = new_salpeter_mass_distribution(Nstars, Mmin_star|units.MSun, Mmax_star|units.MSun)
         mass_difference_ratio = (Mcluster - mZams.sum())/Mcluster
         
         if np.abs(mass_difference_ratio - 1.) > 0.01:
             Nstars -= 1
-        if np.abs(mass) < -0.01:
+        if np.abs(mass_difference_ratio - 1.) < -0.01:
             Nstars += 1
         else:
-            converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
+            converter = nbody_system.nbody_to_si(Mcluster, 1.|units.parsec)
             bodies = new_king_model(Nstars, W0, convert_nbody=converter)
             bodies.mass = mZams
             mZams_flag = 1

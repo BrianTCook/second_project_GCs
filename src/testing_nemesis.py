@@ -127,14 +127,14 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
         
     if orbiter_name == 'SingleCluster':
         
-        bodies, code, _ = star_cluster(rcoords, phicoords, zcoords, masses, index, code_name)
+        bodies, code, _ = star_cluster(rvals, phivals, zvals, masses, index, code_name)
         
         return bodies, code
         
     if orbiter_name == 'BinaryCluster':
         
-        bodies_one, code_one, _ = star_cluster(rcoords, phicoords, zcoords, masses, index, code_name)
-        bodies_two, code_two, _ = star_cluster(rcoords, phicoords, zcoords, masses, index, code_name)
+        bodies_one, code_one, _ = star_cluster(rvals, phivals, zvals, masses, index, code_name)
+        bodies_two, code_two, _ = star_cluster(rvals, phivals, zvals, masses, index, code_name)
             
         #initialize binary system
         mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()

@@ -33,8 +33,6 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     sets up a cluster with mass M and radius R
     which nbodycode would you like to use?
     '''
-    
-    print('gets to make_king_model_cluster fine')
 
     mZams_flag, Nstars = 0, 1
     Mmin_star, Mmax_star = 0.1, 100.    
@@ -137,8 +135,6 @@ def star_cluster(rvals, phivals, zvals, masses, index, code_name):
     takes 3 random numbers and generates open cluster
     with appropriate ICs in 6D phase space
     '''
-    
-    print('gets to star cluster fine')
     
     #limit to within 100 pc of the galactic center
     Rcoord, phicoord, Zcoord = rvals[index], phivals[index], zvals[index]

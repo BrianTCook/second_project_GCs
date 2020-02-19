@@ -201,15 +201,15 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         #just don't use orbiter_code here, just replace it with nemesis
         if orbiter_name != 'BinaryCluster':
             
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, r, phi, z) 
-                                 for r, phi, z in zip(rvals_OC, phivals_OC, zvals_OC) ]
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
+                                         rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
             
             orbiter_bodies, orbiter_code = list_of_orbiters[0]
 
         if orbiter_name == 'BinaryCluster':
             
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, r, phi, z) 
-                                 for r, phi, z in zip(rvals_OC, phivals_OC, zvals_OC) ]
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
+                                         rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
             
             orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
             
@@ -464,16 +464,12 @@ if __name__ in '__main__':
     
     potential = MWPotential2014 #galpy
     
-    sepBinary = 20.|units.parsec
+    sepBinary = 20.|units.parsec #not necessary if not doing binary cluster part
     tend, dt = 100.|units.Myr, 1.|units.Myr
     dt_param = 0.1 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
-
-    r_OC, r_YMC, r_GC = radial_coords()
-    phi_OC, phi_YMC, phi_GC = azimuthal_coords()
-    z_OC, z_YMC, z_GC = zed_coords()
     
     Norbiters = 1
     

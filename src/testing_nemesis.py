@@ -20,7 +20,7 @@ from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 
 from phase_space_mapping import maps
-from cluster_maker import open_cluster, young_massive_cluster, globular_cluster
+from cluster_maker import star_cluster
 
 from coordinate_generator import radial_coords, azimuthal_coords, zed_coords
 
@@ -37,11 +37,11 @@ from nemesis_supplement import getxv, parent_worker, sub_worker, py_worker, smal
 #Circumvent a problem with using too many threads on OpenMPI
 os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
-def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-            r_input, phi_input, z_input):
+def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, 
+            rvals, phivals, zvals, masses, index):
 
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = open_cluster(10., 10., 10., 'tree') #just getting the cluster scale converter
+    _, _, converter_sub = star_cluster(rvals, phivals, zvals, masses, 0, code_name) #just getting the cluster scale converter
     converter = converter_sub
     
     '''
@@ -50,7 +50,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
     should get appropriate 6D initial phase space conditions
     '''
     
-    Rcoord, phicoord, Zcoord = r_input, phi_input, z_input
+    Rcoord, phicoord, Zcoord = rvals[index], phivals[index], zvals[index]
     
     #using Staeckel
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
@@ -127,14 +127,14 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
         
     if orbiter_name == 'SingleCluster':
         
-        bodies, code, _ = open_cluster(r_input, phi_input, z_input, code_name)
+        bodies, code, _ = star_cluster(rcoords, phicoords, zcoords, masses, index, code_name)
         
         return bodies, code
         
     if orbiter_name == 'BinaryCluster':
         
-        bodies_one, code_one, _ = open_cluster(r_input, phi_input, z_input, code_name)
-        bodies_two, code_two, _ = open_cluster(r_input, phi_input, z_input, code_name)
+        bodies_one, code_one, _ = star_cluster(rcoords, phicoords, zcoords, masses, index, code_name)
+        bodies_two, code_two, _ = star_cluster(rcoords, phicoords, zcoords, masses, index, code_name)
             
         #initialize binary system
         mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()
@@ -162,7 +162,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
         return all_bodies, code_one, code_two #need to be different so they're bridged
 
 def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
-                       rvals_OC, phivals_OC, zvals_OC):
+                       rvals, phivals, zvals, masses):
     
     '''
     will need to ask SPZ if he meant for field, orbiter to be separate in non
@@ -170,7 +170,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     '''
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = open_cluster(10., 10., 10., 'tree') #just getting the cluster scale converter
+    _, _, converter_sub = star_cluster(rvals, phivals, zvals, masses, 0, code_name) #just getting the cluster scale converter
     converter = converter_sub
     
     if code_name != 'nemesis':
@@ -179,8 +179,8 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         
         if orbiter_name != 'BinaryCluster':
             
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, r, phi, z) 
-                                 for r, phi, z in zip(rvals_OC, phivals_OC, zvals_OC) ]
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
+                                         rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
             
             orbiter_bodies, orbiter_code = list_of_orbiters[0]
             
@@ -188,8 +188,8 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
 
         if orbiter_name == 'BinaryCluster':
             
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, r, phi, z) 
-                                 for r, phi, z in zip(rvals_OC, phivals_OC, zvals_OC) ]
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
+                                         rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
             
             orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
             
@@ -245,16 +245,16 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     return orbiter_bodies, gravity
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
-               rvals_OC, phivals_OC, zvals_OC, tend, dt):
+               rvals, phivals, zvals, masses, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = star_cluster(10., 10., 10., 'tree') #just getting the cluster scale converter
+    _, _, converter_sub = star_cluster(rvals, phivals, zvals, masses, 0, code_name) #just getting the cluster scale converter
     converter = converter_sub
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     
     bodies, gravity = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
-                                         galaxy_code, sepBinary, rvals_OC, phivals_OC, zvals_OC)
+                                         galaxy_code, sepBinary, rvals, phivals, zvals, masses)
     
     channel = bodies.new_channel_to(gravity.particles)
     channel.copy_attributes(['x','y','z','vx','vy','vz'])
@@ -344,7 +344,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         if orbiter_name == 'SingleStar':
         
-            axs[i].set_ylabel('Energy/Energy($t=0$)', fontsize=12)
+            axs[i].set_ylabel(r'$\Delta E/E(t=0)$', fontsize=12)
         
         axs[i].set_title(orbiter_name, fontsize=8)
         
@@ -355,7 +355,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 
                 e0 = energies[0]
                 print('e0 is: %.04e joules'%e0)
-                scaled_energies = [ e/e0 for e in energies ]                
+                scaled_energies = [ e/e0 - 1. for e in energies ]                
                 axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
                     
             except:
@@ -477,15 +477,18 @@ if __name__ in '__main__':
     
     Norbiters = 1
     
-    rvals = np.loadtxt('cluster_rvals.txt')
-    phivals = np.loadtxt('cluster_phivals.txt')
-    zvals = np.loadtxt('cluster_zvals.txt')
+    rvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_rvals.txt')
+    phivals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_phivals.txt')
+    zvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_zvals.txt')
+    
+    masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
     
     rvals = rvals[:Norbiters]
     phivals = phivals[:Norbiters]
-    zvals = zvals[:Norbiters]    
+    zvals = zvals[:Norbiters]  
+    masses = masses[:Norbiters]
 
-    orbiter_names = [ 'SingleStar', 'SingleCluster', 'BinaryCluster' ]
+    orbiter_names = [ 'SingleCluster' ] #, 'SingleStar', 'BinaryCluster' ]
     code_names = [ 'Nbody', 'tree' ] #'nemesis'
     
     t0 = time.time()
@@ -498,13 +501,13 @@ if __name__ in '__main__':
             print('\\\\\\\\\\\\\\\\\\\\\\\\')
             
             simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
-                       sepBinary, rvals, phivals, zvals, tend, dt)
+                       sepBinary, rvals, phivals, zvals, masses, tend, dt)
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
-            if orbiter_name == 'BinaryCluster': #should be the same for all three and captures all gravity info
+            if orbiter_name == 'SingleCluster': #should be the same for all three and captures all gravity info
                 
-                #maps(orbiter_name, code_name)
+                maps(orbiter_name, code_name)
                 continue
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))

@@ -141,7 +141,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     
     return bodies, code
 
-def star_cluster(r_input, phi_input, z_input, mass_index, code_name):
+def star_cluster(rvals, phivals, zvals, masses, index, code_name):
     
     '''
     takes 3 random numbers and generates open cluster
@@ -149,10 +149,9 @@ def star_cluster(r_input, phi_input, z_input, mass_index, code_name):
     '''
     
     #limit to within 100 pc of the galactic center
-    Rcoord, phicoord, Zcoord = r_input, phi_input, z_input
+    Rcoord, phicoord, Zcoord = rvals[index], phivals[index], zvals[index]
     
-    masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
-    Mcluster = masses[mass_index]|units.MSun
+    Mcluster = masses[index]|units.MSun
     
     #using Staeckel
     aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
@@ -172,6 +171,3 @@ def star_cluster(r_input, phi_input, z_input, mass_index, code_name):
                                            Mcluster, code_name, parameters=[])
     
     return bodies, code, converter_sub
-
-if __name__ in '__main__':
-    cluster_mass_distribution()

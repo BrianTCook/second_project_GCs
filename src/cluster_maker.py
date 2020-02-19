@@ -25,12 +25,15 @@ from galpy.actionAngle import actionAngleStaeckel
 
 import numpy as np
 
-def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, W0, Mcluster, code_name, parameters=[]):
+def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
+                            W0, Mcluster, code_name, parameters=[]):
 
     '''
     sets up a cluster with mass M and radius R
     which nbodycode would you like to use?
     '''
+    
+    print('gets to make_king_model_cluster fine')
     
     if abs(Rcoord - 10.) > 1e-3:
     
@@ -147,6 +150,8 @@ def star_cluster(rvals, phivals, zvals, masses, index, code_name):
     with appropriate ICs in 6D phase space
     '''
     
+    print('gets to star cluster fine')
+    
     #limit to within 100 pc of the galactic center
     Rcoord, phicoord, Zcoord = rvals[index], phivals[index], zvals[index]
     
@@ -167,6 +172,6 @@ def star_cluster(rvals, phivals, zvals, masses, index, code_name):
     converter_sub = nbody_system.nbody_to_si(Mcluster, 10|units.parsec)
     
     bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                                           Mcluster, code_name, parameters=[])
+                                           W0, Mcluster, code_name, parameters=[])
     
     return bodies, code, converter_sub

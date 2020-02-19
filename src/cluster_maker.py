@@ -16,6 +16,7 @@ Created on Wed Feb 12 13:29:47 2020
 
 from amuse.lab import *
 from amuse.ic.kingmodel import new_king_model
+from amuse.ic.salpeter import new_salpeter_mass_distribution
 from amuse.community.mercury.interface import Mercury
 
 from galpy.df import quasiisothermaldf

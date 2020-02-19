@@ -48,14 +48,13 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
             mZams_flag = 1
         
         mZams = new_salpeter_mass_distribution(Nstars, Mmin_star|units.MSun, Mmax_star|units.MSun)
-        print(mZams)
         mass_difference_ratio = (Mcluster - mZams.sum())/Mcluster
         
         print(mass_difference_ratio)
         
-        if np.abs(mass_difference_ratio - 1.) > 0.01:
+        if np.abs(mass_difference_ratio) > 0.01:
             Nstars -= 1
-        if np.abs(mass_difference_ratio - 1.) < -0.01:
+        if np.abs(mass_difference_ratio) < -0.01:
             Nstars += 1
         else:
             print('Mclusters, Nstars are', Mcluster, Nstars)

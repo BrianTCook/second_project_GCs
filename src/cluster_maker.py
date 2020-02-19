@@ -34,7 +34,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     which nbodycode would you like to use?
     '''
 
-    mZams_flag, Nstars = 0, 1
+    mZams_flag, Nstars = 0, 10
     Mmin_star, Mmax_star = 0.1, 100.    
     
     while mZams_flag == 0:

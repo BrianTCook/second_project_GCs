@@ -12,11 +12,11 @@ dfc = dehnendf(beta=0.)
 
 '''
 sample from Dehnen distribution function to get cylindrical coordinates
-where |r| <= 0.1 kpc
+where |r| <= 1.0 kpc
 '''
 
 nsamples = 4000
-o = dfc.sample(n=nsamples, returnOrbit=True, nphi=1, rrange=[0.0, 0.1])
+o = dfc.sample(n=nsamples, returnOrbit=True, nphi=1, rrange=[0.0, 1.0])
 
 rvals_spherical = [ e.R() for e in o ]
 thetavals_spherical = [ np.arccos(1 - 2*np.random.random()) for i in range(nsamples) ]

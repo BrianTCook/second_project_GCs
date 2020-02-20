@@ -22,8 +22,6 @@ from galpy.actionAngle import actionAngleStaeckel
 from phase_space_mapping import maps
 from cluster_maker import star_cluster
 
-from coordinate_generator import radial_coords, azimuthal_coords, zed_coords
-
 import random
 import numpy as np
 import time

@@ -121,8 +121,8 @@ def maps(code_name, orbiter_name):
         
         plt.figure()
         plt.scatter(x, y, s=1, c='k')
-        plt.xlim(-0.2, 0.2)
-        plt.ylim(-0.2, 0.2)
+        plt.xlim(-2.0, 2.0)
+        plt.ylim(-2.0, 2.0)
         plt.xlabel('x (kpc)', fontsize=12)
         plt.ylabel('y (kpc)', fontsize=12)
         plt.title('time = %.02f Myr'%(t), fontsize=16)

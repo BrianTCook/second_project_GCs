@@ -56,7 +56,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
             Nstars -= 1
         if np.abs(mass_difference_ratio) <= 0.05:
             print('Mclusters, Nstars are', Mcluster, Nstars)
-            converter = nbody_system.nbody_to_si(Mcluster, 1.|units.parsec)
+            converter = nbody_system.nbody_to_si(Mcluster, 5.|units.parsec)
             bodies = new_king_model(Nstars, W0, convert_nbody=converter)
             bodies.mass = mZams
             mZams_flag = 1

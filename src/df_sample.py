@@ -33,7 +33,7 @@ qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, c
 #220 km/s at 8 kpc, convert back to km/s
 to_kms = bovy_conversion.velocity_in_kpcGyr(220., 8.) * 0.9785
 
-for r, z in zip(rvals_cylindrical, zvals_cylindrical):
+for Rcoord, ZCoord in zip(rvals_cylindrical, zvals_cylindrical):
     
     vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
     

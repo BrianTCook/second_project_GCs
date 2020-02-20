@@ -169,6 +169,12 @@ def star_cluster(rvals, phivals, zvals, masses, index, code_name):
     #just for converter, right?
     converter_sub = nbody_system.nbody_to_si(Mcluster, 10|units.parsec)
     
+    print('~~~~~~~~~~~~~~~~')
+    print('index is: %i'%(index))
+    print('r, phi, z: %.04f kpc, %.04f radians, %.04f kpc'%(Rcoord, phicoord, zcoord))
+    print('vr, vphi, vz: %.04f km/s, %.04f km/s, %.04f km/s'%(Rcoord, phicoord, zcoord))
+    print('~~~~~~~~~~~~~~~~')
+    
     bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
                                            W0, Mcluster, code_name, parameters=[])
     

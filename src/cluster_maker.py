@@ -25,6 +25,7 @@ from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 
 import numpy as np
+np.random.seed(73)
 
 def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
                             W0, Mcluster, code_name, parameters=[]):
@@ -39,14 +40,6 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     
     while mZams_flag == 0:
         
-        if abs(Rcoord - 10.) < 1e-3:
-    
-            #don't want to go through while loop if cluster is just for sub_worker
-            converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
-            bodies = new_king_model(Nstars, W0, convert_nbody=converter)
-            bodies.mass = [Mcluster]
-            mZams_flag = 1
-        
         mZams = new_salpeter_mass_distribution(Nstars, Mmin_star|units.MSun, Mmax_star|units.MSun, random=np.random)
         mass_difference_ratio = (Mcluster - mZams.sum())/Mcluster
         
@@ -59,14 +52,10 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
             print('Mclusters, Nstars are', Mcluster, Nstars)
             
             converter_estimate = nbody_system.nbody_to_si(Mcluster, 5.|units.parsec)
-            bodies_estimate = new_king_model(Nstars, W0, convert_nbody=converter)
+            bodies_estimate = new_king_model(Nstars, W0, convert_nbody=converter_estimate)
             bodies_estimate.mass = mZams
             
-            gravity_estimate = BHTree()
-            gravity_estimate.add_particles(bodies_estimate)
-            Rcluster = 0.5*constants.G*Mcluster/gravity_estimate.potential_energy #virial radius 
-            
-            converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
+            converter = nbody_system.nbody_to_si(Mcluster, 5|units.parsec)
             bodies = new_king_model(Nstars, W0, convert_nbody=converter)
             bodies.mass = mZams
             
@@ -171,7 +160,7 @@ def star_cluster(rvals, phivals, zvals, masses, index, code_name):
     
     print('~~~~~~~~~~~~~~~~')
     print('index is: %i'%(index))
-    print('r, phi, z: %.04f kpc, %.04f radians, %.04f kpc'%(Rcoord, phicoord, zcoord))
+    print('r, phi, z: %.04f kpc, %.04f radians, %.04f kpc'%(Rcoord, phicoord, Zcoord))
     print('vr, vphi, vz: %.04f km/s, %.04f km/s, %.04f km/s'%(vr_init, vphi_init, vz_init))
     print('~~~~~~~~~~~~~~~~')
     

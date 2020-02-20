@@ -182,11 +182,6 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
                 gravity.add_system(orbiter_code_list[i], orbiter_code_list[:i])
                 gravity.add_system(orbiter_code_list[i], orbiter_code_list[i+1:])
 
-        all_bodies = Particles(0)
-        
-        for i in range(Norbiters):
-            all_bodies.add_particles(orbiter_bodies_list[i])
-
         '''
         if orbiter_name == 'BinaryCluster':
             
@@ -225,11 +220,6 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
             orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
         '''
         
-        all_bodies = Particles(0)
-        
-        for i in range(Norbiters):
-            all_bodies.add_particles(orbiter_bodies_list[i])
-        
         parts = HierarchicalParticles(bodies)
         
         '''
@@ -258,7 +248,12 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         gravity = bridge.Bridge(use_threading=False)
         gravity.add_system(nemesis, (galaxy_code,))
         gravity.timestep = dt_bridge
+    
+    all_bodies = Particles(0)
         
+    for i in range(Norbiters):
+        all_bodies.add_particles(orbiter_bodies_list[i])
+    
     return all_bodies, gravity
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
@@ -274,8 +269,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
                                          galaxy_code, sepBinary, rvals, phivals, zvals,
                                          vrvals, vphivals, vzvals, masses)
     
-    #channel = all_bodies.new_channel_to(gravity.particles)
-    #channel.copy_attributes(['x','y','z','vx','vy','vz'])
+    channel = all_bodies.new_channel_to(gravity.particles)
+    channel.copy_attributes(['x','y','z','vx','vy','vz'])
     
     Ntotal = len(all_bodies)
     

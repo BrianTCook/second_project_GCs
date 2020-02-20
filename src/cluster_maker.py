@@ -130,28 +130,18 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     
     return bodies, code
 
-def star_cluster(rvals, phivals, zvals, masses, index, code_name):
+def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, code_name):
     
     '''
     takes 3 random numbers and generates open cluster
     with appropriate ICs in 6D phase space
     '''
     
-    #limit to within 100 pc of the galactic center
+    #limit to within 1 kpc of the galactic center
     Rcoord, phicoord, Zcoord = rvals[index], phivals[index], zvals[index]
+    vr_init, vphi_init, vz_init = vrvals[index], vphivals[index], vzvals[index]
     
     Mcluster = masses[index]|units.MSun
-    
-    #using Staeckel
-    aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
-    qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
-    vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
-    
-    #220 km/s at 8 kpc, convert back to km/s
-    to_kms = bovy_conversion.velocity_in_kpcGyr(220., 8.) * 0.9785
-    vr_init *= to_kms
-    vphi_init *= to_kms
-    vz_init *= to_kms
     
     W0 = 1.5
     

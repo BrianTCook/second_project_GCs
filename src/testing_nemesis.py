@@ -39,7 +39,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
             rvals, phivals, zvals, masses, index):
 
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = star_cluster(rvals, phivals, zvals, masses, 0, code_name) #just getting the cluster scale converter
+    _, _, converter_sub = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, 0, code_name) #just getting the cluster scale converter
     converter = converter_sub
     
     '''
@@ -115,14 +115,14 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
         
     if orbiter_name == 'SingleCluster':
         
-        bodies, code, _ = star_cluster(rvals, phivals, zvals, masses, index, code_name)
+        bodies, code, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, code_name)
         
         return bodies, code
         
     if orbiter_name == 'BinaryCluster':
         
-        bodies_one, code_one, _ = star_cluster(rvals, phivals, zvals, masses, index, code_name)
-        bodies_two, code_two, _ = star_cluster(rvals, phivals, zvals, masses, index, code_name)
+        bodies_one, code_one, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, code_name)
+        bodies_two, code_two, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, code_name)
             
         #initialize binary system
         mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()
@@ -150,7 +150,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
         return all_bodies, code_one, code_two #need to be different so they're bridged
 
 def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
-                       rvals, phivals, zvals, masses):
+                       rvals, phivals, zvals, vrvals, vphivals, vzvals, masses):
     
     '''
     will need to ask SPZ if he meant for field, orbiter to be separate in non
@@ -158,7 +158,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     '''
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = star_cluster(rvals, phivals, zvals, masses, 0, code_name) #just getting the cluster scale converter
+    _, _, converter_sub = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, 0, code_name) #just getting the cluster scale converter
     converter = converter_sub
     
     if code_name != 'nemesis':
@@ -170,38 +170,55 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
             list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
                                          rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
             
-            orbiter_bodies, orbiter_code = list_of_orbiters[0]
-            
-            gravity.add_system(orbiter_code, (galaxy_code,))
+            orbiter_bodies_list = list_of_orbiters[:, 0]
+            orbiter_code_list = list_of_orbiters[:, 1]
+    
+            for i in range(Norbiters):
+                
+                gravity.add_system(orbiter_code_list[i], (galaxy_code,))
+                gravity.add_system(orbiter_code_list[i], orbiter_code_list[:i])
+                gravity.add_system(orbiter_code_list[i], orbiter_code_list[i+1:])
 
+        '''
         if orbiter_name == 'BinaryCluster':
             
             list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
                                          rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
             
-            orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
-            
-            gravity.add_system(orbiter_code_one, (orbiter_code_two, galaxy_code))
-            gravity.add_system(orbiter_code_two, (orbiter_code_one, galaxy_code))
+            for i in range(Norbiters):
+                
+                orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
+                
+                gravity.add_system(orbiter_code_one, (orbiter_code_two, galaxy_code))
+                gravity.add_system(orbiter_code_two, (orbiter_code_one, galaxy_code))
+        '''
             
     if code_name == 'nemesis':
         
-        #just don't use orbiter_code here, just replace it with nemesis
+        #don't use orbiter_code_list
         if orbiter_name != 'BinaryCluster':
             
             list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
                                          rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
             
-            orbiter_bodies, orbiter_code = list_of_orbiters[0]
+            orbiter_bodies_list = list_of_orbiters[:, 0]
+            orbiter_code_list = list_of_orbiters[:, 1]
 
+        '''
         if orbiter_name == 'BinaryCluster':
             
             list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
                                          rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
             
             orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
-            
-        parts = HierarchicalParticles(orbiter_bodies)
+        '''
+        
+        bodies = Particles(0)
+        
+        for i in range(Norbiters):
+            bodies.add_particles(orbiter_bodies_list[i])
+        
+        parts = HierarchicalParticles(bodies)
         
         '''
         need add_subsystem and assign_subsystem in HierarchicalParticles I think
@@ -233,16 +250,17 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     return orbiter_bodies, gravity
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
-               rvals, phivals, zvals, masses, tend, dt):
+               rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = star_cluster(rvals, phivals, zvals, masses, 0, code_name) #just getting the cluster scale converter
+    _, _, converter_sub = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, 0, code_name) #just getting the cluster scale converter
     converter = converter_sub
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     
     bodies, gravity = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
-                                         galaxy_code, sepBinary, rvals, phivals, zvals, masses)
+                                         galaxy_code, sepBinary, rvals, phivals, zvals,
+                                         vrvals, vphivals, vzvals, masses)
     
     channel = bodies.new_channel_to(gravity.particles)
     channel.copy_attributes(['x','y','z','vx','vy','vz'])
@@ -465,6 +483,10 @@ if __name__ in '__main__':
     phivals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_phivals.txt')
     zvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_zvals.txt')
     
+    vrvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/bovy_vrvals.txt')
+    vphivals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/bovy_vphivals.txt')
+    vzvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/bovy_vzvals.txt')
+    
     masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
     
     rvals = rvals[:Norbiters]
@@ -485,7 +507,8 @@ if __name__ in '__main__':
             print('\\\\\\\\\\\\\\\\\\\\\\\\')
             
             simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
-                       sepBinary, rvals, phivals, zvals, masses, tend, dt)
+                       sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
+                       masses, tend, dt)
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             

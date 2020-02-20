@@ -39,8 +39,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
             rvals, phivals, zvals, masses, index):
 
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, 0, code_name) #just getting the cluster scale converter
-    converter = converter_sub
+    converter_sub = nbody_system.nbody_to_si(np.median(masses).value_in(units.MSun), 5.|units.parsec)
     
     '''
     takes in R, Z value
@@ -158,8 +157,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     '''
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, 0, code_name) #just getting the cluster scale converter
-    converter = converter_sub
+    converter_sub = nbody_system.nbody_to_si(np.median(masses).value_in(units.MSun), 5.|units.parsec)
     
     if code_name != 'nemesis':
         
@@ -260,8 +258,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
                rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    _, _, converter_sub = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, 0, code_name) #just getting the cluster scale converter
-    converter = converter_sub
+    converter_sub = nbody_system.nbody_to_si(np.median(masses).value_in(units.MSun), 5.|units.parsec)
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     

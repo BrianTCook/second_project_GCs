@@ -49,17 +49,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
     '''
     
     Rcoord, phicoord, Zcoord = rvals[index], phivals[index], zvals[index]
-    
-    #using Staeckel
-    aAS = actionAngleStaeckel(pot=MWPotential2014, delta=0.45, c=True)
-    qdfS = quasiisothermaldf(1./3., 0.2, 0.1, 1., 1., pot=MWPotential2014, aA=aAS, cutcounter=True)
-    vr_init, vphi_init, vz_init = qdfS.sampleV(Rcoord, Zcoord, n=1)[0,:]
-    
-    #220 km/s at 8 kpc, convert back to km/s
-    to_kms = bovy_conversion.velocity_in_kpcGyr(220., 8.) * 0.9785
-    vr_init *= to_kms
-    vphi_init *= to_kms
-    vz_init *= to_kms
+    vrcoord, vphicoord, vzcoord = vrvals[index], vphivals[index], vzvals[index]
     
     #convert from galpy/cylindrical to AMUSE/Cartesian units
     x_init = Rcoord*np.cos(phicoord) | units.kpc

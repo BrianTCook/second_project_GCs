@@ -49,7 +49,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
     '''
     
     Rcoord, phicoord, Zcoord = rvals[index], phivals[index], zvals[index]
-    vrcoord, vphicoord, vzcoord = vrvals[index], vphivals[index], vzvals[index]
+    vr_init, vphi_init, vz_init = vrvals[index], vphivals[index], vzvals[index]
     
     #convert from galpy/cylindrical to AMUSE/Cartesian units
     x_init = Rcoord*np.cos(phicoord) | units.kpc

@@ -55,10 +55,21 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         if mass_difference_ratio < -0.05:
             Nstars -= 1
         if np.abs(mass_difference_ratio) <= 0.05:
+            
             print('Mclusters, Nstars are', Mcluster, Nstars)
-            converter = nbody_system.nbody_to_si(Mcluster, 5.|units.parsec)
+            
+            converter_estimate = nbody_system.nbody_to_si(Mcluster, 5.|units.parsec)
+            bodies_estimate = new_king_model(Nstars, W0, convert_nbody=converter)
+            bodies_estimate.mass = mZams
+            
+            gravity_estimate = BHTree()
+            gravity_estimate.add_particles(bodies_estimate)
+            Rcluster = 0.5*constants.G*Mcluster/gravity_estimate.potential_energy #virial radius 
+            
+            converter = nbody_system.nbody_to_si(Mcluster, Rcluster)
             bodies = new_king_model(Nstars, W0, convert_nbody=converter)
             bodies.mass = mZams
+            
             mZams_flag = 1
 
     '''

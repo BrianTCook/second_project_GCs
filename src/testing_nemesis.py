@@ -469,7 +469,7 @@ if __name__ in '__main__':
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     
-    Norbiters = 10
+    Norbiters = 1
     
     rvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_rvals.txt')
     phivals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_phivals.txt')
@@ -482,8 +482,8 @@ if __name__ in '__main__':
     zvals = zvals[:Norbiters]  
     masses = masses[:Norbiters]
 
-    orbiter_names = [ 'SingleCluster' ] #, 'SingleStar', 'BinaryCluster' ]
-    code_names = ['tree' ] #'Nbody', 'nemesis'
+    orbiter_names = [ 'SingleStar', 'SingleCluster' ] #, 'BinaryCluster' ]
+    code_names = ['tree', 'Nbody' ]#, 'nemesis'
     
     t0 = time.time()
     
@@ -499,7 +499,7 @@ if __name__ in '__main__':
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
-            if orbiter_name == 'SingleCluster': #should be the same for all three and captures all gravity info
+            if orbiter_name == 'SingleCluster' or orbiter_name == 'SingleStar': #should be the same for all three and captures all gravity info
                 
                 maps(orbiter_name, code_name)
                 continue

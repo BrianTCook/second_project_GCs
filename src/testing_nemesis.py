@@ -182,6 +182,11 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
                 gravity.add_system(orbiter_code_list[i], orbiter_code_list[:i])
                 gravity.add_system(orbiter_code_list[i], orbiter_code_list[i+1:])
 
+        all_bodies = Particles(0)
+        
+        for i in range(Norbiters):
+            all_bodies.add_particles(orbiter_bodies_list[i])
+
         '''
         if orbiter_name == 'BinaryCluster':
             
@@ -220,10 +225,10 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
             orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
         '''
         
-        bodies = Particles(0)
+        all_bodies = Particles(0)
         
         for i in range(Norbiters):
-            bodies.add_particles(orbiter_bodies_list[i])
+            all_bodies.add_particles(orbiter_bodies_list[i])
         
         parts = HierarchicalParticles(bodies)
         
@@ -253,13 +258,8 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         gravity = bridge.Bridge(use_threading=False)
         gravity.add_system(nemesis, (galaxy_code,))
         gravity.timestep = dt_bridge
-
-    orbiter_bodies = Particles(0)
-
-    for bodies in orbiter_bodies_list:
-        orbiter_bodies.add_particles(bodies)
         
-    return orbiter_bodies, gravity
+    return all_bodies, gravity
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
                rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):
@@ -270,11 +270,11 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     
-    bodies, gravity = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
+    all_bodies, gravity = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
                                          galaxy_code, sepBinary, rvals, phivals, zvals,
                                          vrvals, vphivals, vzvals, masses)
     
-    channel = bodies.new_channel_to(gravity.particles)
+    channel = all_bodies.new_channel_to(gravity.particles)
     channel.copy_attributes(['x','y','z','vx','vy','vz'])
     
     Ntotal = len(bodies)

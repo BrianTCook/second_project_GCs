@@ -274,8 +274,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
                                          galaxy_code, sepBinary, rvals, phivals, zvals,
                                          vrvals, vphivals, vzvals, masses)
     
-    channel = all_bodies.new_channel_to(gravity.particles)
-    channel.copy_attributes(['x','y','z','vx','vy','vz'])
+    #channel = all_bodies.new_channel_to(gravity.particles)
+    #channel.copy_attributes(['x','y','z','vx','vy','vz'])
     
     Ntotal = len(bodies)
     

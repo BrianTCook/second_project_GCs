@@ -147,12 +147,12 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         for i in range(Norbiters):
             
             gravity.add_system(orbiter_codes_list[i], (galaxy_code,))
-            gravity.add_system(orbiter_codes_list[i], orbiter_code_list[:i])
-            gravity.add_system(orbiter_codes_list[i], orbiter_code_list[i+1:])
+            gravity.add_system(orbiter_codes_list[i], orbiter_codes_list[:i])
+            gravity.add_system(orbiter_codes_list[i], orbiter_codes_list[i+1:])
             
     if code_name == 'nemesis':
         
-        #don't use orbiter_code_list
+        #don't use orbiter_codes_list
         nemesis_parts = HierarchicalParticles(all_bodies_in_gravity_code)
         
         '''

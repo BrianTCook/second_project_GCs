@@ -3,9 +3,11 @@
 echo 'run script'
 python3 testing_nemesis.py
 
-#echo 'create BinaryCluster gifs'
-#convert -delay 10 'snapshot_Nbody_*.png' -loop Nbody.gif
-#convert -delay 10 'snapshot_tree_*.png' -loop tree.gif
+echo 'create gifs'
+convert -delay 10 'snapshot_Nbody_SingleStar_*.png' -loop 0 Nbody_singlestar.gif
+convert -delay 10 'snapshot_tree_SingleStar_*.png' -loop 0 tree_singlestar.gif
+convert -delay 10 'snapshot_Nbody_SingleCluster_*.png' -loop 0 Nbody_singlecluster.gif
+convert -delay 10 'snapshot_tree_SingleCluster_*.png' -loop 0 tree_singlecluster.gif
 
 mv *.txt ../data
 mv *.npy ../data

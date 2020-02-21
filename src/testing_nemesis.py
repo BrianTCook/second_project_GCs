@@ -39,7 +39,7 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
             rvals, phivals, zvals, masses, index):
 
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    converter_sub = nbody_system.nbody_to_si(np.median(masses).value_in(units.MSun), 5.|units.parsec)
+    converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     
     '''
     takes in R, Z value
@@ -77,13 +77,13 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
         #sub_worker in Nemesis, should not matter for SingleStar
         if code_name == 'Nbody':
             
-            code = Hermite(converter) #Mercury acts weird for SingleStar
+            code = Hermite(converter_sub) #Mercury acts weird for SingleStar
             code.particles.add_particles(bodies)
             code.commit_particles()
             
         if code_name == 'tree':
         
-            code = BHTree(converter)
+            code = BHTree(converter_sub)
             code.particles.add_particles(bodies)
             code.commit_particles()
             
@@ -157,7 +157,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     '''
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    converter_sub = nbody_system.nbody_to_si(np.median(masses).value_in(units.MSun), 5.|units.parsec)
+    converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     
     if code_name != 'nemesis':
         
@@ -257,7 +257,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
                rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    converter_sub = nbody_system.nbody_to_si(np.median(masses).value_in(units.MSun), 5.|units.parsec)
+    converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     

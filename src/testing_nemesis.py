@@ -165,8 +165,8 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         
         if orbiter_name != 'BinaryCluster':
             
-            list_of_orbiters = [ [orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                         rvals, phivals, zvals, masses, i)] for i in range(Norbiters) ]
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
+                                         rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
             
             orbiter_bodies_list, orbiter_code_list = [], []
     
@@ -199,8 +199,8 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         #don't use orbiter_code_list
         if orbiter_name != 'BinaryCluster':
             
-            list_of_orbiters = [ [orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                         rvals, phivals, zvals, masses, i)] for i in range(Norbiters) ]
+            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
+                                         rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
             
             orbiter_bodies_list, orbiter_code_list = [], []
     
@@ -480,7 +480,7 @@ if __name__ in '__main__':
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     
-    Norbiters = 1
+    Norbiters = 10
     
     rvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_rvals.txt')
     phivals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_phivals.txt')

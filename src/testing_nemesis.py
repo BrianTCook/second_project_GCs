@@ -136,14 +136,20 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     
     orbiter_bodies_list = [ list_of_orbiters[i][0] for i in range(Norbiters) ] 
     orbiter_codes_list = [ list_of_orbiters[i][1] for i in range(Norbiters) ]
+    
+    cluster_colors = []
+    
+    for i, orbiter_code in enumerate(orbiter_codes_list):   
 
-	for i, orbiter_code in enumerate(orbiter_codes_list):   
+        stars = orbiter_code.particles.copy()
+        cluster_color = np.random.rand(3,)
+        
+        cluster_colors.append([cluster_color]*len(stars))
 
-		stars = orbiter_code.particles.copy()
-		cluster_color = np.random.rand(3,)
-
-    	channel = stars.new_channel_to(orbiter_code.particles)
+        channel = stars.new_channel_to(orbiter_code.particles)
         channel.copy_attributes(['x','y','z','vx','vy','vz'])
+
+    cluster_colors = [ j for i in cluster_colors for j in i ]
 
     if code_name != 'nemesis':
         
@@ -152,10 +158,10 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         for i in range(Norbiters):
             
             other_clusters = orbiter_codes_list[:i] + orbiter_codes_list[i+1:]
-			other_things = tuple(other_clusters) + (galaxy_code,)
+            other_things = tuple(other_clusters) + (galaxy_code,)
 
-			#bridges each cluster with the bulge, not the other way around though
-			gravity.add_system(cluster_code, other_things)    
+            #bridges each cluster with the bulge, not the other way around though
+            gravity.add_system(cluster_code, other_things)    
             
         return gravity.particles, gravity, orbiter_bodies_list
             
@@ -196,7 +202,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         gravity.add_system(nemesis, (galaxy_code,))
         gravity.timestep = dt_bridge
     
-        return all_bodies, gravity, orbiter_bodies_list
+        return all_bodies, gravity, orbiter_bodies_list, cluster_colors
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
                rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):
@@ -210,10 +216,10 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #third thing is the list of orbiter bodies s.t. we can compute COMs independently
     #and plot them with different colors
     
-    simulation_bodies, gravity, orbiter_bodies_list = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
-                                                                         galaxy_code, sepBinary, rvals, phivals, zvals,
-                                                                         vrvals, vphivals, vzvals, masses)
-    
+    simulation_bodies, gravity, orbiter_bodies_list, cluster_colors = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
+                                                                                         galaxy_code, sepBinary, rvals, phivals, zvals,
+                                                                                         vrvals, vphivals, vzvals, masses)
+                    
     
     orbiter_colors = [ [np.random.random(3,)]*len(orbiter_bodies) for orbiter_bodies in orbiter_bodies_list]
     orbiter_colors = [ j for i in orbiter_colors for j in i ] #concatenate the list above
@@ -269,7 +275,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     np.save('time_data_%s_%s.npy'%(code_name, orbiter_name), sim_times_unitless)
     np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
-    np.savetxt(code_name + '_' + orbiter_name + '_colors.txt', orbiter_colors)
+    np.savetxt(code_name + '_' + orbiter_name + '_colors.txt', cluster_colors)
     np.savetxt(code_name + '_' + orbiter_name + '_energies.txt', energies)
     np.savetxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt', median_radial_coords)
     np.savetxt(code_name + '_' + orbiter_name + '_median_speeds.txt', median_speeds)

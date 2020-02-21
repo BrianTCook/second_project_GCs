@@ -126,6 +126,8 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     Nemesis gravity solvers?
     '''
     
+    Norbiters = len(rvals)
+    
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     
@@ -133,21 +135,27 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
                                      rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
     
     orbiter_bodies_list = [ list_of_orbiters[i][0] for i in range(Norbiters) ] 
+    orbiter_codes_list = [ list_of_orbiters[i][1] for i in range(Norbiters) ]
 
-    print('orbiter_bodies_list: ', orbiter_bodies_list)
+	for i, orbiter_code in enumerate(orbiter_codes_list):   
+
+		stars = orbiter_code.particles.copy()
+		cluster_color = np.random.rand(3,)
+
+    	channel = stars.new_channel_to(orbiter_code.particles)
+        channel.copy_attributes(['x','y','z','vx','vy','vz'])
 
     if code_name != 'nemesis':
         
-        gravity = bridge.Bridge(use_threading=False)        
-        orbiter_codes_list = [ list_of_orbiters[i][1] for i in range(Norbiters) ]
-
-        print('orbiter_codes_list: ', orbiter_codes_list)
+        gravity = bridge.Bridge(use_threading=False)
 
         for i in range(Norbiters):
             
-            gravity.add_system(orbiter_codes_list[i], (galaxy_code,))
-            gravity.add_system(orbiter_codes_list[i], orbiter_codes_list[:i])
-            gravity.add_system(orbiter_codes_list[i], orbiter_codes_list[i+1:])        
+            other_clusters = orbiter_codes_list[:i] + orbiter_codes_list[i+1:]
+			other_things = tuple(other_clusters) + (galaxy_code,)
+
+			#bridges each cluster with the bulge, not the other way around though
+			gravity.add_system(cluster_code, other_things)    
             
         return gravity.particles, gravity, orbiter_bodies_list
             
@@ -209,9 +217,6 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     orbiter_colors = [ [np.random.random(3,)]*len(orbiter_bodies) for orbiter_bodies in orbiter_bodies_list]
     orbiter_colors = [ j for i in orbiter_colors for j in i ] #concatenate the list above
-    
-    channel = simulation_bodies.new_channel_to(gravity.particles)
-    channel.copy_attributes(['x','y','z','vx','vy','vz'])
     
     Ntotal = len(gravity.particles)
     

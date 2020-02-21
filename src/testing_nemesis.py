@@ -133,15 +133,10 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
                                      rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
     
     orbiter_bodies_list = [ list_of_orbiters[i][0] for i in range(Norbiters) ] 
-    all_bodies_in_gravity_code = Particles(0)
-        
-    for i in range(Norbiters):
-        all_bodies_in_gravity_code.add_particles(orbiter_bodies_list[i])
-    
+
     if code_name != 'nemesis':
         
-        gravity = bridge.Bridge(use_threading=False)
-        
+        gravity = bridge.Bridge(use_threading=False)        
         orbiter_codes_list = [ list_of_orbiters[i][1] for i in range(Norbiters) ]
 
         for i in range(Norbiters):
@@ -149,13 +144,19 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
             gravity.add_system(orbiter_codes_list[i], (galaxy_code,))
             gravity.add_system(orbiter_codes_list[i], orbiter_codes_list[:i])
             gravity.add_system(orbiter_codes_list[i], orbiter_codes_list[i+1:])
+            gravity.particles.add_particles(orbiter_bodies_list[i])            
             
-        gravity.particles.add_particles(all_particles_in_gravity_code)
+        return gravity.particles, gravity, orbiter_bodies_list
             
     if code_name == 'nemesis':
         
+        all_bodies = Particles(0)
+        
+        for i in range(Norbiters):
+            all_bodies.add_particles(orbiter_bodies_list[i])
+            
         #don't use orbiter_codes_list
-        nemesis_parts = HierarchicalParticles(all_bodies_in_gravity_code)
+        nemesis_parts = HierarchicalParticles(all_bodies)
         
         '''
         need add_subsystem and assign_subsystem in HierarchicalParticles I think
@@ -184,7 +185,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         gravity.add_system(nemesis, (galaxy_code,))
         gravity.timestep = dt_bridge
     
-    return all_bodies_in_gravity_code, gravity, orbiter_bodies_list
+        return all_bodies, gravity, orbiter_bodies_list
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
                rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):

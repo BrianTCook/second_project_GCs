@@ -165,8 +165,8 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         
         if orbiter_name != 'BinaryCluster':
             
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                         rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
+            list_of_orbiters = [ [orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
+                                         rvals, phivals, zvals, masses, i)] for i in range(Norbiters) ]
             
             orbiter_bodies_list, orbiter_code_list = [], []
     
@@ -199,15 +199,14 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         #don't use orbiter_code_list
         if orbiter_name != 'BinaryCluster':
             
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                         rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
+            list_of_orbiters = [ [orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
+                                         rvals, phivals, zvals, masses, i)] for i in range(Norbiters) ]
             
             orbiter_bodies_list, orbiter_code_list = [], []
     
             for i in range(Norbiters):
                 orbiter_bodies_list.append(list_of_orbiters[i][0])
                 orbiter_code_list.append(list_of_orbiters[i][1])
-
 
         '''
         if orbiter_name == 'BinaryCluster':

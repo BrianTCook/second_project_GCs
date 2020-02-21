@@ -7,8 +7,9 @@ Created on Fri Feb 21 14:36:18 2020
 """
 
 from amuse.lab import *
-from amuse.ic.kingmodel import new_king_model
 from amuse.ic.salpeter import new_salpeter_mass_distribution
+
+import numpy as np
 
 masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
 

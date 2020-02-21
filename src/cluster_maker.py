@@ -28,12 +28,18 @@ import numpy as np
 np.random.seed(73)
 
 def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                            W0, Mcluster, Mstars, code_name, parameters=[]):
+                            W0, Mcluster, star_masses, code_name, parameters=[]):
 
     '''
     sets up a cluster with mass M and radius R
     which nbodycode would you like to use?
+    '''
+            
+    converter = nbody_system.nbody_to_si(star_masses.sum(), 5|units.parsec)
+    bodies = new_king_model(len(star_masses), W0, convert_nbody=converter)
+    bodies.mass = star_masses
 
+    '''
     takes in R, Z value
     returns VR, Vphi, VZ values
     should get appropriate 6D initial phase space conditions
@@ -58,9 +64,6 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     bodies.vx += vx_init
     bodies.vy += vy_init
     bodies.vz += vz_init
-    
-    #initializing the masses
-    bodies.mass = Mstars|units.Msun
     
     #sub_worker in Nemesis
     if code_name == 'Nbody':
@@ -117,7 +120,7 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, star_m
     vr_init, vphi_init, vz_init = vrvals[index], vphivals[index], vzvals[index]
     
     Mcluster = masses[index]|units.MSun
-    Mstars = star_masses[index]|units.Msun
+    star_masses = star_masses[index]|units.MSun
     
     W0 = 1.5
     
@@ -131,6 +134,6 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, star_m
     print('~~~~~~~~~~~~~~~~')
     
     bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                                           W0, Mcluster, Mstars, code_name, parameters=[])
+                                           W0, Mcluster, star_masses, code_name, parameters=[])
     
     return bodies, code, converter_sub

@@ -182,7 +182,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         gravity.add_system(nemesis, (galaxy_code,))
         gravity.timestep = dt_bridge
     
-    return all_bodies_in_gravity_code, orbiter_bodies_list, gravity
+    return all_bodies_in_gravity_code, gravity, orbiter_bodies_list
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
                rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):

@@ -204,10 +204,10 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     orbiter_colors = [ [np.random.random(3,)]*len(orbiter_bodies) for orbiter_bodies in orbiter_bodies_list]
     orbiter_colors = [ j for i in orbiter_colors for j in i ] #concatenate the list above
     
-    channel = simulation_bodies.new_channel_to(gravity.particles)
-    channel.copy_attributes(['x','y','z','vx','vy','vz'])
+    #channel = simulation_bodies.new_channel_to(gravity.particles)
+    #channel.copy_attributes(['x','y','z','vx','vy','vz'])
     
-    Ntotal = len(all_bodies)
+    Ntotal = len(gravity.particles)
     
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]
@@ -217,7 +217,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     t0 = time.time()
     
     #create an R^3 matrix to house phase space data for all particles
-    phase_space_data = np.zeros((len(sim_times), 6, len(all_bodies)))
+    phase_space_data = np.zeros((len(sim_times), 6, len(gravity.particles)))
     
     for j, t in enumerate(sim_times):
         

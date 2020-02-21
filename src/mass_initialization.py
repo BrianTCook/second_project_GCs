@@ -42,9 +42,11 @@ for Mcluster in masses:
             
     star_masses.append([ m for m in mZams.value_in(units.MSun) ])
     
+    print(star_masses)
+    
     i = len(star_masses)
     
     if i%10 == 0:
         print('number of masses computed: %i'%(len(star_masses)))
         print('time: %.04f minutes'%((time.time()-t0)/60.))  
-        np.savetxt('star_masses.txt', star_masses)
+        np.save('star_masses.npy', star_masses)

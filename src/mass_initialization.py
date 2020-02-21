@@ -42,8 +42,6 @@ for Mcluster in masses:
             
     star_masses.append([ m for m in mZams.value_in(units.MSun) ])
     
-    print(star_masses)
-    
     i = len(star_masses)
     
     if i%10 == 0:

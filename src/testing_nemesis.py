@@ -157,6 +157,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
 
         for i in range(Norbiters):
             
+            cluster_code = orbiter_codes_list[i]
             other_clusters = orbiter_codes_list[:i] + orbiter_codes_list[i+1:]
             other_things = tuple(other_clusters) + (galaxy_code,)
 

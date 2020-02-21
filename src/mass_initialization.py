@@ -19,7 +19,7 @@ print('number of masses to figure out: %i'%(len(masses)))
 
 star_masses = []
 
-for Mcluster in masses:
+for i, Mcluster in enumerate(masses):
     
     Mcluster = Mcluster|units.MSun
 
@@ -31,10 +31,10 @@ for Mcluster in masses:
         mZams = new_salpeter_mass_distribution(Nstars, Mmin_star|units.MSun, Mmax_star|units.MSun, random=np.random)
         mass_difference_ratio = (Mcluster - mZams.sum())/Mcluster
         
-        if mass_difference_ratio > 0.05:
+        if mass_difference_ratio > 0.01:
             Nstars += 1
             
-        if mass_difference_ratio < -0.05:
+        if mass_difference_ratio < -0.01:
             Nstars -= 1
             
         if np.abs(mass_difference_ratio) <= 0.01:            
@@ -42,8 +42,10 @@ for Mcluster in masses:
             
     star_masses.append(mZams)
     
-    if len(star_masses)%10 == 0:
+    if i%10 == 0:
         print('number of masses computed: %i'%(len(star_masses)))
-        print('time: %.04f minutes'%((time.time()-t0)/60.))        
+        print('time: %.04f minutes'%((time.time()-t0)/60.))  
         
-np.savetxt('/home/brian/Desktop/second_project_gcs_data/star_masses.txt', star_masses)
+    if i <= 1000:
+        np.savetxt('/home/brian/Desktop/second_project_gcs_data/star_masses.txt', star_masses)
+        break

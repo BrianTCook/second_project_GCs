@@ -147,8 +147,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
             
             gravity.add_system(orbiter_codes_list[i], (galaxy_code,))
             gravity.add_system(orbiter_codes_list[i], orbiter_codes_list[:i])
-            gravity.add_system(orbiter_codes_list[i], orbiter_codes_list[i+1:])
-            gravity.particles.add_particles(orbiter_bodies_list[i])            
+            gravity.add_system(orbiter_codes_list[i], orbiter_codes_list[i+1:])        
             
         return gravity.particles, gravity, orbiter_bodies_list
             

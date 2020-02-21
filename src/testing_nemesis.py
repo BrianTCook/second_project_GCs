@@ -229,8 +229,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #create an R^3 matrix to house phase space data for all particles
     phase_space_data = np.zeros((len(sim_times), 6, len(simulation_bodies)))
     
-    star_masses = [ m.value(units.MSun) for m in gravity.particles.mass ]
-    total_mass = gravity.particles.mass.sum()
+    star_masses = gravity.particles.mass
+    total_mass = star_masses.sum()
     
     xCOM_vals, yCOM_vals = [], []
     
@@ -249,8 +249,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         vy = [ vyy.value_in(units.kms) for vyy in gravity.particles.vy ]
         vz = [ vzz.value_in(units.kms) for vzz in gravity.particles.vz ]
         
-        x_COM = np.sum( [ (star_masses[i]*x[i]/total_mass).value_in(units.kpc) for i in range(Ntotal) ] )
-        y_COM = np.sum( [ (star_masses[i]*y[i]/total_mass).value_in(units.kpc) for i in range(Ntotal) ] )
+        x_COM = np.sum( [ star_masses[i]*x[i]/total_mass for i in range(Ntotal) ] ) #in kpc
+        y_COM = np.sum( [ star_masses[i]*y[i]/total_mass for i in range(Ntotal) ] ) #in kpc
         
         xCOM_vals.append(x_COM)
         yCOM_vals.append(y_COM)
@@ -467,7 +467,7 @@ if __name__ in '__main__':
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     
-    Norbiters = 2
+    Norbiters = 1
     
     rvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_rvals.txt')
     phivals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_phivals.txt')

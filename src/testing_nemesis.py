@@ -134,10 +134,14 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     
     orbiter_bodies_list = [ list_of_orbiters[i][0] for i in range(Norbiters) ] 
 
+    print('orbiter_bodies_list: ', orbiter_bodies_list)
+
     if code_name != 'nemesis':
         
         gravity = bridge.Bridge(use_threading=False)        
         orbiter_codes_list = [ list_of_orbiters[i][1] for i in range(Norbiters) ]
+
+        print('orbiter_codes_list: ', orbiter_codes_list)
 
         for i in range(Norbiters):
             

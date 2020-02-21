@@ -15,6 +15,8 @@ masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_
 star_masses = []
 
 for Mcluster in masses:
+    
+    Mcluster = Mcluster|units.MSun
 
     Nstars, Mmin_star, Mmax_star = 100, 0.1, 100.
     mZams_flag = 0

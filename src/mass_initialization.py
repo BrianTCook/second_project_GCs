@@ -15,6 +15,7 @@ import time
 t0 = time.time()
 
 masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
+print('number of masses to figure out: %i'%(len(masses)))
 
 star_masses = []
 
@@ -30,10 +31,10 @@ for Mcluster in masses:
         mZams = new_salpeter_mass_distribution(Nstars, Mmin_star|units.MSun, Mmax_star|units.MSun, random=np.random)
         mass_difference_ratio = (Mcluster - mZams.sum())/Mcluster
         
-        if mass_difference_ratio > 0.01:
+        if mass_difference_ratio > 0.05:
             Nstars += 1
             
-        if mass_difference_ratio < -0.01:
+        if mass_difference_ratio < -0.05:
             Nstars -= 1
             
         if np.abs(mass_difference_ratio) <= 0.01:            

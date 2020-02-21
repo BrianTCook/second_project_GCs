@@ -28,40 +28,12 @@ import numpy as np
 np.random.seed(73)
 
 def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                            W0, Mcluster, code_name, parameters=[]):
+                            W0, Mcluster, Mstars, code_name, parameters=[]):
 
     '''
     sets up a cluster with mass M and radius R
     which nbodycode would you like to use?
-    '''
 
-    mZams_flag, Nstars = 0, 100
-    Mmin_star, Mmax_star = 0.1, 100.    
-    
-    while mZams_flag == 0:
-        
-        mZams = new_salpeter_mass_distribution(Nstars, Mmin_star|units.MSun, Mmax_star|units.MSun, random=np.random)
-        mass_difference_ratio = (Mcluster - mZams.sum())/Mcluster
-        
-        if mass_difference_ratio > 0.05:
-            Nstars += 1
-        if mass_difference_ratio < -0.05:
-            Nstars -= 1
-        if np.abs(mass_difference_ratio) <= 0.05:
-            
-            print('Mclusters, Nstars are', Mcluster, Nstars)
-            
-            converter_estimate = nbody_system.nbody_to_si(Mcluster, 5.|units.parsec)
-            bodies_estimate = new_king_model(Nstars, W0, convert_nbody=converter_estimate)
-            bodies_estimate.mass = mZams
-            
-            converter = nbody_system.nbody_to_si(Mcluster, 5|units.parsec)
-            bodies = new_king_model(Nstars, W0, convert_nbody=converter)
-            bodies.mass = mZams
-            
-            mZams_flag = 1
-
-    '''
     takes in R, Z value
     returns VR, Vphi, VZ values
     should get appropriate 6D initial phase space conditions
@@ -86,6 +58,9 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     bodies.vx += vx_init
     bodies.vy += vy_init
     bodies.vz += vz_init
+    
+    #initializing the masses
+    bodies.mass = Mstars|units.Msun
     
     #sub_worker in Nemesis
     if code_name == 'Nbody':
@@ -130,7 +105,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     
     return bodies, code
 
-def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, code_name):
+def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, star_masses, index, code_name):
     
     '''
     takes 3 random numbers and generates open cluster
@@ -142,6 +117,7 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
     vr_init, vphi_init, vz_init = vrvals[index], vphivals[index], vzvals[index]
     
     Mcluster = masses[index]|units.MSun
+    Mstars = star_masses[index]|units.Msun
     
     W0 = 1.5
     
@@ -155,6 +131,6 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
     print('~~~~~~~~~~~~~~~~')
     
     bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                                           W0, Mcluster, code_name, parameters=[])
+                                           W0, Mcluster, Mstars, code_name, parameters=[])
     
     return bodies, code, converter_sub

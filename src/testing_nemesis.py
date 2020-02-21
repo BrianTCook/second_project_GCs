@@ -36,7 +36,7 @@ from nemesis_supplement import getxv, parent_worker, sub_worker, py_worker, smal
 os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
 def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, 
-            rvals, phivals, zvals, masses, index):
+            rvals, phivals, zvals, masses, star_masses, index):
 
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
@@ -114,12 +114,13 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
         
     if orbiter_name == 'SingleCluster':
         
-        bodies, code, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, code_name)
+        bodies, code, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, 
+                                       masses, star_masses, index, code_name)
         
         return bodies, code
 
 def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
-                       rvals, phivals, zvals, vrvals, vphivals, vzvals, masses):
+                       rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, star_masses):
     
     '''
     will need to ask SPZ if he meant for field, orbiter to be separate in non
@@ -132,7 +133,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     
     list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                     rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
+                                     rvals, phivals, zvals, masses, star_masses, i) for i in range(Norbiters) ]
     
     orbiter_bodies_list = [ list_of_orbiters[i][0] for i in range(Norbiters) ] 
     orbiter_codes_list = [ list_of_orbiters[i][1] for i in range(Norbiters) ]
@@ -204,7 +205,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     return gravity.particles, gravity, orbiter_bodies_list, cluster_colors
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
-               rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):
+               rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, star_masses, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
@@ -215,7 +216,9 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #third thing is the list of orbiter bodies s.t. we can compute COMs independently
     #and plot them with different colors
     
-    simulation_bodies, gravity, orbiter_bodies_list, cluster_colors = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, masses)
+    simulation_bodies, gravity, orbiter_bodies_list, cluster_colors = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
+                                                                                         galaxy_code, sepBinary, rvals, phivals, zvals, 
+                                                                                         vrvals, vphivals, vzvals, masses, star_masses)
     
     Ntotal = len(gravity.particles)
     
@@ -478,6 +481,7 @@ if __name__ in '__main__':
     vzvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/bovy_vzvals.txt')
     
     masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
+    star_masses = np.loadtxt('/home/brian/Desktop/second_project_gcs_data/star_masses.txt')
     
     rvals = rvals[:Norbiters]
     phivals = phivals[:Norbiters]
@@ -498,7 +502,7 @@ if __name__ in '__main__':
             
             simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
                        sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
-                       masses, tend, dt)
+                       masses, star_masses, tend, dt)
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             

@@ -229,6 +229,11 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #create an R^3 matrix to house phase space data for all particles
     phase_space_data = np.zeros((len(sim_times), 6, len(simulation_bodies)))
     
+    star_masses = [ m.value(units.MSun) for m in gravity.particles.mass ]
+    total_mass = gravity.particles.mass.sum()
+    
+    xCOM_vals, yCOM_vals = [], []
+    
     for j, t in enumerate(sim_times):
         
         clock_times.append(time.time()-t0) #will be in seconds
@@ -243,6 +248,12 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         vx = [ vxx.value_in(units.kms) for vxx in gravity.particles.vx ]
         vy = [ vyy.value_in(units.kms) for vyy in gravity.particles.vy ]
         vz = [ vzz.value_in(units.kms) for vzz in gravity.particles.vz ]
+        
+        x_COM = np.sum( [ (star_masses[i]*x[i]/total_mass).value_in(units.kpc) for i in range(Ntotal) ] )
+        y_COM = np.sum( [ (star_masses[i]*y[i]/total_mass).value_in(units.kpc) for i in range(Ntotal) ] )
+        
+        xCOM_vals.append(x_COM)
+        yCOM_vals.append(y_COM)
         
         for k, star in enumerate(gravity.particles):
             
@@ -273,6 +284,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     np.savetxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt', median_radial_coords)
     np.savetxt(code_name + '_' + orbiter_name + '_median_speeds.txt', median_speeds)
     np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
+    np.savetxt(code_name + '_' + orbiter_name + '_x_com.txt', xCOM_vals)
+    np.savetxt(code_name + '_' + orbiter_name + '_y_com.txt', yCOM_vals)
     
     return 0
 
@@ -290,7 +303,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     
     plt.rc('font', family='serif')
     
-    fig, axs = plt.subplots(1, 3)
+    fig, axs = plt.subplots(1, len(orbiter_names))
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
@@ -327,7 +340,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     
     #median radial coordinates
     
-    fig, axs = plt.subplots(1, 3)
+    fig, axs = plt.subplots(1, len(orbiter_names))
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
@@ -357,7 +370,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     
     #median speeds
     
-    fig, axs = plt.subplots(1, 3)
+    fig, axs = plt.subplots(1, len(orbiter_names))
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
@@ -387,7 +400,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     
     #clock times
     
-    fig, axs = plt.subplots(1, 3)
+    fig, axs = plt.subplots(1, len(orbiter_names))
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
@@ -414,6 +427,31 @@ def plotting_things(orbiter_names, code_names, tend, dt):
        
     plt.tight_layout() 
     plt.savefig('testing_nemesis_clocktimes.pdf')
+    plt.close()
+    
+    #center of mass
+    
+    fig, axs = plt.subplots(1, len(orbiter_names))
+
+    for i, orbiter_name in enumerate(orbiter_names): 
+                
+        axs[i].set_xlabel('x (kpc)', fontsize=12)
+        axs[i].set_ylabel('y (kpc)', fontsize=12)
+        axs[i].set_title(orbiter_name, fontsize=8)
+        
+        for code_name in code_names:
+            
+            try:
+                xvals = np.loadtxt(code_name + '_' + orbiter_name + '_x_com.txt')
+                yvals = np.loadtxt(code_name + '_' + orbiter_name + '_y_com.txt')
+                axs[i].plot(xvals, yvals, label=code_name)
+            except:
+                print('oh no!')
+            
+        axs[i].legend(loc='upper right')
+       
+    plt.tight_layout() 
+    plt.savefig('testing_nemesis_COMs.pdf')
     plt.close()
     
     return 0

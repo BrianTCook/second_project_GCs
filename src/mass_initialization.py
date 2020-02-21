@@ -47,4 +47,4 @@ for Mcluster in masses:
     if i%10 == 0:
         print('number of masses computed: %i'%(len(star_masses)))
         print('time: %.04f minutes'%((time.time()-t0)/60.))  
-        np.save('star_masses.npy', star_masses)
+        np.save('star_masses.npy', star_masses, allow_pickle=True)

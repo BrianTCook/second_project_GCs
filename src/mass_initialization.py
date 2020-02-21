@@ -19,7 +19,7 @@ print('number of masses to figure out: %i'%(len(masses)))
 
 star_masses = []
 
-for i, Mcluster in enumerate(masses):
+for Mcluster in masses:
     
     Mcluster = Mcluster|units.MSun
 
@@ -41,6 +41,8 @@ for i, Mcluster in enumerate(masses):
             mZams_flag = 1
             
     star_masses.append(mZams)
+    
+    i = len(star_masses)
     
     if i%10 == 0:
         print('number of masses computed: %i'%(len(star_masses)))

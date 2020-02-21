@@ -238,8 +238,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         clock_times.append(time.time()-t0) #will be in seconds
         
-        energy = gravity.kinetic_energy.value_in(units.J) + gravity.potential_energy.value_in(units.J)
-        energies.append(energy)
+        energy = gravity.particles.kinetic_energy() + gravity.particles.potential_energy(G=units.G)
+        energies.append( energy.value_in(units.J) )
         
         x = [ xx.value_in(units.kpc) for xx in gravity.particles.x ]
         y = [ yy.value_in(units.kpc) for yy in gravity.particles.y ]

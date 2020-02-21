@@ -40,7 +40,7 @@ for Mcluster in masses:
         if np.abs(mass_difference_ratio) <= 0.01:            
             mZams_flag = 1
             
-    star_masses.append(mZams.value_in(units.MSun))
+    star_masses.append(list(mZams.value_in(units.MSun)))
     
     i = len(star_masses)
     

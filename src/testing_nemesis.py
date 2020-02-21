@@ -117,36 +117,6 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
         bodies, code, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, code_name)
         
         return bodies, code
-        
-    if orbiter_name == 'BinaryCluster':
-        
-        bodies_one, code_one, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, code_name)
-        bodies_two, code_two, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, code_name)
-            
-        #initialize binary system
-        mass_one, mass_two = bodies_one.mass.sum(), bodies_two.mass.sum()
-        total_mass = mass_one + mass_two
-        
-        dBinary, vBinary = getxv(converter, total_mass, sepBinary, e=0)
-        print('dBinary is', dBinary)
-        print('position adjustment for one: ', dBinary * mass_one/total_mass)
-        print('position adjustment for two: ', -dBinary * mass_two/total_mass)
-        print('----')
-        print('vBinary is', vBinary)
-        print('velocity adjustment for one: ', vBinary * mass_one/total_mass)
-        print('velocity adjustment for two: ', -vBinary * mass_two/total_mass)
-        
-        bodies_one.position += dBinary * mass_one/total_mass
-        bodies_one.velocity += vBinary * mass_one/total_mass
-
-        bodies_two.position -= dBinary * mass_two/total_mass
-        bodies_two.velocity -= vBinary * mass_two/total_mass
-        
-        all_bodies = Particles(0)
-        all_bodies.add_particles(bodies_one)
-        all_bodies.add_particles(bodies_two)
-        
-        return all_bodies, code_one, code_two #need to be different so they're bridged
 
 def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
                        rvals, phivals, zvals, vrvals, vphivals, vzvals, masses):
@@ -159,65 +129,31 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     
+    list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
+                                     rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
+    
+    orbiter_bodies_list = [ list_of_orbiters[i][0] for i in range(Norbiters) ] 
+    all_bodies_in_gravity_code = Particles(0)
+        
+    for i in range(Norbiters):
+        all_bodies_in_gravity_code.add_particles(orbiter_bodies_list[i])
+    
     if code_name != 'nemesis':
         
         gravity = bridge.Bridge(use_threading=False)
         
-        if orbiter_name != 'BinaryCluster':
-            
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                         rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
-            
-            orbiter_bodies_list, orbiter_code_list = [], []
-    
-            for i in range(Norbiters):
-                orbiter_bodies_list.append(list_of_orbiters[i][0])
-                orbiter_code_list.append(list_of_orbiters[i][1])
-    
-            for i in range(Norbiters):
-                
-                gravity.add_system(orbiter_code_list[i], (galaxy_code,))
-                gravity.add_system(orbiter_code_list[i], orbiter_code_list[:i])
-                gravity.add_system(orbiter_code_list[i], orbiter_code_list[i+1:])
+        orbiter_codes_list = [ list_of_orbiters[i][1] for i in range(Norbiters) ]
 
-        '''
-        if orbiter_name == 'BinaryCluster':
+        for i in range(Norbiters):
             
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                         rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
-            
-            for i in range(Norbiters):
-                
-                orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
-                
-                gravity.add_system(orbiter_code_one, (orbiter_code_two, galaxy_code))
-                gravity.add_system(orbiter_code_two, (orbiter_code_one, galaxy_code))
-        '''
+            gravity.add_system(orbiter_codes_list[i], (galaxy_code,))
+            gravity.add_system(orbiter_codes_list[i], orbiter_code_list[:i])
+            gravity.add_system(orbiter_codes_list[i], orbiter_code_list[i+1:])
             
     if code_name == 'nemesis':
         
         #don't use orbiter_code_list
-        if orbiter_name != 'BinaryCluster':
-            
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                         rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
-            
-            orbiter_bodies_list, orbiter_code_list = [], []
-    
-            for i in range(Norbiters):
-                orbiter_bodies_list.append(list_of_orbiters[i][0])
-                orbiter_code_list.append(list_of_orbiters[i][1])
-
-        '''
-        if orbiter_name == 'BinaryCluster':
-            
-            list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                         rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
-            
-            orbiter_bodies, orbiter_code_one, orbiter_code_two = list_of_orbiters[0]
-        '''
-        
-        parts = HierarchicalParticles(bodies)
+        nemesis_parts = HierarchicalParticles(all_bodies_in_gravity_code)
         
         '''
         need add_subsystem and assign_subsystem in HierarchicalParticles I think
@@ -236,7 +172,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         nemesis.radius = radius
         
         nemesis.commit_parameters()
-        nemesis.particles.add_particles(parts)
+        nemesis.particles.add_particles(nemesis_parts)
         nemesis.commit_particles()
 
         print('nemesis.particles.compound_particles: ', nemesis.particles.compound_particles)        
@@ -246,12 +182,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         gravity.add_system(nemesis, (galaxy_code,))
         gravity.timestep = dt_bridge
     
-    all_bodies = Particles(0)
-        
-    for i in range(Norbiters):
-        all_bodies.add_particles(orbiter_bodies_list[i])
-    
-    return all_bodies, gravity
+    return all_bodies_in_gravity_code, orbiter_bodies_list, gravity
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
                rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):
@@ -261,11 +192,19 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     galaxy_code = to_amuse(potential, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None)
     
-    all_bodies, gravity = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
-                                         galaxy_code, sepBinary, rvals, phivals, zvals,
-                                         vrvals, vphivals, vzvals, masses)
+    #first thing is all particles in one superset, gravity is the code,
+    #third thing is the list of orbiter bodies s.t. we can compute COMs independently
+    #and plot them with different colors
     
-    channel = all_bodies.new_channel_to(gravity.particles)
+    simulation_bodies, gravity, orbiter_bodies_list = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
+                                                                         galaxy_code, sepBinary, rvals, phivals, zvals,
+                                                                         vrvals, vphivals, vzvals, masses)
+    
+    
+    orbiter_colors = [ [np.random.random(3,)]*len(orbiter_bodies) for orbiter_bodies in orbiter_bodies_list]
+    orbiter_colors = [ j for i in orbiter_colors for j in i ] #concatenate the list above
+    
+    channel = simulation_bodies.new_channel_to(gravity.particles)
     channel.copy_attributes(['x','y','z','vx','vy','vz'])
     
     Ntotal = len(all_bodies)
@@ -281,9 +220,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     phase_space_data = np.zeros((len(sim_times), 6, len(all_bodies)))
     
     for j, t in enumerate(sim_times):
-
-        clock_times.append(time.time()-t0) #will be in seconds
         
+        clock_times.append(time.time()-t0) #will be in seconds
         
         energy = gravity.kinetic_energy.value_in(units.J) + gravity.potential_energy.value_in(units.J)
         energies.append(energy)
@@ -320,6 +258,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     np.save('time_data_%s_%s.npy'%(code_name, orbiter_name), sim_times_unitless)
     np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
+    np.savetxt(code_name + '_' + orbiter_name + '_colors.txt', orbiter_colors)
     np.savetxt(code_name + '_' + orbiter_name + '_energies.txt', energies)
     np.savetxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt', median_radial_coords)
     np.savetxt(code_name + '_' + orbiter_name + '_median_speeds.txt', median_speeds)
@@ -480,7 +419,7 @@ if __name__ in '__main__':
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     
-    Norbiters = 10
+    Norbiters = 1
     
     rvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_rvals.txt')
     phivals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_phivals.txt')
@@ -497,7 +436,7 @@ if __name__ in '__main__':
     zvals = zvals[:Norbiters]  
     masses = masses[:Norbiters]
 
-    orbiter_names = [ 'SingleStar', 'SingleCluster' ] #, 'BinaryCluster' ]
+    orbiter_names = [ 'SingleStar', 'SingleCluster' ]
     code_names = ['tree', 'Nbody' ]#, 'nemesis'
     
     t0 = time.time()

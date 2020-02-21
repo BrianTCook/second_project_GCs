@@ -149,7 +149,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         channel = stars.new_channel_to(orbiter_code.particles)
         channel.copy_attributes(['x','y','z','vx','vy','vz'])
 
-    cluster_colors = [ j for i in cluster_colors for j in i ]
+    cluster_colors = [ j for i in cluster_colors for j in i ] #concatenate the list
 
     if code_name != 'nemesis':
         
@@ -163,8 +163,6 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
 
             #bridges each cluster with the bulge, not the other way around though
             gravity.add_system(cluster_code, other_things)    
-            
-        return gravity.particles, gravity, orbiter_bodies_list
             
     if code_name == 'nemesis':
         
@@ -203,7 +201,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         gravity.add_system(nemesis, (galaxy_code,))
         gravity.timestep = dt_bridge
     
-        return all_bodies, gravity, orbiter_bodies_list, cluster_colors
+    return gravity.particles, gravity, orbiter_bodies_list, cluster_colors
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
                rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):
@@ -217,13 +215,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #third thing is the list of orbiter bodies s.t. we can compute COMs independently
     #and plot them with different colors
     
-    simulation_bodies, gravity, orbiter_bodies_list, cluster_colors = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
-                                                                                         galaxy_code, sepBinary, rvals, phivals, zvals,
-                                                                                         vrvals, vphivals, vzvals, masses)
-                    
-    
-    orbiter_colors = [ [np.random.random(3,)]*len(orbiter_bodies) for orbiter_bodies in orbiter_bodies_list]
-    orbiter_colors = [ j for i in orbiter_colors for j in i ] #concatenate the list above
+    simulation_bodies, gravity, orbiter_bodies_list, cluster_colors = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, masses)
     
     Ntotal = len(gravity.particles)
     

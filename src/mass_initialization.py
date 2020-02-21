@@ -10,6 +10,9 @@ from amuse.lab import *
 from amuse.ic.salpeter import new_salpeter_mass_distribution
 
 import numpy as np
+import time
+
+t0 = time.time()
 
 masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
 
@@ -38,4 +41,8 @@ for Mcluster in masses:
             
     star_masses.append(mZams)
     
+    if len(star_masses)%10 == 0:
+        print('number of masses computed: %i'%(len(star_masses)))
+        print('time: %.04f minutes'%((time.time()-t0)/60.))        
+        
 np.savetxt('/home/brian/Desktop/second_project_gcs_data/star_masses.txt', star_masses)

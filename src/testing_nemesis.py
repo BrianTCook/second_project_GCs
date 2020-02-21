@@ -481,7 +481,7 @@ if __name__ in '__main__':
     vzvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/bovy_vzvals.txt')
     
     masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
-    star_masses = np.loadtxt('/home/brian/Desktop/second_project_gcs_data/star_masses.txt')
+    star_masses = np.load('/home/brian/Desktop/second_project_gcs_data/star_masses.npy')
     
     rvals = rvals[:Norbiters]
     phivals = phivals[:Norbiters]

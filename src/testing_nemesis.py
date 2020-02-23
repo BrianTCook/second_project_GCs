@@ -457,6 +457,9 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 
                 for xvals, yvals in zip(xvals_list, yvals_list):
                     
+                    print(np.median(xvals))
+                    print(np.median(yvals))
+                    
                     axs[i].plot(xvals, yvals)
                  
             except:
@@ -518,10 +521,6 @@ if __name__ in '__main__':
             print('\\\\\\\\\\\\\\\\\\\\\\\\')
             print(orbiter_name, code_name)
             print('\\\\\\\\\\\\\\\\\\\\\\\\')
-            
-            if code_name == 'Nbody' and orbiter_name == 'SingleCluster': #takes too long
-                
-                continue
             
             simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
                        sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 

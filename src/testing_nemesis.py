@@ -237,6 +237,11 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     xCOM_vals, yCOM_vals = [ [] for i in range(len(masses)) ], [ [] for i in range(len(masses)) ]
     
+    if orbiter_name == 'SingleStar':
+            cluster_populations = [1 for i in range(Norbiters) ]
+    if orbiter_name == 'SingleCluster':
+            cluster_populations = [ len(mass) for mass in masses ]
+    
     cluster_pop_flag = 0
     
     for j, t in enumerate(sim_times):
@@ -517,11 +522,6 @@ if __name__ in '__main__':
     t0 = time.time()
     
     for orbiter_name in orbiter_names:
-            
-        try:
-            cluster_populations = [ len(mass) for mass in masses ]
-        except:
-            cluster_populations = [1]*Norbiters 
         
         for code_name in code_names:
             

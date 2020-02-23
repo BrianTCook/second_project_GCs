@@ -469,8 +469,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            xvals_list = np.load_numpy(code_name + '_' + orbiter_name + '_x_com.npy')
-            yvals_list = np.load_numpy(code_name + '_' + orbiter_name + '_y_com.npy')
+            xvals_list = np.load(code_name + '_' + orbiter_name + '_x_com.npy')
+            yvals_list = np.load(code_name + '_' + orbiter_name + '_y_com.npy')
             
             print('gets to xvals_list')
             

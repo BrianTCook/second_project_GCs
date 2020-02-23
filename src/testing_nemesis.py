@@ -240,7 +240,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     if orbiter_name == 'SingleStar':
             cluster_populations = [1 for i in range(Norbiters) ]
     if orbiter_name == 'SingleCluster':
-            cluster_populations = [ len(mass) for mass in masses ]
+            cluster_populations = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/Nstars_in_clusters.txt')
     
     cluster_pop_flag = 0
     
@@ -507,14 +507,6 @@ if __name__ in '__main__':
     vzvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/bovy_vzvals.txt')
     
     masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
-    
-    print('len(masses) is', len(masses))
-    print('masses[0] is', masses[0])
-    print('len(masses[0]) is', len(masses[0]))
-    print('median of masses[0] is', np.median(masses[0]))
-    
-    np.load_numpy = lambda *a, **k: np.load(*a, allow_pickle=True, **k)
-    star_masses = np.load_numpy('/home/brian/Desktop/second_project_gcs/data/star_masses.npy')
     
     rvals = rvals[:Norbiters]
     phivals = phivals[:Norbiters]

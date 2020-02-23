@@ -47,5 +47,9 @@ while j <= Nclusters:
     star_masses = mZams.value_in(units.MSun)
     np.savetxt('star_masses_index=%i.txt'%j, star_masses)
         
+    if j%10 == 0:
+        print('j is', j)
+        print('time is %.04 minutes'%((time.time()-t0)/60.))
+    
     if j >= Nclusters:
         break

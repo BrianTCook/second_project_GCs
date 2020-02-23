@@ -237,6 +237,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     xCOM_vals, yCOM_vals = [ []*len(masses) ], [ []*len(masses) ]
     
+    print('len(xCom_vals) is', len(xCOM_vals))
+    
     for j, t in enumerate(sim_times):
         
         clock_times.append(time.time()-t0) #will be in seconds
@@ -253,6 +255,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         vz = [ vzz.value_in(units.kms) for vzz in gravity.particles.vz ]
         
         for k, number_of_stars in enumerate(cluster_populations):
+            
+            print('k is', k)
             
             starting_index = int(np.sum( cluster_populations[:k] ))
             ending_index = starting_index + int(number_of_stars)

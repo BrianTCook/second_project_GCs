@@ -345,13 +345,16 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         for code_name in code_names:
 
             try:
+                
                 energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
                 
                 e0 = energies[0]
                 print('e0 is: %.04e joules'%e0)
                 scaled_energies = [ e/e0 - 1. for e in energies ]                
                 axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
+                
             except:
+                
                 print('%s, %s could not be found'%(orbiter_name, code_name))
             
         axs[i].legend(loc='upper right')

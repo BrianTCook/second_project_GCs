@@ -508,6 +508,7 @@ if __name__ in '__main__':
     
     masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
     
+    print('len(masses) is', len(masses))
     print('masses[0] is', masses[0])
     print('len(masses[0]) is', len(masses[0]))
     print('median of masses[0] is', np.median(masses[0]))

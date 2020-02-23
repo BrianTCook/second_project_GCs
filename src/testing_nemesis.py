@@ -508,7 +508,13 @@ if __name__ in '__main__':
     
     for orbiter_name in orbiter_names:
             
-        cluster_populations = [1]*Norbiters if orbiter_name == 'SingleStar' else [ len(mass) for mass in masses ]
+        if orbiter_name == 'SingleStar':
+        
+            cluster_populations = [1]*Norbiters 
+            
+        if orbiter_name == 'SingleCluster': 
+        
+            cluster_populations = [ len(mass) for mass in masses ]
         
         for code_name in code_names:
             

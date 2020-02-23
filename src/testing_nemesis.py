@@ -254,8 +254,10 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         for k, number_of_stars in enumerate(cluster_populations):
             
-            starting_index = np.sum( cluster_populations[:k] )
-            ending_index = starting_index + number_of_stars
+            starting_index = int(np.sum( cluster_populations[:k] ))
+            ending_index = starting_index + int(number_of_stars)
+            
+            print(starting_index, ending_index)
         
             x_COM = np.sum( [ star_masses[i]*x[i]/total_mass for i in range(starting_index, ending_index) ] ) #in kpc
             y_COM = np.sum( [ star_masses[i]*y[i]/total_mass for i in range(ending_index, ending_index) ] ) #in kpc

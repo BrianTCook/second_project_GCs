@@ -237,6 +237,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     xCOM_vals, yCOM_vals = [ [] for i in range(len(masses)) ], [ [] for i in range(len(masses)) ]
     
+    cluster_pop_flag = 0
+    
     for j, t in enumerate(sim_times):
         
         clock_times.append(time.time()-t0) #will be in seconds
@@ -256,12 +258,17 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             
             starting_index = int(np.sum( cluster_populations[:k] ))
             ending_index = starting_index + int(number_of_stars)
+            
+            if cluster_pop_flag == 0:
+                print('starting, ending indices are', starting_index, ending_index)
         
             x_COM = np.sum( [ star_masses[i]*x[i]/total_mass for i in range(starting_index, ending_index) ] ) #in kpc
             y_COM = np.sum( [ star_masses[i]*y[i]/total_mass for i in range(ending_index, ending_index) ] ) #in kpc
         
             xCOM_vals[k].append(x_COM)
             yCOM_vals[k].append(y_COM)
+            
+        cluster_pop_flag = 1
         
         for l, star in enumerate(gravity.particles):
             

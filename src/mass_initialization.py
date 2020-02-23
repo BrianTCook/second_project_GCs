@@ -21,6 +21,8 @@ print('number of masses to figure out: %i'%(len(masses)))
 Nclusters = 200
 star_masses = [ [] for i in range(Nclusters) ]
 
+cluster_populations = [] 
+
 j = 0 #counter
 
 while j <= Nclusters:
@@ -46,6 +48,8 @@ while j <= Nclusters:
             
     star_masses = mZams.value_in(units.MSun)
     np.savetxt('star_masses_index=%i.txt'%j, star_masses)
+    
+    cluster_populations.append(len(star_masses))
         
     if j%10 == 0:
         print('j is', j)
@@ -55,3 +59,5 @@ while j <= Nclusters:
         break
     
     j += 1
+
+np.savetxt('Nstars_in_clusters.txt', cluster_populations)

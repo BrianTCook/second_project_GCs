@@ -243,6 +243,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             cluster_populations = [1 for i in range(Norbiters) ]
     if orbiter_name == 'SingleCluster':
             cluster_populations = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/Nstars_in_clusters.txt')
+            cluster_populations = cluster_populations[:Norbiters]
     
     cluster_pop_flag = 0
     

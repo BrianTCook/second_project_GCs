@@ -455,12 +455,9 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 xvals_list = np.load(code_name + '_' + orbiter_name + '_x_com.npy')
                 yvals_list = np.load(code_name + '_' + orbiter_name + '_y_com.npy')
                 
-                print('xvals_list is', xvals_list)
-                
                 for j, xvals, yvals in enumerate(zip(xvals_list, yvals_list)):
                     
-                    label_name = code_name + ', %i'%j
-                    axs[i].plot(xvals, yvals, label=label_name)
+                    axs[i].plot(xvals, yvals)
                  
             except:
                 print('%s, %s could not be found'%(orbiter_name, code_name))

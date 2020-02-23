@@ -328,17 +328,13 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         axs[i].set_title(orbiter_name, fontsize=8)
         
         for code_name in code_names:
+
+            energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
             
-            try:
-                energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
-                
-                e0 = energies[0]
-                print('e0 is: %.04e joules'%e0)
-                scaled_energies = [ e/e0 - 1. for e in energies ]                
-                axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
-                    
-            except:
-                print('oh no!')
+            e0 = energies[0]
+            print('e0 is: %.04e joules'%e0)
+            scaled_energies = [ e/e0 - 1. for e in energies ]                
+            axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
             
         axs[i].legend(loc='upper right')
    
@@ -364,11 +360,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            try:
-                median_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt')
-                axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
-            except:
-                print('oh no!')
+            median_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt')
+            axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
             
         axs[i].legend(loc='upper right')
             
@@ -394,11 +387,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            try:
-                median_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_median_speeds.txt')
-                axs[i].plot(sim_times_unitless, median_speeds, label=code_name)                    
-            except:
-                print('oh no!')
+            median_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_median_speeds.txt')
+            axs[i].plot(sim_times_unitless, median_speeds, label=code_name)                    
             
         axs[i].legend(loc='upper right')
        
@@ -424,12 +414,9 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            try:
-                clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
-                axs[i].semilogy(sim_times_unitless, clock_times, label=code_name)
-                axs[i].set_ylim(1e-1, 5e3) #1/10th of a second to ~1.5 hours
-            except:
-                print('oh no!')
+            clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
+            axs[i].semilogy(sim_times_unitless, clock_times, label=code_name)
+            axs[i].set_ylim(1e-1, 5e3) #1/10th of a second to ~1.5 hours
             
         axs[i].legend(loc='upper right')
        
@@ -448,20 +435,17 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         axs[i].set_title(orbiter_name, fontsize=8)
         
         for code_name in code_names:
-            
-            try:
                 
-                xvals_list = np.load(code_name + '_' + orbiter_name + '_x_com.npy')
-                yvals_list = np.load(code_name + '_' + orbiter_name + '_y_com.npy')
-                
-                for j, xvals, yvals in enumerate(zip(xvals_list, yvals_list)):
-                    
-                    label_name = code_name + ', %i'%j
-                    axs[i].plot(xvals_, yvals, label=label_name)
-                    
-            except:
-                print('oh no!')
+            xvals_list = np.load(code_name + '_' + orbiter_name + '_x_com.npy')
+            yvals_list = np.load(code_name + '_' + orbiter_name + '_y_com.npy')
             
+            print('xvals_list is', xvals_list)
+            
+            for j, xvals, yvals in enumerate(zip(xvals_list, yvals_list)):
+                
+                label_name = code_name + ', %i'%j
+                axs[i].plot(xvals_, yvals, label=label_name)
+                
         axs[i].legend(loc='upper right')
        
     plt.tight_layout() 
@@ -481,7 +465,7 @@ if __name__ in '__main__':
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     
-    Norbiters = 10
+    Norbiters = 2
     
     rvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_rvals.txt')
     phivals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_phivals.txt')

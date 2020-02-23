@@ -17,9 +17,11 @@ t0 = time.time()
 masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
 print('number of masses to figure out: %i'%(len(masses)))
 
-star_masses = []
 
-for Mcluster in masses:
+Nclusters = 200
+star_masses = [ [] for i in range(Nclusters) ]
+
+for i, Mcluster in enumerate(masses):
     
     Mcluster = Mcluster|units.MSun
 
@@ -40,11 +42,7 @@ for Mcluster in masses:
         if np.abs(mass_difference_ratio) <= 0.01:            
             mZams_flag = 1
             
-    star_masses.append([ m for m in mZams.value_in(units.MSun) ])
+    star_masses[i] = [ m for m in mZams.value_in(units.MSun) ]
     
-    i = len(star_masses)
-    
-    if i%10 == 0:
-        print('number of masses computed: %i'%(len(star_masses)))
-        print('time: %.04f minutes'%((time.time()-t0)/60.))  
-        np.save('star_masses.npy', star_masses, allow_pickle=True)
+    if i >= Nclusters:
+        break

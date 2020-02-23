@@ -36,8 +36,10 @@ from nemesis_supplement import getxv, parent_worker, sub_worker, py_worker, smal
 os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
 def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, 
-            rvals, phivals, zvals, masses, star_masses, index):
+            rvals, phivals, zvals, masses, index):
 
+    star_masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/star_masses_index=%i.txt'%index)
+    
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     
@@ -115,12 +117,12 @@ def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
     if orbiter_name == 'SingleCluster':
         
         bodies, code, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, 
-                                       masses, star_masses, index, code_name)
+                                       masses, index, code_name)
         
         return bodies, code
 
 def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
-                       rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, star_masses):
+                       rvals, phivals, zvals, vrvals, vphivals, vzvals, masses):
     
     '''
     will need to ask SPZ if he meant for field, orbiter to be separate in non
@@ -133,7 +135,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     
     list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                     rvals, phivals, zvals, masses, star_masses, i) for i in range(Norbiters) ]
+                                     rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
     
     orbiter_bodies_list = [ list_of_orbiters[i][0] for i in range(Norbiters) ] 
     orbiter_codes_list = [ list_of_orbiters[i][1] for i in range(Norbiters) ]
@@ -205,7 +207,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     return gravity.particles, gravity, orbiter_bodies_list, cluster_colors
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
-               rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, star_masses, tend, dt):
+               rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
@@ -218,7 +220,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     simulation_bodies, gravity, orbiter_bodies_list, cluster_colors = gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, 
                                                                                          galaxy_code, sepBinary, rvals, phivals, zvals, 
-                                                                                         vrvals, vphivals, vzvals, masses, star_masses)
+                                                                                         vrvals, vphivals, vzvals, masses)
     
     Ntotal = len(gravity.particles)
     
@@ -232,8 +234,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #create an R^3 matrix to house phase space data for all particles
     phase_space_data = np.zeros((len(sim_times), 6, len(simulation_bodies)))
     
-    star_masses = gravity.particles.mass
-    total_mass = star_masses.sum()
+    body_masses = gravity.particles.mass
+    total_mass = body_masses.sum()
     
     xCOM_vals, yCOM_vals = [ [] for i in range(len(masses)) ], [ [] for i in range(len(masses)) ]
     
@@ -267,8 +269,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             if cluster_pop_flag == 0:
                 print('starting, ending indices are', starting_index, ending_index)
         
-            x_COM = np.sum( [ star_masses[i]*x[i]/total_mass for i in range(starting_index, ending_index) ] ) #in kpc
-            y_COM = np.sum( [ star_masses[i]*y[i]/total_mass for i in range(ending_index, ending_index) ] ) #in kpc
+            x_COM = np.sum( [ body_masses[i]*x[i]/total_mass for i in range(starting_index, ending_index) ] ) #in kpc
+            y_COM = np.sum( [ body_masses[i]*y[i]/total_mass for i in range(ending_index, ending_index) ] ) #in kpc
         
             xCOM_vals[k].append(x_COM)
             yCOM_vals[k].append(y_COM)
@@ -528,7 +530,7 @@ if __name__ in '__main__':
             
             simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
                        sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
-                       masses, star_masses, tend, dt)
+                       masses, tend, dt)
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             

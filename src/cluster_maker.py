@@ -108,7 +108,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     
     return bodies, code
 
-def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, star_masses, index, code_name):
+def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, code_name):
     
     '''
     takes 3 random numbers and generates open cluster
@@ -120,7 +120,7 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, star_m
     vr_init, vphi_init, vz_init = vrvals[index], vphivals[index], vzvals[index]
     
     star_masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/star_masses_index=%i.txt'%index)
-    Mcluster = np.sum( star_masses.value_in(units.MSun ))
+    Mcluster = np.sum( star_masses.value_in(units.MSun ) )
     
     star_masses, Mcluster = star_masses|units.MSun, Mcluster|units.MSun
     

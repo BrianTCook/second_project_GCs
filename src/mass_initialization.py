@@ -44,5 +44,10 @@ for i, Mcluster in enumerate(masses):
             
     star_masses[i] = [ m for m in mZams.value_in(units.MSun) ]
     
+    if i%10 == 0:
+        print('number of masses computed: %i'%(len(star_masses)))
+        print('time: %.04f minutes'%((time.time()-t0)/60.))  
+        np.save('star_masses.npy', star_masses, allow_pickle=True)
+        
     if i >= Nclusters:
         break

@@ -485,13 +485,13 @@ if __name__ in '__main__':
     potential = MWPotential2014 #galpy
     
     sepBinary = 20.|units.parsec #not necessary if not doing binary cluster part
-    tend, dt = 100.|units.Myr, 1.|units.Myr
+    tend, dt = 40.|units.Myr, 1.|units.Myr
     dt_param = 0.1 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     
-    Norbiters = 1
+    Norbiters = 2
     
     rvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_rvals.txt')
     phivals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_phivals.txt')

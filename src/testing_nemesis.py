@@ -494,7 +494,6 @@ if __name__ in '__main__':
     phivals = phivals[:Norbiters]
     zvals = zvals[:Norbiters]  
     masses = masses[:Norbiters]
-    cluster_populations = [ len(mass) for mass in masses ]
 
     orbiter_names = [ 'SingleStar' ] #, 'SingleCluster' ]
     code_names = ['tree', 'Nbody' ]#, 'nemesis'
@@ -502,6 +501,9 @@ if __name__ in '__main__':
     t0 = time.time()
     
     for orbiter_name in orbiter_names:
+            
+        cluster_populations = [1]*Norbiters if orbiter_name == 'SingleStar' else [ len(mass) for mass in masses ]
+        
         for code_name in code_names:
             
             print('\\\\\\\\\\\\\\\\\\\\\\\\')

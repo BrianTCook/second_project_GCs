@@ -237,8 +237,6 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     xCOM_vals, yCOM_vals = [ [] for i in range(len(masses)) ], [ [] for i in range(len(masses)) ]
     
-    print('len(xCom_vals) is', len(xCOM_vals))
-    
     for j, t in enumerate(sim_times):
         
         clock_times.append(time.time()-t0) #will be in seconds
@@ -503,7 +501,7 @@ if __name__ in '__main__':
     zvals = zvals[:Norbiters]  
     masses = masses[:Norbiters]
 
-    orbiter_names = [ 'SingleStar' ] #, 'SingleCluster' ]
+    orbiter_names = [ 'SingleStar', 'SingleCluster' ]
     code_names = ['tree', 'Nbody' ]#, 'nemesis'
     
     t0 = time.time()

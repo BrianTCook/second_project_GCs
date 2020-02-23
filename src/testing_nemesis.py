@@ -285,6 +285,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     except:
         'gravity cannot be stopped!'
     
+    print('gets to saving stuff')
     np.save('time_data_%s_%s.npy'%(code_name, orbiter_name), sim_times_unitless)
     np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
     np.savetxt(code_name + '_' + orbiter_name + '_colors.txt', cluster_colors)

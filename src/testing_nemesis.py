@@ -284,8 +284,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         gravity.stop()
     except:
         'gravity cannot be stopped!'
-    
-    print('gets to saving stuff')
+
     np.save('time_data_%s_%s.npy'%(code_name, orbiter_name), sim_times_unitless)
     np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
     np.savetxt(code_name + '_' + orbiter_name + '_colors.txt', cluster_colors)
@@ -330,12 +329,15 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
 
-            energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
-            
-            e0 = energies[0]
-            print('e0 is: %.04e joules'%e0)
-            scaled_energies = [ e/e0 - 1. for e in energies ]                
-            axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
+            try:
+                energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
+                
+                e0 = energies[0]
+                print('e0 is: %.04e joules'%e0)
+                scaled_energies = [ e/e0 - 1. for e in energies ]                
+                axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
+            except:
+                print('%s, %s could not be found'%(orbiter_name, code_name))
             
         axs[i].legend(loc='upper right')
    
@@ -361,8 +363,12 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            median_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt')
-            axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
+            try:
+                median_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt')
+                axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
+                
+            except:
+                print('%s, %s could not be found'%(orbiter_name, code_name))
             
         axs[i].legend(loc='upper right')
             
@@ -388,8 +394,12 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            median_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_median_speeds.txt')
-            axs[i].plot(sim_times_unitless, median_speeds, label=code_name)                    
+            try:
+                median_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_median_speeds.txt')
+                axs[i].plot(sim_times_unitless, median_speeds, label=code_name)                    
+            
+            except:
+                print('%s, %s could not be found'%(orbiter_name, code_name))
             
         axs[i].legend(loc='upper right')
        
@@ -415,9 +425,13 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
-            axs[i].semilogy(sim_times_unitless, clock_times, label=code_name)
-            axs[i].set_ylim(1e-1, 5e3) #1/10th of a second to ~1.5 hours
+            try:
+                clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
+                axs[i].semilogy(sim_times_unitless, clock_times, label=code_name)
+                axs[i].set_ylim(1e-1, 5e3) #1/10th of a second to ~1.5 hours
+                
+            except:
+                print('%s, %s could not be found'%(orbiter_name, code_name))
             
         axs[i].legend(loc='upper right')
        
@@ -436,17 +450,21 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         axs[i].set_title(orbiter_name, fontsize=8)
         
         for code_name in code_names:
+              
+            try:
+                xvals_list = np.load(code_name + '_' + orbiter_name + '_x_com.npy')
+                yvals_list = np.load(code_name + '_' + orbiter_name + '_y_com.npy')
                 
-            xvals_list = np.load(code_name + '_' + orbiter_name + '_x_com.npy')
-            yvals_list = np.load(code_name + '_' + orbiter_name + '_y_com.npy')
-            
-            print('xvals_list is', xvals_list)
-            
-            for j, xvals, yvals in enumerate(zip(xvals_list, yvals_list)):
+                print('xvals_list is', xvals_list)
                 
-                label_name = code_name + ', %i'%j
-                axs[i].plot(xvals_, yvals, label=label_name)
-                
+                for j, xvals, yvals in enumerate(zip(xvals_list, yvals_list)):
+                    
+                    label_name = code_name + ', %i'%j
+                    axs[i].plot(xvals_, yvals, label=label_name)
+                 
+            except:
+                print('%s, %s could not be found'%(orbiter_name, code_name))
+                    
         axs[i].legend(loc='upper right')
        
     plt.tight_layout() 

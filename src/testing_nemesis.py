@@ -452,8 +452,8 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         for code_name in code_names:
               
             try:
-                xvals_list = np.load(code_name + '_' + orbiter_name + '_x_com.npy')
-                yvals_list = np.load(code_name + '_' + orbiter_name + '_y_com.npy')
+                xvals_list = np.load_numpy(code_name + '_' + orbiter_name + '_x_com.npy')
+                yvals_list = np.load_numpy(code_name + '_' + orbiter_name + '_y_com.npy')
                 
                 for xvals, yvals in zip(xvals_list, yvals_list):
                     
@@ -496,8 +496,8 @@ if __name__ in '__main__':
     
     masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
     
-    np.load_star_masses = lambda *a, **k: np.load(*a, allow_pickle=True, **k)
-    star_masses = np.load_star_masses('/home/brian/Desktop/second_project_gcs/data/star_masses.npy')
+    np.load_numpy = lambda *a, **k: np.load(*a, allow_pickle=True, **k)
+    star_masses = np.load_numpy('/home/brian/Desktop/second_project_gcs/data/star_masses.npy')
     
     rvals = rvals[:Norbiters]
     phivals = phivals[:Norbiters]

@@ -235,7 +235,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     star_masses = gravity.particles.mass
     total_mass = star_masses.sum()
     
-    xCOM_vals, yCOM_vals = [], []
+    xCOM_vals, yCOM_vals = [ []*Norbiters ]
     
     for j, t in enumerate(sim_times):
         
@@ -252,20 +252,25 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         vy = [ vyy.value_in(units.kms) for vyy in gravity.particles.vy ]
         vz = [ vzz.value_in(units.kms) for vzz in gravity.particles.vz ]
         
-        x_COM = np.sum( [ star_masses[i]*x[i]/total_mass for i in range(Ntotal) ] ) #in kpc
-        y_COM = np.sum( [ star_masses[i]*y[i]/total_mass for i in range(Ntotal) ] ) #in kpc
-        
-        xCOM_vals.append(x_COM)
-        yCOM_vals.append(y_COM)
-        
-        for k, star in enumerate(gravity.particles):
+        for k, number_of_stars in enumerate(cluster_populations):
             
-            phase_space_data[j,0,k] = x[k]
-            phase_space_data[j,1,k] = y[k]
-            phase_space_data[j,2,k] = z[k]
-            phase_space_data[j,3,k] = vx[k]
-            phase_space_data[j,4,k] = vy[k]
-            phase_space_data[j,5,k] = vz[k]
+            starting_index = np.sum( cluster_populations[:, k] )
+            ending_index = starting_index + number_of_stars
+        
+            x_COM = np.sum( [ star_masses[i]*x[i]/total_mass for i in range(starting_index, ending_index) ] ) #in kpc
+            y_COM = np.sum( [ star_masses[i]*y[i]/total_mass for i in range(ending_index, ending_index) ] ) #in kpc
+        
+            xCOM_vals[k].append(x_COM)
+            yCOM_vals[k].append(y_COM)
+        
+        for l, star in enumerate(gravity.particles):
+            
+            phase_space_data[j,0,l] = x[l]
+            phase_space_data[j,1,l] = y[l]
+            phase_space_data[j,2,l] = z[l]
+            phase_space_data[j,3,l] = vx[l]
+            phase_space_data[j,4,l] = vy[l]
+            phase_space_data[j,5,l] = vz[l]
         
         rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for i in range(Ntotal) ]
         median_radial_coords.append(np.median(rvals))
@@ -287,8 +292,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     np.savetxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt', median_radial_coords)
     np.savetxt(code_name + '_' + orbiter_name + '_median_speeds.txt', median_speeds)
     np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
-    np.savetxt(code_name + '_' + orbiter_name + '_x_com.txt', xCOM_vals)
-    np.savetxt(code_name + '_' + orbiter_name + '_y_com.txt', yCOM_vals)
+    np.savetxt(code_name + '_' + orbiter_name + '_x_com.npy', xCOM_vals)
+    np.savetxt(code_name + '_' + orbiter_name + '_y_com.npy', yCOM_vals)
     
     return 0
 
@@ -489,8 +494,9 @@ if __name__ in '__main__':
     phivals = phivals[:Norbiters]
     zvals = zvals[:Norbiters]  
     masses = masses[:Norbiters]
+    cluster_populations = [ len(mass) for mass in masses ]
 
-    orbiter_names = [ 'SingleStar', 'SingleCluster' ]
+    orbiter_names = [ 'SingleStar' ] #, 'SingleCluster' ]
     code_names = ['tree', 'Nbody' ]#, 'nemesis'
     
     t0 = time.time()

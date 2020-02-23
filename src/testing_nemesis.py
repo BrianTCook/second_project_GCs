@@ -455,7 +455,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 xvals_list = np.load(code_name + '_' + orbiter_name + '_x_com.npy')
                 yvals_list = np.load(code_name + '_' + orbiter_name + '_y_com.npy')
                 
-                for j, xvals, yvals in enumerate(zip(xvals_list, yvals_list)):
+                for xvals, yvals in zip(xvals_list, yvals_list):
                     
                     axs[i].plot(xvals, yvals)
                  

@@ -49,7 +49,9 @@ while j <= Nclusters:
         
     if j%10 == 0:
         print('j is', j)
-        print('time is %.04 minutes'%((time.time()-t0)/60.))
+        print('time is %.04f minutes'%((time.time()-t0)/60.))
     
     if j >= Nclusters:
         break
+    
+    j += 1

@@ -292,8 +292,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     np.savetxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt', median_radial_coords)
     np.savetxt(code_name + '_' + orbiter_name + '_median_speeds.txt', median_speeds)
     np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
-    np.savetxt(code_name + '_' + orbiter_name + '_x_com.npy', xCOM_vals)
-    np.savetxt(code_name + '_' + orbiter_name + '_y_com.npy', yCOM_vals)
+    np.save(code_name + '_' + orbiter_name + '_x_com.npy', xCOM_vals)
+    np.save(code_name + '_' + orbiter_name + '_y_com.npy', yCOM_vals)
     
     return 0
 

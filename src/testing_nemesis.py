@@ -465,20 +465,18 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         axs[i].set_title(orbiter_name, fontsize=8)
         
         for code_name in code_names:
-              
-            try:
-                xvals_list = np.load_numpy(code_name + '_' + orbiter_name + '_x_com.npy')
-                yvals_list = np.load_numpy(code_name + '_' + orbiter_name + '_y_com.npy')
+            
+            xvals_list = np.load_numpy(code_name + '_' + orbiter_name + '_x_com.npy')
+            yvals_list = np.load_numpy(code_name + '_' + orbiter_name + '_y_com.npy')
+            
+            print('gets to xvals_list')
+            
+            for xvals, yvals in zip(xvals_list, yvals_list):
                 
-                for xvals, yvals in zip(xvals_list, yvals_list):
-                    
-                    print(np.median(xvals))
-                    print(np.median(yvals))
-                    
-                    axs[i].plot(xvals, yvals)
-                 
-            except:
-                print('%s, %s could not be found'%(orbiter_name, code_name))
+                print(np.median(xvals))
+                print(np.median(yvals))
+                
+                axs[i].plot(xvals, yvals)
                     
         axs[i].legend(loc='upper right')
        

@@ -45,7 +45,7 @@ while j <= Nclusters:
             mZams_flag = 1
             
     star_masses = mZams.value_in(units.MSun)
-    np.save('star_masses_index=%i.npy'%i, star_masses, allow_pickle=True)
+    np.savetxt('star_masses_index=%i.txt'%j, star_masses)
         
-    if i >= Nclusters:
+    if j >= Nclusters:
         break

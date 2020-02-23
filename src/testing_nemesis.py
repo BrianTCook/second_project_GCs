@@ -508,6 +508,8 @@ if __name__ in '__main__':
     
     masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
     
+    print('masses are', masses)
+    
     np.load_numpy = lambda *a, **k: np.load(*a, allow_pickle=True, **k)
     star_masses = np.load_numpy('/home/brian/Desktop/second_project_gcs/data/star_masses.npy')
     

@@ -235,7 +235,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     star_masses = gravity.particles.mass
     total_mass = star_masses.sum()
     
-    xCOM_vals, yCOM_vals = [ []*Norbiters ], [ []*Norbiters ]
+    xCOM_vals, yCOM_vals = [ []*len(masses) ], [ []*len(masses) ]
     
     for j, t in enumerate(sim_times):
         

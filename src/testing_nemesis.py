@@ -452,9 +452,15 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         for code_name in code_names:
             
             try:
-                xvals = np.loadtxt(code_name + '_' + orbiter_name + '_x_com.txt')
-                yvals = np.loadtxt(code_name + '_' + orbiter_name + '_y_com.txt')
-                axs[i].plot(xvals, yvals, label=code_name)
+                
+                xvals_list = np.load(code_name + '_' + orbiter_name + '_x_com.npy')
+                yvals_list = np.load(code_name + '_' + orbiter_name + '_y_com.npy')
+                
+                for j, xvals, yvals in enumerate(zip(xvals_list, yvals_list)):
+                    
+                    label_name = code_name + ', %i'%j
+                    axs[i].plot(xvals_, yvals, label=label_name)
+                    
             except:
                 print('oh no!')
             
@@ -512,16 +518,17 @@ if __name__ in '__main__':
             print(orbiter_name, code_name)
             print('\\\\\\\\\\\\\\\\\\\\\\\\')
             
+            if code_name == 'Nbody' and orbiter_name == 'SingleCluster': #takes too long
+                
+                continue
+            
             simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
                        sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
                        masses, star_masses, tend, dt)
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
-            if orbiter_name == 'SingleCluster' or orbiter_name == 'SingleStar': #should be the same for all three and captures all gravity info
-                
-                maps(orbiter_name, code_name)
-                continue
+            maps(orbiter_name, code_name)
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             

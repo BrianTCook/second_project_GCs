@@ -317,9 +317,9 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         #axs[i].set_ylim(0.8, 1.2)
         
-        if orbiter_name == 'SingleCluster':
+        #if orbiter_name == 'SingleCluster':
                 
-            axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
+        axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
         
         if orbiter_name == 'SingleStar':
         
@@ -351,9 +351,9 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        if orbiter_name == 'SingleCluster':
+        #if orbiter_name == 'SingleCluster':
                 
-            axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
+        axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
         
         if orbiter_name == 'SingleStar':
         
@@ -382,9 +382,9 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        if orbiter_name == 'SingleCluster':
+        #if orbiter_name == 'SingleCluster':
                 
-            axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
+        axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
         
         if orbiter_name == 'SingleStar':
         
@@ -413,9 +413,9 @@ def plotting_things(orbiter_names, code_names, tend, dt):
 
     for i, orbiter_name in enumerate(orbiter_names): 
         
-        if orbiter_name == 'SingleCluster':
+        #if orbiter_name == 'SingleCluster':
                 
-            axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
+        axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
             
         if orbiter_name == 'SingleStar':
             
@@ -460,7 +460,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
                 for j, xvals, yvals in enumerate(zip(xvals_list, yvals_list)):
                     
                     label_name = code_name + ', %i'%j
-                    axs[i].plot(xvals_, yvals, label=label_name)
+                    axs[i].plot(xvals, yvals, label=label_name)
                  
             except:
                 print('%s, %s could not be found'%(orbiter_name, code_name))

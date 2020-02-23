@@ -237,7 +237,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     body_masses = gravity.particles.mass
     total_mass = body_masses.sum()
     
-    xCOM_vals, yCOM_vals = [ [] for i in range(len(masses)) ], [ [] for i in range(len(masses)) ]
+    #COM data
+    COM_data = np.zeros((len(sim_times), 2, Norbiters))
     
     if orbiter_name == 'SingleStar':
             cluster_populations = [1 for i in range(Norbiters) ]
@@ -273,8 +274,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             x_COM = np.sum( [ body_masses[i]*x[i]/total_mass for i in range(starting_index, ending_index) ] ) #in kpc
             y_COM = np.sum( [ body_masses[i]*y[i]/total_mass for i in range(ending_index, ending_index) ] ) #in kpc
         
-            xCOM_vals[k].append(x_COM)
-            yCOM_vals[k].append(y_COM)
+            COM_data[j, 0, k] = x_COM
+            COM_data[j, 1, k] = y_COM
             
         cluster_pop_flag = 1
         
@@ -302,13 +303,13 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
 
     np.save('time_data_%s_%s.npy'%(code_name, orbiter_name), sim_times_unitless)
     np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
+    np.save('COM_data_%s_%s.npy'%(code_name, orbiter_name), COM_data)
+        
     np.savetxt(code_name + '_' + orbiter_name + '_colors.txt', cluster_colors)
     np.savetxt(code_name + '_' + orbiter_name + '_energies.txt', energies)
     np.savetxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt', median_radial_coords)
     np.savetxt(code_name + '_' + orbiter_name + '_median_speeds.txt', median_speeds)
     np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
-    np.save(code_name + '_' + orbiter_name + '_x_com.npy', xCOM_vals)
-    np.save(code_name + '_' + orbiter_name + '_y_com.npy', yCOM_vals)
     
     return 0
 
@@ -469,16 +470,12 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
-            xvals_list = np.load(code_name + '_' + orbiter_name + '_x_com.npy')
-            yvals_list = np.load(code_name + '_' + orbiter_name + '_y_com.npy')
+            COMs = np.load('COM_data_%s_%s.npy'%(code_name, orbiter_name))
+            Norbiters = len(COMs[0, 0, :])
             
-            print('gets to xvals_list')
-            
-            for xvals, yvals in zip(xvals_list, yvals_list):
+            for j in range(Norbiters): #Norbiters
                 
-                print(np.median(xvals))
-                print(np.median(yvals))
-                
+                xvals, yvals = COMs[:, 0, j], COMS[:, 1, j]
                 axs[i].plot(xvals, yvals)
                     
         axs[i].legend(loc='upper right')

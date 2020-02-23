@@ -21,9 +21,11 @@ print('number of masses to figure out: %i'%(len(masses)))
 Nclusters = 200
 star_masses = [ [] for i in range(Nclusters) ]
 
-for i, Mcluster in enumerate(masses):
+j = 0 #counter
+
+while j <= Nclusters:
     
-    Mcluster = Mcluster|units.MSun
+    Mcluster = masses[j]|units.MSun
 
     Nstars, Mmin_star, Mmax_star = 100, 0.1, 100.
     mZams_flag = 0
@@ -42,12 +44,8 @@ for i, Mcluster in enumerate(masses):
         if np.abs(mass_difference_ratio) <= 0.01:            
             mZams_flag = 1
             
-    star_masses[i] = [ m for m in mZams.value_in(units.MSun) ]
-    
-    if i%10 == 0:
-        print('number of masses computed: %i'%(len(star_masses)))
-        print('time: %.04f minutes'%((time.time()-t0)/60.))  
-        np.save('star_masses.npy', star_masses, allow_pickle=True)
+    star_masses = mZams.value_in(units.MSun)
+    np.save('star_masses_index=%i.npy'%i, star_masses, allow_pickle=True)
         
     if i >= Nclusters:
         break

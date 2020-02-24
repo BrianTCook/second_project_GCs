@@ -481,9 +481,9 @@ def plotting_things(orbiter_names, code_names, tend, dt):
             for j in range(Norbiters): #Norbiters
                 
                 xvals, yvals = COMs[:, 0, j], COMs[:, 1, j]
-                axs[i].plot(xvals, yvals, label='orbiter %i, %s'%(j, code_name))
+                axs[i].plot(xvals, yvals, linewidth=1) #label='orbiter %i, %s'%(j, code_name))
                     
-        axs[i].legend(loc='upper right', fontsize=8)
+        #axs[i].legend(loc='upper right', fontsize=8)
        
     plt.tight_layout() 
     plt.savefig('testing_nemesis_COMs.pdf')

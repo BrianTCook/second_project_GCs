@@ -256,10 +256,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         energies.append( energy.value_in(units.J) )
         
         x = [ xx.value_in(units.kpc) for xx in gravity.particles.x ]
-        y = [ yy.value_in(units.kpc) for yy in gravity.particles.y ]
-        
-        print('median of y is', np.median(y))
-    
+        y = [ yy.value_in(units.kpc) for yy in gravity.particles.y ]    
         z = [ zz.value_in(units.kpc) for zz in gravity.particles.z ]
         
         vx = [ vxx.value_in(units.kms) for vxx in gravity.particles.vx ]
@@ -280,7 +277,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             cluster_total_mass = cluster_masses.sum()
         
             x_COM = np.sum( [ body_masses[i]*x[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
-            y_COM = np.sum( [ body_masses[i]*y[i]/cluster_total_mass for i in range(ending_index, ending_index) ] ) #in kpc
+            y_COM = np.sum( [ body_masses[i]*y[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
         
             print('time is', t)
             print('x, y for COM are', x_COM, y_COM)

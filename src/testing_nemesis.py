@@ -257,6 +257,9 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         x = [ xx.value_in(units.kpc) for xx in gravity.particles.x ]
         y = [ yy.value_in(units.kpc) for yy in gravity.particles.y ]
+        
+        print('median of y is', np.median(y))
+    
         z = [ zz.value_in(units.kpc) for zz in gravity.particles.z ]
         
         vx = [ vxx.value_in(units.kms) for vxx in gravity.particles.vx ]

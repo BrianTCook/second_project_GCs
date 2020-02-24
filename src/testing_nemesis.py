@@ -452,7 +452,7 @@ def plotting_things(orbiter_names, code_names, tend, dt):
             try:
                 clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
                 axs[i].semilogy(sim_times_unitless, clock_times, label=code_name)
-                axs[i].set_ylim(1e-1, 5e3) #1/10th of a second to ~1.5 hours
+                axs[i].set_ylim(1e-1, 5e4) #1/10th of a second to ~15 hours
                 
             except:
                 print('%s, %s could not be found'%(orbiter_name, code_name))

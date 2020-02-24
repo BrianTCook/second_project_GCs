@@ -279,9 +279,6 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             x_COM = np.sum( [ body_masses[i]*x[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
             y_COM = np.sum( [ body_masses[i]*y[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
         
-            print('time is', t)
-            print('x, y for COM are', x_COM, y_COM)
-        
             COM_data[j, 0, k] = x_COM
             COM_data[j, 1, k] = y_COM
             

@@ -6,6 +6,8 @@ Created on Tue Feb 25 21:55:03 2020
 @author: BrianTCook
 """
 
+from cluster_maker import orbiter
+
 def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
                        rvals, phivals, zvals, vrvals, vphivals, vzvals, masses):
     

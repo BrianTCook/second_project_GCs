@@ -6,6 +6,8 @@ Created on Tue Feb 25 21:56:36 2020
 @author: BrianTCook
 """
 
+from gravity_code import gravity_code_setup
+
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
                rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):
     

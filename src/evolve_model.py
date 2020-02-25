@@ -34,20 +34,13 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
                                                                                          galaxy_code, sepBinary, rvals, phivals, zvals, 
                                                                                          vrvals, vphivals, vzvals, masses)
     
-    Ntotal, Norbiters = len(gravity.particles), len(cluster_populations)
-    
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]
     
     energies, median_radial_coords, median_speeds, clock_times = [], [], [], []
     
-    t0 = time.time()
-    
     body_masses = gravity.particles.mass
     total_mass = body_masses.sum()
-    
-    #COM data
-    COM_data = np.zeros((len(sim_times), 2, Norbiters))
     
     if orbiter_name == 'SingleStar':
             cluster_populations = [1 for i in range(Norbiters) ]
@@ -55,7 +48,14 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             cluster_populations = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/Nstars_in_clusters.txt')
             cluster_populations = cluster_populations[:Norbiters]
     
+    Ntotal, Norbiters = len(gravity.particles), len(cluster_populations)
+    
+    #COM data
+    COM_data = np.zeros((len(sim_times), 2, Norbiters))
+    
     cluster_pop_flag = 0
+    
+    t0 = time.time()
     
     for j, t in enumerate(sim_times):
         

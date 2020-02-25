@@ -6,6 +6,10 @@ Created on Tue Feb 25 21:57:22 2020
 @author: BrianTCook
 """
 
+import matplotlib
+matplotlib.use('agg')
+import matplotlib.pyplot as plt
+
 def plotting_things(orbiter_names, code_names, tend, dt):
     
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))

@@ -10,10 +10,6 @@ from amuse.lab import *
 #from amuse.ext.bridge import bridge
 from amuse.couple import bridge
 
-import matplotlib
-matplotlib.use('agg')
-import matplotlib.pyplot as plt
-
 from galpy.df import quasiisothermaldf
 from galpy.potential import MWPotential2014, to_amuse
 from galpy.util import bovy_conversion

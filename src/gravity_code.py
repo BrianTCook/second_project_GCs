@@ -6,6 +6,15 @@ Created on Tue Feb 25 21:55:03 2020
 @author: BrianTCook
 """
 
+from amuse.lab import *
+#from amuse.ext.bridge import bridge
+from amuse.couple import bridge
+
+from galpy.df import quasiisothermaldf
+from galpy.potential import MWPotential2014, to_amuse
+from galpy.util import bovy_conversion
+from galpy.actionAngle import actionAngleStaeckel
+
 from cluster_maker import orbiter
 
 def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 

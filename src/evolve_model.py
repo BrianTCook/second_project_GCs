@@ -6,6 +6,13 @@ Created on Tue Feb 25 21:56:36 2020
 @author: BrianTCook
 """
 
+from amuse.lab import *
+#from amuse.ext.bridge import bridge
+from amuse.couple import bridge
+
+from galpy.potential import MWPotential2014, to_amuse
+from galpy.util import bovy_conversion
+
 from gravity_code import gravity_code_setup
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 

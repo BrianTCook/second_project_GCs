@@ -85,37 +85,40 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         phase_space_data[j,3,l] = vx[l]
         phase_space_data[j,4,l] = vy[l]
         phase_space_data[j,5,l] = vz[l]
-        
-        '''
+
+
+        ##NEEDS TO BE ADJUSTED FOR WRITE_SET_TO_FILE##
         
         rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for i in range(Ntotal) ]
         median_radial_coords.append(np.median(rvals))
         
         speeds = [ np.sqrt(vx[i]**2 + vy[i]**2 + vz[i]**2) for i in range(Ntotal) ]
         median_speeds.append(np.median(speeds))
-        
+
         for k, number_of_stars in enumerate(cluster_populations):
             
-            starting_index = int(np.sum( cluster_populations[:k] ))
-            ending_index = starting_index + int(number_of_stars)
-            
-            if cluster_pop_flag == 0:
-                print('starting, ending indices are', starting_index, ending_index)
+        starting_index = int(np.sum( cluster_populations[:k] ))
+        ending_index = starting_index + int(number_of_stars)
         
-            #should not use total mass!
-            
-            cluster_masses = body_masses[starting_index:ending_index]
-            cluster_total_mass = cluster_masses.sum()
+        if cluster_pop_flag == 0:
+            print('starting, ending indices are', starting_index, ending_index)
+    
+        #should not use total mass!
         
-            x_COM = np.sum( [ body_masses[i]*x[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
-            y_COM = np.sum( [ body_masses[i]*y[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
-        
-            COM_data[j, 0, k] = x_COM
-            COM_data[j, 1, k] = y_COM
+        cluster_masses = body_masses[starting_index:ending_index]
+        cluster_total_mass = cluster_masses.sum()
+    
+        x_COM = np.sum( [ body_masses[i]*x[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
+        y_COM = np.sum( [ body_masses[i]*y[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
+    
+        COM_data[j, 0, k] = x_COM
+        COM_data[j, 1, k] = y_COM
             
         cluster_pop_flag = 1
+        
+        '''
 
-        write_set_to_file(gravity.particles, "star_data.csv","txt")
+        write_set_to_file(gravity.particles, "star_data.csv", "txt")
         gravity.evolve_model(t)
         
     try:

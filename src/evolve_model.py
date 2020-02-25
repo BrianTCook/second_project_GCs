@@ -116,6 +116,16 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             
         cluster_pop_flag = 1
         
+        np.save('time_data_%s_%s.npy'%(code_name, orbiter_name), sim_times_unitless)
+        np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
+        np.save('COM_data_%s_%s.npy'%(code_name, orbiter_name), COM_data)
+            
+        np.savetxt(code_name + '_' + orbiter_name + '_colors.txt', cluster_colors)
+        np.savetxt(code_name + '_' + orbiter_name + '_energies.txt', energies)
+        np.savetxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt', median_radial_coords)
+        np.savetxt(code_name + '_' + orbiter_name + '_median_speeds.txt', median_speeds)
+        np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
+        
         '''
 
         write_set_to_file(gravity.particles, "star_data.csv", "txt")
@@ -125,15 +135,5 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         gravity.stop()
     except:
         'gravity cannot be stopped!'
-
-    np.save('time_data_%s_%s.npy'%(code_name, orbiter_name), sim_times_unitless)
-    np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
-    np.save('COM_data_%s_%s.npy'%(code_name, orbiter_name), COM_data)
-        
-    np.savetxt(code_name + '_' + orbiter_name + '_colors.txt', cluster_colors)
-    np.savetxt(code_name + '_' + orbiter_name + '_energies.txt', energies)
-    np.savetxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt', median_radial_coords)
-    np.savetxt(code_name + '_' + orbiter_name + '_median_speeds.txt', median_speeds)
-    np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
     
     return 0

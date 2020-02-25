@@ -34,7 +34,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
                                                                                          galaxy_code, sepBinary, rvals, phivals, zvals, 
                                                                                          vrvals, vphivals, vzvals, masses)
     
-    Ntotal = len(gravity.particles)
+    Ntotal, Norbiters = len(gravity.particles), len(cluster_populations)
     
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]
@@ -42,9 +42,6 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     energies, median_radial_coords, median_speeds, clock_times = [], [], [], []
     
     t0 = time.time()
-    
-    #create an R^3 matrix to house phase space data for all particles
-    phase_space_data = np.zeros((len(sim_times), 6, len(simulation_bodies)))
     
     body_masses = gravity.particles.mass
     total_mass = body_masses.sum()
@@ -68,6 +65,10 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         energies.append( energy.value_in(units.J) )
         
         '''
+        
+        #create an R^3 matrix to house phase space data for all particles
+        phase_space_data = np.zeros((len(sim_times), 6, len(simulation_bodies)))
+        
         x = [ xx.value_in(units.kpc) for xx in gravity.particles.x ]
         y = [ yy.value_in(units.kpc) for yy in gravity.particles.y ]    
         z = [ zz.value_in(units.kpc) for zz in gravity.particles.z ]

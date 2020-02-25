@@ -128,7 +128,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         '''
 
-        write_set_to_file(gravity.particles, "star_data.csv", "txt")
+        write_set_to_file(gravity.particles, "data_%s_%s_Norbiters=%i.csv"%(code_name, orbiter_name, Norbiters), "txt")
         gravity.evolve_model(t)
         
     try:

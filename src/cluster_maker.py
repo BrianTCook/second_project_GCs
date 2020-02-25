@@ -139,3 +139,89 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
                                            W0, Mcluster, star_masses, code_name, parameters=[])
     
     return bodies, code, converter_sub
+
+def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, 
+            rvals, phivals, zvals, masses, index):
+
+    star_masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/star_masses_index=%i.txt'%index)
+    
+    converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
+    converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
+    
+    '''
+    takes in R, Z value
+    returns VR, Vphi, VZ values
+    should get appropriate 6D initial phase space conditions
+    '''
+    
+    Rcoord, phicoord, Zcoord = rvals[index], phivals[index], zvals[index]
+    vr_init, vphi_init, vz_init = vrvals[index], vphivals[index], vzvals[index]
+    
+    #convert from galpy/cylindrical to AMUSE/Cartesian units
+    x_init = Rcoord*np.cos(phicoord) | units.kpc
+    y_init = Rcoord*np.sin(phicoord) | units.kpc
+    z_init = Zcoord | units.kpc
+    
+    #vphi = R \dot{\phi}? assuming yes for now
+    vx_init = (vr_init*np.cos(phicoord) - vphi_init*np.sin(phicoord)) | units.kms
+    vy_init = (vr_init*np.sin(phicoord) + vphi_init*np.cos(phicoord)) | units.kms
+    vz_init = vz_init | units.kms
+    
+    if orbiter_name == 'SingleStar':
+        
+        bodies = Particles(1)
+        
+        bodies[0].mass = 1|units.MSun
+        
+        #right place in phase space
+        bodies[0].x = x_init
+        bodies[0].y = y_init
+        bodies[0].z = z_init
+        bodies[0].vx = vx_init
+        bodies[0].vy = vy_init
+        bodies[0].vz = vz_init
+        
+        #sub_worker in Nemesis, should not matter for SingleStar
+        if code_name == 'Nbody':
+            
+            code = Hermite(converter_sub) #Mercury acts weird for SingleStar
+            code.particles.add_particles(bodies)
+            code.commit_particles()
+            
+        if code_name == 'tree':
+        
+            code = BHTree(converter_sub)
+            code.particles.add_particles(bodies)
+            code.commit_particles()
+            
+        if code_name == 'nemesis':
+            
+            parts = HierarchicalParticles(bodies)
+            
+            dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
+            dt_nemesis = dt
+            dt_bridge = 0.01 * dt
+            dt_param = 0.1
+            
+            print
+            
+            nemesis = Nemesis( parent_worker, sub_worker, py_worker)
+            nemesis.timestep = dt
+            nemesis.distfunc = distance_function
+            nemesis.threshold = dt_nemesis
+            nemesis.radius = radius
+            
+            nemesis.commit_parameters()
+            nemesis.particles.add_particles(parts)
+            nemesis.commit_particles()
+            
+            code = nemesis
+        
+        return bodies, code
+        
+    if orbiter_name == 'SingleCluster':
+        
+        bodies, code, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, 
+                                       masses, index, code_name)
+        
+        return bodies, code

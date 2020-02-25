@@ -34,6 +34,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
                                                                                          galaxy_code, sepBinary, rvals, phivals, zvals, 
                                                                                          vrvals, vphivals, vzvals, masses)
     
+    Ntotal = len(gravity.particles)
+    
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]
     

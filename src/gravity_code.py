@@ -31,7 +31,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     
     list_of_orbiters = [ orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary,
-                                     rvals, phivals, zvals, masses, i) for i in range(Norbiters) ]
+                                     rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, i) for i in range(Norbiters) ]
     
     orbiter_bodies_list = [ list_of_orbiters[i][0] for i in range(Norbiters) ] 
     orbiter_codes_list = [ list_of_orbiters[i][1] for i in range(Norbiters) ]

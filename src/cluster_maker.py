@@ -142,7 +142,7 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
     return bodies, code, converter_sub
 
 def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, 
-            rvals, phivals, zvals, masses, index):
+            rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index):
 
     star_masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/star_masses_index=%i.txt'%index)
     

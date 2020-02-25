@@ -54,9 +54,10 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         clock_times.append(time.time()-t0) #will be in seconds
         
-        energy = gravity.particles.kinetic_energy() + gravity.particles.potential_energy(G=constants.G)
+        energy = gravity.kinetic_energy + gravity.potential_energy
         energies.append( energy.value_in(units.J) )
         
+        '''
         x = [ xx.value_in(units.kpc) for xx in gravity.particles.x ]
         y = [ yy.value_in(units.kpc) for yy in gravity.particles.y ]    
         z = [ zz.value_in(units.kpc) for zz in gravity.particles.z ]
@@ -64,6 +65,24 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         vx = [ vxx.value_in(units.kms) for vxx in gravity.particles.vx ]
         vy = [ vyy.value_in(units.kms) for vyy in gravity.particles.vy ]
         vz = [ vzz.value_in(units.kms) for vzz in gravity.particles.vz ]
+        
+        for l, star in enumerate(gravity.particles):
+        
+        phase_space_data[j,0,l] = x[l]
+        phase_space_data[j,1,l] = y[l]
+        phase_space_data[j,2,l] = z[l]
+        phase_space_data[j,3,l] = vx[l]
+        phase_space_data[j,4,l] = vy[l]
+        phase_space_data[j,5,l] = vz[l]
+        
+        rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for i in range(Ntotal) ]
+        median_radial_coords.append(np.median(rvals))
+        
+        speeds = [ np.sqrt(vx[i]**2 + vy[i]**2 + vz[i]**2) for i in range(Ntotal) ]
+        median_speeds.append(np.median(speeds))
+                
+        
+        '''
         
         for k, number_of_stars in enumerate(cluster_populations):
             
@@ -85,22 +104,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             COM_data[j, 1, k] = y_COM
             
         cluster_pop_flag = 1
-        
-        for l, star in enumerate(gravity.particles):
-            
-            phase_space_data[j,0,l] = x[l]
-            phase_space_data[j,1,l] = y[l]
-            phase_space_data[j,2,l] = z[l]
-            phase_space_data[j,3,l] = vx[l]
-            phase_space_data[j,4,l] = vy[l]
-            phase_space_data[j,5,l] = vz[l]
-        
-        rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for i in range(Ntotal) ]
-        median_radial_coords.append(np.median(rvals))
-        
-        speeds = [ np.sqrt(vx[i]**2 + vy[i]**2 + vz[i]**2) for i in range(Ntotal) ]
-        median_speeds.append(np.median(speeds))
-                
+
+        write_set_to_file(gravity.particles, "star_data.csv","txt")
         gravity.evolve_model(t)
         
     try:

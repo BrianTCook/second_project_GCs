@@ -78,7 +78,7 @@ if __name__ in '__main__':
             
             simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
                        sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
-                       masses, tend, dt)
+                       masses, Norbiters, tend, dt)
             
             print('current time: %.03f minutes'%((time.time()-t0)/60.))
             

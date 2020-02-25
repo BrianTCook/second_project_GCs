@@ -19,7 +19,7 @@ import numpy as np
 import time
 
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
-               rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):
+               rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, Norbiters, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
@@ -47,8 +47,6 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     if orbiter_name == 'SingleCluster':
             cluster_populations = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/Nstars_in_clusters.txt')
             cluster_populations = cluster_populations[:Norbiters]
-    
-    Ntotal, Norbiters = len(gravity.particles), len(cluster_populations)
     
     #COM data
     COM_data = np.zeros((len(sim_times), 2, Norbiters))
@@ -86,14 +84,13 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         phase_space_data[j,4,l] = vy[l]
         phase_space_data[j,5,l] = vz[l]
         
+        '''
+        
         rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for i in range(Ntotal) ]
         median_radial_coords.append(np.median(rvals))
         
         speeds = [ np.sqrt(vx[i]**2 + vy[i]**2 + vz[i]**2) for i in range(Ntotal) ]
         median_speeds.append(np.median(speeds))
-                
-        
-        '''
         
         for k, number_of_stars in enumerate(cluster_populations):
             

@@ -17,10 +17,10 @@ from amuse.ext.basicgraph import UnionFind
 from amuse.community.twobody.twobody import TwoBody
 from amuse.community.hermite0.interface import Hermite
 from amuse.community.mercury.interface import Mercury
-from amuse.community.ph4.interface import ph4
-from amuse.community.phiGRAPE.interface import PhiGRAPE
+#from amuse.community.ph4.interface import ph4
+#from amuse.community.phiGRAPE.interface import PhiGRAPE
 from amuse.community.huayno.interface import Huayno
-from amuse.community.mi6.interface import MI6
+#from amuse.community.mi6.interface import MI6
 
 from nemesis import Nemesis,HierarchicalParticles,system_type
 

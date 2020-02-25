@@ -15,6 +15,9 @@ from galpy.util import bovy_conversion
 
 from gravity_code import gravity_code_setup
 
+import numpy as np
+import time
+
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
                rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, tend, dt):
     

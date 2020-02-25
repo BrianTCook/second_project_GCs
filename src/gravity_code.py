@@ -17,6 +17,9 @@ from galpy.actionAngle import actionAngleStaeckel
 
 from cluster_maker import orbiter
 
+import numpy as np
+import time
+
 def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
                        rvals, phivals, zvals, vrvals, vphivals, vzvals, masses):
     

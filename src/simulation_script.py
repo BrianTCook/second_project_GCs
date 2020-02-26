@@ -85,76 +85,36 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         delta_energies.append(dE_dyn)
         
-        '''
-        
-        #create an R^3 matrix to house phase space data for all particles
-        phase_space_data = np.zeros((len(sim_times), 6, len(simulation_bodies)))
-        
-        x = [ xx.value_in(units.kpc) for xx in gravity.particles.x ]
-        y = [ yy.value_in(units.kpc) for yy in gravity.particles.y ]    
-        z = [ zz.value_in(units.kpc) for zz in gravity.particles.z ]
-        
-        vx = [ vxx.value_in(units.kms) for vxx in gravity.particles.vx ]
-        vy = [ vyy.value_in(units.kms) for vyy in gravity.particles.vy ]
-        vz = [ vzz.value_in(units.kms) for vzz in gravity.particles.vz ]
-        
-        for l, star in enumerate(gravity.particles):
-            
-            phase_space_data[j,0,l] = x[l]
-            phase_space_data[j,1,l] = y[l]
-            phase_space_data[j,2,l] = z[l]
-            phase_space_data[j,3,l] = vx[l]
-            phase_space_data[j,4,l] = vy[l]
-            phase_space_data[j,5,l] = vz[l]
-
-        ##NEEDS TO BE ADJUSTED FOR WRITE_SET_TO_FILE##
-        
-        rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for i in range(Ntotal) ]
-        median_radial_coords.append(np.median(rvals))
-        
-        speeds = [ np.sqrt(vx[i]**2 + vy[i]**2 + vz[i]**2) for i in range(Ntotal) ]
-        median_speeds.append(np.median(speeds))
-
+        #stuff to analyze COM of each star cluster
         for k, number_of_stars in enumerate(cluster_populations):
             
-        starting_index = int(np.sum( cluster_populations[:k] ))
-        ending_index = starting_index + int(number_of_stars)
-        
-        if cluster_pop_flag == 0:
-            print('starting, ending indices are', starting_index, ending_index)
-    
-        #should not use total mass!
-        
-        cluster_masses = body_masses[starting_index:ending_index]
-        cluster_total_mass = cluster_masses.sum()
-    
-        x_COM = np.sum( [ body_masses[i]*x[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
-        y_COM = np.sum( [ body_masses[i]*y[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
-    
-        COM_data[j, 0, k] = x_COM
-        COM_data[j, 1, k] = y_COM
+            starting_index = int(np.sum( cluster_populations[:k] ))
+            ending_index = starting_index + int(number_of_stars)
             
-        cluster_pop_flag = 1
-        energies.append( energy.value_in(units.J) )
+            cluster_masses = body_masses[starting_index:ending_index]
+            cluster_total_mass = cluster_masses.sum()
         
-        np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
-        np.save('COM_data_%s_%s.npy'%(code_name, orbiter_name), COM_data)
-            
-        np.savetxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt', median_radial_coords)
-        np.savetxt(code_name + '_' + orbiter_name + '_median_speeds.txt', median_speeds)
-        np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
+            x_COM = np.sum( [ body_masses[i]*x[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
+            y_COM = np.sum( [ body_masses[i]*y[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
         
-        '''
+            COM_data[j, 0, k] = x_COM
+            COM_data[j, 1, k] = y_COM
         
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
         
-        write_set_to_file(simulation_bodies, filename, "csv")
+        write_set_to_file(simulation_bodies, filename, "csv",
+                          attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
+                          attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
+        
         print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
 
     gravity.stop()
     
+    #things that are not easily extracted from write_set_to_file
     np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters=' + str(Norbiters) + '.txt.', cluster_colors)
     np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters=' + str(Norbiters) + '.txt.', delta_energies)
+    np.save('COM_data_%s_%s.npy'%(code_name, orbiter_name), COM_data)
+    np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
     
     return 0

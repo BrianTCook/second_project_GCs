@@ -10,7 +10,7 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
-def plotting_things(orbiter_names, code_names, tend, dt):
+def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
     
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     npanels_x = len(orbiter_names)
@@ -27,10 +27,6 @@ def plotting_things(orbiter_names, code_names, tend, dt):
     fig, axs = plt.subplots(1, len(orbiter_names))
 
     for i, orbiter_name in enumerate(orbiter_names): 
-        
-        #axs[i].set_ylim(0.8, 1.2)
-        
-        #if orbiter_name == 'SingleCluster':
                 
         axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
         
@@ -42,13 +38,11 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
 
+            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters=%i.txt')%(code_name, orbiter_name, Norbiters)
+
             try:
                 
-                energies = np.loadtxt(code_name + '_' + orbiter_name + '_energies.txt')
-                
-                e0 = energies[0]
-                print('e0 is: %.04e joules'%e0)
-                scaled_energies = [ e/e0 - 1. for e in energies ]                
+                scaled_energies = np.loadtxt(code_name + '_' + orbiter_name + '_dE_Norbiters=' + str(Norbiters) + '.txt')              
                 axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
                 
             except:
@@ -79,8 +73,17 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         
         for code_name in code_names:
             
+            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters=%i.txt')%(code_name, orbiter_name, Norbiters)
+                        
+            filename = 'data_%s_%s_Norbiters=%i.csv'%(code_name, orbiter_name, Norbiters)
+            bodies = read_set_from_file(simulation_bodies, filename, "csv",
+                                        attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
+                                        attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
+            
+            rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for i in range(Ntotal) ]
+            median_radial_coords.append(np.median(rvals))
+            
             try:
-                median_radial_coords = np.loadtxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt')
                 axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
                 
             except:
@@ -109,6 +112,16 @@ def plotting_things(orbiter_names, code_names, tend, dt):
         axs[i].set_title(orbiter_name, fontsize=8)
         
         for code_name in code_names:
+            
+            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters=%i.txt')%(code_name, orbiter_name, Norbiters)
+                        
+            filename = 'data_%s_%s_Norbiters=%i.csv'%(code_name, orbiter_name, Norbiters)
+            bodies = read_set_from_file(simulation_bodies, filename, "csv",
+                            attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
+                            attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
+            
+            speeds = [ np.sqrt(vx[i]**2 + vy[i]**2 + vz[i]**2) for i in range(Ntotal) ]
+            median_speeds.append(np.median(speeds))
             
             try:
                 median_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_median_speeds.txt')

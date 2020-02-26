@@ -58,7 +58,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     cluster_pop_flag = 0
     
     filename = "data_%s_%s_Norbiters=%i.hdf5"%(code_name, orbiter_name, Norbiters) #for saving to hdf5 file    
-    write_set_to_file(simulation_bodies.savepoint(0.|tend.unit), filename, "hdf5")
+    write_set_to_file(gravity.particles.savepoint(0.|tend.unit), filename, "hdf5")
     
     t0 = time.time()
     
@@ -142,7 +142,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         channel_from_gravity_to_framework.copy()
         
         if j != 0: #don't want redundant entry
-            write_set_to_file(simulation_bodies.savepoint(t), filename, "hdf5") #.savepoint(t)
+            write_set_to_file(gravity.particles.savepoint(t), filename, "hdf5") #.savepoint(t)
             
         print_diagnostics(time, simulation_bodies.center_of_mass(), E_dyn, dE_dyn)
         

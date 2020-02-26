@@ -22,7 +22,7 @@ def print_diagnostics(time, simulation_bodies, E_dyn, dE_dyn):
     
     print('------------')
     print('time: ', time)
-    print('simulation_bodies.center_of_mass(): ', simulation_bodies.center_of_mass())
+    print('simulation_bodies.center_of_mass(): ', simulation_bodies.center_of_mass().value_in(units.kpc))
     print('E_dyn: ', E_dyn)
     print('dE_dyn: ', dE_dyn)
     print('------------')

@@ -55,14 +55,22 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     cluster_pop_flag = 0
     
+    filename = 'data_%s_%s_Norbiters=%i.csv'%(code_name, orbiter_name, Norbiters) #for saving to hdf5 file
+    
     t0 = time.time()
     
     for j, t in enumerate(sim_times):
         
         clock_times.append(time.time()-t0) #will be in seconds
+    
+        if j == 0:
+            E_dyn_init = gravity.kinetic_energy + gravity.potential_energy
+            
+        E_dyn = gravity.kinetic_energy + gravity.potential_energy
+    
+        dE_dyn = (E_dyn/E_dyn_init) - 1.
         
-        energy = gravity.kinetic_energy + gravity.potential_energy
-        energies.append( energy.value_in(units.J) )
+        #energies.append( energy.value_in(units.J) )
         
         '''
         
@@ -128,8 +136,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         '''
 
-        write_set_to_file(gravity.particles, 'data_%s_%s_Norbiters=%i.csv'%(code_name, orbiter_name, Norbiters),
-                          "txt", append_to_file=True)
+        write_set_to_file(gravity.particles.savepoint(t), filename, 'hdf5')
+        print_diagnostics(time, gravity.particles.center_of_mass(), E_dyn, dE_dyn)
         gravity.evolve_model(t)
         
     try:

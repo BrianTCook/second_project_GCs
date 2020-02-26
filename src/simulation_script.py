@@ -140,7 +140,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
-        write_set_to_file(simulation_bodies.savepoint(t), filename, 'amuse')
+        write_set_to_file(simulation_bodies, filename, 'amuse') #.savepoint(t)
         print_diagnostics(time, simulation_bodies.center_of_mass(), E_dyn, dE_dyn)
         
     try:

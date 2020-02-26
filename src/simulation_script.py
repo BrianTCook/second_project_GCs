@@ -151,7 +151,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         channel_from_gravity_to_framework.copy()
         
         write_set_to_file(simulation_bodies, filename, "txt")
-        print_diagnostics(t, simulation_bodie, E_dyn, dE_dyn)
+        print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
         
     try:
         gravity.stop()

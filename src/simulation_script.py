@@ -41,7 +41,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]
     
-    np.savetxt('times_in_Myr_%s_%s_Norbiters=%i.txt'%(sim_times_unitless))
+    np.savetxt('times_in_Myr_%s_%s_Norbiters=%i.txt'%(code_name, orbiter_name, Norbiters), sim_times_unitless)
     
     energies, median_radial_coords, median_speeds, clock_times = [], [], [], []
     

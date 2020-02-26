@@ -41,6 +41,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]
     
+    np.savetxt('times_in_Myr_%s_%s_Norbiters=%i.txt'%(sim_times_unitless))
+    
     energies, median_radial_coords, median_speeds, clock_times = [], [], [], []
     
     body_masses = gravity.particles.mass
@@ -53,12 +55,11 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             cluster_populations = cluster_populations[:Norbiters]
     
     #COM data
-    COM_data = np.zeros((len(sim_times), 2, Norbiters))
+    #COM_data = np.zeros((len(sim_times), 2, Norbiters))
     
-    cluster_pop_flag = 0
+    #cluster_pop_flag = 0
     
     filename = "data_%s_%s_Norbiters=%i.hdf5"%(code_name, orbiter_name, Norbiters) #for saving to hdf5 file    
-    write_set_to_file(gravity.particles.savepoint(0.|tend.unit), filename, "hdf5")
     
     t0 = time.time()
     
@@ -70,7 +71,6 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             E_dyn_init = gravity.kinetic_energy + gravity.potential_energy
             
         E_dyn = gravity.kinetic_energy + gravity.potential_energy
-    
         dE_dyn = (E_dyn/E_dyn_init) - 1.
         
         '''
@@ -141,9 +141,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
         
-        if j != 0: #don't want redundant entry
-            write_set_to_file(gravity.particles.savepoint(t), filename, "hdf5") #.savepoint(t)
-            
+        write_set_to_file(simulation_bodies, filename, "hdf5")
         print_diagnostics(time, simulation_bodies.center_of_mass(), E_dyn, dE_dyn)
         
     try:

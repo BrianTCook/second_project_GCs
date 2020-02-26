@@ -96,4 +96,4 @@ if __name__ in '__main__':
             
             #print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
-    #plotting_things(orbiter_names, code_names, Norbiters, tend, dt)
+    plotting_things(orbiter_names, code_names, Norbiters, tend, dt)

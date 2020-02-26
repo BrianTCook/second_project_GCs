@@ -55,6 +55,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
     plt.savefig('testing_nemesis_energy.pdf')
     plt.close()
     
+    '''
     #median radial coordinates
     
     fig, axs = plt.subplots(1, len(orbiter_names))
@@ -135,6 +136,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
     plt.tight_layout() 
     plt.savefig('testing_nemesis_speeds.pdf')
     plt.close()
+    '''
     
     #clock times
     
@@ -168,6 +170,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
     plt.savefig('testing_nemesis_clocktimes.pdf')
     plt.close()
     
+    '''
     #center of mass
     
     fig, axs = plt.subplots(1, len(orbiter_names))
@@ -193,5 +196,6 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
     plt.tight_layout() 
     plt.savefig('testing_nemesis_COMs.pdf')
     plt.close()
+    '''
     
     return 0

@@ -1,5 +1,0 @@
-#mass,radius,vx,vy,vz,x,y,z
-#system.get('S.I.').base('mass'),system.get('S.I.').base('length'),(system.get('S.I.').base('length') * (system.get('S.I.').base('time')**-1)),(system.get('S.I.').base('length') * (system.get('S.I.').base('time')**-1)),(system.get('S.I.').base('length') * (system.get('S.I.').base('time')**-1)),system.get('S.I.').base('length'),system.get('S.I.').base('length'),system.get('S.I.').base('length')
-#kg,m,m * s**-1,m * s**-1,m * s**-1,m,m,m
-1.98892e+30,0.0,-147919.483446,-545.748100733,-147072.969646,5.72894639339e+18,5.38436823889e+18,5.63353110555e+18
-1.98892e+30,0.0,-16303.8468642,-11306.7336299,24955.6707717,-1.07008370643e+19,3.70133251978e+17,5.11664649903e+18

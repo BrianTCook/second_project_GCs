@@ -85,6 +85,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         delta_energies.append(dE_dyn)
         
+        '''
         #stuff to analyze COM of each star cluster
         for k, number_of_stars in enumerate(cluster_populations):
             
@@ -99,6 +100,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
             COM_data[j, 0, k] = x_COM
             COM_data[j, 1, k] = y_COM
+        '''
         
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()

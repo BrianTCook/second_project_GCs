@@ -52,7 +52,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     np.savetxt('times_in_Myr_%s_%s_Norbiters=%i.txt'%(code_name, orbiter_name, Norbiters), sim_times_unitless)
     
-    energies, median_radial_coords, median_speeds, clock_times = [], [], [], []
+    delta_energies, median_radial_coords, median_speeds, clock_times = [], [], [], []
     
     body_masses = gravity.particles.mass
     total_mass = body_masses.sum()
@@ -68,7 +68,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     #cluster_pop_flag = 0
     
-    filename = "data_%s_%s_Norbiters=%i.csv"%(code_name, orbiter_name, Norbiters) #for saving to hdf5 file    
+    #for saving in write_set_to_file
+    filename = "data_%s_%s_Norbiters=%i.csv"%(code_name, orbiter_name, Norbiters)
     
     t0 = time.time()
     
@@ -81,6 +82,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             
         E_dyn = gravity.kinetic_energy + gravity.potential_energy
         dE_dyn = (E_dyn/E_dyn_init) - 1.
+        
+        delta_energies.append(dE_dyn)
         
         '''
         
@@ -96,14 +99,13 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         vz = [ vzz.value_in(units.kms) for vzz in gravity.particles.vz ]
         
         for l, star in enumerate(gravity.particles):
-        
-        phase_space_data[j,0,l] = x[l]
-        phase_space_data[j,1,l] = y[l]
-        phase_space_data[j,2,l] = z[l]
-        phase_space_data[j,3,l] = vx[l]
-        phase_space_data[j,4,l] = vy[l]
-        phase_space_data[j,5,l] = vz[l]
-
+            
+            phase_space_data[j,0,l] = x[l]
+            phase_space_data[j,1,l] = y[l]
+            phase_space_data[j,2,l] = z[l]
+            phase_space_data[j,3,l] = vx[l]
+            phase_space_data[j,4,l] = vy[l]
+            phase_space_data[j,5,l] = vz[l]
 
         ##NEEDS TO BE ADJUSTED FOR WRITE_SET_TO_FILE##
         
@@ -135,12 +137,9 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         cluster_pop_flag = 1
         energies.append( energy.value_in(units.J) )
         
-        np.save('time_data_%s_%s.npy'%(code_name, orbiter_name), sim_times_unitless)
         np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
         np.save('COM_data_%s_%s.npy'%(code_name, orbiter_name), COM_data)
             
-        np.savetxt(code_name + '_' + orbiter_name + '_colors.txt', cluster_colors)
-        np.savetxt(code_name + '_' + orbiter_name + '_energies.txt', energies)
         np.savetxt(code_name + '_' + orbiter_name + '_median_radial_coords.txt', median_radial_coords)
         np.savetxt(code_name + '_' + orbiter_name + '_median_speeds.txt', median_speeds)
         np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
@@ -150,12 +149,12 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
         
-        write_set_to_file(simulation_bodies, filename, "txt")
+        write_set_to_file(simulation_bodies, filename, "csv")
         print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
-        
-    try:
-        gravity.stop()
-    except:
-        'gravity cannot be stopped!'
+
+    gravity.stop()
+    
+    np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters=' + str(Norbiters) + '.txt.', cluster_colors)
+    np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters=' + str(Norbiters) + '.txt.', delta_energies)
     
     return 0

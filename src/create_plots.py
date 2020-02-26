@@ -6,6 +6,10 @@ Created on Tue Feb 25 21:57:22 2020
 @author: BrianTCook
 """
 
+from amuse.lab import *
+#from amuse.ext.bridge import bridge
+from amuse.couple import bridge
+
 import numpy as np
 
 import matplotlib

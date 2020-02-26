@@ -80,9 +80,9 @@ if __name__ in '__main__':
                        sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
                        masses, Norbiters, tend, dt)
             
-            bodies = read_set_from_file(simulation_bodies, filename, "csv",
-                            attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
-                            attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
+            bodies = read_set_from_file(filename, "csv",
+                                        attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
+                                        attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
             
             print('bodies: %s, %s '%(orbiter_name, code_name))
             print(bodies)

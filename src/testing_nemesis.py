@@ -86,7 +86,7 @@ if __name__ in '__main__':
                                         attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
             
             print('bodies: %s, %s '%(orbiter_name, code_name))
-            print(bodies)
+            print(bodies.x)
             
             #print('current time: %.03f minutes'%((time.time()-t0)/60.))
             

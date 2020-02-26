@@ -57,7 +57,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     cluster_pop_flag = 0
     
-    filename = 'data_%s_%s_Norbiters=%i.hdf5'%(code_name, orbiter_name, Norbiters) #for saving to hdf5 file
+    filename = "data_%s_%s_Norbiters=%i.hdf5"%(code_name, orbiter_name, Norbiters) #for saving to hdf5 file    
+    write_set_to_file(simulation_bodies.savepoint(0.|tend.unit), filename, "hdf5")
     
     t0 = time.time()
     
@@ -71,8 +72,6 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         E_dyn = gravity.kinetic_energy + gravity.potential_energy
     
         dE_dyn = (E_dyn/E_dyn_init) - 1.
-        
-        #energies.append( energy.value_in(units.J) )
         
         '''
         
@@ -125,6 +124,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         COM_data[j, 1, k] = y_COM
             
         cluster_pop_flag = 1
+        energies.append( energy.value_in(units.J) )
         
         np.save('time_data_%s_%s.npy'%(code_name, orbiter_name), sim_times_unitless)
         np.save('sixD_data_%s_%s.npy'%(code_name, orbiter_name), phase_space_data)
@@ -140,7 +140,10 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
-        write_set_to_file(simulation_bodies, filename, 'amuse') #.savepoint(t)
+        
+        if j != 0: #don't want redundant entry
+            write_set_to_file(simulation_bodies.savepoint(t), filename, "hdf5") #.savepoint(t)
+            
         print_diagnostics(time, simulation_bodies.center_of_mass(), E_dyn, dE_dyn)
         
     try:

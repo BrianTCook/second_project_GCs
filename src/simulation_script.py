@@ -18,6 +18,15 @@ from gravity_code import gravity_code_setup
 import numpy as np
 import time
 
+def print_diagnostics(time, simulation_bodies, E_dyn, dE_dyn):
+    
+    print('------------')
+    print('time: ', time)
+    print('simulation_bodies.center_of_mass(): ', simulation_bodies.center_of_mass())
+    print('E_dyn: ', E_dyn)
+    print('dE_dyn: ', dE_dyn)
+    print('------------')
+
 def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
                rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, Norbiters, tend, dt):
     
@@ -142,7 +151,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         channel_from_gravity_to_framework.copy()
         
         write_set_to_file(simulation_bodies, filename, "txt")
-        print_diagnostics(time, simulation_bodies.center_of_mass(), E_dyn, dE_dyn)
+        print_diagnostics(t, simulation_bodie, E_dyn, dE_dyn)
         
     try:
         gravity.stop()

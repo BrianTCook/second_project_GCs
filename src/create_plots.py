@@ -44,11 +44,11 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         
         for code_name in code_names:
 
-            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters=%i.txt'%(code_name, orbiter_name, Norbiters))
+            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
 
             #try:
                 
-            scaled_energies = np.loadtxt(code_name + '_' + orbiter_name + '_dE_Norbiters=' + str(Norbiters) + '.txt')              
+            scaled_energies = np.loadtxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt')              
             axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
             
             '''
@@ -82,9 +82,9 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         
         for code_name in code_names:
             
-            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters=%i.txt')%(code_name, orbiter_name, Norbiters)
+            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt')%(code_name, orbiter_name, Norbiters)
                         
-            filename = 'data_%s_%s_Norbiters=%i.csv'%(code_name, orbiter_name, Norbiters)
+            filename = 'data_%s_%s_Norbiters_%i.csv'%(code_name, orbiter_name, Norbiters)
             bodies = read_set_from_file(simulation_bodies, filename, "csv",
                                         attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                                         attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
@@ -122,9 +122,9 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         
         for code_name in code_names:
             
-            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters=%i.txt')%(code_name, orbiter_name, Norbiters)
+            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt')%(code_name, orbiter_name, Norbiters)
                         
-            filename = 'data_%s_%s_Norbiters=%i.csv'%(code_name, orbiter_name, Norbiters)
+            filename = 'data_%s_%s_Norbiters_%i.csv'%(code_name, orbiter_name, Norbiters)
             bodies = read_set_from_file(simulation_bodies, filename, "csv",
                             attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                             attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
@@ -164,7 +164,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         
         for code_name in code_names:
             
-            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters=%i.txt'%(code_name, orbiter_name, Norbiters))
+            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
             
             try:
                 clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')

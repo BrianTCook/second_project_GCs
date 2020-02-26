@@ -34,6 +34,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
                                                                                          galaxy_code, sepBinary, rvals, phivals, zvals, 
                                                                                          vrvals, vphivals, vzvals, masses)
     
+    channel_from_gravity_to_framework = gravity.particles.new_channel_to(simulation_bodies)
+    
     Ntotal = len(gravity.particles)
     
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
@@ -135,10 +137,11 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
         
         '''
-
+        
+        gravity.evolve_model(t)
+        channel_from_gravity_to_framework.copy()
         write_set_to_file(simulation_bodies.savepoint(t), filename, 'amuse')
         print_diagnostics(time, simulation_bodies.center_of_mass(), E_dyn, dE_dyn)
-        gravity.evolve_model(t)
         
     try:
         gravity.stop()

@@ -46,14 +46,16 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
 
             sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters=%i.txt'%(code_name, orbiter_name, Norbiters))
 
-            try:
+            #try:
                 
-                scaled_energies = np.loadtxt(code_name + '_' + orbiter_name + '_dE_Norbiters=' + str(Norbiters) + '.txt')              
-                axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
-                
+            scaled_energies = np.loadtxt(code_name + '_' + orbiter_name + '_dE_Norbiters=' + str(Norbiters) + '.txt')              
+            axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
+            
+            '''
             except:
                 
                 print('%s, %s could not be found'%(orbiter_name, code_name))
+            '''
             
         axs[i].legend(loc='upper right')
    

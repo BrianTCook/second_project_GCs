@@ -76,7 +76,7 @@ if __name__ in '__main__':
             print(orbiter_name, code_name)
             print('\\\\\\\\\\\\\\\\\\\\\\\\')
             
-            simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
+            #simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
                        sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
                        masses, Norbiters, tend, dt)
             

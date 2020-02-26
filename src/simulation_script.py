@@ -50,7 +50,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]
     
-    np.savetxt('times_in_Myr_%s_%s_Norbiters=%i.txt'%(code_name, orbiter_name, Norbiters), sim_times_unitless)
+    np.savetxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters), sim_times_unitless)
     
     delta_energies, median_radial_coords, median_speeds, clock_times = [], [], [], []
     
@@ -69,7 +69,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #cluster_pop_flag = 0
     
     #for saving in write_set_to_file
-    filename = "data_%s_%s_Norbiters=%i.csv"%(code_name, orbiter_name, Norbiters)
+    filename = "data_%s_%s_Norbiters_%i.csv"%(code_name, orbiter_name, Norbiters)
     
     t0 = time.time()
     

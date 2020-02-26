@@ -100,6 +100,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
             COM_data[j, 0, k] = x_COM
             COM_data[j, 1, k] = y_COM
+            
+        np.save('COM_data_%s_%s.npy'%(code_name, orbiter_name), COM_data)
         '''
         
         gravity.evolve_model(t)
@@ -116,7 +118,6 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #things that are not easily extracted from write_set_to_file
     np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters=' + str(Norbiters) + '.txt.', cluster_colors)
     np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters=' + str(Norbiters) + '.txt.', delta_energies)
-    np.save('COM_data_%s_%s.npy'%(code_name, orbiter_name), COM_data)
     np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
     
     return 0

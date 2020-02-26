@@ -76,11 +76,9 @@ if __name__ in '__main__':
             print(orbiter_name, code_name)
             print('\\\\\\\\\\\\\\\\\\\\\\\\')
             
-            '''
             simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
                        sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
                        masses, Norbiters, tend, dt)
-            '''
             
             filename = "data_%s_%s_Norbiters=%i.csv"%(code_name, orbiter_name, Norbiters)
             bodies = read_set_from_file(filename, "csv",

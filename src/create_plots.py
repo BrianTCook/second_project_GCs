@@ -44,7 +44,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         
         for code_name in code_names:
 
-            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters=%i.txt')%(code_name, orbiter_name, Norbiters)
+            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters=%i.txt'%(code_name, orbiter_name, Norbiters))
 
             try:
                 
@@ -161,6 +161,8 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         axs[i].set_title(orbiter_name, fontsize=8)
         
         for code_name in code_names:
+            
+            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters=%i.txt'%(code_name, orbiter_name, Norbiters))
             
             try:
                 clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')

@@ -80,6 +80,8 @@ if __name__ in '__main__':
                        sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
                        masses, Norbiters, tend, dt)
             
+            
+            filename = "data_%s_%s_Norbiters=%i.csv"%(code_name, orbiter_name, Norbiters)
             bodies = read_set_from_file(filename, "csv",
                                         attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                                         attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))

@@ -49,7 +49,7 @@ def gravity_code_setup(orbiter_name, code_name, Mgalaxy, Rgalaxy, galaxy_code, s
         cluster_colors.append([cluster_color]*len(stars))
 
         channel = stars.new_channel_to(orbiter_code.particles)
-        channel.copy_attributes(['nass','x','y','z','vx','vy','vz'])
+        channel.copy_attributes(['mass','x','y','z','vx','vy','vz'])
 
     cluster_colors = [ j for i in cluster_colors for j in i ] #concatenate the list
 

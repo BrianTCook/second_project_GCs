@@ -2,14 +2,14 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def maps(code_name, orbiter_name):
+def maps(code_name, orbiter_name, Norbiters):
     
     print('!!!!!!!!!!!!!!!!!!!!')
     print('now mapping: %s, %s'%(code_name, orbiter_name))
     print('!!!!!!!!!!!!!!!!!!!!')
     
-    filename_time = 'time_data_%s_%s.npy'%(orbiter_name, code_name)
-    filename_phase = 'sixD_data_%s_%s.npy'%(orbiter_name, code_name)    
+    sim_times = np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))    
+    filename_phase = 'all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters))    
     
     sim_times = np.load(filename_time)
     phase_space_data = np.load(filename_phase)
@@ -18,7 +18,7 @@ def maps(code_name, orbiter_name):
     for i, t in enumerate(sim_times):
     
         w_all = pd.DataFrame(np.rot90(phase_space_data[i,:,:]), 
-                             columns=['x', 'y', 'z', 'vx', 'vy', 'vz'])
+                             columns=['mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'])
         
         x,y,z = w_all['x'].tolist(), w_all['y'].tolist(), w_all['z'].tolist()
         vx,vy,vz = w_all['vx'].tolist(), w_all['vy'].tolist(), w_all['vz'].tolist()

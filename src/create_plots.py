@@ -75,7 +75,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
             mass_and_phase_data = np.load('all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters)))
             #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
             
-            x, y, z = mass_and_phase_data[:, :, 1:3]
+            x, y, z = mass_and_phase_data[:, :, 1:4]
             
             rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for i in range(Ntotal) ]
             median_radial_coords.append(np.median(rvals))
@@ -112,7 +112,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
             mass_and_phase_data = np.load('all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters)))
             #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
             
-            vx, vy, vz = mass_and_phase_data[:, :, 4:6]
+            vx, vy, vz = mass_and_phase_data[:, :, 4:7]
             
             speeds = [ np.sqrt(vx[i]**2 + vy[i]**2 + vz[i]**2) for i in range(Ntotal) ]
             median_speeds.append(np.median(speeds))

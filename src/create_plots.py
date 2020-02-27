@@ -75,16 +75,14 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
             mass_and_phase_data = np.load('all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters)))
             #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
             
-            x, y, z = mass_and_phase_data[:, :, 1:4]
+            x = mass_and_phase_data[:, :, 1]
+            y = mass_and_phase_data[:, :, 2]
+            z = mass_and_phase_data[:, :, 3]
             
-            rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for i in range(Ntotal) ]
-            median_radial_coords.append(np.median(rvals))
+            median_radial_coords = [ np.median([ np.sqrt(x[i,j]**2 + y[i,j]**2 + z[i,j]**2) for j in range(Ntotal) ]) 
+                                     for i in range(len(sim_times_unitless)) ]
             
-            try:
-                axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
-                
-            except:
-                print('%s, %s could not be found'%(orbiter_name, code_name))
+            axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
             
         axs[i].legend(loc='upper right')
             
@@ -112,17 +110,14 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
             mass_and_phase_data = np.load('all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters)))
             #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
             
-            vx, vy, vz = mass_and_phase_data[:, :, 4:7]
+            vx = mass_and_phase_data[:, :, 4]
+            vy = mass_and_phase_data[:, :, 5]
+            vz = mass_and_phase_data[:, :, 6]
             
-            speeds = [ np.sqrt(vx[i]**2 + vy[i]**2 + vz[i]**2) for i in range(Ntotal) ]
-            median_speeds.append(np.median(speeds))
+            median_speeds = [ np.median([ np.sqrt(vx[i,j]**2 + vy[i,j]**2 + vz[i,j]**2) for j in range(Ntotal) ]) 
+                              for i in range(len(sim_times_unitless)) ]
             
-            try:
-                median_speeds = np.loadtxt(code_name + '_' + orbiter_name + '_median_speeds.txt')
-                axs[i].plot(sim_times_unitless, median_speeds, label=code_name)                    
-            
-            except:
-                print('%s, %s could not be found'%(orbiter_name, code_name))
+            axs[i].plot(sim_times_unitless, median_speeds, label=code_name)
             
         axs[i].legend(loc='upper right')
        

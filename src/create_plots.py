@@ -75,6 +75,8 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
             mass_and_phase_data = np.load('all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters)))
             #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
             
+            Ntotal = len(mass_and_phase_data[0,:,0])
+            
             x = mass_and_phase_data[:, :, 1]
             y = mass_and_phase_data[:, :, 2]
             z = mass_and_phase_data[:, :, 3]
@@ -110,6 +112,8 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
             mass_and_phase_data = np.load('all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters)))
             #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
             
+            Ntotal = len(mass_and_phase_data[0,:,0])
+            
             vx = mass_and_phase_data[:, :, 4]
             vy = mass_and_phase_data[:, :, 5]
             vz = mass_and_phase_data[:, :, 6]
@@ -143,14 +147,10 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
             
             sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
             
-            try:
-                clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
-                axs[i].semilogy(sim_times_unitless, clock_times, label=code_name)
-                axs[i].set_ylim(1e-1, 5e4) #1/10th of a second to ~15 hours
-                
-            except:
-                print('%s, %s could not be found'%(orbiter_name, code_name))
-            
+            clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
+            axs[i].semilogy(sim_times_unitless, clock_times, label=code_name)
+           
+        axs[i].set_ylim(1e-1, 5e4) #1/10th of a second to ~15 hours
         axs[i].legend(loc='upper right')
        
     plt.tight_layout() 

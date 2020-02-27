@@ -71,7 +71,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         
         for code_name in code_names:
             
-            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt')%(code_name, orbiter_name, Norbiters)
+            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
             mass_and_phase_data = np.load('all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters)))
             #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
             
@@ -108,7 +108,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         
         for code_name in code_names:
             
-            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt')%(code_name, orbiter_name, Norbiters)
+            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
             mass_and_phase_data = np.load('all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters)))
             #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
             

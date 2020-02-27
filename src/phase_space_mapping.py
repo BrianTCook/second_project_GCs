@@ -10,10 +10,9 @@ def maps(code_name, orbiter_name, Norbiters):
     
     sim_times = np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))    
     filename_phase = 'all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters))    
-    
-    sim_times = np.load(filename_time)
+
     phase_space_data = np.load(filename_phase)
-    ntimes, ndim, nparticles = phase_space_data.shape
+    ntimes, nparticles, ndim = phase_space_data.shape
 
     for i, t in enumerate(sim_times):
     
@@ -22,74 +21,73 @@ def maps(code_name, orbiter_name, Norbiters):
         
         x,y,z = w_all['x'].tolist(), w_all['y'].tolist(), w_all['z'].tolist()
         vx,vy,vz = w_all['vx'].tolist(), w_all['vy'].tolist(), w_all['vz'].tolist()
-        
-        '''
+
         fig, axs = plt.subplots(5, 5)
         
         #first column
         
         axs[0, 0].scatter(x, y, s=2, c='k')
         axs[0, 0].set(xlabel='x', ylabel='y')
-        axs[0, 0].set_xlim(-5, 5)
-        axs[0, 0].set_ylim(-5, 5)
+        axs[0, 0].set_xlim(-4, 4)
+        axs[0, 0].set_ylim(-4, 4)
         
         axs[1, 0].scatter(x, z, s=2, c='k')
         axs[1, 0].set(xlabel='x', ylabel='z')
-        axs[1, 0].set_xlim(-5, 5)
-        axs[1, 0].set_ylim(-5, 5)
+        axs[1, 0].set_xlim(-4, 4)
+        axs[1, 0].set_ylim(-4, 4)
         
         axs[2, 0].scatter(x, vx,s=2, c='k')
         axs[2, 0].set(xlabel='x', ylabel='vx')
-        axs[2, 0].set_xlim(-5, 5)
+        axs[2, 0].set_xlim(-4, 4)
         axs[2, 0].set_ylim(-400, 400)
         
         axs[3, 0].scatter(x, vy, s=2, c='k')
         axs[3, 0].set(xlabel='z', ylabel='vy')
-        axs[3, 0].set_xlim(-5, 5)
+        axs[3, 0].set_xlim(-4, 4)
         axs[3, 0].set_ylim(-400, 400)
         
         axs[4, 0].scatter(x, vz, s=2, c='k')
         axs[4, 0].set(xlabel='x', ylabel='vz')
-        axs[4, 0].set_xlim(-5, 5)
+        axs[4, 0].set_xlim(-4, 4)
         axs[4, 0].set_ylim(-400, 400)
         
         #second column
         
         axs[1, 1].scatter(y, z, s=2, c='k')
         axs[1, 1].set(xlabel='y', ylabel='z')
-        axs[1, 1].set_xlim(-5, 5)
-        axs[1, 1].set_ylim(-5, 5)
+        axs[1, 1].set_xlim(-4, 4)
+        axs[1, 1].set_ylim(-4, 4)
         
         axs[2, 1].scatter(y, vx, s=2, c='k')
         axs[2, 1].set(xlabel='y', ylabel='vx')
-        axs[2, 1].set_xlim(-5, 5)
+        axs[2, 1].set_xlim(-4, 4)
         axs[2, 1].set_ylim(-400, 400)
         
         axs[3, 1].scatter(y, vy, s=2, c='k')
         axs[3, 1].set(xlabel='y', ylabel='vy')
-        axs[3, 1].set_xlim(-5, 5)
+        axs[3, 1].set_xlim(-4, 4)
         axs[3, 1].set_ylim(-400, 400)
         
         axs[4, 1].scatter(y, vz, s=2, c='k')
         axs[4, 1].set(xlabel='y', ylabel='vz')
-        axs[4, 1].set_xlim(-5, 5)
+        axs[4, 1].set_xlim(-4, 4)
         axs[4, 1].set_ylim(-400, 400)
         
         #third column
         
         axs[2, 2].scatter(z, vx, s=2, c='k')
         axs[2, 2].set(xlabel='z', ylabel='vx')
-        axs[2, 2].set_xlim(-5, 5)
+        axs[2, 2].set_xlim(-4, 4)
         axs[2, 2].set_ylim(-400, 400)
         
         axs[3, 2].scatter(z, vy, s=2, c='k')
         axs[3, 2].set(xlabel='z', ylabel='vy')
-        axs[3, 2].set_xlim(-5, 5)
+        axs[3, 2].set_xlim(-4, 4)
         axs[3, 2].set_ylim(-400, 400)
         
         axs[4, 2].scatter(z, vz, s=2, c='k')
         axs[4, 2].set(xlabel='z', ylabel='vz')
-        axs[4, 2].set_xlim(-5, 5)
+        axs[4, 2].set_xlim(-4, 4)
         axs[4, 2].set_ylim(-400, 400)
         
         #fourth column
@@ -117,7 +115,7 @@ def maps(code_name, orbiter_name, Norbiters):
             
         fig.suptitle('Time = %.02f Myr'%(t), fontsize=14)
         plt.savefig('phase_space_map_frame=%s_%s_%s.png'%(str(i).rjust(4, '0'), code_name, orbiter_name))
-        '''
+        plt.close()
         
         plt.figure()
         plt.scatter(x, y, s=1, c='k')

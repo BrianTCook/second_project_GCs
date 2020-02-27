@@ -44,11 +44,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
                                                                                          galaxy_code, sepBinary, rvals, phivals, zvals, 
                                                                                          vrvals, vphivals, vzvals, masses)
     
-    channel_from_gravity_to_framework = gravity.particles.new_channel_to(simulation_bodies)
-    
+    channel_from_gravity_to_framework = gravity.particles.new_channel_to(simulation_bodies)    
     Ntotal = len(simulation_bodies)
-    
-    print(simulation_bodies)
     
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]
@@ -100,7 +97,6 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         print('data_t.values shape: ', data_t.values.shape)
         
         all_data[j, :, :] = data_t.values
-        
         x, y = data_t['x'].tolist(), data_t['y'].tolist()
         
         #stuff to analyze COM of each star cluster

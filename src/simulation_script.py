@@ -93,6 +93,9 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         data_t = pd.read_csv(filename, names=list(attributes))
         
+        print(data_t)
+        print(data_t.values)
+        
         print('all_data[j,:,:] shape: ', all_data[j,:,:].shape)
         print('data_t.values shape: ', data_t.values.shape)
         

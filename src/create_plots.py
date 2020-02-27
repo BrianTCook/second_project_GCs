@@ -169,7 +169,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         
         for code_name in code_names:
             
-            COMs = np.load('COM_data_%s_%s.npy'%(code_name, orbiter_name))
+            COMs = np.load('COM_data_%s_%s_Norbiters_%s.npy'%(code_name, orbiter_name, str(Norbiters)))
                 
             xvals, yvals = COMs[:, :, 0], COMs[:, :, 1]
             axs[i].plot(xvals, yvals, linewidth=1) #label='orbiter %i, %s'%(j, code_name))

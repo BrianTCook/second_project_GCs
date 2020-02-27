@@ -16,6 +16,7 @@ from galpy.util import bovy_conversion
 from gravity_code import gravity_code_setup
 
 import numpy as np
+import pandas as pd
 import time
 
 def print_diagnostics(time, simulation_bodies, E_dyn, dE_dyn):
@@ -63,13 +64,14 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             cluster_populations = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/Nstars_in_clusters.txt')
             cluster_populations = cluster_populations[:Norbiters]
     
-    #COM data
-    #COM_data = np.zeros((len(sim_times), 2, Norbiters))
+    #for 3D numpy array storage
+    all_data = np.zeros((len(sim_times), 7, Ntotal))
+    COM_data = np.zeros((len(sim_times), 2, Norbiters))
     
-    #cluster_pop_flag = 0
+    cluster_pop_flag = 0
     
     #for saving in write_set_to_file
-    filename = "data_%s_%s_Norbiters_%i.csv"%(code_name, orbiter_name, Norbiters)
+    filename = 'data_temp.csv'
     
     t0 = time.time()
     
@@ -85,7 +87,16 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         delta_energies.append(dE_dyn)
         
-        '''
+        attributes = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz')
+        write_set_to_file(simulation_bodies, filename, 'csv',
+                          attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
+                          attribute_names = attributes)
+        
+        data_t = pd.read_csv(filename, names=list(attributes))
+        all_data[j, :, :] = data_t.values
+        
+        x, y = data_t['x'].tolist(), data_t['y'].tolist()
+        
         #stuff to analyze COM of each star cluster
         for k, number_of_stars in enumerate(cluster_populations):
             
@@ -100,22 +111,18 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
             COM_data[j, 0, k] = x_COM
             COM_data[j, 1, k] = y_COM
-            
-        np.save('COM_data_%s_%s.npy'%(code_name, orbiter_name), COM_data)
-        '''
+        
         
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
-        
-        write_set_to_file(simulation_bodies, filename, "csv",
-                          attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
-                          attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
         
         print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
 
     gravity.stop()
     
     #things that are not easily extracted from write_set_to_file
+    np.save('all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters)), all_data)
+    np.save('COM_data_%s_%s_Norbiters_%s.npy'%(code_name, orbiter_name, str(Norbiters)), COM_data)
     np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt', cluster_colors)
     np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt', delta_energies)
     np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)

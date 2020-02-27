@@ -144,7 +144,8 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
 def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, 
             rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index):
 
-    star_masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/star_masses/star_masses_index=%i.txt'%index)
+    data_directory = '/home/brian/Desktop/second_project_gcs/data/'
+    star_masses = np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%index)
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units

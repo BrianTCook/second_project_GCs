@@ -48,6 +48,8 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     Ntotal = len(simulation_bodies)
     
+    print(simulation_bodies)
+    
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]
     

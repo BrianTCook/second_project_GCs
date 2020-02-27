@@ -52,7 +52,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     np.savetxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters), sim_times_unitless)
     
-    delta_energies, median_radial_coords, median_speeds, clock_times = [], [], [], []
+    delta_energies, clock_times = [], []
     
     body_masses = gravity.particles.mass
     total_mass = body_masses.sum()

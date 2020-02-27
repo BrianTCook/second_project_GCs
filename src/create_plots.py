@@ -22,7 +22,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
     npanels_x = len(orbiter_names)
     
     '''
-    3 by 1, a plot for each orbiter (single star, etc.)
+    2 by 1, a plot for each orbiter (single star, etc.)
     each panel contains 3 curves, one for each gravity solver
     '''
     
@@ -44,33 +44,22 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         
         for code_name in code_names:
 
-            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
-
-            #try:
-                
-            scaled_energies = np.loadtxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt')              
-            axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
+            sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))    
+            scaled_energies = np.loadtxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt')    
             
-            '''
-            except:
-                
-                print('%s, %s could not be found'%(orbiter_name, code_name))
-            '''
+            axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
             
         axs[i].legend(loc='upper right')
    
     plt.tight_layout()         
     plt.savefig('testing_nemesis_energy.pdf')
     plt.close()
-    
-    '''
+
     #median radial coordinates
     
     fig, axs = plt.subplots(1, len(orbiter_names))
 
     for i, orbiter_name in enumerate(orbiter_names): 
-        
-        #if orbiter_name == 'SingleCluster':
                 
         axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
         
@@ -83,11 +72,10 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         for code_name in code_names:
             
             sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt')%(code_name, orbiter_name, Norbiters)
-                        
-            filename = 'data_%s_%s_Norbiters_%i.csv'%(code_name, orbiter_name, Norbiters)
-            bodies = read_set_from_file(simulation_bodies, filename, "csv",
-                                        attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
-                                        attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
+            mass_and_phase_data = np.load('all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters)))
+            #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
+            
+            x, y, z = mass_and_phase_data[:, :, 1:3]
             
             rvals = [ np.sqrt(x[i]**2 + y[i]**2 + z[i]**2) for i in range(Ntotal) ]
             median_radial_coords.append(np.median(rvals))
@@ -109,8 +97,6 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
     fig, axs = plt.subplots(1, len(orbiter_names))
 
     for i, orbiter_name in enumerate(orbiter_names): 
-        
-        #if orbiter_name == 'SingleCluster':
                 
         axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
         
@@ -123,11 +109,10 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         for code_name in code_names:
             
             sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt')%(code_name, orbiter_name, Norbiters)
-                        
-            filename = 'data_%s_%s_Norbiters_%i.csv'%(code_name, orbiter_name, Norbiters)
-            bodies = read_set_from_file(simulation_bodies, filename, "csv",
-                            attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
-                            attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
+            mass_and_phase_data = np.load('all_data_%s_%s_Norbiter_%s.npy'%(code_name, orbiter_name, str(Norbiters)))
+            #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
+            
+            vx, vy, vz = mass_and_phase_data[:, :, 4:6]
             
             speeds = [ np.sqrt(vx[i]**2 + vy[i]**2 + vz[i]**2) for i in range(Ntotal) ]
             median_speeds.append(np.median(speeds))
@@ -144,15 +129,12 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
     plt.tight_layout() 
     plt.savefig('testing_nemesis_speeds.pdf')
     plt.close()
-    '''
     
     #clock times
     
     fig, axs = plt.subplots(1, len(orbiter_names))
 
     for i, orbiter_name in enumerate(orbiter_names): 
-        
-        #if orbiter_name == 'SingleCluster':
                 
         axs[i].set_xlabel('Simulation Time (Myr)', fontsize=12)
             
@@ -179,8 +161,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
     plt.tight_layout() 
     plt.savefig('testing_nemesis_clocktimes.pdf')
     plt.close()
-    
-    '''
+
     #center of mass
     
     fig, axs = plt.subplots(1, len(orbiter_names))
@@ -194,18 +175,14 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         for code_name in code_names:
             
             COMs = np.load('COM_data_%s_%s.npy'%(code_name, orbiter_name))
-            Norbiters = len(COMs[0, 0, :])
-            
-            for j in range(Norbiters): #Norbiters
                 
-                xvals, yvals = COMs[:, 0, j], COMs[:, 1, j]
-                axs[i].plot(xvals, yvals, linewidth=1) #label='orbiter %i, %s'%(j, code_name))
+            xvals, yvals = COMs[:, :, 0], COMs[:, :, 1]
+            axs[i].plot(xvals, yvals, linewidth=1) #label='orbiter %i, %s'%(j, code_name))
                     
         #axs[i].legend(loc='upper right', fontsize=8)
        
     plt.tight_layout() 
     plt.savefig('testing_nemesis_COMs.pdf')
     plt.close()
-    '''
     
     return 0

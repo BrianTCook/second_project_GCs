@@ -48,15 +48,17 @@ if __name__ in '__main__':
     
     Norbiters = 1
     
-    rvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_rvals.txt')
-    phivals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_phivals.txt')
-    zvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/dehnen_zvals.txt')
+    data_directory = '/home/brian/Desktop/second_project_gcs/data/'
     
-    vrvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/bovy_vrvals.txt')
-    vphivals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/bovy_vphivals.txt')
-    vzvals = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/bovy_vzvals.txt')
+    rvals = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')
+    phivals = np.loadtxt(data_directory+'ICs/dehnen_phivals.txt')
+    zvals = np.loadtxt(data_directory+'ICs/dehnen_zvals.txt')
     
-    masses = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/cluster_masses_for_sampling.txt')
+    vrvals = np.loadtxt(data_directory+'ICs/bovy_vrvals.txt')
+    vphivals = np.loadtxt(data_directory+'ICs/bovy_vphivals.txt')
+    vzvals = np.loadtxt(data_directory+'ICs/bovy_vzvals.txt')
+    
+    masses = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
     
     rvals = rvals[:Norbiters]
     phivals = phivals[:Norbiters]

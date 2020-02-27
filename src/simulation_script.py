@@ -46,7 +46,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     channel_from_gravity_to_framework = gravity.particles.new_channel_to(simulation_bodies)
     
-    Ntotal = len(gravity.particles)
+    Ntotal = len(simulation_bodies)
     
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]
@@ -65,7 +65,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             cluster_populations = cluster_populations[:Norbiters]
     
     #for 3D numpy array storage
-    all_data = np.zeros((len(sim_times), 7, Ntotal))
+    all_data = np.zeros((len(sim_times), Ntotal, 7))
     COM_data = np.zeros((len(sim_times), 2, Norbiters))
     
     cluster_pop_flag = 0

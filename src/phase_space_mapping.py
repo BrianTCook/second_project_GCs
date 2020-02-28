@@ -116,7 +116,7 @@ def maps(code_name, orbiter_name, Norbiters):
                 ax.label_outer()
                 
             fig.suptitle('Time = %.02f Myr'%(t), fontsize=14)
-            plt.savefig('phase_space_map_frame=%s_%s_%s.png'%(str(i).rjust(4, '0'), code_name, orbiter_name))
+            plt.savefig('phase_space_map_frame_%s_%s_%s.png'%(str(i).rjust(5, '0'), code_name, orbiter_name))
             plt.close()
         
         plt.figure()
@@ -126,7 +126,7 @@ def maps(code_name, orbiter_name, Norbiters):
         plt.xlabel('x (kpc)', fontsize=12)
         plt.ylabel('y (kpc)', fontsize=12)
         plt.title('time = %.02f Myr'%(t), fontsize=16)
-        plt.savefig('snapshot_%s_%s_%s.png'%(orbiter_name, code_name, str(i).rjust(4, '0')))
+        plt.savefig('snapshot_%s_%s_%s.png'%(orbiter_name, code_name, str(i).rjust(5, '0')))
         plt.close()
     
     return 0

@@ -1,3 +1,4 @@
+import gzip
 import numpy as np
 
 code_names = [ 'tree', 'Nbody' ]
@@ -10,7 +11,8 @@ for code_name in code_names:
     for orbiter_name in orbiter_names:
         for Norbiters in Norbiters_list:
 
-            all_data = np.load(data_directory+'all_data_%s_%s_Norbiter_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)))
+            f_all = gzip.GzipFile('all_data_%s_%s_Norbiter_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)))
+            all_data = np.load(f_all)
             N_timesteps = len(all_data[:,0,0])
             
             for i in range(N_timesteps):

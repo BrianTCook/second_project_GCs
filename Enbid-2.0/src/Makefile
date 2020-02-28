@@ -6,8 +6,8 @@ OPT1     =  -DWARN        # to enable or disable warnings
 OPT2     =  -DDIM6        # Does calculations in 6 dimensional space
 #OPT2    =  -DDIM3         # Does calculations in 3 dimensional space
 #OPT2    =  -DDIMO         # specify dimension in allvars.h (#define ND 4) 
-OPT3    =  -DMEDIAN       # reduces memory, if SPH not needed
-OPT4    =  -DPERIODIC     # Does calculations in 6 dimensional space
+#OPT3    =  -DMEDIAN       # reduces memory, if SPH not needed
+#OPT4    =  -DPERIODIC     # Does calculations in 6 dimensional space
 
 
 OPTIMIZE =    -O3 -Wall 

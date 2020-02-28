@@ -46,7 +46,7 @@ if __name__ in '__main__':
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     
-    Norbiters = 1
+    Norbiters_list = [ 1, 2, 4 ]
     
     data_directory = '/home/brian/Desktop/second_project_gcs/data/'
     
@@ -71,8 +71,8 @@ if __name__ in '__main__':
     t0 = time.time()
     
     for orbiter_name in orbiter_names:
-        
         for code_name in code_names:
+            for Norbiters in Norbiters_list:
             
             print('\\\\\\\\\\\\\\\\\\\\\\\\')
             print(orbiter_name, code_name)

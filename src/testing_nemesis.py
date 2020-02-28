@@ -41,7 +41,7 @@ if __name__ in '__main__':
     
     sepBinary = 20.|units.parsec #not necessary if not doing binary cluster part
     tend, dt = 20.|units.Myr, 0.1|units.Myr
-    dt_param = 0.1 #for nemesis
+    dt_param = 0.05 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)

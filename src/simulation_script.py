@@ -117,7 +117,10 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
         
-        print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
+        #don't need to print so often
+        if j%10 == 0:
+        
+            print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
 
     gravity.stop()
     

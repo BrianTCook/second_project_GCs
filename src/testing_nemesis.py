@@ -46,8 +46,6 @@ if __name__ in '__main__':
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     
-    Norbiters_list = [ 1, 2, 4 ]
-    
     data_directory = '/home/brian/Desktop/second_project_gcs/data/'
     
     rvals = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')
@@ -59,12 +57,8 @@ if __name__ in '__main__':
     vzvals = np.loadtxt(data_directory+'ICs/bovy_vzvals.txt')
     
     masses = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
-    
-    rvals = rvals[:Norbiters]
-    phivals = phivals[:Norbiters]
-    zvals = zvals[:Norbiters]  
-    masses = masses[:Norbiters]
 
+    Norbiters_list = [ 1, 2, 4 ]
     orbiter_names = [ 'SingleStar', 'SingleCluster' ]
     code_names = ['tree', 'Nbody' ]#, 'nemesis'
     
@@ -74,6 +68,11 @@ if __name__ in '__main__':
         for code_name in code_names:
             for Norbiters in Norbiters_list:
             
+                rvals = rvals[:Norbiters]
+                phivals = phivals[:Norbiters]
+                zvals = zvals[:Norbiters]  
+                masses = masses[:Norbiters]
+                            
                 print('\\\\\\\\\\\\\\\\\\\\\\\\')
                 print(orbiter_name, code_name)
                 print('\\\\\\\\\\\\\\\\\\\\\\\\')

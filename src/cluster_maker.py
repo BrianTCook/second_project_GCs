@@ -142,7 +142,7 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
     
     return bodies, code, converter_sub
 
-def orbiter(orbiter_name, code_name, Mgalaxy, Rgalaxy, sepBinary, 
+def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary, 
             rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index):
 
     data_directory = '/home/brian/Desktop/second_project_gcs/data/'

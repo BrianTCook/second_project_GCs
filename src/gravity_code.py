@@ -39,6 +39,8 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
     orbiter_bodies_list = [ list_of_orbiters[i][0] for i in range(Norbiters) ] 
     orbiter_codes_list = [ list_of_orbiters[i][1] for i in range(Norbiters) ]
     
+    print(len(list_of_orbiters))
+    
     cluster_colors = []
     
     for i, orbiter_code in enumerate(orbiter_codes_list):   

@@ -1,4 +1,0 @@
-#mass,x,y,z,vx,vy,vz
-#(1.98892e+30 * system.get('S.I.').base('mass')),(3.08567758128e+19 * system.get('S.I.').base('length')),(3.08567758128e+19 * system.get('S.I.').base('length')),(3.08567758128e+19 * system.get('S.I.').base('length')),((1000.0 * system.get('S.I.').base('length')) * (system.get('S.I.').base('time')**-1)),((1000.0 * system.get('S.I.').base('length')) * (system.get('S.I.').base('time')**-1)),((1000.0 * system.get('S.I.').base('length')) * (system.get('S.I.').base('time')**-1))
-#MSun,kpc,kpc,kpc,kms,kms,kms
-1.0,-0.217699139204,0.278777205319,0.00799246303485,-117.868916055,32.8398593023,169.409466365

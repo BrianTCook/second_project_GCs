@@ -18,6 +18,6 @@ mv Nbody_*.txt ../data/Nbody_data
 mv *.npy.gz ../data/zipped_files
 mv *.csv ../data
 mv *.pdf ../figures
-#mv *.png ../figures
+mv *.png ../figures
 mv *.gif ../figures
 

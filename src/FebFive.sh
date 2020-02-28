@@ -11,8 +11,6 @@ convert -delay 2 'snapshot_tree_SingleCluster_*.png' -loop 0 tree_singlecluster.
 
 rm -rf snapshot_*.png
 
-python3 convert_numpy_to_ascii.py
-
 mv for_enbid_*.txt ../data/enbid_files
 mv times_*.txt ../data/simulation_times
 mv tree_*.txt ../data/tree_data

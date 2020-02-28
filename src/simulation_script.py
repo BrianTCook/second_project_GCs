@@ -125,8 +125,10 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     gravity.stop()
     
     #things that are not easily extracted from write_set_to_file
-    np.save('all_data_%s_%s_Norbiter_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), all_data)
-    np.save('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), COM_data)
+    np.save('all_data_%s_%s_Norbiter_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), all_data,
+            allow_pickle=True)
+    np.save('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), COM_data,
+            allow_pickle=True)
     np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt', cluster_colors)
     np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt', delta_energies)
     np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)

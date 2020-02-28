@@ -16,7 +16,7 @@ def maps(code_name, orbiter_name, Norbiters):
 
     for i, t in enumerate(sim_times):
     
-        w_all = pd.DataFrame(np.rot90(phase_space_data[i,:,:]), 
+        w_all = pd.DataFrame(phase_space_data[i,:,:], 
                              columns=['mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'])
         
         x,y,z = w_all['x'].tolist(), w_all['y'].tolist(), w_all['z'].tolist()

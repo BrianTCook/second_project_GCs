@@ -14,8 +14,10 @@ rm -rf snapshot_*.png
 python3 convert_numpy_to_ascii.py
 
 mv for_enbid_*.txt ../data/enbid_files
-mv *.txt ../data
-mv *.npy ../data
+mv times_*.txt ../data/simulation_times
+mv tree_*.txt ../data/tree_data
+mv Nbody_*.txt ../data/Nbody_data
+mv *.npy.gz ../data/zipped_files
 mv *.csv ../data
 mv *.pdf ../figures
 mv *.png ../figures

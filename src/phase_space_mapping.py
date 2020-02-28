@@ -1,3 +1,4 @@
+import gzip
 import numpy as np 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,8 +11,10 @@ def maps(code_name, orbiter_name, Norbiters):
     
     sim_times = np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))    
     filename_phase = 'all_data_%s_%s_Norbiter_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters))    
+    
+    f_all = gzip.GzipFile('all_data_%s_%s_Norbiter_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'r')
+    phase_space_data = np.load(f_all)
 
-    phase_space_data = np.loadtxt(filename_phase)
     ntimes, nparticles, ndim = phase_space_data.shape
 
     for i, t in enumerate(sim_times):

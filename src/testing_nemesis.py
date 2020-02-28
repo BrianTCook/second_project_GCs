@@ -95,7 +95,7 @@ if __name__ in '__main__':
             #print('current time: %.03f minutes'%((time.time()-t0)/60.))
             '''
           
-            maps(orbiter_name, code_name, Norbiters)
+            maps(code_name, orbiter_name, Norbiters)
             #print('current time: %.03f minutes'%((time.time()-t0)/60.))
             
     plotting_things(orbiter_names, code_names, Norbiters, tend, dt)

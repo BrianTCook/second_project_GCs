@@ -123,14 +123,14 @@ def maps(code_name, orbiter_name, Norbiters):
             plt.savefig('phase_space_map_frame_%s_%s_%s_Norbiters_%s.png'%(str(i).rjust(5, '0'), code_name, orbiter_name, str(Norbiters)))
             plt.close()
         
-        plt.figure()
-        plt.scatter(x, y, s=1, c=colors)
-        plt.xlim(-2.0, 2.0)
-        plt.ylim(-2.0, 2.0)
-        plt.xlabel('x (kpc)', fontsize=12)
-        plt.ylabel('y (kpc)', fontsize=12)
-        plt.title('time = %.02f Myr'%(t), fontsize=16)
-        plt.savefig('snapshot_%s_%s_%s_Norbiters_%s.png'%(code_name, orbiter_name, str(i).rjust(5, '0'), str(Norbiters)))
-        plt.close()
+            plt.figure()
+            plt.scatter(x, y, s=1, c=colors)
+            plt.xlim(-2.0, 2.0)
+            plt.ylim(-2.0, 2.0)
+            plt.xlabel('x (kpc)', fontsize=12)
+            plt.ylabel('y (kpc)', fontsize=12)
+            plt.title('time = %.02f Myr'%(t), fontsize=16)
+            plt.savefig('snapshot_%s_%s_%s_Norbiters_%s.png'%(code_name, orbiter_name, str(i).rjust(5, '0'), str(Norbiters)))
+            plt.close()
     
     return 0

@@ -58,43 +58,42 @@ if __name__ in '__main__':
     
     masses = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 
-    Norbiters_list = [ 1, 2, 4 ]
+    Norbiters = 1 #need to make into a list at some point
     orbiter_names = [ 'SingleStar', 'SingleCluster' ]
     code_names = ['tree', 'Nbody' ]#, 'nemesis'
     
+    rvals = rvals[:Norbiters]
+    phivals = phivals[:Norbiters]
+    zvals = zvals[:Norbiters]  
+    masses = masses[:Norbiters]
+
     t0 = time.time()
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:
-            for Norbiters in Norbiters_list:
+                        
+            print('\\\\\\\\\\\\\\\\\\\\\\\\')
+            print(orbiter_name, code_name)
+            print('\\\\\\\\\\\\\\\\\\\\\\\\')
             
-                rvals = rvals[:Norbiters]
-                phivals = phivals[:Norbiters]
-                zvals = zvals[:Norbiters]  
-                masses = masses[:Norbiters]
-                            
-                print('\\\\\\\\\\\\\\\\\\\\\\\\')
-                print(orbiter_name, code_name)
-                print('\\\\\\\\\\\\\\\\\\\\\\\\')
-                
-                simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
-                           sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
-                           masses, Norbiters, tend, dt)
-                
-                '''
-                filename = "data_%s_%s_Norbiters=%i.csv"%(code_name, orbiter_name, Norbiters)
-                
-                bodies = read_set_from_file(filename, "csv",
-                                            attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
-                                            attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
-                
-                print('bodies: %s, %s '%(orbiter_name, code_name))
-                print(bodies.x)
-                
-                #print('current time: %.03f minutes'%((time.time()-t0)/60.))
-                '''
-              
-                maps(code_name, orbiter_name, Norbiters)
-                #print('current time: %.03f minutes'%((time.time()-t0)/60.))
+            simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
+                       sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
+                       masses, Norbiters, tend, dt)
             
+            '''
+            filename = "data_%s_%s_Norbiters=%i.csv"%(code_name, orbiter_name, Norbiters)
+            
+            bodies = read_set_from_file(filename, "csv",
+                                        attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
+                                        attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
+            
+            print('bodies: %s, %s '%(orbiter_name, code_name))
+            print(bodies.x)
+            
+            #print('current time: %.03f minutes'%((time.time()-t0)/60.))
+            '''
+          
+            maps(code_name, orbiter_name, Norbiters)
+            #print('current time: %.03f minutes'%((time.time()-t0)/60.))
+        
     plotting_things(orbiter_names, code_names, Norbiters, tend, dt)

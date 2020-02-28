@@ -10,6 +10,7 @@ from amuse.lab import *
 #from amuse.ext.bridge import bridge
 from amuse.couple import bridge
 
+import gzip
 import numpy as np
 
 import matplotlib
@@ -72,7 +73,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         for code_name in code_names:
             
             sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
-            f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)))
+            f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'r')
             mass_and_phase_data = np.load(f_all)
             #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
             
@@ -110,7 +111,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         for code_name in code_names:
             
             sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
-            f_massphase = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)))
+            f_massphase = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'r')
             mass_and_phase_data = np.load(f_massphase)
             #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
             
@@ -171,7 +172,7 @@ def plotting_things(orbiter_names, code_names, Norbiters, tend, dt):
         
         for code_name in code_names:
             
-            f_COM = gzip.GzipFile('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
+            f_COM = gzip.GzipFile('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'r')
             COMs = np.load(f_COM)
                 
             xvals, yvals = COMs[:, :, 0], COMs[:, :, 1]

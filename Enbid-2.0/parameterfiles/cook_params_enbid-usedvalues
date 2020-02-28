@@ -1,5 +1,5 @@
-InitCondFile                       Examples/hernquist1_small/snapshot_ici
-ICFormat                           1
+InitCondFile                       cook_data/cook_test
+ICFormat                           0
 SnapshotFileBase                   _ph1
 SpatialScale                       1
 PartBoundary                       7

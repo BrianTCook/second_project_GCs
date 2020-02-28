@@ -1,9 +1,10 @@
 %  Input and Output
-InitCondFile     Examples/hernquist1_small/snapshot_ici
+%InitCondFile     Examples/hernquist1_small/snapshot_ici
 %InitCondFile      Examples/uniform_6d_box_4/snapshot_ici
+InitCondFile      cook_data/cook_test
 
 %-------------------------------------------------------
-ICFormat                  1     % O)ASCII 1)Gadget 2)User defined
+ICFormat                  0     % O)ASCII 1)Gadget 2)User defined
 SnapshotFileBase        _ph1
 
 %-------------------------------------------------------

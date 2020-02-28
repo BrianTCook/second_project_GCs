@@ -11,7 +11,7 @@ def maps(code_name, orbiter_name, Norbiters):
     sim_times = np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))    
     filename_phase = 'all_data_%s_%s_Norbiter_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters))    
 
-    phase_space_data = np.load(filename_phase, allow_pickle=True)
+    phase_space_data = np.loadtxt(filename_phase)
     ntimes, nparticles, ndim = phase_space_data.shape
 
     for i, t in enumerate(sim_times):

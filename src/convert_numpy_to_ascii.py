@@ -17,6 +17,6 @@ for code_name in code_names:
             
             for i in range(N_timesteps):
                 
-                data_to_keep = all_data[i, :, 0:] #gets rid of mass
+                data_to_keep = all_data[i, :, 1:] #gets rid of mass
                 np.savetxt('for_enbid_%s_%s_frame_%s_Norbiters_%s.txt'%(code_name, orbiter_name,
                                                                         str(i).rjust(5, '0'), str(Norbiters)), data_to_keep)

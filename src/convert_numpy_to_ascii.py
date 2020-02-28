@@ -11,7 +11,7 @@ for code_name in code_names:
     for orbiter_name in orbiter_names:
         for Norbiters in Norbiters_list:
 
-            f_all = gzip.GzipFile('all_data_%s_%s_Norbiter_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)))
+            f_all = gzip.GzipFile('all_data_%s_%s_Norbiter_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'r')
             all_data = np.load(f_all)
             N_timesteps = len(all_data[:,0,0])
             

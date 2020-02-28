@@ -127,7 +127,7 @@ def simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     #things that are not easily extracted from write_set_to_file
     
-    f_all = gzip.GzipFile('all_data_%s_%s_Norbiter_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
+    f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
     f_COM = gzip.GzipFile('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
     np.save(file=f_all, arr=all_data, allow_pickle=True)
     np.save(file=f_COM, arr=COM_data, allow_pickle=True)

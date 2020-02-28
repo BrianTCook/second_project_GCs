@@ -4,10 +4,10 @@ echo 'run script'
 python3 testing_nemesis.py
 
 echo 'create gifs'
-convert -delay 2 'snapshot_Nbody_SingleStar_*.png' -loop 0 Nbody_singlestar.gif
-convert -delay 2 'snapshot_tree_SingleStar_*.png' -loop 0 tree_singlestar.gif
-convert -delay 2 'snapshot_Nbody_SingleCluster_*.png' -loop 0 Nbody_singlecluster.gif
-convert -delay 2 'snapshot_tree_SingleCluster_*.png' -loop 0 tree_singlecluster.gif
+#convert -delay 2 'snapshot_Nbody_SingleStar_*.png' -loop 0 Nbody_singlestar.gif
+#convert -delay 2 'snapshot_tree_SingleStar_*.png' -loop 0 tree_singlestar.gif
+#convert -delay 2 'snapshot_Nbody_SingleCluster_*.png' -loop 0 #Nbody_singlecluster.gif
+#convert -delay 2 'snapshot_tree_SingleCluster_*.png' -loop 0 tree_singlecluster.gif
 
 #rm -rf snapshot_*.png
 
@@ -18,6 +18,6 @@ mv Nbody_*.txt ../data/Nbody_data
 mv *.npy.gz ../data/zipped_files
 mv *.csv ../data
 mv *.pdf ../figures
-mv *.png ../figures
+#mv *.png ../figures
 mv *.gif ../figures
 

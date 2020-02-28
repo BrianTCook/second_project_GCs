@@ -21,14 +21,12 @@ import numpy as np
 import time
 
 def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
-                       rvals, phivals, zvals, vrvals, vphivals, vzvals, masses):
+                       rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, Norbiters):
     
     '''
     will need to ask SPZ if he meant for field, orbiter to be separate in non
     Nemesis gravity solvers?
     '''
-    
-    Norbiters = len(rvals)
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units

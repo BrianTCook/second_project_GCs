@@ -49,15 +49,15 @@ if __name__ in '__main__':
     
     data_directory = '/home/brian/Desktop/second_project_gcs/data/'
     
-    rvals = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')
-    phivals = np.loadtxt(data_directory+'ICs/dehnen_phivals.txt')
-    zvals = np.loadtxt(data_directory+'ICs/dehnen_zvals.txt')
+    rvals_all = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')
+    phivals_all = np.loadtxt(data_directory+'ICs/dehnen_phivals.txt')
+    zvals_all = np.loadtxt(data_directory+'ICs/dehnen_zvals.txt')
     
     vrvals = np.loadtxt(data_directory+'ICs/bovy_vrvals.txt')
     vphivals = np.loadtxt(data_directory+'ICs/bovy_vphivals.txt')
     vzvals = np.loadtxt(data_directory+'ICs/bovy_vzvals.txt')
     
-    masses = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
+    masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 
     Norbiters_list = [ 1, 2 ] #need to make into a list at some point
     orbiter_names = [ 'SingleCluster' ] #'SingleStar', 
@@ -69,10 +69,10 @@ if __name__ in '__main__':
         for code_name in code_names:
             for Norbiters in Norbiters_list:
                 
-                rvals = rvals[:Norbiters]
-                phivals = phivals[:Norbiters]
-                zvals = zvals[:Norbiters]  
-                masses = masses[:Norbiters]
+                rvals = rvals_all[:Norbiters]
+                phivals = phivals_all[:Norbiters]
+                zvals = zvals_all[:Norbiters]  
+                masses = masses_all[:Norbiters]
                         
                 print('\\\\\\\\\\\\\\\\\\\\\\\\')
                 print(code_name, orbiter_name)

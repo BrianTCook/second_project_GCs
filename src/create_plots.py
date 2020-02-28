@@ -17,7 +17,7 @@ import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
-def plotting_things(orbiter_names, code_names, Norbiters_list, tend, dt):
+def plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt):
     
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
     npanels_x = len(orbiter_names)

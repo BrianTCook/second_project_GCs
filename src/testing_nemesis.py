@@ -75,10 +75,10 @@ if __name__ in '__main__':
                 masses = masses[:Norbiters]
                         
                 print('\\\\\\\\\\\\\\\\\\\\\\\\')
-                print(orbiter_name, code_name)
+                print(code_name, orbiter_name)
                 print('\\\\\\\\\\\\\\\\\\\\\\\\')
                 
-                simulation(orbiter_name, code_name, potential, Mgalaxy, Rgalaxy, 
+                simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
                            sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
                            masses, Norbiters, tend, dt)
                 
@@ -89,7 +89,7 @@ if __name__ in '__main__':
                                             attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                                             attribute_names = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
                 
-                print('bodies: %s, %s '%(orbiter_name, code_name))
+                print('bodies: %s, %s '%(code_name, orbiter_name))
                 print(bodies.x)
                 
                 #print('current time: %.03f minutes'%((time.time()-t0)/60.))
@@ -98,5 +98,5 @@ if __name__ in '__main__':
                 maps(code_name, orbiter_name, Norbiters)
                 #print('current time: %.03f minutes'%((time.time()-t0)/60.))
         
-    plotting_things(orbiter_names, code_names, Norbiters_list, tend, dt)
-    convert_numpy(orbiter_names, code_names, Norbiters_list)
+    plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt)
+    convert_numpy(code_names, orbiter_names, Norbiters_list)

@@ -59,9 +59,9 @@ if __name__ in '__main__':
     
     masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 
-    Norbiters_list = [ 1, 2, 4, 8, 16 ] #need to make into a list at some point
-    orbiter_names = [ 'SingleStar', 'SingleCluster' ] #'BinaryCluster 
-    code_names = ['tree', 'Nbody' ]#, 'nemesis'
+    Norbiters_list = [ 1, 2 ] #need to make into a list at some point
+    orbiter_names = [ 'SingleCluster' ] #'SingleStar', 'BinaryCluster 
+    code_names = [ 'nemesis' ] #'tree', 'Nbody' ]#, 'nemesis'
 
     t0 = time.time()
     

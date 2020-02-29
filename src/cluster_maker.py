@@ -24,9 +24,11 @@ from galpy.potential import MWPotential2014
 from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 
-
 import numpy as np
 np.random.seed(73)
+
+from nemesis import Nemesis, HierarchicalParticles
+from nemesis_supplement import getxv, parent_worker, sub_worker, py_worker, smaller_nbody_power_of_two, distance_function, radius
 
 def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
                             W0, Mcluster, star_masses, code_name, parameters=[]):
@@ -86,6 +88,9 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         '''
         
         parts = HierarchicalParticles(bodies)
+
+    	converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
+   	converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
         
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
         dt_nemesis = dt

@@ -235,6 +235,9 @@ class Nemesis(object):
       else:
         p.radius=self.radius
 
+    print(p.subsystem)
+    print(p.radius)
+
   def commit_particles(self):
       
     self.particles.recenter_subsystems()
@@ -244,6 +247,8 @@ class Nemesis(object):
       simple=self.particles.simple_particles()
       simple.sub_worker_radius=simple.radius #is this different than Roche radius
       #simple.sub_worker_radius = 3.*simple.radius * (2 * Mgalaxy/simple.total_mass())**(1/3.)
+    
+    print(self.particles)
     
     for i, p in enumerate(self.particles):
         
@@ -288,7 +293,8 @@ class Nemesis(object):
       timestep = self.timestep
     if timestep is None:
       timestep = tend-self.model_time  
-    while self.model_time < (tend-timestep/2.):    
+    while self.model_time < (tend-timestep/2.):  
+      print('gets here in evolve_model')
       self.kick_codes(timestep/2.)
       self.drift_codes(self.model_time+timestep,self.model_time+timestep/2)
       self.kick_codes(timestep/2.)
@@ -352,6 +358,8 @@ class Nemesis(object):
     for p in coll_set:
       p=p.as_particle_in_set(self.particles)
       collsubset+=p
+      print('subcodes are', self.subcodes)
+      
       if self.subcodes.has_key(p):
         code=self.subcodes[p]
         code.evolve_model(coll_time)

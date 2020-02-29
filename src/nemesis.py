@@ -221,8 +221,10 @@ class Nemesis(object):
  
     if p.subsystem is None:
       sys=p.as_set()
+      print('sys is', sys)
     else:
       sys=p.subsystem
+      print('sys is', sys)
     
     if self.radius is None:
     
@@ -234,9 +236,6 @@ class Nemesis(object):
         p.radius=self.radius(sys)
       else:
         p.radius=self.radius
-
-    print(p.subsystem)
-    print(p.radius)
 
   def commit_particles(self):
       

@@ -207,7 +207,7 @@ def potential_energy_particles(particles, get_potential):
   return (pot*parts.mass).sum()/2 
 
 class Nemesis(object):
-  def __init__(self,parent_code_factory,subcode_factory, worker_code_factory,
+  def __init__(self,parent_code_factory,subcode_factory, worker_code_factory, bodies
                 use_threading=True):
     parent_code_factory = parent_code_factory(bodies)
     self.parent_code=parent_code_factory #why does it have parentheses around it

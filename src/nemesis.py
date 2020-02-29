@@ -472,7 +472,7 @@ class Nemesis(object):
 
   @property
   def kinetic_energy(self):  
-    Ek=self.parent_code.kinetic_energy
+    Ek=self.parent_code.kinetic_energy()
     for code in self.subcodes.values():
       Ek+=code.kinetic_energy
     return Ek

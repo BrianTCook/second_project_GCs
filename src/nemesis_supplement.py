@@ -39,7 +39,7 @@ def getxv(converter, M1, a, e, ma=0):
     
     return x, v
 
-def parent_worker():
+def parent_worker(converter_parent):
     code = Hermite(converter_parent)
     code.parameters.epsilon_squared=0.| units.kpc**2
     code.parameters.end_time_accuracy_factor=0.
@@ -83,7 +83,6 @@ def distance_function(ipart, jpart, eta=0.1/2., _G=constants.G):
 '''
 eta = should be dt_param or dt_param/2. but it's not being defined for whatever reason
 '''
-
 
 def radius(sys, eta=0.1, _G=constants.G):
 

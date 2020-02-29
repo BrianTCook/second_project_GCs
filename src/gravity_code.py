@@ -16,6 +16,8 @@ from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 
 from cluster_maker import orbiter
+from nemesis import Nemesis, HierarchicalParticles
+from nemesis_supplement import getxv, parent_worker, sub_worker, py_worker, smaller_nbody_power_of_two, distance_function, radius
 
 import numpy as np
 import time

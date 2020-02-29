@@ -31,7 +31,7 @@ from nemesis import Nemesis, HierarchicalParticles
 from nemesis_supplement import getxv, parent_worker, sub_worker, py_worker, smaller_nbody_power_of_two, distance_function, radius
 
 def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                            W0, Mcluster, star_masses, code_name, parameters=[]):
+                            W0, Mcluster, star_masses, Mgalaxy, Rgalaxy, code_name, parameters=[]):
 
     '''
     sets up a cluster with mass M and radius R
@@ -114,7 +114,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     
     return bodies, code
 
-def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, code_name):
+def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, Mgalaxy, Rgalaxy, code_name):
     
     '''
     takes 3 random numbers and generates open cluster
@@ -143,7 +143,7 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
     print('~~~~~~~~~~~~~~~~')
     
     bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
-                                           W0, Mcluster, star_masses, code_name, parameters=[])
+                                           W0, Mcluster, star_masses, Mgalaxy, Rgalaxy, code_name, parameters=[])
     
     return bodies, code, converter_sub
 
@@ -230,6 +230,6 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
     if orbiter_name == 'SingleCluster':
         
         bodies, code, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, 
-                                       masses, index, code_name)
+                                       masses, index, Mgalaxy, Rgalaxy, code_name)
         
         return bodies, code

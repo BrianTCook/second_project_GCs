@@ -18,6 +18,11 @@ def maps(code_name, orbiter_name, Norbiters):
 
     ntimes, nparticles, ndim = phase_space_data.shape
 
+    if code_name != 'Nemesis':
+        colors = np.loadtxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt')
+    if code_name == 'Nemesis':
+        colors = 'k'
+
     for i, t in enumerate(sim_times):
     
         w_all = pd.DataFrame(phase_space_data[i,:,:], 
@@ -30,7 +35,7 @@ def maps(code_name, orbiter_name, Norbiters):
     
             fig, axs = plt.subplots(5, 5)
             
-            #first column
+            #first column            
             
             axs[0, 0].scatter(x, y, s=2, c=colors)
             axs[0, 0].set(xlabel='x', ylabel='y')

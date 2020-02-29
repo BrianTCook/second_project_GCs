@@ -168,12 +168,18 @@ def plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt):
             
             for code_name in code_names:
                 
-                sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
+                try:
                 
-                clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
-                axs[i].semilogy(sim_times_unitless, clock_times, label=code_name)
-               
-            axs[i].set_ylim(1e-1, 5e4) #1/10th of a second to ~15 hours
+                    sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
+                    
+                    clock_times = np.loadtxt(code_name + '_' + orbiter_name + '_clock_times.txt')
+                    axs[i].plot(sim_times_unitless, clock_times, label=code_name)
+                   
+                except:
+                    
+                    print('%s, %s could not be found'%(code_name, orbiter_name))
+                    
+            #axs[i].set_ylim(1e-1, 5e4) #1/10th of a second to ~15 hours
             axs[i].legend(loc='upper right')
            
         plt.tight_layout() 

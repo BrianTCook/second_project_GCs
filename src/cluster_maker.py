@@ -90,7 +90,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         parts = HierarchicalParticles(bodies)
 
         converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-        converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
+        converter_sub = nbody_system.nbody_to_si(np.median(star_masses.value_in(units.MSun))|units.MSun, 5.|units.parsec) #masses list is in solar mass units
         
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
         dt_nemesis = dt
@@ -154,7 +154,7 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
     star_masses = np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%index)
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
+    converter_sub = nbody_system.nbody_to_si(np.median(star_masses.value_in(units.MSun))|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     
     '''
     takes in R, Z value

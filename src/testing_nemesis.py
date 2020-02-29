@@ -61,7 +61,7 @@ if __name__ in '__main__':
 
     Norbiters_list = [ 1, 2 ] #need to make into a list at some point
     orbiter_names = [ 'SingleCluster' ] #'SingleStar', 'BinaryCluster 
-    code_names = [ 'nemesis' ] #'tree', 'Nbody' ]#, 'nemesis'
+    code_names = [ 'nemesis', 'tree', 'Nbody' ]#, 'nemesis'
 
     t0 = time.time()
     

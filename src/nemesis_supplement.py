@@ -40,6 +40,7 @@ def getxv(converter, M1, a, e, ma=0):
     return x, v
 
 def parent_worker():
+    Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     code = Hermite(converter_parent)
     code.parameters.epsilon_squared=0.| units.kpc**2
@@ -48,7 +49,7 @@ def parent_worker():
     return code
 
 def sub_worker(parts):
-    converter_sub = nbody_system.nbody_to_si(np.median(star_masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
+    converter_sub = nbody_system.nbody_to_si(10.|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     code = BHTree(converter_sub)
     code.parameters.inttype_parameter=code.inttypes.SHARED4
     return code

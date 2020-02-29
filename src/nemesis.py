@@ -207,8 +207,8 @@ def potential_energy_particles(particles, get_potential):
 class Nemesis(object):
   def __init__(self,parent_code_factory,subcode_factory, worker_code_factory, bodies, use_threading=True):
     self.parent_code=parent_code_factory() #why does it have parentheses around it
-    self.subcode_factory=subcode_factory
-    self.worker_code_factory=worker_code_factory
+    self.subcode_factory=subcode_factory()
+    self.worker_code_factory=worker_code_factory()
     self.bodies = bodies
     self.particles=HierarchicalParticles(self.bodies) #self.parent_code.particles)
     self.timestep=None

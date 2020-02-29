@@ -80,6 +80,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         clock_times.append(time.time()-t0) #will be in seconds
     
+        '''
         if j == 0:
             E_dyn_init = gravity.kinetic_energy + gravity.potential_energy
             
@@ -87,6 +88,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         dE_dyn = (E_dyn/E_dyn_init) - 1.
         
         delta_energies.append(dE_dyn)
+        '''
         
         attributes = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz')
         write_set_to_file(simulation_bodies, filename, 'csv',

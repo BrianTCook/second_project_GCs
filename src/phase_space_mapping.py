@@ -17,11 +17,7 @@ def maps(code_name, orbiter_name, Norbiters):
     phase_space_data = np.load(f_all)
 
     ntimes, nparticles, ndim = phase_space_data.shape
-
-    if code_name != 'Nemesis':
-        colors = np.loadtxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt')
-    if code_name == 'Nemesis':
-        colors = 'k'
+    colors = np.loadtxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt')
 
     for i, t in enumerate(sim_times):
     

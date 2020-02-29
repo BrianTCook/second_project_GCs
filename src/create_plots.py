@@ -46,12 +46,18 @@ def plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt):
             axs[i].set_title(orbiter_name, fontsize=8)
             
             for code_name in code_names:
+                
+                try:
     
-                sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))    
-                scaled_energies = np.loadtxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt')    
-                
-                axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
-                
+                    sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))    
+                    scaled_energies = np.loadtxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt')    
+                    
+                    axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
+                    
+                except:
+                    
+                    print('%s, %s could not be found'%(code_name, orbiter_name))
+                    
             axs[i].legend(loc='upper right')
        
         plt.tight_layout()         
@@ -74,22 +80,28 @@ def plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt):
             
             for code_name in code_names:
                 
-                sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
-                f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'r')
-                mass_and_phase_data = np.load(f_all)
-                #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
+                try:
                 
-                Ntotal = len(mass_and_phase_data[0,:,0])
-                
-                x = mass_and_phase_data[:, :, 1]
-                y = mass_and_phase_data[:, :, 2]
-                z = mass_and_phase_data[:, :, 3]
-                
-                median_radial_coords = [ np.median([ np.sqrt(x[i,j]**2 + y[i,j]**2 + z[i,j]**2) for j in range(Ntotal) ]) 
-                                         for i in range(len(sim_times_unitless)) ]
-                
-                axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
-                
+                    sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
+                    f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'r')
+                    mass_and_phase_data = np.load(f_all)
+                    #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
+                    
+                    Ntotal = len(mass_and_phase_data[0,:,0])
+                    
+                    x = mass_and_phase_data[:, :, 1]
+                    y = mass_and_phase_data[:, :, 2]
+                    z = mass_and_phase_data[:, :, 3]
+                    
+                    median_radial_coords = [ np.median([ np.sqrt(x[i,j]**2 + y[i,j]**2 + z[i,j]**2) for j in range(Ntotal) ]) 
+                                             for i in range(len(sim_times_unitless)) ]
+                    
+                    axs[i].plot(sim_times_unitless, median_radial_coords, label=code_name)
+                    
+                except:
+                    
+                    print('%s, %s could not be found'%(code_name, orbiter_name))
+                    
             axs[i].legend(loc='upper right')
                 
         plt.tight_layout()
@@ -112,22 +124,28 @@ def plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt):
             
             for code_name in code_names:
                 
-                sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
-                f_massphase = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'r')
-                mass_and_phase_data = np.load(f_massphase)
-                #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
+                try:
                 
-                Ntotal = len(mass_and_phase_data[0,:,0])
-                
-                vx = mass_and_phase_data[:, :, 4]
-                vy = mass_and_phase_data[:, :, 5]
-                vz = mass_and_phase_data[:, :, 6]
-                
-                median_speeds = [ np.median([ np.sqrt(vx[i,j]**2 + vy[i,j]**2 + vz[i,j]**2) for j in range(Ntotal) ]) 
-                                  for i in range(len(sim_times_unitless)) ]
-                
-                axs[i].plot(sim_times_unitless, median_speeds, label=code_name)
-                
+                    sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))
+                    f_massphase = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'r')
+                    mass_and_phase_data = np.load(f_massphase)
+                    #mass_and_phase_data columns: mass, x, y, z, vx, vy, vz
+                    
+                    Ntotal = len(mass_and_phase_data[0,:,0])
+                    
+                    vx = mass_and_phase_data[:, :, 4]
+                    vy = mass_and_phase_data[:, :, 5]
+                    vz = mass_and_phase_data[:, :, 6]
+                    
+                    median_speeds = [ np.median([ np.sqrt(vx[i,j]**2 + vy[i,j]**2 + vz[i,j]**2) for j in range(Ntotal) ]) 
+                                      for i in range(len(sim_times_unitless)) ]
+                    
+                    axs[i].plot(sim_times_unitless, median_speeds, label=code_name)
+                    
+                except:
+                    
+                    print('%s, %s could not be found'%(code_name, orbiter_name))
+                    
             axs[i].legend(loc='upper right')
            
         plt.tight_layout() 
@@ -174,12 +192,18 @@ def plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt):
             
             for code_name in code_names:
                 
-                f_COM = gzip.GzipFile('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'r')
-                COMs = np.load(f_COM)
-                    
-                xvals, yvals = COMs[:, :, 0], COMs[:, :, 1]
-                axs[i].plot(xvals, yvals, linewidth=1) #label='orbiter %i, %s'%(j, code_name))
+                try:
+                
+                    f_COM = gzip.GzipFile('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'r')
+                    COMs = np.load(f_COM)
                         
+                    xvals, yvals = COMs[:, :, 0], COMs[:, :, 1]
+                    axs[i].plot(xvals, yvals, linewidth=1) #label='orbiter %i, %s'%(j, code_name))
+
+                except:
+                    
+                    print('%s, %s could not be found'%(code_name, orbiter_name))
+                    
             #axs[i].legend(loc='upper right', fontsize=8)
            
         plt.tight_layout() 

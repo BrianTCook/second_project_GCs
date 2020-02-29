@@ -245,8 +245,6 @@ class Nemesis(object):
       simple.sub_worker_radius=simple.radius #is this different than Roche radius
       #simple.sub_worker_radius = 3.*simple.radius * (2 * Mgalaxy/simple.total_mass())**(1/3.)
     
-    print(self.particles)
-    
     for i, p in enumerate(self.particles):
         
       self.set_parent_particle_radius(p)
@@ -302,11 +300,8 @@ class Nemesis(object):
     to_remove=Particles()
     sys_to_add=[]
     
-    print('~~~~~~')
-    print('subsystems[0] is: ', subsystems[0])
-    print('~~~~~~')
-    
     for parent in subsystems:
+      print('gets to parent')
       subsys=parent.subsystem
       radius=parent.radius
       components=subsys.connected_components(threshold=self.threshold,distfunc=self.distfunc)

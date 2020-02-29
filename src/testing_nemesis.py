@@ -60,13 +60,17 @@ if __name__ in '__main__':
     masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 
     Norbiters_list = [ 1, 2 ] #need to make into a list at some point
-    orbiter_names = [ 'SingleCluster' ] #, 'SingleStar', 'BinaryCluster' 
+    orbiter_names = [ 'SingleStar', 'SingleCluster' ] #,, 'BinaryCluster' 
     code_names = [ 'nemesis', 'tree', 'Nbody' ]
 
     t0 = time.time()
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:
+            
+            if orbiter_name == 'SingleStar' and code_name == 'nemesis':
+                continue
+            
             for Norbiters in Norbiters_list:
                 
                 rvals = rvals_all[:Norbiters]

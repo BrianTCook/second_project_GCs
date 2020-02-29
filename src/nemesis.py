@@ -453,7 +453,8 @@ class Nemesis(object):
   def get_gravity_at_point(self,radius,x,y,z):
     ax,ay,az=self.parent_code.get_gravity_at_point(radius,x,y,z)
     return ax,ay,az
-
+  
+  '''
   @property
   def potential_energy(self):
     Ep=self.parent_code.potential_energy
@@ -476,6 +477,7 @@ class Nemesis(object):
     for code in self.subcodes.values():
       Ek+=code.kinetic_energy
     return Ek
+  '''
 
   @property
   def model_time(self):  

@@ -128,7 +128,10 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             print_diagnostics(t, simulation_bodies), E_dyn, dE_dyn)
         '''
 
-    gravity.stop()
+    try:
+        gravity.stop()
+    except:
+        print('gravity cannot be stopped, mwahahaha')
     
     #things that are not easily extracted from write_set_to_file
     

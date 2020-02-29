@@ -89,7 +89,11 @@ eta = should be dt_param or dt_param/2. but it's not being defined for whatever 
 
 def radius(sys, eta=0.1, _G=constants.G):
 
+    Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
+    converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
+    
     #variable shouldn't be named radius
+    dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
     ra = ((_G*sys.total_mass()*dt**2/eta**2)**(1/3.))
     ra = ra*((len(sys)+1)/2.)**0.75
     return 3.*ra #is this the roche-lobe radius?

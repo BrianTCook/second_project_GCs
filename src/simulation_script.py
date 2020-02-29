@@ -83,7 +83,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         if j == 0:
             E_dyn_init = gravity.particles.kinetic_energy() + gravity.particles.potential_energy()
             
-        E_dyn = gravity.kinetic_energy + gravity.potential_energy
+        E_dyn = gravity.particles.kinetic_energy() + gravity.particles.potential_energy()
         dE_dyn = (E_dyn/E_dyn_init) - 1.
         
         delta_energies.append(dE_dyn)

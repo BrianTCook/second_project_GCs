@@ -4,7 +4,11 @@ import numpy as np
 def convert_numpy(code_names, orbiter_names, Norbiters_list):
 
     for code_name in code_names:
-        for orbiter_name in orbiter_names:        
+        for orbiter_name in orbiter_names:
+            
+            if code_name == 'nemesis' and orbiter_name == 'SingleStar':
+                continue
+            
             for Norbiters in Norbiters_list:
     
                 f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'r')

@@ -1,14 +1,10 @@
 import numpy
 import threading
 
-from amuse.lab import *
-
 from amuse.datamodel import Particle,Particles,ParticlesOverlay
 from amuse.units import units,nbody_system
 
 from amuse.ext.basicgraph import UnionFind
-
-from nemesis_supplement import *
 
 def system_type(parts):
   if len(parts)==2:
@@ -66,6 +62,7 @@ class correction_from_compound_particles(object):
       parts.phi-=phi
     return particles.phi
   
+  
 class correction_for_compound_particles(object):  
   def __init__(self,system, parent, worker_code_factory):
     self.system=system
@@ -93,48 +90,25 @@ class correction_for_compound_particles(object):
     return (phi-_phi[0])
 
 class HierarchicalParticles(ParticlesOverlay):
-    
-  print('gets to HierarchicalParticles')
-    
   def __init__(self, *args,**kwargs):
-      
     ParticlesOverlay.__init__(self,*args,**kwargs)
-    
   def add_particles(self,sys):
-      
     parts=ParticlesOverlay.add_particles(self,sys)
-    
     if not hasattr(sys,"subsystem"):
-      print('gets to if not hasattr loop in add_particles')
-      parts.subsystem=None   
-      
-    return parts   
- 
+      parts.subsystem=None
+    return parts    
   def add_subsystem(self, sys, recenter=True):
-    
-    print('gets to add_subsystem')
-      
     if len(sys)==1:
       return self.add_particles(sys)[0]
-  
     p=Particle()
     self.assign_parent_attributes(sys, p, relative=False, recenter=recenter)
     parent=self.add_particle(p)
     parent.subsystem=sys
-    print('parent is: ', parent)
     return parent
-
   def assign_subsystem(self, sys, parent, relative=True, recenter=True):
-      
-    print('gets to assign_subsystem')
-      
     self.assign_parent_attributes(sys,parent,relative,recenter)
     parent.subsystem=sys
-    
   def assign_parent_attributes(self,sys,parent, relative=True, recenter=True):
-      
-    print('gets to assign_parent_attributes')
-      
     parent.mass=sys.total_mass()
     if relative:
       pass
@@ -145,55 +119,24 @@ class HierarchicalParticles(ParticlesOverlay):
       parent.position+=sys.center_of_mass()
       parent.velocity+=sys.center_of_mass_velocity()
       sys.move_to_center()
-      
   def recenter_subsystems(self):
-      
-    print('gets to recenter_subsystems')
-      
     for parent in self.compound_particles():
-        
-      print('parent is', parent)
-      print('parent.subsystem is', parent.subsystem)
       parent.position+=parent.subsystem.center_of_mass()
       parent.velocity+=parent.subsystem.center_of_mass_velocity()
       parent.subsystem.move_to_center()  
-      
   def compound_particles(self):
-      
-    cp = self.select( lambda x: x is not None, ["subsystem"] )
-    
-    print('cp is', cp)
-    
-    return cp
-
+    return self.select( lambda x: x is not None, ["subsystem"])
   def simple_particles(self):
-      
-    sp = self.select( lambda x: x is None, ["subsystem"] )
-    
-    print('sp is', sp)
-    
-    return sp
-
+    return self.select( lambda x: x is None, ["subsystem"])
   def all(self):
-      
-    print('gets to all')
-      
     parts=Particles()
-    
     for parent in self:
-        
       if parent.subsystem is None:   
-          
         parts.add_particle(parent)
-        
       else:
-          
-        print('gets to else statement in all')
-          
         subsys=parts.add_particles(parent.subsystem)
         subsys.position+=parent.position
         subsys.velocity+=parent.velocity
-        
     return parts
 
 
@@ -226,12 +169,12 @@ def potential_energy_particles(particles, get_potential):
   return (pot*parts.mass).sum()/2 
 
 class Nemesis(object):
-  def __init__(self,parent_code_factory,subcode_factory, worker_code_factory, bodies, use_threading=True):
-    self.parent_code=parent_code_factory() #why does it have parentheses around it
-    self.subcode_factory=subcode_factory()
-    self.worker_code_factory=worker_code_factory()
-    self.bodies = bodies
-    self.particles=HierarchicalParticles(self.bodies) #HierarchicalParticles(self.bodies) #self.parent_code.particles)
+  def __init__(self,parent_code_factory,subcode_factory, worker_code_factory,
+                use_threading=True):
+    self.parent_code=parent_code_factory()
+    self.subcode_factory=subcode_factory
+    self.worker_code_factory=worker_code_factory
+    self.particles=HierarchicalParticles(self.parent_code.particles)
     self.timestep=None
     self.subcodes=dict()
     self.split_treshold=None
@@ -246,55 +189,30 @@ class Nemesis(object):
       sys=p.subsystem
     
     if self.radius is None:
-    
-      #sets the Rcluster value
       p.radius=sys.virial_radius()
-      
     else:
       if callable(self.radius): 
         p.radius=self.radius(sys)
       else:
         p.radius=self.radius
-        
+
   def commit_particles(self):
-      
-    #self.particles.recenter_subsystems()
+    self.particles.recenter_subsystems()
     
     if not hasattr(self.particles,"sub_worker_radius"):
-        
-      print('gets to sub_worker_radius')
-        
       simple=self.particles.simple_particles()
-      simple.sub_worker_radius=simple.radius #is this different than Roche radius
-      #simple.sub_worker_radius = 3.*simple.radius * (2 * Mgalaxy/simple.total_mass())**(1/3.)
+      simple.sub_worker_radius=simple.radius
     
-    for i, p in enumerate(self.particles):
-        
+    for p in self.particles:
       self.set_parent_particle_radius(p)
-    
-    for j, parent in enumerate(self.subcodes.keys()):
-        
-      if j == 0:
-          
-          print('gets to enumerate(self.subcodes.keys())')
-        
-      if parent.subsystem is self.subcodes[parent].particles:
-          continue
       
+    for parent in self.subcodes.keys():
+      if parent.subsystem is self.subcodes[parent].particles:
+        continue
       code=self.subcodes.pop(parent)
       del code
-    
-    for k, parent in enumerate(self.particles.compound_particles()):
-        
-      if k == 0:
-          
-          print('-----')
-          print('gets to for parent in self.particles.compound_particles():')
-          print('-----')
-      
+    for parent in self.particles.compound_particles():
       if not self.subcodes.has_key(parent):
-          
-        print('does it get here?')
         sys=parent.subsystem
         code=self.subcode_factory(sys)
         code.parameters.begin_time=self.model_time
@@ -303,11 +221,9 @@ class Nemesis(object):
         self.subcodes[parent]=code
 
   def recommit_particles(self):
-      
     self.commit_particles()
 
   def commit_parameters(self):
-      
     pass
 
   def evolve_model(self, tend, timestep=None):
@@ -315,7 +231,7 @@ class Nemesis(object):
       timestep = self.timestep
     if timestep is None:
       timestep = tend-self.model_time  
-    while self.model_time < (tend-timestep/2.):  
+    while self.model_time < (tend-timestep/2.):    
       self.kick_codes(timestep/2.)
       self.drift_codes(self.model_time+timestep,self.model_time+timestep/2)
       self.kick_codes(timestep/2.)
@@ -325,17 +241,12 @@ class Nemesis(object):
     subsystems=self.particles.compound_particles()
     to_remove=Particles()
     sys_to_add=[]
-    
-    print('gets to split_subcodes')
-    
     for parent in subsystems:
-      print('gets to parent')
       subsys=parent.subsystem
       radius=parent.radius
       components=subsys.connected_components(threshold=self.threshold,distfunc=self.distfunc)
-      print('components are', components)
       if len(components)>1:
-        print("splitting:", len(components))
+        print "splitting:", len(components)
         parentposition=parent.position
         parentvelocity=parent.velocity
         to_remove.add_particle(parent)
@@ -348,9 +259,6 @@ class Nemesis(object):
         del code  
 
     if len(to_remove)>0:
-        
-      print('gets to != 0 particles to remove')
-        
       self.particles.remove_particles(to_remove)
 
       for sys in sys_to_add:
@@ -365,38 +273,27 @@ class Nemesis(object):
           newparent=self.particles.add_subsystem(sys)
           newparent.sub_worker_radius=sys[0].radius
         self.set_parent_particle_radius(newparent)
-        print( "radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec))
+        print "radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec)
+
       
   def handle_collision(self, coll_time,corr_time,coll_set):
-    
-    print("collision:", len(coll_set))
+    print "collision:", len(coll_set)
 
     subsystems=self.particles.compound_particles()
-    
-    print('-------')
-    print('number of subsystems: %i'%(len(subsystems)))
-    print('-------')
-    
     collsubset=self.particles[0:0]
     collsubsystems=Particles()
     for p in coll_set:
       p=p.as_particle_in_set(self.particles)
       collsubset+=p
-      print('subcodes are', self.subcodes)
-      
       if self.subcodes.has_key(p):
         code=self.subcodes[p]
         code.evolve_model(coll_time)
-        print((coll_time-code.model_time)/self.timestep)
+        print (coll_time-code.model_time)/self.timestep
       if p.subsystem is not None:
         collsubsystems.add_particle(p)
 
-    print("corr",coll_time.in_(units.yr),(coll_time-corr_time)/self.timestep)
+    print "corr",coll_time.in_(units.yr),(coll_time-corr_time)/self.timestep
     self.correction_kicks(collsubset,collsubsystems,coll_time-corr_time)
-    
-    print('------')
-    print('coll_set is: ', coll_set)
-    print('------')
     
     newparts=HierarchicalParticles(Particles())
     to_remove=Particles()
@@ -414,15 +311,14 @@ class Nemesis(object):
         np.radius=p.sub_worker_radius        
       to_remove.add_particle(p)
     self.particles.remove_particles(to_remove)
-    print('newparts are, ', newparts)
     newcode=self.subcode_factory(newparts)
     newcode.parameters.begin_time=coll_time
     newcode.particles.add_particles(newparts)
     newparent=self.particles.add_subsystem(newcode.particles)
     self.set_parent_particle_radius(newparent)
     newparent.sub_worker_radius=0.*newparent.radius
-    print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec))
-    #self.subcodes[newparent]=newcode)
+    print "radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec)
+    self.subcodes[newparent]=newcode
     return newparent
         
   def find_coll_sets(self,p1,p2):
@@ -439,13 +335,13 @@ class Nemesis(object):
       code.evolve_model(tend)
       if stopping_condition.is_set():
         coll_time=code.model_time
-        print("coll_time:", coll_time.in_(units.Myr), tend.in_(units.Myr))
+        print "coll_time:", coll_time.in_(units.Myr), tend.in_(units.Myr)
         coll_sets=self.find_coll_sets(stopping_condition.particles(0), stopping_condition.particles(1))
-        print("collsets:",len(coll_sets))
+        print "collsets:",len(coll_sets)
         newparents=Particles()
         for cs in coll_sets:
           newparents.add_particle(self.handle_collision(coll_time,corr_time, cs))
-        print("len:",len(newparents),(corr_time-coll_time).in_(units.Myr))
+        print "len:",len(newparents),(corr_time-coll_time).in_(units.Myr)
         self.correction_kicks(self.particles,newparents,corr_time-coll_time)
         self.particles.recenter_subsystems()
 

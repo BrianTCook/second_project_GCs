@@ -86,33 +86,27 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         '''
         ends up not being used?
         '''
-        #uses a galpy function to evaluate the enclosed mass
-        Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
-    
-        converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-        
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
         dt_nemesis = dt
         dt_bridge = 0.01 * dt
         dt_param = 0.1
         
-        nemesis = Nemesis(parent_worker, sub_worker, py_worker, bodies)
+        nemesis = Nemesis(parent_worker(bodies), sub_worker, py_worker)
         nemesis.timestep = dt
         nemesis.distfunc = distance_function
         nemesis.threshold = dt_nemesis
         nemesis.radius = radius
         
         nemesis.commit_parameters()
-        nemesis.particles.assign_subsystem(bodies, HierarchicalParticles(bodies)[0])
+        #nemesis.particles.assign_subsystem(bodies, HierarchicalParticles(bodies)[0])
         print('nemesis.particles are', nemesis.particles)
         nemesis.commit_particles()
         
         code = nemesis
-        
-    for name,value in parameters:
-        setattr(code.parameters, name, value)
-    
-    return bodies, code
+        for name,value in parameters:
+            setattr(code.parameters, name, value)
+
+        return bodies, code
 
 def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, Mgalaxy, Rgalaxy, code_name):
     
@@ -209,14 +203,14 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
             dt_bridge = 0.01 * dt
             dt_param = 0.1
             
-            nemesis = Nemesis(parent_worker, sub_worker, py_worker, bodies)
+            nemesis = Nemesis(parent_worker(bodies), sub_worker, py_worker)
             nemesis.timestep = dt
             nemesis.distfunc = distance_function
             nemesis.threshold = dt_nemesis
             nemesis.radius = radius
             
             nemesis.commit_parameters()
-            nemesis.particles.assign_subsystem(bodies, HierarchicalParticles(bodies)[0])
+            #nemesis.particles.assign_subsystem(bodies, HierarchicalParticles(bodies)[0])
             print('nemesis.particles are', nemesis.particles)
             nemesis.commit_particles()
             

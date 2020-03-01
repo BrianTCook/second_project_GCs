@@ -84,14 +84,14 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
         dt_bridge = 0.01 * dt
         dt_param = 0.1
         
-        nemesis = Nemesis(parent_worker, sub_worker, py_worker, all_bodies)
+        nemesis = Nemesis(parent_worker(bodies), sub_worker, py_worker)
         nemesis.timestep = dt
         nemesis.distfunc = distance_function
         nemesis.threshold = dt_nemesis
         nemesis.radius = radius
         
         nemesis.commit_parameters()
-        nemesis.particles.assign_subsystem(all_bodies, HierarchicalParticles(all_bodies)[0])
+        #nemesis.particles.assign_subsystem(bodies, HierarchicalParticles(bodies)[0])
         print('nemesis.particles are', nemesis.particles)
         nemesis.commit_particles()
         

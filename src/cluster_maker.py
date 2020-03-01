@@ -97,7 +97,7 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         dt_bridge = 0.01 * dt
         dt_param = 0.1
         
-        nemesis = Nemesis(parent_worker, sub_worker, py_worker, bodies)
+        nemesis = Nemesis(parent_worker, sub_worker, py_worker)
         nemesis.timestep = dt
         nemesis.distfunc = distance_function
         nemesis.threshold = dt_nemesis
@@ -213,7 +213,7 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
     
             parts.assign_subsystem(bodies, parts[0])
             
-            nemesis = Nemesis(parent_worker, sub_worker, py_worker, bodies)
+            nemesis = Nemesis(parent_worker, sub_worker, py_worker)
             nemesis.timestep = dt
             nemesis.distfunc = distance_function
             nemesis.threshold = dt_nemesis

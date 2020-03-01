@@ -1,6 +1,8 @@
 import numpy
 import threading
 
+from amuse.lab import *
+
 from amuse.datamodel import Particle,Particles,ParticlesOverlay
 from amuse.units import units,nbody_system
 
@@ -64,7 +66,6 @@ class correction_from_compound_particles(object):
       parts.phi-=phi
     return particles.phi
   
-  
 class correction_for_compound_particles(object):  
   def __init__(self,system, parent, worker_code_factory):
     self.system=system
@@ -96,18 +97,15 @@ class HierarchicalParticles(ParticlesOverlay):
   print('gets to HierarchicalParticles')
     
   def __init__(self, *args,**kwargs):
-    
-    print('gets to __init__')
       
     ParticlesOverlay.__init__(self,*args,**kwargs)
     
   def add_particles(self,sys):
       
-    print('gets to add_particles')
-      
     parts=ParticlesOverlay.add_particles(self,sys)
     
     if not hasattr(sys,"subsystem"):
+      print('gets to if not hasattr loop in add_particles')
       parts.subsystem=None   
       
     return parts   
@@ -170,9 +168,9 @@ class HierarchicalParticles(ParticlesOverlay):
 
   def simple_particles(self):
       
-    print('gets to simple_particles')
-      
     sp = self.select( lambda x: x is None, ["subsystem"] )
+    
+    print('sp is', sp)
     
     return sp
 
@@ -228,12 +226,11 @@ def potential_energy_particles(particles, get_potential):
   return (pot*parts.mass).sum()/2 
 
 class Nemesis(object):
-  def __init__(self,parent_code_factory,subcode_factory, worker_code_factory, bodies, use_threading=True):
+  def __init__(self,parent_code_factory,subcode_factory, worker_code_factory, use_threading=True):
     self.parent_code=parent_code_factory() #why does it have parentheses around it
     self.subcode_factory=subcode_factory()
     self.worker_code_factory=worker_code_factory()
-    self.bodies = bodies
-    self.particles=HierarchicalParticles(self.bodies) #self.parent_code.particles)
+    self.particles=Particles(0) #HierarchicalParticles(self.bodies) #self.parent_code.particles)
     self.timestep=None
     self.subcodes=dict()
     self.split_treshold=None
@@ -260,7 +257,7 @@ class Nemesis(object):
         
   def commit_particles(self):
       
-    #self.particles.recenter_subsystems()
+    self.particles.recenter_subsystems()
     
     if not hasattr(self.particles,"sub_worker_radius"):
         

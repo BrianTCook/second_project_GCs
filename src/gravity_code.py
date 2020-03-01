@@ -16,8 +16,8 @@ from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 
 from cluster_maker import orbiter
-from nemesis import Nemesis, HierarchicalParticles
-from nemesis_supplement import getxv, parent_worker, sub_worker, py_worker, smaller_nbody_power_of_two, distance_function, radius
+from nemesis import *
+from nemesis_supplement import *
 
 import numpy as np
 import time
@@ -88,7 +88,7 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
 
         parts.assign_subsystem(all_bodies, parts[0])
         
-        nemesis = Nemesis(parent_worker, sub_worker, py_worker, bodies)
+        nemesis = Nemesis(parent_worker, sub_worker, py_worker)
         nemesis.timestep = dt
         nemesis.distfunc = distance_function
         nemesis.threshold = dt_nemesis

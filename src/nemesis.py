@@ -6,6 +6,8 @@ from amuse.units import units,nbody_system
 
 from amuse.ext.basicgraph import UnionFind
 
+from nemesis_supplement import *
+
 def system_type(parts):
   if len(parts)==2:
     return "twobody"
@@ -223,11 +225,10 @@ def potential_energy_particles(particles, get_potential):
   return (pot*parts.mass).sum()/2 
 
 class Nemesis(object):
-  def __init__(self,parent_code_factory,subcode_factory, worker_code_factory, bodies, use_threading=True):
+  def __init__(self,parent_code_factory,subcode_factory, worker_code_factory, use_threading=True):
     self.parent_code=parent_code_factory() #why does it have parentheses around it
     self.subcode_factory=subcode_factory()
     self.worker_code_factory=worker_code_factory()
-    self.bodies = bodies
     self.particles=HierarchicalParticles(self.bodies) #self.parent_code.particles)
     self.timestep=None
     self.subcodes=dict()

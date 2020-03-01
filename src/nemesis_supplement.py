@@ -14,6 +14,8 @@ from amuse.units import units,nbody_system
 
 import numpy as np
 
+from nemesis import *
+
 def getxv(converter, M1, a, e, ma=0):
     
     '''

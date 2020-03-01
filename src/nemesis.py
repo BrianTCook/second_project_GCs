@@ -125,12 +125,13 @@ class HierarchicalParticles(ParticlesOverlay):
       parent.position+=sys.center_of_mass()
       parent.velocity+=sys.center_of_mass_velocity()
       sys.move_to_center()
+      
   def recenter_subsystems(self):
-    
     for parent in self.compound_particles():
       parent.position+=parent.subsystem.center_of_mass()
       parent.velocity+=parent.subsystem.center_of_mass_velocity()
       parent.subsystem.move_to_center()  
+      
   def compound_particles(self):
     return self.select( lambda x: x is not None, ["subsystem"])
   def simple_particles(self):
@@ -182,14 +183,13 @@ class Nemesis(object):
     self.subcode_factory=subcode_factory
     self.worker_code_factory=worker_code_factory
     self.particles=HierarchicalParticles(self.parent_code.particles)
+    self.particles.add_subsystem(HierarchicalParticles(self.parent_code.particles))
     self.timestep=None
     self.subcodes=dict()
     self.split_treshold=None
     self.use_threading=use_threading
     self.radius=None
     
-    self.particles.assign_subsystem(self.particles, HierarchicalParticles(self.parent_code.particles))
-
   def set_parent_particle_radius(self,p):
  
     if p.subsystem is None:

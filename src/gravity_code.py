@@ -91,14 +91,9 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
         nemesis.radius = radius
         
         nemesis.commit_parameters()
-        #nemesis.particles.assign_subsystem(bodies, HierarchicalParticles(bodies)[0])
-        print('nemesis.particles are', nemesis.particles)
         nemesis.commit_particles()
         
         code = nemesis
-        
-        print('nemesis.particles.compound_particles: ', nemesis.particles.compound_particles)        
-        print('nemesis.subcodes are: ', nemesis.subcodes)
 
         gravity = bridge.Bridge(use_threading=False)
         gravity.add_system(nemesis, (galaxy_code,))

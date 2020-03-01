@@ -78,6 +78,8 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     for j, t in enumerate(sim_times):
         
+        print('times is', t)
+        
         clock_times.append(time.time()-t0) #will be in seconds
     
         '''

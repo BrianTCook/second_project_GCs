@@ -224,7 +224,7 @@ class Nemesis(object):
         parent.subsystem=code.particles
         self.subcodes[parent]=code
         
-      if self.subcodes.has_key(parent) == False:
+      if parent in self.subcodes == False:
         sys=parent.subsystem
         code=self.subcode_factory #(sys) as argument
         code.parameters.begin_time=self.model_time

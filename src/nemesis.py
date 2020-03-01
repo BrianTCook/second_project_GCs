@@ -218,7 +218,7 @@ class Nemesis(object):
     for parent in self.particles.compound_particles():
       if len(self.subcodes.keys()) == 0:
         sys=parent.subsystem
-        code=self.subcode_factory(sys)
+        code=self.subcode_factory() #sys in argument
         code.parameters.begin_time=self.model_time
         code.particles.add_particles(sys)
         parent.subsystem=code.particles

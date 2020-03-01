@@ -216,6 +216,14 @@ class Nemesis(object):
       self.set_parent_particle_radius(p)
       
     for parent in self.particles.compound_particles():
+      if len(self.subcodes.keys()) == 0:
+        sys=parent.subsystem
+        code=self.subcode_factory(sys)
+        code.parameters.begin_time=self.model_time
+        code.particles.add_particles(sys)
+        parent.subsystem=code.particles
+        self.subcodes[parent]=code
+        
       if self.subcodes.has_key(parent) == False:
         sys=parent.subsystem
         code=self.subcode_factory(sys)

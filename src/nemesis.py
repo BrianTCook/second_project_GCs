@@ -72,7 +72,7 @@ class correction_for_compound_particles(object):
   def get_gravity_at_point(self,radius,x,y,z):
     parent=self.parent
     parts=self.system - parent
-    instance=self.worker_code_factory()
+    instance=self.worker_code_factory
     instance.particles.add_particles(parts)
     ax,ay,az=instance.get_gravity_at_point(0.*radius,parent.x+x,parent.y+y,parent.z+z)
     _ax,_ay,_az=instance.get_gravity_at_point([0.*parent.radius],[parent.x],[parent.y],[parent.z])

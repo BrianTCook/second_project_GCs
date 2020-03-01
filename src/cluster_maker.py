@@ -86,6 +86,9 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         '''
         ends up not being used?
         '''
+        #uses a galpy function to evaluate the enclosed mass
+        Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
+        converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
         dt_nemesis = dt
         dt_bridge = 0.01 * dt

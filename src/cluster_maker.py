@@ -75,15 +75,16 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         code.particles.add_particles(bodies)
         code.commit_particles()
         
-    if code_name == 'tree':
+    if code_name == 'tree' or code_name == 'nemesis':
     
         code = BHTree(converter)
         code.particles.add_particles(bodies)
         code.commit_particles()
+       
+    '''
         
     if code_name == 'nemesis':
-        
-        '''
+
         ends up not being used?
         
         #uses a galpy function to evaluate the enclosed mass
@@ -108,9 +109,10 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         code = nemesis
         for name,value in parameters:
             setattr(code.parameters, name, value)
-        '''
 
         return bodies, _
+
+    '''
 
 def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, Mgalaxy, Rgalaxy, code_name):
     

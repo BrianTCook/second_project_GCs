@@ -216,7 +216,7 @@ class Nemesis(object):
       self.set_parent_particle_radius(p)
       
     for parent in self.particles.compound_particles():
-      if not self.subcodes.has_key(parent):
+      if self.subcodes.has_key(parent) == False:
         sys=parent.subsystem
         code=self.subcode_factory(sys)
         code.parameters.begin_time=self.model_time
@@ -224,6 +224,8 @@ class Nemesis(object):
         parent.subsystem=code.particles
         self.subcodes[parent]=code
       
+    print('self.subcodes are', self.subcodes):
+        
     for parent in self.subcodes.keys():
       if parent.subsystem is self.subcodes[parent].particles:
         continue

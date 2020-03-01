@@ -21,14 +21,14 @@ def maps(code_name, orbiter_name, Norbiters):
 
     for i, t in enumerate(sim_times):
     
-        w_all = pd.DataFrame(phase_space_data[i,:,:], 
-                                 columns=['mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'])
-            
-        x,y,z = w_all['x'].tolist(), w_all['y'].tolist(), w_all['z'].tolist()
-        vx,vy,vz = w_all['vx'].tolist(), w_all['vy'].tolist(), w_all['vz'].tolist()
+        if i%50 == 0:
         
-        if i == 0 or i == len(sim_times)-1:
-    
+            w_all = pd.DataFrame(phase_space_data[i,:,:], 
+                                     columns=['mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'])
+                
+            x,y,z = w_all['x'].tolist(), w_all['y'].tolist(), w_all['z'].tolist()
+            vx,vy,vz = w_all['vx'].tolist(), w_all['vy'].tolist(), w_all['vz'].tolist()
+        
             fig, axs = plt.subplots(5, 5)
             
             #first column            

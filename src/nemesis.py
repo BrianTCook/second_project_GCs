@@ -289,7 +289,6 @@ class Nemesis(object):
     if timestep is None:
       timestep = tend-self.model_time  
     while self.model_time < (tend-timestep/2.):  
-      print('gets here in evolve_model')
       self.kick_codes(timestep/2.)
       self.drift_codes(self.model_time+timestep,self.model_time+timestep/2)
       self.kick_codes(timestep/2.)

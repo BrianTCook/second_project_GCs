@@ -157,9 +157,9 @@ class HierarchicalParticles(ParticlesOverlay):
       
   def compound_particles(self):
       
-    print('gets to compound_particles')
-      
     cp = self.select( lambda x: x is not None, ["subsystem"] )
+    
+    print('cp is', cp)
     
     return cp
 

@@ -215,11 +215,6 @@ class Nemesis(object):
     for p in self.particles:
       self.set_parent_particle_radius(p)
       
-    for parent in self.subcodes.keys():
-      if parent.subsystem is self.subcodes[parent].particles:
-        continue
-      code=self.subcodes.pop(parent)
-      del code
     for parent in self.particles.compound_particles():
       if not self.subcodes.has_key(parent):
         sys=parent.subsystem
@@ -228,6 +223,12 @@ class Nemesis(object):
         code.particles.add_particles(sys)
         parent.subsystem=code.particles
         self.subcodes[parent]=code
+      
+    for parent in self.subcodes.keys():
+      if parent.subsystem is self.subcodes[parent].particles:
+        continue
+      code=self.subcodes.pop(parent)
+      del code
 
   def recommit_particles(self):
     self.commit_particles()

@@ -106,6 +106,12 @@ class HierarchicalParticles(ParticlesOverlay):
     parent.subsystem=sys
     return parent
   def assign_subsystem(self, sys, parent, relative=True, recenter=True):
+    
+    '''
+    needs to get here such that subsystem is defined
+    for compound_particles and simple_particles
+    '''
+      
     self.assign_parent_attributes(sys,parent,relative,recenter)
     parent.subsystem=sys
   def assign_parent_attributes(self,sys,parent, relative=True, recenter=True):
@@ -181,7 +187,7 @@ class Nemesis(object):
     self.use_threading=use_threading
     self.radius=None
     
-    self.particles.assign_subsystem(self.bodies, HierarchicalParticles(self.parent_code.particles))
+    self.particles.assign_subsystem(self.particles, HierarchicalParticles(self.parent_code.particles))
 
   def set_parent_particle_radius(self,p):
  

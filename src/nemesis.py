@@ -257,12 +257,10 @@ class Nemesis(object):
         p.radius=self.radius(sys)
       else:
         p.radius=self.radius
-
-    print('p.radius is', p.radius)
-
+        
   def commit_particles(self):
       
-    self.particles.recenter_subsystems()
+    #self.particles.recenter_subsystems()
     
     if not hasattr(self.particles,"sub_worker_radius"):
         

@@ -255,7 +255,7 @@ class Nemesis(object):
 
   def commit_particles(self):
       
-    self.particles.add_subsystem()
+    self.particles.add_subsystem(sys)
     self.particles.recenter_subsystems()
     
     if not hasattr(self.particles,"sub_worker_radius"):

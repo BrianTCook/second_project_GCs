@@ -221,6 +221,7 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
             
             nemesis.commit_parameters()
             nemesis.particles.add_particles(parts)
+            print('nemesis.particles are', nemesis.particles)
             nemesis.commit_particles()
             
             code = nemesis

@@ -96,6 +96,7 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
         
         nemesis.commit_parameters()
         nemesis.particles.add_particles(parts)
+        print('nemesis.particles are', nemesis.particles)
         nemesis.commit_particles()
         
         code = nemesis

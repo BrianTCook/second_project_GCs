@@ -49,14 +49,14 @@ class correction_from_compound_particles(object):
     particles.phi=0. | (particles.vx.unit**2)
     for parent in self.subsystems: 
       sys=parent.subsystem
-      code=self.worker_code_factory()
+      code=self.worker_code_factory
       code.particles.add_particles(sys.copy())
       code.particles.position+=parent.position
       code.particles.velocity+=parent.velocity
       parts=particles-parent
       phi=code.get_potential_at_point(0.*parts.radius,parts.x,parts.y,parts.z)
       parts.phi+=phi
-      code=self.worker_code_factory()
+      code=self.worker_code_factory
       code.particles.add_particle(parent)
       phi=code.get_potential_at_point(0.*parts.radius,parts.x,parts.y,parts.z)
       parts.phi-=phi

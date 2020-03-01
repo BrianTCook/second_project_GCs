@@ -87,26 +87,19 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         ends up not being used?
         '''
         
-        parts = HierarchicalParticles(bodies)
-
-        converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-        converter_sub = nbody_system.nbody_to_si(np.median(star_masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
-        
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
         dt_nemesis = dt
         dt_bridge = 0.01 * dt
         dt_param = 0.1
-
-        parts.assign_subsystem(bodies, parts[0])        
         
-        nemesis = Nemesis(parent_worker, sub_worker, py_worker)
+        nemesis = Nemesis(parent_worker, sub_worker, py_worker, bodies)
         nemesis.timestep = dt
         nemesis.distfunc = distance_function
         nemesis.threshold = dt_nemesis
         nemesis.radius = radius
         
         nemesis.commit_parameters()
-        nemesis.particles.add_particles(parts)
+        nemesis.particles.assign_subsystem(bodies, HierarchicalParticles(bodies)[0])
         print('nemesis.particles are', nemesis.particles)
         nemesis.commit_particles()
         
@@ -212,14 +205,14 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
             dt_bridge = 0.01 * dt
             dt_param = 0.1
             
-            nemesis = Nemesis(parent_worker, sub_worker, py_worker, all_bodies)
+            nemesis = Nemesis(parent_worker, sub_worker, py_worker, bodies)
             nemesis.timestep = dt
             nemesis.distfunc = distance_function
             nemesis.threshold = dt_nemesis
             nemesis.radius = radius
             
             nemesis.commit_parameters()
-            nemesis.particles.assign_subsystem(all_bodies, parts[0])
+            nemesis.particles.assign_subsystem(bodies, HierarchicalParticles(bodies)[0])
             print('nemesis.particles are', nemesis.particles)
             nemesis.commit_particles()
             

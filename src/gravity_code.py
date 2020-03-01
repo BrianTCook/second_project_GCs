@@ -91,7 +91,7 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
         nemesis.radius = radius
         
         nemesis.commit_parameters()
-        nemesis.particles.assign_subsystem(all_bodies, parts[0])
+        nemesis.particles.assign_subsystem(all_bodies, HierarchicalParticles(all_bodies)[0])
         print('nemesis.particles are', nemesis.particles)
         nemesis.commit_particles()
         

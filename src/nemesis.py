@@ -180,6 +180,8 @@ class Nemesis(object):
     self.split_treshold=None
     self.use_threading=use_threading
     self.radius=None
+    
+    self.particles.assign_subsystem(self.bodies, HierarchicalParticles(self.parent_code.particles))
 
   def set_parent_particle_radius(self,p):
  

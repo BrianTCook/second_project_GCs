@@ -153,6 +153,9 @@ class HierarchicalParticles(ParticlesOverlay):
     print('gets to recenter_subsystems')
       
     for parent in self.compound_particles():
+        
+      print('parent is', parent)
+      print('parent.subsystem is', parent_subsystem)
       parent.position+=parent.subsystem.center_of_mass()
       parent.velocity+=parent.subsystem.center_of_mass_velocity()
       parent.subsystem.move_to_center()  

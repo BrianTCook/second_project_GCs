@@ -224,7 +224,7 @@ class Nemesis(object):
         parent.subsystem=code.particles
         self.subcodes[parent]=code
       
-    print('self.subcodes are', self.subcodes):
+    print('self.subcodes are', self.subcodes)
         
     for parent in self.subcodes.keys():
       if parent.subsystem is self.subcodes[parent].particles:

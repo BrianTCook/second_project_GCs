@@ -255,7 +255,6 @@ class Nemesis(object):
 
   def commit_particles(self):
       
-    self.particles.add_subsystem(sys)
     self.particles.recenter_subsystems()
     
     if not hasattr(self.particles,"sub_worker_radius"):
@@ -276,6 +275,7 @@ class Nemesis(object):
       code=self.subcodes.pop(parent)
       del code
     
+    '''
     for k, parent in enumerate(self.particles.compound_particles()):
         
       if k == 0:
@@ -283,16 +283,17 @@ class Nemesis(object):
           print('-----')
           print('gets to for parent in self.particles.compound_particles():')
           print('-----')
+    '''
       
-      if not self.subcodes.has_key(parent):
-          
-        print('does it get here?')
-        sys=parent.subsystem
-        code=self.subcode_factory(sys)
-        code.parameters.begin_time=self.model_time
-        code.particles.add_particles(sys)
-        parent.subsystem=code.particles
-        self.subcodes[parent]=code
+    if not self.subcodes.has_key(parent):
+      
+      print('does it get here?')
+      sys=parent.subsystem
+      code=self.subcode_factory(sys)
+      code.parameters.begin_time=self.model_time
+      code.particles.add_particles(sys)
+      parent.subsystem=code.particles
+      self.subcodes[parent]=code
 
   def recommit_particles(self):
       

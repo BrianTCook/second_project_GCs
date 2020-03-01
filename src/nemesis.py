@@ -324,6 +324,7 @@ class Nemesis(object):
       subsys=parent.subsystem
       radius=parent.radius
       components=subsys.connected_components(threshold=self.threshold,distfunc=self.distfunc)
+      print('components are', components)
       if len(components)>1:
         print("splitting:", len(components))
         parentposition=parent.position
@@ -338,6 +339,9 @@ class Nemesis(object):
         del code  
 
     if len(to_remove)>0:
+        
+      print('gets to != 0 particles to remove')
+        
       self.particles.remove_particles(to_remove)
 
       for sys in sys_to_add:

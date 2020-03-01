@@ -258,6 +258,8 @@ class Nemesis(object):
       else:
         p.radius=self.radius
 
+    print('p.radius is', p.radius)
+
   def commit_particles(self):
       
     self.particles.recenter_subsystems()
@@ -275,6 +277,10 @@ class Nemesis(object):
       self.set_parent_particle_radius(p)
     
     for j, parent in enumerate(self.subcodes.keys()):
+        
+      if j == 0:
+          
+          print('gets to enumerate(self.subcodes.keys())')
         
       if parent.subsystem is self.subcodes[parent].particles:
           continue

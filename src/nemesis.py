@@ -91,11 +91,17 @@ class correction_for_compound_particles(object):
 
 class HierarchicalParticles(ParticlesOverlay):
     
+  print('gets to HierarchicalParticles')
+    
   def __init__(self, *args,**kwargs):
+    
+    print('gets to __init__')
       
     ParticlesOverlay.__init__(self,*args,**kwargs)
     
   def add_particles(self,sys):
+      
+    print('gets to add_particles')
       
     parts=ParticlesOverlay.add_particles(self,sys)
     
@@ -106,6 +112,8 @@ class HierarchicalParticles(ParticlesOverlay):
  
   def add_subsystem(self, sys, recenter=True):
     
+    print('gets to add_subsystem')
+      
     if len(sys)==1:
       return self.add_particles(sys)[0]
   
@@ -118,14 +126,15 @@ class HierarchicalParticles(ParticlesOverlay):
 
   def assign_subsystem(self, sys, parent, relative=True, recenter=True):
       
-    print('-ahh-ahh-ahh-ahh-ahh-ahh-')
     print('gets to assign_subsystem')
-    print('-ahh-ahh-ahh-ahh-ahh-ahh-')
       
     self.assign_parent_attributes(sys,parent,relative,recenter)
     parent.subsystem=sys
     
   def assign_parent_attributes(self,sys,parent, relative=True, recenter=True):
+      
+    print('gets to assign_parent_attributes')
+      
     parent.mass=sys.total_mass()
     if relative:
       pass
@@ -138,6 +147,9 @@ class HierarchicalParticles(ParticlesOverlay):
       sys.move_to_center()
       
   def recenter_subsystems(self):
+      
+    print('gets to recenter_subsystems')
+      
     for parent in self.compound_particles():
       parent.position+=parent.subsystem.center_of_mass()
       parent.velocity+=parent.subsystem.center_of_mass_velocity()
@@ -145,17 +157,23 @@ class HierarchicalParticles(ParticlesOverlay):
       
   def compound_particles(self):
       
+    print('gets to compound_particles')
+      
     cp = self.select( lambda x: x is not None, ["subsystem"] )
     
     return cp
 
   def simple_particles(self):
       
+    print('gets to simple_particles')
+      
     sp = self.select( lambda x: x is None, ["subsystem"] )
     
     return sp
 
   def all(self):
+      
+    print('gets to all')
       
     parts=Particles()
     
@@ -167,7 +185,7 @@ class HierarchicalParticles(ParticlesOverlay):
         
       else:
           
-        print('does it ever get here?')
+        print('gets to else statement in all')
           
         subsys=parts.add_particles(parent.subsystem)
         subsys.position+=parent.position
@@ -299,6 +317,8 @@ class Nemesis(object):
     to_remove=Particles()
     sys_to_add=[]
     
+    print('gets to split_subcodes')
+    
     for parent in subsystems:
       print('gets to parent')
       subsys=parent.subsystem
@@ -381,13 +401,14 @@ class Nemesis(object):
         np.radius=p.sub_worker_radius        
       to_remove.add_particle(p)
     self.particles.remove_particles(to_remove)
+    print('newparts are, ', newparts)
     newcode=self.subcode_factory(newparts)
     newcode.parameters.begin_time=coll_time
     newcode.particles.add_particles(newparts)
     newparent=self.particles.add_subsystem(newcode.particles)
     self.set_parent_particle_radius(newparent)
     newparent.sub_worker_radius=0.*newparent.radius
-    #print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec),
+    print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec),
     #self.subcodes[newparent]=newcode)
     return newparent
         

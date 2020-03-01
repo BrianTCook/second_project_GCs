@@ -78,24 +78,20 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
         '''
         need add_subsystem and assign_subsystem in HierarchicalParticles I think
         '''
-        
-        parts = HierarchicalParticles(all_bodies)
-        
+                
         dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
         dt_nemesis = dt
         dt_bridge = 0.01 * dt
         dt_param = 0.1
-
-        parts.assign_subsystem(all_bodies, parts[0])
         
-        nemesis = Nemesis(parent_worker, sub_worker, py_worker)
+        nemesis = Nemesis(parent_worker, sub_worker, py_worker, all_bodies)
         nemesis.timestep = dt
         nemesis.distfunc = distance_function
         nemesis.threshold = dt_nemesis
         nemesis.radius = radius
         
         nemesis.commit_parameters()
-        nemesis.particles.add_particles(parts)
+        nemesis.particles.assign_subsystem(all_bodies, parts[0])
         print('nemesis.particles are', nemesis.particles)
         nemesis.commit_particles()
         

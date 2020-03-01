@@ -27,7 +27,7 @@ class correction_from_compound_particles(object):
     particles.az=0. | (particles.vx.unit**2/particles.x.unit)
     for parent in self.subsystems:
       sys=parent.subsystem 
-      code=self.worker_code_factory()
+      code=self.worker_code_factory
       code.particles.add_particles(sys.copy())
       code.particles.position+=parent.position
       code.particles.velocity+=parent.velocity
@@ -36,7 +36,7 @@ class correction_from_compound_particles(object):
       parts.ax+=ax
       parts.ay+=ay
       parts.az+=az
-      code=self.worker_code_factory()
+      code=self.worker_code_factory
       code.particles.add_particle(parent)
       ax,ay,az=code.get_gravity_at_point(0.*parts.radius,parts.x,parts.y,parts.z)
       parts.ax-=ax

@@ -128,7 +128,7 @@ class HierarchicalParticles(ParticlesOverlay):
   def recenter_subsystems(self):
       
     print('self.particles are', self.particles)
-    print('class name is', self.particles.__clas__.__name__)
+    print('class name is', self.particles.__class__.__name__)
       
     for parent in self.compound_particles():
       parent.position+=parent.subsystem.center_of_mass()

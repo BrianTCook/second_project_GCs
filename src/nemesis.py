@@ -408,7 +408,7 @@ class Nemesis(object):
     newparent=self.particles.add_subsystem(newcode.particles)
     self.set_parent_particle_radius(newparent)
     newparent.sub_worker_radius=0.*newparent.radius
-    print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec),
+    print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec))
     #self.subcodes[newparent]=newcode)
     return newparent
         

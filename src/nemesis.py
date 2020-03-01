@@ -126,6 +126,10 @@ class HierarchicalParticles(ParticlesOverlay):
       parent.velocity+=sys.center_of_mass_velocity()
       sys.move_to_center()
   def recenter_subsystems(self):
+      
+    print('self.particles are', self.particles)
+    print('class name is', self.particles.__clas__.__name__)
+      
     for parent in self.compound_particles():
       parent.position+=parent.subsystem.center_of_mass()
       parent.velocity+=parent.subsystem.center_of_mass_velocity()

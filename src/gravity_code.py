@@ -87,7 +87,6 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
         dt_param = 0.1
 
         parts.assign_subsystem(all_bodies, parts[0])
-        print('parts are', parts)
         
         nemesis = Nemesis(parent_worker, sub_worker, py_worker)
         nemesis.timestep = dt

@@ -81,6 +81,8 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         code.particles.add_particles(bodies)
         code.commit_particles()
        
+    return bodies, code
+        
     '''
         
     if code_name == 'nemesis':

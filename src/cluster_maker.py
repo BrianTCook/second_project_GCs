@@ -213,7 +213,7 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
     
             parts.assign_subsystem(bodies, parts[0])
             
-            nemesis = Nemesis(parent_worker, sub_worker, py_worker)
+            nemesis = Nemesis(parent_worker, sub_worker, py_worker, bodies)
             nemesis.timestep = dt
             nemesis.distfunc = distance_function
             nemesis.threshold = dt_nemesis

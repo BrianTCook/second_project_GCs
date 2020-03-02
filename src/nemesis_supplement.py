@@ -49,7 +49,6 @@ def parent_worker():
     code.parameters.epsilon_squared=0.| units.kpc**2
     code.parameters.end_time_accuracy_factor=0.
     code.parameters.dt_param=0.1
-    code.particles.add_particles(bodies)
     return code
 
 def sub_worker():

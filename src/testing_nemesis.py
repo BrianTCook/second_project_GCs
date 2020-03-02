@@ -7,7 +7,6 @@ Created on Fri Feb 14 14:05:09 2020
 """
 
 from amuse.lab import *
-#from amuse.ext.bridge import bridge
 from amuse.couple import bridge
 
 from galpy.df import quasiisothermaldf
@@ -17,14 +16,9 @@ from galpy.actionAngle import actionAngleStaeckel
 
 #other scripts
 from phase_space_mapping import maps
-from cluster_maker import star_cluster, orbiter
-from gravity_code import gravity_code_setup
 from simulation_script import simulation
 from create_plots import plotting_things
 from convert_numpy_to_ascii import convert_numpy
-from nemesis import Nemesis, HierarchicalParticles
-from nemesis_supplement import getxv, parent_worker, sub_worker, py_worker, smaller_nbody_power_of_two, distance_function, radius
-
 
 import random
 import numpy as np

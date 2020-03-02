@@ -27,9 +27,6 @@ from galpy.actionAngle import actionAngleStaeckel
 import numpy as np
 np.random.seed(73)
 
-from nemesis import Nemesis, HierarchicalParticles
-from nemesis_supplement import getxv, parent_worker, sub_worker, py_worker, smaller_nbody_power_of_two, distance_function, radius
-
 def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
                             W0, Mcluster, star_masses, Mgalaxy, Rgalaxy, code_name, parameters=[]):
 
@@ -77,44 +74,13 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
         
     if code_name == 'tree' or code_name == 'nemesis':
     
+        #doing nemesis solver here is not necessary
+        
         code = BHTree(converter)
         code.particles.add_particles(bodies)
         code.commit_particles()
        
     return bodies, code
-        
-    '''
-        
-    if code_name == 'nemesis':
-
-        ends up not being used?
-        
-        #uses a galpy function to evaluate the enclosed mass
-        Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
-        converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-        dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
-        dt_nemesis = dt
-        dt_bridge = 0.01 * dt
-        dt_param = 0.1
-        
-        nemesis = Nemesis(parent_worker(bodies), sub_worker(), py_worker())
-        nemesis.timestep = dt
-        nemesis.distfunc = distance_function
-        nemesis.threshold = dt_nemesis
-        nemesis.radius = radius
-        
-        nemesis.commit_parameters()
-        #nemesis.particles.assign_subsystem(bodies, HierarchicalParticles(bodies)[0])
-        print('nemesis.particles are', nemesis.particles)
-        nemesis.commit_particles()
-        
-        code = nemesis
-        for name,value in parameters:
-            setattr(code.parameters, name, value)
-
-        return bodies, _
-
-    '''
 
 def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index, Mgalaxy, Rgalaxy, code_name):
     
@@ -198,37 +164,13 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
             code.particles.add_particles(bodies)
             code.commit_particles()
             
-        if code_name == 'tree':
+        if code_name == 'tree' or code_name == 'nemesis':
         
+            #definition of gravity_code takes care of nemesis
+            
             code = BHTree(converter_sub)
             code.particles.add_particles(bodies)
             code.commit_particles()
-           
-        '''
-            
-        does not make sense to have nemesis, SingleStar
-        
-        if code_name == 'nemesis':
-            
-            dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
-            dt_nemesis = dt
-            dt_bridge = 0.01 * dt
-            dt_param = 0.1
-            
-            nemesis = Nemesis(parent_worker(bodies), sub_worker(), py_worker())
-            nemesis.timestep = dt
-            nemesis.distfunc = distance_function
-            nemesis.threshold = dt_nemesis
-            nemesis.radius = radius
-            
-            nemesis.commit_parameters()
-            #nemesis.particles.assign_subsystem(bodies, HierarchicalParticles(bodies)[0])
-            print('nemesis.particles are', nemesis.particles)
-            nemesis.commit_particles()
-            
-            code = nemesis
-            
-        '''
         
         return bodies, code
         

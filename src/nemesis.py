@@ -247,6 +247,9 @@ class Nemesis(object):
     pass
 
   def evolve_model(self, tend, timestep=None):
+      
+    print('gets to evolve_model')
+    
     if timestep is None:
       timestep = self.timestep
     if timestep is None:
@@ -261,6 +264,9 @@ class Nemesis(object):
     subsystems=self.particles.compound_particles()
     to_remove=Particles()
     sys_to_add=[]
+    
+    print('subsystems are', subsystems)
+    
     for parent in subsystems:
       subsys=parent.subsystem
       radius=parent.radius
@@ -277,6 +283,8 @@ class Nemesis(object):
           sys_to_add.append(sys)
         code=self.subcodes.pop(parent)
         del code  
+        
+    print('len(to_remove) is', len(to_remove))
 
     if len(to_remove)>0:
       self.particles.remove_particles(to_remove)
@@ -297,6 +305,7 @@ class Nemesis(object):
 
       
   def handle_collision(self, coll_time,corr_time,coll_set):
+    print('gets to handle_collision')
     print("collision:", len(coll_set))
 
     subsystems=self.particles.compound_particles()
@@ -348,6 +357,7 @@ class Nemesis(object):
     return coll_sets.sets()
     
   def drift_codes(self,tend,corr_time):
+    print('gets to drift_codes')
     code=self.parent_code
     stopping_condition = code.stopping_conditions.collision_detection
     stopping_condition.enable()
@@ -376,10 +386,12 @@ class Nemesis(object):
       for x in threads: x.run()
 
   def kick_codes(self,dt):
+    print('gets to kick_codes')
     self.correction_kicks(self.particles,self.particles.select( lambda x: x is not None, ["subsystem"]),dt)
     self.particles.recenter_subsystems()
 
   def correction_kicks(self,particles,subsystems,dt):
+    print('gets to correction_kicks')
     if len(subsystems)>0 and len(particles)>1:
       corrector=correction_from_compound_particles(particles,subsystems,self.worker_code_factory)
       kick_particles(particles,corrector.get_gravity_at_point, dt)

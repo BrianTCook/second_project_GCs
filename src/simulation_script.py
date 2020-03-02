@@ -103,6 +103,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         all_data[j, :len(data_t.index), :] = data_t.values
         x, y = data_t['x'].tolist(), data_t['y'].tolist()
         
+        '''
         #stuff to analyze COM of each star cluster
         for k, number_of_stars in enumerate(cluster_populations):
             
@@ -117,6 +118,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
             COM_data[j, k, 0] = x_COM
             COM_data[j, k, 1] = y_COM
+        '''
     
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
@@ -136,12 +138,12 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #things that are not easily extracted from write_set_to_file
     
     f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
-    f_COM = gzip.GzipFile('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
+    #f_COM = gzip.GzipFile('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
     np.save(file=f_all, arr=all_data, allow_pickle=True)
-    np.save(file=f_COM, arr=COM_data, allow_pickle=True)
+    #np.save(file=f_COM, arr=COM_data, allow_pickle=True)
     
     f_all.close()
-    f_COM.close()
+    #f_COM.close()
     
     np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt', cluster_colors)
     np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt', delta_energies)

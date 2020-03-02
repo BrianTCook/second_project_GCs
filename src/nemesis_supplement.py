@@ -74,11 +74,11 @@ def smaller_nbody_power_of_two(dt, conv):
 
     return conv.to_si( 2**idt | nbody_system.time)
 
-def radius(sys,eta=dt_param,_G=constants.G):
+def radius(sys,eta=0.1,_G=constants.G): #eta=dt_param=0.1
     radius=((_G*sys.total_mass()*dt**2/eta**2)**(1./3.))
     return radius*((len(sys)+1)/2.)**0.75
 
-def timestep(ipart,jpart, eta=dt_param/2,_G=constants.G):
+def timestep(ipart,jpart, eta=0.1/2,_G=constants.G): #eta=dt_param/2.=0.1/2.
     dx=ipart.x-jpart.x  
     dy=ipart.y-jpart.y
     dz=ipart.z-jpart.z

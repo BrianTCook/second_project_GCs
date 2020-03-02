@@ -51,7 +51,7 @@ def parent_worker():
     code.parameters.dt_param=0.1
     return code
 
-def sub_worker():
+def sub_worker(parts):
     #don't need parts as argument in the same way Simon did
     converter_sub = nbody_system.nbody_to_si(10.|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     code = BHTree(converter_sub)

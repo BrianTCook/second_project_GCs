@@ -80,6 +80,8 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
         need add_subsystem and assign_subsystem in HierarchicalParticles I think
         '''
         
+        parts=HierarchicalParticles(all_boodies)
+        
         dt=smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
                 
         nemesis=Nemesis( parent_worker, sub_worker, py_worker)

@@ -16,9 +16,10 @@ import numpy as np
 
 from nemesis import *
 
+'''
 def getxv(converter, M1, a, e, ma=0):
     
-    '''
+    
     Get initial phase space coordinates (position and velocity) for an object around a central body
     
     converter - AMUSE unit converter
@@ -28,7 +29,6 @@ def getxv(converter, M1, a, e, ma=0):
     ma        - Mean anomaly of the orbit
     
     Returns: (x, v), the position and velocity vector of the orbit in AMUSE length and AMUSE length / time units
-    '''
     
     kepler = Kepler(converter)
     kepler.initialize_code()
@@ -40,8 +40,9 @@ def getxv(converter, M1, a, e, ma=0):
     kepler.stop()
     
     return x, v
+ '''
 
-def parent_worker(bodies):
+def parent_worker():
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     code = Hermite(converter_parent)
@@ -73,31 +74,17 @@ def smaller_nbody_power_of_two(dt, conv):
 
     return conv.to_si( 2**idt | nbody_system.time)
 
-def distance_function(ipart, jpart, eta=0.1/2., _G=constants.G):
-    
-    dx = ipart.x-jpart.x
-    dy = ipart.y-jpart.y
-    dz = ipart.z-jpart.z
+def radius(sys,eta=dt_param,_G=constants.G):
+    radius=((_G*sys.total_mass()*dt**2/eta**2)**(1./3.))
+    return radius*((len(sys)+1)/2.)**0.75
 
-    dr = np.sqrt(dx**2 + dy**2 + dz**2)
-    dr3 = dr**1.5
-    mu = _G*(ipart.mass + jpart.mass)
-
-    tau = eta/2./2.**0.5*(dr3/mu)**0.5 #need an explanation for this!
-
+def timestep(ipart,jpart, eta=dt_param/2,_G=constants.G):
+    dx=ipart.x-jpart.x  
+    dy=ipart.y-jpart.y
+    dz=ipart.z-jpart.z
+    dr2=dx**2+dy**2+dz**2
+    dr=dr2**0.5
+    dr3=dr*dr2
+    mu=_G*(ipart.mass+jpart.mass)
+    tau=eta/2./2.**0.5*(dr3/mu)**0.5
     return tau
-
-'''
-eta = should be dt_param or dt_param/2. but it's not being defined for whatever reason
-'''
-
-def radius(sys, eta=0.1, _G=constants.G):
-
-    Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
-    converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    
-    #variable shouldn't be named radius
-    dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
-    ra = ((_G*sys.total_mass()*dt**2/eta**2)**(1/3.))
-    ra = ra*((len(sys)+1)/2.)**0.75
-    return 3.*ra #is this the roche-lobe radius?

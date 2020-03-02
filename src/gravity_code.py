@@ -30,6 +30,8 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
     Nemesis gravity solvers?
     '''
     
+    gravity = bridge.Bridge(use_threading=False)
+    
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     
@@ -56,8 +58,6 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
     cluster_colors = [ j for i in cluster_colors for j in i ] #concatenate the list
 
     if code_name != 'nemesis':
-        
-        gravity = bridge.Bridge(use_threading=False)
 
         for i in range(Norbiters):
             
@@ -73,30 +73,24 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
         all_bodies = Particles(0)
         
         for i in range(Norbiters):
+            
             all_bodies.add_particles(orbiter_bodies_list[i])
         
         '''
         need add_subsystem and assign_subsystem in HierarchicalParticles I think
         '''
+        
+        dt=smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
                 
-        dt = smaller_nbody_power_of_two(0.1 | units.Myr, converter_parent)
-        dt_nemesis = dt
-        dt_bridge = 0.01 * dt
-        dt_param = 0.1
-        
-        nemesis = Nemesis(parent_worker(all_bodies), sub_worker, py_worker)
-        nemesis.timestep = dt
-        nemesis.distfunc = distance_function
-        nemesis.threshold = dt_nemesis
-        nemesis.radius = radius
-        
+        nemesis=Nemesis( parent_worker, sub_worker, py_worker)
+        nemesis.timestep=dt
+        nemesis.distfunc=timestep
+        nemesis.threshold=dt
+        nemesis.radius=radius
         nemesis.commit_parameters()
+        nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
-        
-        code = nemesis
 
-        gravity = bridge.Bridge(use_threading=False)
         gravity.add_system(nemesis, (galaxy_code,))
-        gravity.timestep = dt_bridge
     
     return gravity.particles, gravity, orbiter_bodies_list, cluster_colors

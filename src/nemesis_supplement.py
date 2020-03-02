@@ -10,6 +10,7 @@ from amuse.lab import*
 from amuse.couple.bridge import CalculateFieldForParticles
 from amuse.units import quantities
 from amuse.community.mercury.interface import Mercury
+from amuse.community.huayno.interface import Huayno
 from amuse.units import units,nbody_system
 
 import numpy as np
@@ -56,8 +57,8 @@ def parent_worker():
 def sub_worker(parts):
     
     #don't need parts as argument in the same way Simon did
-    converter_sub = nbody_system.nbody_to_si(10.|units.MSun, 5.|units.parsec) #masses list is in solar mass units
-    code = BHTree(converter_sub)
+    converter_sub = nbody_system.nbody_to_si(1000.|units.MSun, 5.|units.parsec) #masses list is in solar mass units
+    code = Huayno(converter_sub)
     
     return code
 

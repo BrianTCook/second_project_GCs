@@ -61,10 +61,6 @@ if __name__ in '__main__':
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:
-            
-            if orbiter_name == 'SingleStar' and code_name == 'nemesis':
-                continue
-            
             for Norbiters in Norbiters_list:
                 
                 print('current time: %.03f minutes'%((time.time()-t0)/60.))

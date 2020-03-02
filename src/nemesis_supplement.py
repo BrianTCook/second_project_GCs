@@ -55,7 +55,6 @@ def sub_worker(parts):
     #don't need parts as argument in the same way Simon did
     converter_sub = nbody_system.nbody_to_si(10.|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     code = BHTree(converter_sub)
-    #code.parameters.inttype_parameter=code.inttypes.SHARED4
     return code
 
 def py_worker():

@@ -82,7 +82,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         clock_times.append(time.time()-t0) #will be in seconds
     
-        '''
         if j == 0:
             E_dyn_init = gravity.kinetic_energy + gravity.potential_energy
             
@@ -90,9 +89,9 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         dE_dyn = (E_dyn/E_dyn_init) - 1.
         
         delta_energies.append(dE_dyn)
-        '''
         
         attributes = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz')
+        
         write_set_to_file(simulation_bodies, filename, 'csv',
                           attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                           attribute_names = attributes)
@@ -101,7 +100,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         data_t = data_t.drop([0, 1, 2]) #removes labels units, and unit names
         data_t = data_t.astype(float) #strings to floats
         
-        all_data[j, :, :] = data_t.values
+        all_data[j, :len(data_t.index), :] = data_t.values
         x, y = data_t['x'].tolist(), data_t['y'].tolist()
         
         #stuff to analyze COM of each star cluster
@@ -118,8 +117,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
             COM_data[j, k, 0] = x_COM
             COM_data[j, k, 1] = y_COM
-        
-        
+    
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
         

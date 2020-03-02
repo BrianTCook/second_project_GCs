@@ -112,7 +112,7 @@ def globular_clusters(N=10, L=10.| units.kpc, dv=1.0 | units.kms):
   def sub_worker(parts):
     mode=system_type(parts)
     if mode=="twobody":
-      code=TwoBody(conv_sub)
+      code=Huayno(conv_sub) #TwoBody(conv_sub), might need mpiexec
     elif mode=="solarsystem":
       #code=Mercury(conv_sub)
       code=Huayno(conv_sub)

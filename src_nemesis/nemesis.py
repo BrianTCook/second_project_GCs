@@ -212,7 +212,7 @@ class Nemesis(object):
       code=self.subcodes.pop(parent)
       del code
     for parent in self.particles.compound_particles():
-      if not self.subcodes.has_key(parent):
+      if parent not in subcodes:
         sys=parent.subsystem
         code=self.subcode_factory(sys)
         code.parameters.begin_time=self.model_time
@@ -274,6 +274,7 @@ class Nemesis(object):
           newparent.sub_worker_radius=sys[0].radius
         self.set_parent_particle_radius(newparent)
         print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec))
+
       
   def handle_collision(self, coll_time,corr_time,coll_set):
     print("collision:", len(coll_set))
@@ -284,7 +285,7 @@ class Nemesis(object):
     for p in coll_set:
       p=p.as_particle_in_set(self.particles)
       collsubset+=p
-      if self.subcodes.has_key(p):
+      if p in self.subcodes:
         code=self.subcodes[p]
         code.evolve_model(coll_time)
         print((coll_time-code.model_time)/self.timestep)
@@ -298,7 +299,7 @@ class Nemesis(object):
     to_remove=Particles()
     for p in coll_set:
       p=p.as_particle_in_set(self.particles)
-      if self.subcodes.has_key(p):
+      if p in self.subcodes:
         code=self.subcodes.pop(p)
         parts=code.particles.copy()
         parts.position+=p.position
@@ -316,7 +317,7 @@ class Nemesis(object):
     newparent=self.particles.add_subsystem(newcode.particles)
     self.set_parent_particle_radius(newparent)
     newparent.sub_worker_radius=0.*newparent.radius
-    print ("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec))
+    print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec))
     self.subcodes[newparent]=newcode
     return newparent
         

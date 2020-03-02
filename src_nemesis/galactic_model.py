@@ -8,8 +8,6 @@ from amuse.lab import *
 from amuse.couple import bridge
 from amuse.ext.solarsystem import new_solar_system
 
-from galpy.potential import MWPotential2014, to_amuse
-
 from amuse.ext.rotating_bridge import Rotating_Bridge
 from amuse.community.galaxia.interface import BarAndSpirals3D
 from amuse.ext.composition_methods import *
@@ -70,7 +68,7 @@ class IntegrateOrbit(object):
         galaxy.commit_parameters()
         self.omega= galaxy.parameters.omega_system
         self.initial_phase= galaxy.parameters.initial_phase
-        print("INITIAL_PHASE:", self.initial_phase)
+        print "INITIAL_PHASE:", self.initial_phase
         galaxy.kinetic_energy=quantities.zero
         galaxy.potential_energy=quantities.zero
         return galaxy 
@@ -119,16 +117,16 @@ class IntegrateOrbit(object):
         phi2z= galaxy.get_potential_at_point(0 |units.kpc, x, y, (z-dz))
         f1z= -(phi1z-phi2z)/(2*dz)
         fx,fy,fz= galaxy.get_gravity_at_point(0 |units.kpc, x, y, z)
-        print("analytic", "numerical")
-        print(fx.value_in(100*units.kms**2/units.kpc) , f1x.value_in(100*units.kms**2/units.kpc))
-        print(fy.value_in(100*units.kms**2/units.kpc) , f1y.value_in(100*units.kms**2/units.kpc))
-        print(fz.value_in(100*units.kms**2/units.kpc) , f1z.value_in(100*units.kms**2/units.kpc))
+        print "analytic", "numerical" 
+        print fx.value_in(100*units.kms**2/units.kpc) , f1x.value_in(100*units.kms**2/units.kpc)
+        print fy.value_in(100*units.kms**2/units.kpc) , f1y.value_in(100*units.kms**2/units.kpc)
+        print fz.value_in(100*units.kms**2/units.kpc) , f1z.value_in(100*units.kms**2/units.kpc)
         return
 
     def get_pos_vel_and_orbit(self, particle_set, pos):
         particle_set.velocity= (-1)*particle_set.velocity
         MW= self.galaxy()
-        print("OMEGA:", self.omega.as_quantity_in(1/units.Gyr))
+        print "OMEGA:", self.omega.as_quantity_in(1/units.Gyr) 
         particle_rot= self.creation_particles_noinertial(particle_set)
         gravless= drift_without_gravity(particle_rot)
         
@@ -167,7 +165,7 @@ class IntegrateOrbit(object):
             x = particle_set.x
             y = particle_set.y
             
-        print("minimum", tmin.in_(units.Myr), dmin.in_(units.parsec))
+        print "minimum", tmin.in_(units.Myr), dmin.in_(units.parsec)
         bar_angle= self.bar_phase + (self.omega_bar*self.time)
         spiral_angle= self.spiral_phase +  (self.omega_spiral*self.time)
         
@@ -181,14 +179,7 @@ if __name__ in ('__main__', '__plot__'):
 
     N = 100
     Rvir = 1| units.parsec
-    
-    #there isn't a function with this name, made a king model isntead
-    #star_cluster = initialize_star_cluster(N, Rvir) 
-
-    M = 100.|units.MSun
-    W0 = 1.5
-    converter_cluster = nbody_system.nbody_to_si(M, Rvir)
-    star_cluster = new_king_model(N, W0, convert_nbody=converter_cluster)
+    star_cluster = initialize_star_cluster(N, Rvir)
 
     filename = "solar_system_with_moons.h5"
     solar_system = read_set_from_file(filename, "hdf5", close_file=True)
@@ -215,7 +206,7 @@ if __name__ in ('__main__', '__plot__'):
 
     
     sun_pos = [-8400.0, 0.0, 17.0] | units.parsec
-    MWG = to_amuse(MWPotential2014, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None) #inte.galaxy()
+    MWG = inte.galaxy()
     vc = MWG.get_velcirc(sun_pos[0], sun_pos[1], sun_pos[2]) 
     sun_vel = [11.352, (12.24+vc.value_in(units.kms)), 7.41] | units.kms
     

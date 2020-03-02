@@ -1,7 +1,7 @@
 import numpy
 
 import matplotlib
-matplotlib.use('Agg')
+#matplotlib.use('Agg')
 from matplotlib import pyplot
 from amuse.lab import *
 
@@ -22,8 +22,6 @@ from amuse.community.ph4.interface import ph4
 from amuse.community.huayno.interface import Huayno
 from amuse.community.bhtree.interface import BHTree
 from amuse.community.mi6.interface import MI6
-
-from galpy.potential import MWPotential2014, to_amuse
 
 from nemesis import Nemesis,HierarchicalParticles,system_type
 from amuse.couple import bridge
@@ -111,8 +109,8 @@ def plot_figure(stars, nemesis, nstep, LL, filename):
     for p in nemesis.particles:
         c='k'
         ls='solid'
-        code_colors=dict(ph4='b',Mercury='r',Huayno='g',Hermite='y')
-        code_ls=dict(ph4='dotted',Mercury='dashed',Huayno='dashdot',Hermite='solid')
+        code_colors=dict(TwoBody='b',Mercury='r',Huayno='g',Hermite='y')
+        code_ls=dict(TwoBody='dotted',Mercury='dashed',Huayno='dashdot',Hermite='solid')
         if nemesis.subcodes.has_key(p):
           c=code_colors[nemesis.subcodes[p].__class__.__name__] 
           ls=code_ls[nemesis.subcodes[p].__class__.__name__]
@@ -143,7 +141,7 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
   Mmax = 20 | units.MSun
   cluster_population = make_galaxy_model(N, M_galaxy, R_galaxy, Mmin, Mmax)
   stars = initialize_globular_clusters(cluster_population, N)
-  print("Stars:", len(stars), stars.mass.sum().in_(units.MSun), stars.mass.max().in_(units.MSun), stars.mass.mean().in_(units.MSun))
+  print "Stars:", len(stars), stars.mass.sum().in_(units.MSun), stars.mass.max().in_(units.MSun), stars.mass.mean().in_(units.MSun)
 
   stellar = SeBa()
   stellar.particles.add_particles(stars)
@@ -154,7 +152,7 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
 
   dt=smaller_nbody_power_of_two(0.1 | units.Myr, conv)
   dt_nemesis=dt
-  print(dt.in_(units.Myr))
+  print dt.in_(units.Myr)
   dt_bridge = 0.01*dt
 
   #dt_param=0.02
@@ -175,7 +173,7 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
                          phase_bar= phi_bar, phase_spiral= phi_sp, 
                          omega_spiral= OS, omega_bar= OB, 
                          amplitude= A, m=m, mass_bar= M )
-  MWG = to_amuse(MWPotential2014, t=0.0, tgalpy=0.0, reverse=False, ro=None, vo=None) #galaxy.galaxy()
+  MWG = galaxy.galaxy()
   
   def radius(sys,eta=dt_param,_G=constants.G):
     radius=((_G*sys.total_mass()*dt**2/eta**2)**(1./3.))
@@ -207,7 +205,7 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
     code.parameters.end_time_accuracy_factor=0.
     #code.parameters.dt_param=0.001
     code.parameters.dt_param=0.1
-    print(code.parameters.dt_dia.in_(units.yr))
+    print code.parameters.dt_dia.in_(units.yr)
     return code
   
   
@@ -278,15 +276,15 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
     t+=dtdiag
     gravity.evolve_model(t)  
     #nemesis.evolve_model(t)  
-    print(t.in_(units.Myr))
-    print(len(nemesis.particles))
+    print t.in_(units.Myr),
+    print len(nemesis.particles),
 
     m = stars.mass.sum()
     stellar.evolve_model(t)
     channel_from_stellar.copy()
     dm = m-stars.mass.sum()
     totaldM.append(totaldM[-1]+dm)
-    print("dM=", totaldM[-1].in_(units.MSun), dm.in_(units.MSun))
+    print "dM=", totaldM[-1].in_(units.MSun), dm.in_(units.MSun),
     channel_to_nemesis.copy()
     
     time.append( t.value_in(units.yr) )
@@ -305,7 +303,7 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
     totalE.append(abs((E0-E)/E0))
     totalA.append(abs((A0-A)/A0))
     totalP.append(abs(P0-P))
-    print("dE=", totalE[-1],(E-E1)/E)
+    print "dE=", totalE[-1],(E-E1)/E
 #    print allparts.potential_energy(),nemesis.potential_energy
   
     ss=nemesis.particles.all()
@@ -314,7 +312,7 @@ def globular_clusters(N=10, L=6.| units.kpc, dv=1.0 | units.kms):
     y=(ss.z).value_in(units.kpc)
     lowm=numpy.where( ss.mass.value_in(units.MSun) < 1)[0]
     highm=numpy.where( ss.mass.value_in(units.MSun) >= 1)[0]
-    print("N=", len(ss), len(highm), len(lowm))
+    print "N=", len(ss), len(highm), len(lowm)
     
     xcm=nemesis.particles.x.value_in(units.kpc)
     ycm=nemesis.particles.y.value_in(units.kpc)

@@ -273,7 +273,7 @@ class Nemesis(object):
           newparent=self.particles.add_subsystem(sys)
           newparent.sub_worker_radius=sys[0].radius
         self.set_parent_particle_radius(newparent)
-        print("radius:",newparent.radius.in_(units.parsec))
+        #print("radius:",newparent.radius.in_(units.parsec))
 
       
   def handle_collision(self, coll_time,corr_time,coll_set):
@@ -288,7 +288,7 @@ class Nemesis(object):
       if p in self.subcodes:
         code=self.subcodes[p]
         code.evolve_model(coll_time)
-        print((coll_time-code.model_time)/self.timestep)
+        print('coll_time - code.model_time / self.timestep is', (coll_time-code.model_time)/self.timestep)
       if p.subsystem is not None:
         collsubsystems.add_particle(p)
 
@@ -317,7 +317,7 @@ class Nemesis(object):
     newparent=self.particles.add_subsystem(newcode.particles)
     self.set_parent_particle_radius(newparent)
     newparent.sub_worker_radius=0.*newparent.radius
-    print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec))
+    #print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec))
     self.subcodes[newparent]=newcode
     return newparent
         

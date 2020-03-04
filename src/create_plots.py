@@ -41,7 +41,7 @@ def plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt):
             
             if orbiter_name == 'SingleStar':
             
-                axs[i].set_ylabel(r'$\Delta E/E(t=0)$', fontsize=12)
+                axs[i].set_ylabel(r'$|\Delta E/E(t=0)|$', fontsize=12)
             
             axs[i].set_title(orbiter_name, fontsize=8)
             
@@ -52,7 +52,7 @@ def plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt):
                     sim_times_unitless =  np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))    
                     scaled_energies = np.loadtxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt')    
                     
-                    axs[i].plot(sim_times_unitless, scaled_energies, label=code_name)
+                    axs[i].semilogy(sim_times_unitless, np.abs(scaled_energies), label=code_name)
                     
                 except:
                     

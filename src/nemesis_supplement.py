@@ -6,9 +6,10 @@ Created on Wed Feb 12 13:51:30 2020
 @author: BrianTCook
 """
 
-from amuse.lab import*
+from amuse.lab import *
 from amuse.couple.bridge import CalculateFieldForParticles
 from amuse.units import quantities
+from amuse.community.bhtree.interface import BHTreeInterface, BHTree
 from amuse.community.mercury.interface import Mercury
 from amuse.community.huayno.interface import Huayno
 from amuse.units import units,nbody_system
@@ -47,7 +48,8 @@ def parent_worker():
     
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    code = BHTree(converter_parent)
+    code = BHTreeInterface(converter_parent)
+    
     code.parameters.epsilon_squared=0.| units.kpc**2
     code.parameters.end_time_accuracy_factor=0.
     code.parameters.dt_param=0.1
@@ -59,6 +61,8 @@ def sub_worker(parts):
     #don't need parts as argument in the same way Simon did
     converter_sub = nbody_system.nbody_to_si(1000.|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     code = Hermite(converter_sub)
+    
+    
     
     return code
 

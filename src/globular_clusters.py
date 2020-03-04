@@ -65,7 +65,6 @@ def globular_clusters(N=10, L=10.| units.kpc, dv=1.0 | units.kms):
   cluster_population = make_galaxy_model(N, M_galaxy, R_galaxy)
   stars = initialize_globular_clusters(cluster_population, N)
   print stars.mass.in_(units.MSun)
-  xxx
 
   conv=nbody_system.nbody_to_si(M_galaxy, R_galaxy)
   conv_sub=nbody_system.nbody_to_si(1000.| units.MSun, 10.| units.parsec)

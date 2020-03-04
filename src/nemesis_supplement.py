@@ -60,7 +60,7 @@ def sub_worker(parts):
     
     #don't need parts as argument in the same way Simon did
     converter_sub = nbody_system.nbody_to_si(1000.|units.MSun, 10.|units.parsec) #masses list is in solar mass units
-    code = Huayno(converter_sub)
+    code = Hermite(converter_sub) #Huayno might be too slow
     
     return code
 

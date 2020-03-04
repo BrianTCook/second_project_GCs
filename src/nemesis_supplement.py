@@ -62,8 +62,6 @@ def sub_worker(parts):
     converter_sub = nbody_system.nbody_to_si(1000.|units.MSun, 5.|units.parsec) #masses list is in solar mass units
     code = Hermite(converter_sub)
     
-    
-    
     return code
 
 def py_worker():

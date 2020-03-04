@@ -48,11 +48,12 @@ def parent_worker():
     
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    code = Hermite(converter_parent) #done in src_nemesis
+    code = BHTree(converter_parent) #done in src_nemesis
     
-    code.parameters.epsilon_squared=0.| units.kpc**2
-    code.parameters.end_time_accuracy_factor=0.
-    code.parameters.dt_param=0.1
+    #code.parameters.epsilon_squared=0.| units.kpc**2
+    #code.parameters.end_time_accuracy_factor=0.
+    #code.parameters.dt_param=0.1
+    
     return code
 
 def sub_worker(parts):

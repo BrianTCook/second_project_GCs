@@ -53,7 +53,7 @@ if __name__ in '__main__':
     
     masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 
-    Norbiters_list = [ 32 ] #need to make into a list at some point
+    Norbiters_list = [ 2 ] #need to make into a list at some point
     orbiter_names = [ 'SingleStar',  'SingleCluster' ] #,, 'BinaryCluster' 
     code_names = [ 'nemesis', 'tree', 'Nbody' ]
 

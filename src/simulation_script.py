@@ -90,7 +90,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         attributes = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz')
         
-        write_set_to_file(simulation_bodies, filename, 'csv',
+        write_set_to_file(gravity.particles, filename, 'csv',
                           attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                           attribute_names = attributes)
         
@@ -101,7 +101,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         all_data[j, :len(data_t.index), :] = data_t.values
         x, y = data_t['x'].tolist(), data_t['y'].tolist()
         
-        '''
         #stuff to analyze COM of each star cluster
         for k, number_of_stars in enumerate(cluster_populations):
             
@@ -116,13 +115,9 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
             COM_data[j, k, 0] = x_COM
             COM_data[j, k, 1] = y_COM
-        '''
     
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
-        
-        #don't need to print so often
-        #if j% == 0:
         
         print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
 

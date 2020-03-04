@@ -65,8 +65,12 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
             other_clusters = orbiter_codes_list[:i] + orbiter_codes_list[i+1:]
             other_things = tuple(other_clusters) + (galaxy_code,)
 
+            stellar = MESA()
+            stellar.particles.add_particles(cluster_code.particles)
+
             #bridges each cluster with the bulge, not the other way around though
-            gravity.add_system(cluster_code, other_things)    
+            gravity.add_system(cluster_code, other_things)  
+            gravity.add_system(cluster_code, (stellar,))
             
     if code_name == 'nemesis':
         
@@ -82,7 +86,7 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
         
         parts=HierarchicalParticles(all_bodies)
         
-        dt=smaller_nbody_power_of_two(0.05 | units.Myr, converter_parent)
+        dt=smaller_nbody_power_of_two(0.2 | units.Myr, converter_parent)
         print('dt_nemesis is %.04f Myr'%(dt.value_in(units.Myr)))
         
         nemesis=Nemesis( parent_worker, sub_worker, py_worker)
@@ -93,7 +97,11 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
         nemesis.commit_parameters()
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
+        
+        stellar = MESA()
+        stellar.particles.add_particles(all_bodies)
 
         gravity.add_system(nemesis, (galaxy_code,))
+        gravity.add_system(nemesis, (stellar,))
     
     return gravity.particles, gravity, orbiter_bodies_list, cluster_colors

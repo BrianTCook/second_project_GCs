@@ -48,7 +48,7 @@ def parent_worker():
     
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    code = BHTreeInterface(converter_parent)
+    code = BHTree(converter_parent)
     
     code.parameters.epsilon_squared=0.| units.kpc**2
     code.parameters.end_time_accuracy_factor=0.

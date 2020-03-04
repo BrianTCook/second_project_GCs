@@ -21,7 +21,7 @@ def maps(code_name, orbiter_name, Norbiters):
 
     for i, t in enumerate(sim_times):
     
-        if i%10 == 0:
+        if i%100 == 0:
         
             w_all = pd.DataFrame(phase_space_data[i,:,:], 
                                      columns=['mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'])
@@ -126,8 +126,8 @@ def maps(code_name, orbiter_name, Norbiters):
         
             plt.figure()
             plt.scatter(x, y, s=1, c='k')
-            #plt.xlim(-2.0, 2.0)
-            #plt.ylim(-2.0, 2.0)
+            plt.xlim(-2.0, 2.0)
+            plt.ylim(-2.0, 2.0)
             plt.xlabel('x (kpc)', fontsize=12)
             plt.ylabel('y (kpc)', fontsize=12)
             plt.title('time = %.02f Myr'%(t), fontsize=16)

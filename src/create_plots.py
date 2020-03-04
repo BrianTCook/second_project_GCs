@@ -58,6 +58,7 @@ def plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt):
                     
                     print('%s, %s could not be found'%(code_name, orbiter_name))
                     
+            axs[i].set_ylim(1e-8, 1e0)
             axs[i].legend(loc='upper right')
        
         plt.tight_layout()         

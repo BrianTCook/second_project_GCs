@@ -245,7 +245,7 @@ class Nemesis(object):
       radius=parent.radius
       components=subsys.connected_components(threshold=self.threshold,distfunc=self.distfunc)
       if len(components)>1:
-        print("splitting:", len(components))
+        #print("splitting:", len(components))
         parentposition=parent.position
         parentvelocity=parent.velocity
         to_remove.add_particle(parent)
@@ -272,7 +272,7 @@ class Nemesis(object):
           newparent=self.particles.add_subsystem(sys)
           newparent.sub_worker_radius=sys[0].radius
         self.set_parent_particle_radius(newparent)
-        print("radius in parsecs:",newparent.radius.in_(units.parsec))
+        #print("radius in parsecs:",newparent.radius.in_(units.parsec))
 
       
   def handle_collision(self, coll_time,corr_time,coll_set):
@@ -289,7 +289,7 @@ class Nemesis(object):
       if p.subsystem is not None:
         collsubsystems.add_particle(p)
 
-    print("corr",coll_time.in_(units.yr),(coll_time-corr_time)/self.timestep)
+    #print("corr",coll_time.in_(units.yr),(coll_time-corr_time)/self.timestep)
     self.correction_kicks(collsubset,collsubsystems,coll_time-corr_time)
     
     newparts=HierarchicalParticles(Particles())
@@ -314,7 +314,7 @@ class Nemesis(object):
     newparent=self.particles.add_subsystem(newcode.particles)
     self.set_parent_particle_radius(newparent)
     newparent.sub_worker_radius=0.*newparent.radius
-    #print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec))
+    ##print("radius:",newparent.radius.in_(units.parsec),newparent.sub_worker_radius.in_(units.parsec))
     self.subcodes[newparent]=newcode
     return newparent
         
@@ -332,13 +332,13 @@ class Nemesis(object):
       code.evolve_model(tend)
       if stopping_condition.is_set():
         coll_time=code.model_time
-        print("coll_time, t_end:", coll_time.in_(units.Myr), tend.in_(units.Myr))
+        #print("coll_time, t_end:", coll_time.in_(units.Myr), tend.in_(units.Myr))
         coll_sets=self.find_coll_sets(stopping_condition.particles(0), stopping_condition.particles(1))
-        print("collsets:",len(coll_sets))
+        #print("collsets:",len(coll_sets))
         newparents=Particles()
         for cs in coll_sets:
           newparents.add_particle(self.handle_collision(coll_time,corr_time, cs))
-        print("len, corr-coll in Myr:",len(newparents),(corr_time-coll_time).in_(units.Myr))
+        #print("len, corr-coll in Myr:",len(newparents),(corr_time-coll_time).in_(units.Myr))
         self.correction_kicks(self.particles,newparents,corr_time-coll_time)
         self.particles.recenter_subsystems()
 

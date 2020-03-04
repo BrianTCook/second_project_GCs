@@ -21,7 +21,7 @@ def maps(code_name, orbiter_name, Norbiters):
 
     for i, t in enumerate(sim_times):
     
-        if i%100 == 0:
+        if i%5 == 0:
         
             w_all = pd.DataFrame(phase_space_data[i,:,:], 
                                      columns=['mass', 'x', 'y', 'z', 'vx', 'vy', 'vz'])

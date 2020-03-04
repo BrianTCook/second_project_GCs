@@ -48,7 +48,7 @@ def parent_worker():
     
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    code = Huayno(converter_parent)
+    code = Hermite(converter_parent) #done in src_nemesis
     
     code.parameters.epsilon_squared=0.| units.kpc**2
     code.parameters.end_time_accuracy_factor=0.
@@ -59,8 +59,8 @@ def parent_worker():
 def sub_worker(parts):
     
     #don't need parts as argument in the same way Simon did
-    converter_sub = nbody_system.nbody_to_si(1000.|units.MSun, 5.|units.parsec) #masses list is in solar mass units
-    code = Hermite(converter_sub)
+    converter_sub = nbody_system.nbody_to_si(1000.|units.MSun, 10.|units.parsec) #masses list is in solar mass units
+    code = Huayno(converter_sub)
     
     return code
 

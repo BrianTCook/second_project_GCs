@@ -200,7 +200,7 @@ class Nemesis(object):
     
     if not hasattr(self.particles,"sub_worker_radius"):
       simple=self.particles.simple_particles()
-      simple.sub_worker_radius=10.|units.parsec #simple.radius, this is probably a bad idea
+      simple.sub_worker_radius=simple.radius #setting to 10 parsecs did not work well, this is probably a bad idea
     
     for p in self.particles:
       self.set_parent_particle_radius(p)

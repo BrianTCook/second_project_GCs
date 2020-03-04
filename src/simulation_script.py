@@ -101,7 +101,11 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         all_data[j, :len(data_t.index), :] = data_t.values
         x, y = data_t['x'].tolist(), data_t['y'].tolist()
         
+        '''
         #stuff to analyze COM of each star cluster
+        
+        for whatever reason the yeeted particles don't stay as part of simulation_bodies
+        
         for k, number_of_stars in enumerate(cluster_populations):
             
             starting_index = int(np.sum( cluster_populations[:k] ))
@@ -115,6 +119,8 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
             COM_data[j, k, 0] = x_COM
             COM_data[j, k, 1] = y_COM
+    
+        '''
     
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()

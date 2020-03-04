@@ -197,13 +197,13 @@ class Nemesis(object):
 
   def commit_particles(self):
     self.particles.recenter_subsystems()
+
+    for p in self.particles:
+      self.set_parent_particle_radius(p)
     
     if not hasattr(self.particles,"sub_worker_radius"):
       simple=self.particles.simple_particles()
       simple.sub_worker_radius=simple.radius #setting to 10 parsecs did not work well, this is probably a bad idea
-    
-    for p in self.particles:
-      self.set_parent_particle_radius(p)
       
     for parent in self.subcodes.keys():
       if parent.subsystem is self.subcodes[parent].particles:

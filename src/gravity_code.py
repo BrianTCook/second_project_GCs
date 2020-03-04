@@ -83,7 +83,7 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
         parts=HierarchicalParticles(all_bodies)
         
         dt=smaller_nbody_power_of_two(0.05 | units.Myr, converter_parent)
-        print('dt_nemesis is', dt)
+        print('dt_nemesis is %.04f Myr'%(dt.value_in(units.Myr)))
         
         nemesis=Nemesis( parent_worker, sub_worker, py_worker)
         nemesis.timestep=dt

@@ -98,7 +98,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         #if j%gadget_flag == 0:
         io.write_set_to_file(gravity.particles, 'for_enbid_%s_%s_%i.dat'%(code_name, orbiter_name, j), 'gadget',
-                             attribute_types = (units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms) #units.MSun,
+                             attribute_types = (units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms), #units.MSun,
                              attribute_names = attributes)
         
         data_t = pd.read_csv(filename, names=list(attributes))

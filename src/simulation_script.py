@@ -92,13 +92,13 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         delta_energies.append(dE_dyn)
         
         attributes = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz')
-        attributes_gadget = ('x', 'y', 'z', 'vx', 'vy', 'vz') #number density, that's it
+        #attributes_gadget = ('x', 'y', 'z', 'vx', 'vy', 'vz') #number density, that's it
         
         if j%gadget_flag == 0:
             
             write_set_to_file(gravity.particles, 'for_enbid_%s_%s_%i'%(code_name, orbiter_name, j), 'gadget',
                               attribute_types = (units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
-                              attribute_names = attributes_gadget)
+                              attribute_names = ('x', 'y', 'z', 'vx', 'vy', 'vz'))
         
         write_set_to_file(gravity.particles, filename, 'csv',
                           attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),

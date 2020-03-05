@@ -1,7 +1,7 @@
 %  Input and Output
 %InitCondFile     Examples/hernquist1_small/snapshot_ici
-%InitCondFile      Examples/uniform_6d_box_4/snapshot_ici
-InitCondFile      cook_data/cook_test
+%InitCondFile      Examples/uniform_6d_box_4/snapshot_ici.ascii
+InitCondFile      cook_data/cook_test.ascii
 
 %-------------------------------------------------------
 ICFormat                  0     % O)ASCII 1)Gadget 2)User defined

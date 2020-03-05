@@ -86,4 +86,4 @@ if __name__ in '__main__':
                 maps(code_name, orbiter_name, Norbiters)
                 
     plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt)
-    #convert_numpy(code_names, orbiter_names, Norbiters_list)
+    convert_numpy(code_names, orbiter_names, Norbiters_list)

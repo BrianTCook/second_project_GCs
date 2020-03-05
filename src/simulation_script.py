@@ -74,7 +74,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     #for saving in write_set_to_file
     filename = 'data_temp.csv'
-    attributes = ('x', 'y', 'z', 'vx', 'vy', 'vz') #'mass', 
+    attributes = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz')
     
     gadget_flag = int(math.floor(len(sim_times)/10))
     
@@ -93,12 +93,12 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         delta_energies.append(dE_dyn)
         
         io.write_set_to_file(gravity.particles, filename, 'csv',
-                             attribute_types = (units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms), #units.MSun,
+                             attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                              attribute_names = attributes)
         
         #if j%gadget_flag == 0:
         io.write_set_to_file(gravity.particles, 'for_enbid_%s_%s_%i.dat'%(code_name, orbiter_name, j), 'gadget',
-                             attribute_types = (units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms), #units.MSun,
+                             attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                              attribute_names = attributes)
         
         data_t = pd.read_csv(filename, names=list(attributes))

@@ -19,6 +19,7 @@ import gzip
 import numpy as np
 import pandas as pd
 import time
+import math
 
 def print_diagnostics(time, simulation_bodies, E_dyn, dE_dyn):
     
@@ -74,6 +75,8 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #for saving in write_set_to_file
     filename = 'data_temp.csv'
     
+    gadget_flag = int(math.floor(len(sim_times)/10))
+    
     t0 = time.time()
     
     for j, t in enumerate(sim_times):
@@ -89,6 +92,13 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         delta_energies.append(dE_dyn)
         
         attributes = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz')
+        attributes_gadget = ('x', 'y', 'z', 'vx', 'vy', 'vz') #number density, that's it
+        
+        if j%gadget_flag == 0:
+            
+            write_set_to_file(gravity.particles, 'for_enbid_%s_%s_%i'%(code_name, orbiter_name, j)), 'gadget',
+                              attribute_types = (units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
+                              attribute_names = attributes_gadget)
         
         write_set_to_file(gravity.particles, filename, 'csv',
                           attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),

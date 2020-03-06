@@ -62,8 +62,8 @@ axs[0,1].set_xscale('log')
 
 axs[0,0].set_xlabel(r'$M_{\mathrm{cluster}}$ ($M_{\odot}$)', fontsize=14)
 axs[0,1].set_xlabel(r'$N_{\star}$', fontsize=14)
-axs[1,0].set_xlabel(r'$|\mathbf{r}|$ (kpc)', fontsize=14)
-axs[1,1].set_xlabel(r'$|\mathbf{v}|$ (km/s)', fontsize=14)
+axs[1,0].set_xlabel(r'$|\mathbf{r} \, (t=0)|$ (kpc)', fontsize=14)
+axs[1,1].set_xlabel(r'$|\mathbf{v} \, (t=0)|$ (km/s)', fontsize=14)
 
 axs[0,0].tick_params(labelsize='large')
 axs[0,1].tick_params(labelsize='large')

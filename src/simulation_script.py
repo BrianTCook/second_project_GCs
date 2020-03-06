@@ -91,16 +91,17 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         dE_dyn = (E_dyn/E_dyn_init) - 1.
         
         delta_energies.append(dE_dyn)
+
+        if j%gadget_flag == 0:
+            
+            io.write_set_to_file(gravity.particles, 'for_enbid_%s_%s_%i'%(code_name, orbiter_name, j), 'gadget',
+                                 attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
+                                 attribute_names = attributes)
         
         io.write_set_to_file(gravity.particles, filename, 'csv',
                              attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                              attribute_names = attributes)
-        
-        #if j%gadget_flag == 0:
-        io.write_set_to_file(gravity.particles, 'for_enbid_%s_%s_%i.dat'%(code_name, orbiter_name, j), 'gadget',
-                             #attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
-                             attribute_names = attributes)
-        
+            
         data_t = pd.read_csv(filename, names=list(attributes))
         data_t = data_t.drop([0, 1, 2]) #removes labels units, and unit names
         data_t = data_t.astype(float) #strings to floats

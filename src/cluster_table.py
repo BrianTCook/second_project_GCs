@@ -41,6 +41,8 @@ speeds = [ np.sqrt(vxs[i]**2 + vys[i]**2 + vzs[i]**2) for i in range(N) ]
 Nstars = [ len(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)) for i in range(N) ]
 masses = [ np.sum(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)) for i in range(N) ]
 
+print(np.sum(Nstars))
+
 df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds)), columns=['M', 'Nstars', '|r|', '|v|'])
 print(df.to_latex())
 

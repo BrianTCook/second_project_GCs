@@ -35,7 +35,7 @@ if __name__ in '__main__':
     potential = MWPotential2014 #galpy
     
     sepBinary = 20.|units.parsec #not necessary if not doing binary cluster part
-    tend, dt = 1.|units.Myr, 0.1|units.Myr
+    tend, dt = 0.4.|units.Myr, 0.1|units.Myr
     #dt_param = 0.2 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass
@@ -53,22 +53,24 @@ if __name__ in '__main__':
     
     masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 
-    Norbiters_list = [ 2 ] #need to make into a list at some point
-    orbiter_names = [ 'SingleStar',  'SingleCluster' ] #,, 'BinaryCluster' 
+    logN_max = 8
+    Norbiters_list = [ 2**i for i in range(logN_max) ] #need to make into a list at some point
+    orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
     code_names = [ 'nemesis', 'tree', 'Nbody' ]
 
     t0 = time.time()
     
+    plt.figure()
+
+    plt.xlabel(r'$\log_{2} N_{\mathrm{clusters}}$', fontsize=20)
+    plt.ylabel(r'Clock Time (minutes)', fontsize=20)
+    
     for orbiter_name in orbiter_names:
         for code_name in code_names:
+            
+            yvals = []
+            
             for Norbiters in Norbiters_list:
-                
-                if orbiter_name == 'SingleCluster' and orbiter_name == 'nemesis':
-                    continue
-                if orbiter_name == 'SingleCluster' and orbiter_name == 'Nbody':
-                    continue
-                
-                print('current time: %.03f minutes'%((time.time()-t0)/60.))
                 
                 rvals = rvals_all[:Norbiters]
                 phivals = phivals_all[:Norbiters]
@@ -79,11 +81,31 @@ if __name__ in '__main__':
                 print(code_name, orbiter_name)
                 print('\\\\\\\\\\\\\\\\\\\\\\\\')
                 
+                t_init = time.time()
+                
                 simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
                            sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
                            masses, Norbiters, tend, dt)
               
-                maps(code_name, orbiter_name, Norbiters)
+                t_final = time.time()
                 
-    plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt)
+                yvals.append((t_final-t_init)/60.)
+                
+                #maps(code_name, orbiter_name, Norbiters)
+                
+            plt.scatter(range(logN_max), yvals, label=code_name)
+                
+    
+    plt.legend(loc='upper left', fontsize=12)
+    plt.annotate(r'$t_{\mathrm{end}} = 0.4$ Myr', xy=(0.7, 0.25), xycoords='axes fraction', fontsize=14)
+    plt.annotate(r'$\Delta t = 0.1$ Myr', xy=(0.7, 0.15), xycoords='axes fraction', fontsize=14)
+    
+    plt.gca().set_yscale('log')
+    plt.gca().tick_params(labelsize='large')
+    
+    plt.tight_layout() 
+    plt.savefig('clock_vs_Norbiters.pdf')
+            
+    #plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt)
     #convert_numpy(code_names, orbiter_names, Norbiters_list)
+    #entropy_stuff(code_names, orbiter_names, Norbiters_list)

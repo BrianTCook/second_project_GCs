@@ -14,6 +14,7 @@ from galpy.potential import MWPotential2014, to_amuse
 from galpy.util import bovy_conversion
 
 from gravity_code import gravity_code_setup
+from fw_entropy import get_entropy
 
 import gzip
 import numpy as np
@@ -94,9 +95,17 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
 
         if j%gadget_flag == 0:
             
+            '''
             io.write_set_to_file(gravity.particles, 'for_enbid_%s_%s_%i'%(code_name, orbiter_name, j), 'gadget',
                                  attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                                  attribute_names = attributes)
+            '''
+    
+            points = np.loadtxt('for_enbid_%s_%s_%i'%(code_name, orbiter_name, j))
+            values = np.savetxt('for_enbid_%s_%s_frame_%s_Norbiters_%s.ascii'%(code_name, orbiter_name, str(j).rjust(5, '0'), str(Norbiters)), data_to_keep)
+            
+            information_entropy = get_entropy(points, values)
+            
         
         io.write_set_to_file(gravity.particles, filename, 'csv',
                              attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),

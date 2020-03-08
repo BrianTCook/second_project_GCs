@@ -83,6 +83,8 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     for j, t in enumerate(sim_times):
         
+        '''
+        
         clock_times.append(time.time()-t0) #will be in seconds
     
         if j == 0:
@@ -94,18 +96,14 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         delta_energies.append(dE_dyn)
 
         if j%gadget_flag == 0:
-            
-            '''
             io.write_set_to_file(gravity.particles, 'for_enbid_%s_%s_%i'%(code_name, orbiter_name, j), 'gadget',
                                  attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                                  attribute_names = attributes)
-            '''
     
             points = np.loadtxt('for_enbid_%s_%s_%i'%(code_name, orbiter_name, j))
             values = np.savetxt('for_enbid_%s_%s_frame_%s_Norbiters_%s.ascii'%(code_name, orbiter_name, str(j).rjust(5, '0'), str(Norbiters)), data_to_keep)
             
             information_entropy = get_entropy(points, values)
-            
         
         io.write_set_to_file(gravity.particles, filename, 'csv',
                              attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
@@ -118,7 +116,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         all_data[j, :len(data_t.index), :] = data_t.values
         x, y = data_t['x'].tolist(), data_t['y'].tolist()
         
-        '''
         #stuff to analyze COM of each star cluster
         
         for whatever reason the yeeted particles don't stay as part of simulation_bodies
@@ -142,7 +139,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
         
-        print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
+        #print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
 
     try:
         gravity.stop()
@@ -151,16 +148,16 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     #things that are not easily extracted from write_set_to_file
     
-    f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
+    #f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
     #f_COM = gzip.GzipFile('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
-    np.save(file=f_all, arr=all_data, allow_pickle=True)
+    #np.save(file=f_all, arr=all_data, allow_pickle=True)
     #np.save(file=f_COM, arr=COM_data, allow_pickle=True)
     
-    f_all.close()
+    #f_all.close()
     #f_COM.close()
     
-    np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt', cluster_colors)
-    np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt', delta_energies)
-    np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
+    #np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt', cluster_colors)
+    #np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt', delta_energies)
+    #np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
     
     return 0

@@ -61,7 +61,7 @@ if __name__ in '__main__':
     logN_max = 2
     Norbiters_list = [ 2**i for i in range(logN_max) ] #need to make into a list at some point
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
-    code_names = [ 'nemesis', 'tree', 'Nbody' ]
+    code_names = [ 'tree', 'Nbody' ] #'nemesis', 
 
     t0 = time.time()
     

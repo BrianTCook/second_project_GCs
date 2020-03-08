@@ -40,7 +40,7 @@ if __name__ in '__main__':
     potential = MWPotential2014 #galpy
     
     sepBinary = 20.|units.parsec #not necessary if not doing binary cluster part
-    tend, dt = 0.4|units.Myr, 0.1|units.Myr
+    tend, dt = 0.2|units.Myr, 0.1|units.Myr
     #dt_param = 0.2 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass
@@ -102,7 +102,7 @@ if __name__ in '__main__':
                 
     
     plt.legend(loc='upper left', fontsize=12)
-    plt.annotate(r'$t_{\mathrm{end}} = 0.4$ Myr', xy=(0.7, 0.25), xycoords='axes fraction', fontsize=14)
+    plt.annotate(r'$t_{\mathrm{end}} = 0.2$ Myr', xy=(0.7, 0.25), xycoords='axes fraction', fontsize=14)
     plt.annotate(r'$\Delta t = 0.1$ Myr', xy=(0.7, 0.15), xycoords='axes fraction', fontsize=14)
     
     plt.gca().set_yscale('log')

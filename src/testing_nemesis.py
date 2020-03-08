@@ -58,7 +58,7 @@ if __name__ in '__main__':
     
     masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 
-    logN_max = 3
+    logN_max = 4
     Norbiters_list = [ 2**i for i in range(logN_max) ] #need to make into a list at some point
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
     code_names = [ 'tree', 'Nbody', 'nemesis' ]
@@ -100,7 +100,7 @@ if __name__ in '__main__':
                 
             plt.scatter(range(logN_max), yvals, label=code_name)
                 
-    
+    plt.gca().set_yscale('log')
     plt.legend(loc='upper left', fontsize=12)
     plt.annotate(r'$t_{\mathrm{end}} = 0.2$ Myr', xy=(0.7, 0.25), xycoords='axes fraction', fontsize=14)
     plt.annotate(r'$\Delta t = 0.1$ Myr', xy=(0.7, 0.15), xycoords='axes fraction', fontsize=14)

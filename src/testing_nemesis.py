@@ -22,6 +22,8 @@ from convert_numpy_to_ascii import convert_numpy
 
 import random
 import numpy as np
+import matplotlib.pyplot as plt
+matplotlib.use('agg')
 import time
 import os
 

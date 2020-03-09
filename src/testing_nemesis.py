@@ -105,7 +105,7 @@ if __name__ in '__main__':
                 #except:
                     
                 #print('something went wrong with mpiexec presumably')
-                
+
                 maps(code_name, orbiter_name, Norbiters)
                 
             #plt.scatter(Nvals, yvals, label=code_name)

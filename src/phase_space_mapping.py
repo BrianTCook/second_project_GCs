@@ -30,7 +30,7 @@ def maps(code_name, orbiter_name, Norbiters):
             print('filename_phase: %s'%(filename_phase))
             print('test_str: %s'%(test_str))
             
-            if str(Norbiters) in filename_phase:
+            if test_str in filename_phase:
         
                 sim_times = np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))    
                 colors = np.loadtxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt')

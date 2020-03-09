@@ -73,32 +73,39 @@ if __name__ in '__main__':
     for orbiter_name in orbiter_names:
         for code_name in code_names:
             
-            yvals = []
+            Nvals, yvals = [], []
             
             for Norbiters in Norbiters_list:
                 
-                rvals = rvals_all[:Norbiters]
-                phivals = phivals_all[:Norbiters]
-                zvals = zvals_all[:Norbiters]  
-                masses = masses_all[:Norbiters]
-                        
-                print('\\\\\\\\\\\\\\\\\\\\\\\\')
-                print(code_name, orbiter_name)
-                print('\\\\\\\\\\\\\\\\\\\\\\\\')
+                try:
                 
-                t_init = time.time()
-                
-                simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
-                           sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
-                           masses, Norbiters, tend, dt)
-              
-                t_final = time.time()
-                
-                yvals.append((t_final-t_init)/60.)
+                    rvals = rvals_all[:Norbiters]
+                    phivals = phivals_all[:Norbiters]
+                    zvals = zvals_all[:Norbiters]  
+                    masses = masses_all[:Norbiters]
+                            
+                    print('\\\\\\\\\\\\\\\\\\\\\\\\')
+                    print(code_name, orbiter_name)
+                    print('\\\\\\\\\\\\\\\\\\\\\\\\')
+                    
+                    t_init = time.time()
+                    
+                    simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
+                               sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
+                               masses, Norbiters, tend, dt)
+                  
+                    t_final = time.time()
+                    
+                    Nvals.append(Norbiters)
+                    yvals.append((t_final-t_init)/60.)
+                    
+                except:
+                    
+                    print('something went wrong with mpiexec presumably')
                 
                 #maps(code_name, orbiter_name, Norbiters)
                 
-            plt.scatter(range(logN_max), yvals, label=code_name)
+            plt.scatter(Nvals, yvals, label=code_name)
                 
     plt.gca().set_yscale('log')
     plt.legend(loc='upper left', fontsize=12)

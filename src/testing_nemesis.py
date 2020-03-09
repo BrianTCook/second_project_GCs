@@ -103,9 +103,9 @@ if __name__ in '__main__':
                     
                     print('something went wrong with mpiexec presumably')
                 
-                #maps(code_name, orbiter_name, Norbiters)
+                maps(code_name, orbiter_name, Norbiters)
                 
-            plt.scatter(Nvals, yvals, label=code_name)
+            #plt.scatter(Nvals, yvals, label=code_name)
       
     '''          
     plt.gca().set_yscale('log')

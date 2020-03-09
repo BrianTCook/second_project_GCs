@@ -11,6 +11,9 @@ def maps(code_name, orbiter_name, Norbiters):
     print('now mapping: %s, %s'%(code_name, orbiter_name))
     print('!!!!!!!!!!!!!!!!!!!!')
     
+    vel_ticks = [ -200, 0, 200 ]
+    pos_ticks = [ -1.5, 0, 1.5 ]
+    
     phase_files = glob.glob('all_data_%s_%s_Norbiters_*.npy.gz'%(code_name, orbiter_name))
     
     logN_max = 9
@@ -49,26 +52,36 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[0, 0].set(xlabel='x', ylabel='y')
                         axs[0, 0].set_xlim(-2, 2)
                         axs[0, 0].set_ylim(-2, 2)
+                        axs[0, 0].set_xticks(pos_ticks)
+                        axs[0, 0].set_yticks(pos_ticks)
                         
                         axs[1, 0].scatter(x, z, s=2, c=colors)
                         axs[1, 0].set(xlabel='x', ylabel='z')
                         axs[1, 0].set_xlim(-2, 2)
                         axs[1, 0].set_ylim(-2, 2)
+                        axs[1, 0].set_xticks(pos_ticks)
+                        axs[1, 0].set_yticks(pos_ticks)
                         
                         axs[2, 0].scatter(x, vx,s=2, c=colors)
                         axs[2, 0].set(xlabel='x', ylabel='vx')
                         axs[2, 0].set_xlim(-2, 2)
                         axs[2, 0].set_ylim(-400, 400)
+                        axs[2, 0].set_xticks(pos_ticks)
+                        axs[2, 0].set_yticks(vel_ticks)
                         
                         axs[3, 0].scatter(x, vy, s=2, c=colors)
                         axs[3, 0].set(xlabel='z', ylabel='vy')
                         axs[3, 0].set_xlim(-2, 2)
                         axs[3, 0].set_ylim(-400, 400)
+                        axs[3, 0].set_xticks(pos_ticks)
+                        axs[3, 0].set_yticks(vel_ticks)
                         
                         axs[4, 0].scatter(x, vz, s=2, c=colors)
                         axs[4, 0].set(xlabel='x', ylabel='vz')
                         axs[4, 0].set_xlim(-2, 2)
                         axs[4, 0].set_ylim(-400, 400)
+                        axs[4, 0].set_xticks(pos_ticks)
+                        axs[4, 0].set_yticks(vel_ticks)
                         
                         #second column
                         
@@ -76,21 +89,29 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[1, 1].set(xlabel='y', ylabel='z')
                         axs[1, 1].set_xlim(-2, 2)
                         axs[1, 1].set_ylim(-2, 2)
+                        axs[1, 1].set_xticks(pos_ticks)
+                        axs[1, 1].set_yticks(pos_ticks)
                         
                         axs[2, 1].scatter(y, vx, s=2, c=colors)
                         axs[2, 1].set(xlabel='y', ylabel='vx')
                         axs[2, 1].set_xlim(-2, 2)
                         axs[2, 1].set_ylim(-400, 400)
+                        axs[2, 1].set_xticks(pos_ticks)
+                        axs[2, 1].set_yticks(vel_ticks)
                         
                         axs[3, 1].scatter(y, vy, s=2, c=colors)
                         axs[3, 1].set(xlabel='y', ylabel='vy')
                         axs[3, 1].set_xlim(-2, 2)
                         axs[3, 1].set_ylim(-400, 400)
+                        axs[3, 1].set_xticks(pos_ticks)
+                        axs[3, 1].set_yticks(vel_ticks)
                         
                         axs[4, 1].scatter(y, vz, s=2, c=colors)
                         axs[4, 1].set(xlabel='y', ylabel='vz')
                         axs[4, 1].set_xlim(-2, 2)
                         axs[4, 1].set_ylim(-400, 400)
+                        axs[4, 1].set_xticks(pos_ticks)
+                        axs[4, 1].set_yticks(vel_ticks)
                         
                         #third column
                         
@@ -98,16 +119,22 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[2, 2].set(xlabel='z', ylabel='vx')
                         axs[2, 2].set_xlim(-2, 2)
                         axs[2, 2].set_ylim(-400, 400)
+                        axs[2, 2].set_xticks(pos_ticks)
+                        axs[2, 2].set_yticks(vel_ticks)
                         
                         axs[3, 2].scatter(z, vy, s=2, c=colors)
                         axs[3, 2].set(xlabel='z', ylabel='vy')
                         axs[3, 2].set_xlim(-2, 2)
                         axs[3, 2].set_ylim(-400, 400)
+                        axs[3, 2].set_xticks(pos_ticks)
+                        axs[3, 2].set_yticks(vel_ticks)
                         
                         axs[4, 2].scatter(z, vz, s=2, c=colors)
                         axs[4, 2].set(xlabel='z', ylabel='vz')
                         axs[4, 2].set_xlim(-2, 2)
                         axs[4, 2].set_ylim(-400, 400)
+                        axs[4, 2].set_xticks(pos_ticks)
+                        axs[4, 2].set_yticks(vel_ticks)
                         
                         #fourth column
                         
@@ -115,11 +142,15 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[3, 3].set(xlabel='vx', ylabel='vy')
                         axs[3, 3].set_xlim(-400, 400)
                         axs[3, 3].set_ylim(-400, 400)
+                        axs[3, 3].set_xticks(vel_ticks)
+                        axs[3, 3].set_yticks(vel_ticks)
                         
                         axs[4, 3].scatter(vx, vz, s=2, c=colors)
                         axs[4, 3].set(xlabel='vx', ylabel='vz')
                         axs[4, 3].set_xlim(-400, 400)
                         axs[4, 3].set_ylim(-400, 400)
+                        axs[4, 3].set_xticks(vel_ticks)
+                        axs[4, 3].set_yticks(vel_ticks)
                         
                         #fifth column
                         
@@ -127,6 +158,8 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[4, 4].set(xlabel='vy', ylabel='vz')
                         axs[4, 4].set_xlim(-400, 400)
                         axs[4, 4].set_ylim(-400, 400)
+                        axs[4, 4].set_xticks(vel_ticks)
+                        axs[4, 4].set_yticks(vel_ticks)
                         
                         # Hide x labels and tick labels for top plots and y ticks for right plots.
                         for ax in axs.flat:

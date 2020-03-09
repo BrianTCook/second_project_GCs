@@ -95,17 +95,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         dE_dyn = (E_dyn/E_dyn_init) - 1.
         
         delta_energies.append(dE_dyn)
-
-        if j%gadget_flag == 0:
-            
-            io.write_set_to_file(gravity.particles, 'for_enbid_%s_%s_%i'%(code_name, orbiter_name, j), 'gadget',
-                                 attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
-                                 attribute_names = attributes)
-    
-            points = np.loadtxt('for_enbid_%s_%s_%i'%(code_name, orbiter_name, j))
-            values = np.savetxt('for_enbid_%s_%s_frame_%s_Norbiters_%s.ascii'%(code_name, orbiter_name, str(j).rjust(5, '0'), str(Norbiters)), data_to_keep)
-            
-            #information_entropy = get_entropy(points, values)
         
         io.write_set_to_file(gravity.particles, filename, 'csv',
                              attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
@@ -116,6 +105,18 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         data_t = data_t.astype(float) #strings to floats
         
         all_data[j, :len(data_t.index), :] = data_t.values
+        
+        if j%gadget_flag == 0:
+            
+            #io.write_set_to_file(gravity.particles, 'for_enbid_%s_%s_%i'%(code_name, orbiter_name, j), 'gadget',
+            #                     attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
+            #                     attribute_names = attributes)
+    
+            #points = np.loadtxt('for_enbid_%s_%s_%i'%(code_name, orbiter_name, j))
+            np.savetxt('for_enbid_%s_%s_frame_%s_Norbiters_%s.ascii'%(code_name, orbiter_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
+            
+            #information_entropy = get_entropy(points, values)
+        
         x, y = data_t['x'].tolist(), data_t['y'].tolist()
         
         #stuff to analyze COM of each star cluster

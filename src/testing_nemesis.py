@@ -61,7 +61,7 @@ if __name__ in '__main__':
     #logN_max = 5
     Norbiters_list = [ 128 ] #2**i for i in range(logN_max)
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
-    code_names = [ 'tree', 'Nbody', 'nemesis' ]
+    code_names = [ 'tree' ] #, 'Nbody', 'nemesis' 
 
     t0 = time.time()
     

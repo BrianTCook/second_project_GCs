@@ -58,22 +58,22 @@ if __name__ in '__main__':
     
     masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 
-    logN_max = 5
-    Norbiters_list = [ 2**i for i in range(logN_max) ] #need to make into a list at some point
+    #logN_max = 5
+    Norbiters_list = [ 128 ] #2**i for i in range(logN_max)
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
     code_names = [ 'tree', 'Nbody', 'nemesis' ]
 
     t0 = time.time()
     
-    plt.figure()
+    #plt.figure()
 
-    plt.xlabel(r'$\log_{2} N_{\mathrm{clusters}}$', fontsize=20)
-    plt.ylabel(r'Clock Time (minutes)', fontsize=20)
+    #plt.xlabel(r'$\log_{2} N_{\mathrm{clusters}}$', fontsize=20)
+    #plt.ylabel(r'Clock Time (minutes)', fontsize=20)
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:
             
-            Nvals, yvals = [], []
+            #Nvals, yvals = [], []
             
             for Norbiters in Norbiters_list:
                 
@@ -88,16 +88,16 @@ if __name__ in '__main__':
                     print(code_name, orbiter_name)
                     print('\\\\\\\\\\\\\\\\\\\\\\\\')
                     
-                    t_init = time.time()
+                    #t_init = time.time()
                     
                     simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
                                sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
                                masses, Norbiters, tend, dt)
                   
-                    t_final = time.time()
+                    #t_final = time.time()
                     
-                    Nvals.append(Norbiters)
-                    yvals.append((t_final-t_init)/60.)
+                    #Nvals.append(Norbiters)
+                    #yvals.append((t_final-t_init)/60.)
                     
                 except:
                     
@@ -106,7 +106,8 @@ if __name__ in '__main__':
                 #maps(code_name, orbiter_name, Norbiters)
                 
             plt.scatter(Nvals, yvals, label=code_name)
-                
+      
+    '''          
     plt.gca().set_yscale('log')
     plt.legend(loc='upper left', fontsize=12)
     plt.annotate(r'$t_{\mathrm{end}} = 0.4$ Myr', xy=(0.7, 0.25), xycoords='axes fraction', fontsize=14)
@@ -116,6 +117,7 @@ if __name__ in '__main__':
     
     plt.tight_layout() 
     plt.savefig('clock_vs_Norbiters.pdf')
+    '''
             
     #plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt)
     #convert_numpy(code_names, orbiter_names, Norbiters_list)

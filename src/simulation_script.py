@@ -6,6 +6,8 @@ Created on Tue Feb 25 21:56:36 2020
 @author: BrianTCook
 """
 
+from __future__ import division
+
 from amuse.lab import *
 from amuse.couple import bridge
 from amuse.support import io
@@ -76,6 +78,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     filename = 'data_temp.csv'
     attributes = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz')
     
+    print('len(sim_times) is', len(sim_times))
     gadget_flag = int(math.floor(len(sim_times)/5))
     print('gadget_flag is', gadget_flag)
     

@@ -40,7 +40,7 @@ if __name__ in '__main__':
     potential = MWPotential2014 #galpy
     
     sepBinary = 20.|units.parsec #not necessary if not doing binary cluster part
-    tend, dt = 0.2|units.Myr, 0.1|units.Myr
+    tend, dt = 0.4|units.Myr, 0.1|units.Myr
     #dt_param = 0.2 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass
@@ -58,7 +58,7 @@ if __name__ in '__main__':
     
     masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 
-    logN_max = 4
+    logN_max = 5
     Norbiters_list = [ 2**i for i in range(logN_max) ] #need to make into a list at some point
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
     code_names = [ 'tree', 'Nbody', 'nemesis' ]

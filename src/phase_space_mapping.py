@@ -25,7 +25,7 @@ def maps(code_name, orbiter_name, Norbiters):
     
         for Norbiters in Norbiters_list:
             
-            test_str = str(Norbiters) + '.'
+            test_str = '_' + str(Norbiters) + '.'
             
             print('filename_phase: %s'%(filename_phase))
             print('test_str: %s'%(test_str))

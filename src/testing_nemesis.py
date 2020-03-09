@@ -109,7 +109,7 @@ if __name__ in '__main__':
                 
     plt.gca().set_yscale('log')
     plt.legend(loc='upper left', fontsize=12)
-    plt.annotate(r'$t_{\mathrm{end}} = 0.2$ Myr', xy=(0.7, 0.25), xycoords='axes fraction', fontsize=14)
+    plt.annotate(r'$t_{\mathrm{end}} = 0.4$ Myr', xy=(0.7, 0.25), xycoords='axes fraction', fontsize=14)
     plt.annotate(r'$\Delta t = 0.1$ Myr', xy=(0.7, 0.15), xycoords='axes fraction', fontsize=14)
 
     plt.gca().tick_params(labelsize='large')

@@ -25,6 +25,8 @@ def maps(code_name, orbiter_name, Norbiters):
     
         for Norbiters in Norbiters_list:
             
+            test_str = str(Norbiters) + '.'
+            
             if str(Norbiters) in filename_phase:
         
                 sim_times = np.loadtxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters))    

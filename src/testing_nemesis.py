@@ -91,10 +91,12 @@ if __name__ in '__main__':
                 
                 #t_init = time.time()
                 
+                '''
                 simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
                            sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
                            masses, Norbiters, tend, dt)
-              
+                '''
+                
                 #t_final = time.time()
                 
                 #Nvals.append(math.log(Norbiters, 2))

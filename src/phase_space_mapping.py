@@ -133,6 +133,7 @@ def maps(code_name, orbiter_name, Norbiters):
                             ax.label_outer()
                             
                         fig.suptitle('Time = %.02f Myr'%(t), fontsize=14)
+                        plt.subplots_adjust(wspace=0, hspace=0)
                         plt.savefig('phase_space_map_frame_%s_%s_%s_Norbiters_%s.png'%(str(i).rjust(5, '0'), code_name, orbiter_name, str(Norbiters)))
                         plt.close()
                     

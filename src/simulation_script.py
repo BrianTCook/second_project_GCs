@@ -51,7 +51,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     channel_from_gravity_to_framework = gravity.particles.new_channel_to(simulation_bodies)    
     Ntotal = len(simulation_bodies)
     
-    sim_times_unitless = np.arange(0., tend.value_in(units.Myr), dt.value_in(units.Myr))
+    sim_times_unitless = np.arange(0., tend.value_in(units.Myr)+dt.value_in(units.Myr), dt.value_in(units.Myr))
     sim_times = [ t|units.Myr for t in sim_times_unitless ]
     
     np.savetxt('times_in_Myr_%s_%s_Norbiters_%i.txt'%(code_name, orbiter_name, Norbiters), sim_times_unitless)

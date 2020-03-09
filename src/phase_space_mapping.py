@@ -19,6 +19,8 @@ def maps(code_name, orbiter_name, Norbiters):
     logN_max = 9
     Norbiters_list = [ int(2**i) for i in range(logN_max)]
     
+    plt.rc('font', family='serif')
+    
     for filename_phase in phase_files:
     
         for Norbiters in Norbiters_list:
@@ -167,7 +169,7 @@ def maps(code_name, orbiter_name, Norbiters):
                             
                         fig.suptitle('Time = %.02f Myr'%(t), fontsize=14)
                         plt.subplots_adjust(wspace=0, hspace=0)
-                        plt.savefig('phase_space_map_frame_%s_%s_%s_Norbiters_%s.png'%(str(i).rjust(5, '0'), code_name, orbiter_name, str(Norbiters)))
+                        plt.savefig('phase_space_map_frame_%s_%s_%s_Norbiters_%s.pdf'%(str(i).rjust(5, '0'), code_name, orbiter_name, str(Norbiters)))
                         plt.close()
                     
                         plt.figure()
@@ -177,7 +179,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         plt.xlabel('x (kpc)', fontsize=12)
                         plt.ylabel('y (kpc)', fontsize=12)
                         plt.title('time = %.02f Myr'%(t), fontsize=16)
-                        plt.savefig('snapshot_%s_%s_%s_Norbiters_%s.png'%(code_name, orbiter_name, str(i).rjust(5, '0'), str(Norbiters)))
+                        plt.savefig('snapshot_%s_%s_%s_Norbiters_%s.pdf'%(code_name, orbiter_name, str(i).rjust(5, '0'), str(Norbiters)))
                         plt.close()
             
     return 0

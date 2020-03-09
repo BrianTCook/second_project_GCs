@@ -77,31 +77,31 @@ if __name__ in '__main__':
             
             for Norbiters in Norbiters_list:
                 
-                try:
+                #try:
                 
-                    rvals = rvals_all[:Norbiters]
-                    phivals = phivals_all[:Norbiters]
-                    zvals = zvals_all[:Norbiters]  
-                    masses = masses_all[:Norbiters]
-                            
-                    print('\\\\\\\\\\\\\\\\\\\\\\\\')
-                    print(code_name, orbiter_name)
-                    print('\\\\\\\\\\\\\\\\\\\\\\\\')
+                rvals = rvals_all[:Norbiters]
+                phivals = phivals_all[:Norbiters]
+                zvals = zvals_all[:Norbiters]  
+                masses = masses_all[:Norbiters]
+                        
+                print('\\\\\\\\\\\\\\\\\\\\\\\\')
+                print(code_name, orbiter_name)
+                print('\\\\\\\\\\\\\\\\\\\\\\\\')
+                
+                #t_init = time.time()
+                
+                simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
+                           sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
+                           masses, Norbiters, tend, dt)
+              
+                #t_final = time.time()
+                
+                #Nvals.append(Norbiters)
+                #yvals.append((t_final-t_init)/60.)
                     
-                    #t_init = time.time()
+                #except:
                     
-                    simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
-                               sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
-                               masses, Norbiters, tend, dt)
-                  
-                    #t_final = time.time()
-                    
-                    #Nvals.append(Norbiters)
-                    #yvals.append((t_final-t_init)/60.)
-                    
-                except:
-                    
-                    print('something went wrong with mpiexec presumably')
+                #print('something went wrong with mpiexec presumably')
                 
                 maps(code_name, orbiter_name, Norbiters)
                 

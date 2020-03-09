@@ -56,6 +56,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[0, 0].set_ylim(-2, 2)
                         axs[0, 0].set_xticks(pos_ticks)
                         axs[0, 0].set_yticks(pos_ticks)
+                        axs[0, 0].tick_params(labelsize='small')
                         
                         axs[1, 0].scatter(x, z, s=1, c=colors)
                         axs[1, 0].set(xlabel='x', ylabel='z')
@@ -63,6 +64,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[1, 0].set_ylim(-2, 2)
                         axs[1, 0].set_xticks(pos_ticks)
                         axs[1, 0].set_yticks(pos_ticks)
+                        axs[1, 0].tick_params(labelsize='small')
                         
                         axs[2, 0].scatter(x, vx,s=1, c=colors)
                         axs[2, 0].set(xlabel='x', ylabel='vx')
@@ -70,6 +72,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[2, 0].set_ylim(-400, 400)
                         axs[2, 0].set_xticks(pos_ticks)
                         axs[2, 0].set_yticks(vel_ticks)
+                        axs[2, 0].tick_params(labelsize='small')
                         
                         axs[3, 0].scatter(x, vy, s=1, c=colors)
                         axs[3, 0].set(xlabel='z', ylabel='vy')
@@ -77,6 +80,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[3, 0].set_ylim(-400, 400)
                         axs[3, 0].set_xticks(pos_ticks)
                         axs[3, 0].set_yticks(vel_ticks)
+                        axs[3, 0].tick_params(labelsize='small')
                         
                         axs[4, 0].scatter(x, vz, s=1, c=colors)
                         axs[4, 0].set(xlabel='x', ylabel='vz')
@@ -84,6 +88,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[4, 0].set_ylim(-400, 400)
                         axs[4, 0].set_xticks(pos_ticks)
                         axs[4, 0].set_yticks(vel_ticks)
+                        axs[4, 0].tick_params(labelsize='small')
                         
                         #second column
                         
@@ -93,6 +98,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[1, 1].set_ylim(-2, 2)
                         axs[1, 1].set_xticks(pos_ticks)
                         axs[1, 1].set_yticks(pos_ticks)
+                        axs[1, 1].tick_params(labelsize='small')
                         
                         axs[2, 1].scatter(y, vx, s=1, c=colors)
                         axs[2, 1].set(xlabel='y', ylabel='vx')
@@ -100,6 +106,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[2, 1].set_ylim(-400, 400)
                         axs[2, 1].set_xticks(pos_ticks)
                         axs[2, 1].set_yticks(vel_ticks)
+                        axs[2, 1].tick_params(labelsize='small')
                         
                         axs[3, 1].scatter(y, vy, s=1, c=colors)
                         axs[3, 1].set(xlabel='y', ylabel='vy')
@@ -107,6 +114,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[3, 1].set_ylim(-400, 400)
                         axs[3, 1].set_xticks(pos_ticks)
                         axs[3, 1].set_yticks(vel_ticks)
+                        axs[3, 1].tick_params(labelsize='small')
                         
                         axs[4, 1].scatter(y, vz, s=1, c=colors)
                         axs[4, 1].set(xlabel='y', ylabel='vz')
@@ -114,6 +122,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[4, 1].set_ylim(-400, 400)
                         axs[4, 1].set_xticks(pos_ticks)
                         axs[4, 1].set_yticks(vel_ticks)
+                        axs[4, 1].tick_params(labelsize='small')
                         
                         #third column
                         
@@ -123,6 +132,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[2, 2].set_ylim(-400, 400)
                         axs[2, 2].set_xticks(pos_ticks)
                         axs[2, 2].set_yticks(vel_ticks)
+                        axs[2, 2].tick_params(labelsize='small')
                         
                         axs[3, 2].scatter(z, vy, s=1, c=colors)
                         axs[3, 2].set(xlabel='z', ylabel='vy')
@@ -130,6 +140,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[3, 2].set_ylim(-400, 400)
                         axs[3, 2].set_xticks(pos_ticks)
                         axs[3, 2].set_yticks(vel_ticks)
+                        axs[3, 2].tick_params(labelsize='small')
                         
                         axs[4, 2].scatter(z, vz, s=1, c=colors)
                         axs[4, 2].set(xlabel='z', ylabel='vz')
@@ -137,6 +148,7 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[4, 2].set_ylim(-400, 400)
                         axs[4, 2].set_xticks(pos_ticks)
                         axs[4, 2].set_yticks(vel_ticks)
+                        axs[4, 2].tick_params(labelsize='small')
                         
                         #fourth column
                         
@@ -146,13 +158,15 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[3, 3].set_ylim(-400, 400)
                         axs[3, 3].set_xticks(vel_ticks)
                         axs[3, 3].set_yticks(vel_ticks)
-                        
+                        axs[3, 3].tick_params(labelsize='small')
+                                        
                         axs[4, 3].scatter(vx, vz, s=1, c=colors)
                         axs[4, 3].set(xlabel='vx', ylabel='vz')
                         axs[4, 3].set_xlim(-400, 400)
                         axs[4, 3].set_ylim(-400, 400)
                         axs[4, 3].set_xticks(vel_ticks)
                         axs[4, 3].set_yticks(vel_ticks)
+                        axs[4, 3].tick_params(labelsize='small')
                         
                         #fifth column
                         
@@ -162,12 +176,13 @@ def maps(code_name, orbiter_name, Norbiters):
                         axs[4, 4].set_ylim(-400, 400)
                         axs[4, 4].set_xticks(vel_ticks)
                         axs[4, 4].set_yticks(vel_ticks)
-                        
+                        axs[4, 4].tick_params(labelsize='small')
+
                         # Hide x labels and tick labels for top plots and y ticks for right plots.
                         for ax in axs.flat:
                             ax.label_outer()
                             
-                        fig.suptitle('Time = %.02f Myr'%(t), fontsize=14)
+                        fig.suptitle('Time = %.02f Myr'%(t), fontsize=14, pad=5)
                         plt.subplots_adjust(wspace=0, hspace=0)
                         plt.savefig('phase_space_map_frame_%s_%s_%s_Norbiters_%s.pdf'%(str(i).rjust(5, '0'), code_name, orbiter_name, str(Norbiters)))
                         plt.close()

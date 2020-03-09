@@ -23,6 +23,7 @@ from convert_numpy_to_ascii import convert_numpy
 import random
 import numpy as np
 
+import math
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
@@ -96,7 +97,7 @@ if __name__ in '__main__':
               
                 #t_final = time.time()
                 
-                #Nvals.append(Norbiters)
+                #Nvals.append(math.log(Norbiters, 2))
                 #yvals.append((t_final-t_init)/60.)
                     
                 #except:

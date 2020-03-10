@@ -86,6 +86,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     for j, t in enumerate(sim_times):
 
+        '''
         clock_times.append(time.time()-t0) #will be in seconds
     
         if j == 0:
@@ -136,13 +137,17 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
             COM_data[j, k, 0] = x_COM
             COM_data[j, k, 1] = y_COM
+        
+        '''
     
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
         
+        '''
         if j%100 == 0:
         
             print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
+        '''
 
     try:
         gravity.stop()

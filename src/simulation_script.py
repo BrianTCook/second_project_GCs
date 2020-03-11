@@ -80,7 +80,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     print('len(sim_times) is', len(sim_times))
     gadget_flag = int(math.floor(len(sim_times)/10))
-    print('gadget_flag is', gadget_flag)
     
     t0 = time.time()
     all_data_index = 0
@@ -98,6 +97,8 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         delta_energies.append(dE_dyn)
         
         if j%gadget_flag == 0:
+            
+            print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
                         
             io.write_set_to_file(gravity.particles, filename, 'csv',
                                  attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
@@ -135,12 +136,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
 
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
-        
-        '''
-        if j%100 == 0:
-        
-            print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
-        '''
 
     try:
         gravity.stop()

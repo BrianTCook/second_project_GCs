@@ -1,12 +1,12 @@
-InitCondFile                       cook_data/cook_test.ascii
+InitCondFile                       cook_data/*.ascii
 ICFormat                           0
 SnapshotFileBase                   _ph1
 SpatialScale                       1
 PartBoundary                       7
 NodeSplittingCriterion             1
-CubicCells                         1
+CubicCells                         0
 MedianSplittingOn                  0
-TypeOfSmoothing                    3
+TypeOfSmoothing                    0
 DesNumNgb                          50
 VolCorr                            1
 TypeOfKernel                       3

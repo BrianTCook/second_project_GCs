@@ -1,8 +1,7 @@
-#!/bin/bash
+%%  Input and Output
+InitCondFile	enbid_files/for_enbid_tree_SingleCluster_frame_00320_Norbiters_8.ascii
 
-var_input="%%  Input and Output"
-
-var_extra="%-------------------------------------------------------
+%-------------------------------------------------------
 ICFormat                  0     % O)ASCII 1)Gadget 2)User defined
 SnapshotFileBase        _ph1
 
@@ -33,34 +32,4 @@ DesNumNgbA             128   % Neighbors for cal covar metric for Anisotropic Ke
 % other miscellaneous option
 TypeListOn        0
 PeriodicBoundaryOn 0
-%--------------------------------------------------------"
-
-destdir="/home/brian/Desktop/second_project_gcs/Enbid-2.0/parameterfiles/"
-datadir="enbid_files/"
-
-for f in /home/brian/Desktop/second_project_gcs/data/enbid_files/*.ascii;
-do
-	input=$f
-	substring=$(basename $input .ascii)
-	ascii=".ascii"
-	dash="/"
-
-	#creates a parameterfile for each snapshot/Nclusters
-	mkdir "$destdir$substring"
-	parameterfile="$destdir$substring$dash$substring"
-
-	#fills in the parameter file
-	echo "$var_input" >> "$parameterfile"
-
-	var_initcond="InitCondFile	"
-	var_filename="$datadir$substring$ascii"
-
-	echo "$var_initcond$var_filename" >> "$parameterfile"
-	echo "" >> "$parameterfile"
-	echo "$var_extra" >> "$parameterfile"
-
-	echo "parameterfile is" "$parameterfile"
-	./Enbid "$parameterfile"
-	echo ""
-
-done
+%--------------------------------------------------------

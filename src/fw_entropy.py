@@ -8,7 +8,9 @@ Created on Thu Mar  5 13:02:16 2020
 
 import numpy as np
 import glob
+import re
 import time
+import matplotlib.pyplot as plt
 
 from scipy.interpolate import griddata
 
@@ -20,10 +22,15 @@ def get_6D_fw(points, values, N):
     X, Y, Z, VX, VY, VZ = np.meshgrid(*(spatial, spatial, spatial, 
                                         velocity, velocity, velocity))
 
-    #Ti is 6-D interpolation using method=method
-    Ti = griddata(points, values, (X, Y, Z, VX, VY, VZ), method='linear')
+    #Ti is 6-D interpolation using method=method    
+    grid_z0 = griddata(points, values, (X, Y, Z, VX, VY, VZ), method='nearest')
+    grid_z1 = griddata(points, values, (X, Y, Z, VX, VY, VZ), method='linear')
     
-    return Ti
+    #does nearest but fills in nan values at boundary with small number
+    fill_value = np.median(grid_z0)  # Whatever you like
+    grid_z0[np.isnan(grid_z1)] = fill_value
+    
+    return grid_z0
 
 def simpson(xvals, fvals): #Simpson's integration rule, \int_{a}^{b} f(x) dx with N sample points
 
@@ -50,7 +57,7 @@ def get_entropy(points, values):
     the value within it will be the information entropy
     '''
     
-    N = 5
+    N = 10
     
     spatial_vals = np.linspace(-4., 4., N)
     velocity_vals = np.linspace(-500., 500., N)
@@ -58,7 +65,7 @@ def get_entropy(points, values):
     grid = get_6D_fw(points, values, N)
     
     sixD_arr = np.multiply(grid, np.log(grid))
-    sixD_arr = np.nan_to_num(sixD_arr) # 0 * np.log(0) is nan
+    #sixD_arr = np.nan_to_num(sixD_arr) # 0 * np.log(0) is nan
     
     fiveD_arr = [ simpson(velocity_vals, sixD_arr[i,j,k,l,m,:])
                   for i in range(N) for j in range(N) 
@@ -91,20 +98,62 @@ def get_entropy(points, values):
 
 if __name__ in '__main__':
     
-    point_files = glob.glob('/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/enbid_files/*1.ascii')
+    point_files = glob.glob('/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/enbid_files/*.ascii')
     
     t0 = time.time()
     
+    logN_max = 6
+    
+    xvals_all, yvals_all = [ [] for i in range(logN_max+1) ], [ [] for i in range(logN_max+1) ]
+    
     for point_file in point_files:
         
-        points = np.loadtxt(point_file)[:, 1:]
-        values = np.random.rand(points.shape[0])
-        
-        S = get_entropy(points, values)
-        
-        tf = time.time()
-        
         print('')
-        print('computation time: %.04f seconds'%(tf-t0))
-        print('S = %.04f'%(S))
         
+        ahh = point_file.split('_')
+        bhh = [ a.split('.') for a in ahh ]
+        chh = [j for i in bhh for j in i]
+        
+        print(chh[5:11])
+        
+        #first one is frame, second one is 
+        frame, Nclusters  = [ int(s) for s in chh if s.isdigit() ]
+        
+        print(Nclusters, 2**logN_max)
+        
+        if Nclusters <= 2**logN_max:
+        
+            points = np.loadtxt(point_file)[:, 1:]
+            values = np.asarray([ 10**(3*np.random.rand()+2.) for i in range(points.shape[0]) ])
+            
+            S = get_entropy(points, values)
+            
+            sim_time = frame/400. * 40. #frame/frame * end_time (Myr)
+            
+            tf = time.time()
+            
+            logN = int(np.log2(Nclusters)) #number of clusters
+            
+            #plotting entropy as a function of time, saving by log2N
+            xvals_all[logN].append(sim_time)
+            yvals_all[logN].append(S)
+        
+            tf = time.time()
+            print('current time: %.04f minutes'%((tf-t0)/60.))
+        
+    plt.figure() 
+    
+    for logN in range(logN_max+1):
+        
+        xvals, yvals = xvals_all[logN], yvals_all[logN]
+        print('x: ', xvals)
+        print('y: ', yvals)
+        print(len(xvals), len(yvals))
+        plt.scatter(xvals, yvals, label=r'$\log_{2} N_{\mathrm{clusters}}$ = %i'%(logN))
+    
+    plt.gca().set_yscale('log')
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.xlabel('Simulation Time (Myr)', fontsize=16)
+    plt.ylabel(r'$S$ ([kpc km/s]$^{3}$)', fontsize=16)
+    plt.tight_layout()
+    plt.show()

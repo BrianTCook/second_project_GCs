@@ -4,4 +4,5 @@
 #SBATCH —mem-per-cpu=2GB
 
 source setup.sh
-python ahh.py > testing.txt
+cd ~/second_project_gcs/src/
+./run_main.sh

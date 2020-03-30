@@ -4,4 +4,4 @@
 #SBATCH —mem-per-cpu=2GB
 
 source /home/s1780638/amuse_env
-python3 ahh.py > testing.txt
+python ahh.py > testing.txt

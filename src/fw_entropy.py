@@ -102,7 +102,7 @@ if __name__ in '__main__':
     
     t0 = time.time()
     
-    logN_max = 6
+    logN_max = 2
     
     xvals_all, yvals_all = [ [] for i in range(logN_max+1) ], [ [] for i in range(logN_max+1) ]
     
@@ -124,7 +124,7 @@ if __name__ in '__main__':
         if Nclusters <= 2**logN_max:
         
             points = np.loadtxt(point_file)[:, 1:]
-            values = np.asarray([ 10**(3*np.random.rand()+2.) for i in range(points.shape[0]) ])
+            values = np.asarray([ 10**(np.random.rand()+3.) for i in range(points.shape[0]) ])
             
             S = get_entropy(points, values)
             
@@ -146,14 +146,11 @@ if __name__ in '__main__':
     for logN in range(logN_max+1):
         
         xvals, yvals = xvals_all[logN], yvals_all[logN]
-        print('x: ', xvals)
-        print('y: ', yvals)
-        print(len(xvals), len(yvals))
         plt.scatter(xvals, yvals, label=r'$\log_{2} N_{\mathrm{clusters}}$ = %i'%(logN))
     
     plt.gca().set_yscale('log')
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
     plt.xlabel('Simulation Time (Myr)', fontsize=16)
-    plt.ylabel(r'$S$ ([kpc km/s]$^{3}$)', fontsize=16)
+    plt.ylabel(r'$S$ [kpc km/s]$^{3}$', fontsize=16)
     plt.tight_layout()
-    plt.show()
+    plt.savefig('entropy_evolution.pdf')

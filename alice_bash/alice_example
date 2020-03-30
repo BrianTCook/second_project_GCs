@@ -3,5 +3,4 @@
 #SBATCH --time=00:00:10
 #SBATCH —mem-per-cpu=2GB
 
-source /usr/usc/python/3.6.0/setup.sh
 python ahh.py > testing.txt

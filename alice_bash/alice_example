@@ -3,5 +3,5 @@
 #SBATCH --time=00:00:10
 #SBATCH —mem-per-cpu=2GB
 
-source /home/s1780638/amuse_env
-python ahh.py > testing.txt
+source setup.sh
+python3 ahh.py > testing.txt

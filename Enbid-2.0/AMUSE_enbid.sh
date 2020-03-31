@@ -4,7 +4,7 @@ var_input="%%  Input and Output"
 
 var_extra="%-------------------------------------------------------
 ICFormat                  0     % O)ASCII 1)Gadget 2)User defined
-SnapshotFileBase        _ph1
+SnapshotFileBase        _ph1    % underscore is in initialization of the file
 
 %-------------------------------------------------------
 % Tree related options
@@ -35,10 +35,10 @@ TypeListOn        0
 PeriodicBoundaryOn 0
 %--------------------------------------------------------"
 
-destdir="/home/brian/Desktop/second_project_gcs/Enbid-2.0/parameterfiles/"
-datadir="enbid_files/"
+destdir="/home/s1780638/second_project_gcs/Enbid-2.0/parameterfiles/"
+datadir="/home/s1780638/second_project_gcs/data/enbid_files/"
 
-for f in /home/brian/Desktop/second_project_gcs/data/enbid_files/*.ascii;
+for f in /home/s1780638/second_project_gcs/data/enbid_files/*.ascii;
 do
 	input=$f
 	substring=$(basename $input .ascii)
@@ -48,6 +48,10 @@ do
 	#creates a parameterfile for each snapshot/Nclusters
 	mkdir "$destdir$substring"
 	parameterfile="$destdir$substring$dash$substring"
+	datafile="$datadir$substring"
+
+	#initializes the datadirectory file that will have the suffix SnapshotFileBase
+	#echo "This is where the output goes, I hope!" > "$datafile"
 
 	#fills in the parameter file
 	echo "$var_input" >> "$parameterfile"
@@ -59,7 +63,7 @@ do
 	echo "" >> "$parameterfile"
 	echo "$var_extra" >> "$parameterfile"
 
-	echo "parameterfile is" "$parameterfile"
+	echo "substring is" "$substring"
 	./Enbid "$parameterfile"
 	echo ""
 

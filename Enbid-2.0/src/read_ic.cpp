@@ -27,6 +27,7 @@ void read_ic1(char *fname)
      if((ND!=3)&&(ND!=6))
  	endrunm("\nFor Gadget format file number of dimensions should be 3 or 6\n");
 
+    cout<<"filename is: " << fname << "\n";
   
     if((fd=fopen(fname,"r")))
     {
@@ -178,15 +179,17 @@ void read_ic1(char *fname)
 void read_ic0(char *fname)
 {
 #define SKIP my_fread(&blklen,sizeof(int4byte),1,fd);
-    //  FILE *fd;
+    // FILE *fd;
     int   i,k,m=0;
     float temp;
     int   pc,type ;
   
-    //  double u_init;
-    //  ofstream fd (fname);
+    //double u_init;
+    //ofstream fd (fname);
   
-  
+    cout<<"\n gets here in reading ascii file \n";    
+    cout<<"\n filename is " << fname << "\n";
+
     ifstream fd;
     fd.open(fname);
     if (fd.is_open())

@@ -6,6 +6,18 @@ Created on Fri Feb 14 14:05:09 2020
 @author: BrianTCook
 """
 
+import os
+import sys
+import time
+
+sys.path.append(os.getcwd())
+
+#other scripts
+from phase_space_mapping import maps
+from simulation_script import simulation
+from create_plots import plotting_things
+from convert_numpy_to_ascii import convert_numpy
+
 from amuse.lab import *
 from amuse.couple import bridge
 
@@ -15,10 +27,10 @@ from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 
 #other scripts
-from phase_space_mapping import maps
-from simulation_script import simulation
-from create_plots import plotting_things
-from convert_numpy_to_ascii import convert_numpy
+#from phase_space_mapping import maps
+#from simulation_script import simulation
+#from create_plots import plotting_things
+#from convert_numpy_to_ascii import convert_numpy
 
 import random
 import numpy as np
@@ -29,7 +41,6 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
 import time
-import os
 
 random.seed(73)
 
@@ -62,16 +73,14 @@ if __name__ in '__main__':
     logN_max = 9
     Norbiters_list = [ 2**i for i in range(logN_max) ]
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
-    code_names = [ 'tree' ] #, 'Nbody', 'nemesis' 
+    code_names = [ 'tree' , 'Nbody' ] #, 'nemesis' 
 
     t0 = time.time()
     
-    '''
     plt.figure()
 
     plt.xlabel(r'$\log_{2} N_{\mathrm{clusters}}$', fontsize=20)
     plt.ylabel(r'Clock Time (minutes)', fontsize=20)
-    '''
     
     for orbiter_name in orbiter_names:
         for code_name in code_names:

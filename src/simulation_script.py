@@ -109,7 +109,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             data_t = data_t.astype(float) #strings to floats
         
             all_data[all_data_index, :len(data_t.index), :] = data_t.values
-            np.savetxt('for_enbid_%s_%s_frame_%s_Norbiters_%s.ascii'%(code_name, orbiter_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
+            np.savetxt('%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
             
             all_data_index += 1
             

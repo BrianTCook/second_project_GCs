@@ -197,6 +197,8 @@ void read_ic0(char *fname)
 	fprintf(stdout,"Reading ASCII format file: %s \n",fname); fflush(stdout);
 	m=0;
 	while(fd>>temp) m++;
+	cout << "m: " << m << "\n";
+	cout << "ND: " << ND << "\n";
 	if((m%ND)==0)
 	    cout<<"Read "<<m<<" records"<<endl;
 	else

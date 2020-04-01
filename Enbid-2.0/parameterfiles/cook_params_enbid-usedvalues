@@ -1,4 +1,4 @@
-InitCondFile                       cook_data/*.ascii
+InitCondFile                       Examples/cook_data/cook_test.ascii
 ICFormat                           0
 SnapshotFileBase                   _ph1
 SpatialScale                       1

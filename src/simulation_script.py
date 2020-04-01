@@ -106,6 +106,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             
             data_t = pd.read_csv(filename, names=list(attributes))
             data_t = data_t.drop([0, 1, 2]) #removes labels units, and unit names
+            data_t = data_t.drop(columns=['mass']) #goes from 7D --> 6D
             data_t = data_t.astype(float) #strings to floats
         
             all_data[all_data_index, :len(data_t.index), :] = data_t.values

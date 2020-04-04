@@ -16,8 +16,8 @@ from scipy.interpolate import griddata
 
 def get_6D_fw(points, values, N):
     
-    spatial = list(np.linspace(-4., 4., N))  
-    velocity = list(np.linspace(-500., 500., N))
+    spatial = list(np.linspace(-3., 3., N))  
+    velocity = list(np.linspace(-300., 300., N))
     
     X, Y, Z, VX, VY, VZ = np.meshgrid(*(spatial, spatial, spatial, 
                                         velocity, velocity, velocity))
@@ -57,10 +57,10 @@ def get_entropy(points, values):
     the value within it will be the information entropy
     '''
     
-    N = 10
+    N = 12
     
-    spatial_vals = np.linspace(-4., 4., N)
-    velocity_vals = np.linspace(-500., 500., N)
+    spatial_vals = np.linspace(-3., 3., N)
+    velocity_vals = np.linspace(-300., 300., N)
     
     grid = get_6D_fw(points, values, N)
     
@@ -98,11 +98,11 @@ def get_entropy(points, values):
 
 if __name__ in '__main__':
     
-    point_files = glob.glob('/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/enbid_files/*.ascii')
+    point_files = glob.glob('/home/s1780638/second_project_gcs/Enbid-2.0/AMUSE_data/*.ascii')
     
     t0 = time.time()
     
-    logN_max = 2
+    logN_max = 6
     
     xvals_all, yvals_all = [ [] for i in range(logN_max+1) ], [ [] for i in range(logN_max+1) ]
     
@@ -147,7 +147,7 @@ if __name__ in '__main__':
     for logN in range(logN_max+1):
         
         xvals, yvals = xvals_all[logN], yvals_all[logN]
-        plt.scatter(xvals, yvals, label=r'$\log_{2} N_{\mathrm{clusters}}$ = %i'%(logN))
+        plt.scatter(xvals, yvals, label=r'$\log_{2} N_{\mathrm{clusters}}$ = %i'%(logN), s=2)
     
     plt.gca().set_yscale('log')
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))

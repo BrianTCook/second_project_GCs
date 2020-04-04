@@ -12,35 +12,26 @@ import time
 
 sys.path.append(os.getcwd())
 
+from amuse.lab import *
+from amuse.couple import bridge
+
+import random
+import numpy as np
+import math
+import matplotlib
+matplotlib.use('agg')
+import matplotlib.pyplot as plt
+
 #other scripts
 from phase_space_mapping import maps
 from simulation_script import simulation
 from create_plots import plotting_things
 from convert_numpy_to_ascii import convert_numpy
 
-from amuse.lab import *
-from amuse.couple import bridge
-
 from galpy.df import quasiisothermaldf
 from galpy.potential import MWPotential2014, to_amuse
 from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
-
-#other scripts
-#from phase_space_mapping import maps
-#from simulation_script import simulation
-#from create_plots import plotting_things
-#from convert_numpy_to_ascii import convert_numpy
-
-import random
-import numpy as np
-
-import math
-import matplotlib
-matplotlib.use('agg')
-import matplotlib.pyplot as plt
-
-import time
 
 random.seed(73)
 

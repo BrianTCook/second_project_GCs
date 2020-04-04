@@ -123,7 +123,7 @@ if __name__ in '__main__':
         
         if Nclusters <= 2**logN_max:
         
-            points = np.loadtxt(point_file)[:, 1:]
+            points = np.loadtxt(point_file)#[:, 1:]
             values = np.asarray([ 10**(np.random.rand()+3.) for i in range(points.shape[0]) ])
             
             S = get_entropy(points, values)

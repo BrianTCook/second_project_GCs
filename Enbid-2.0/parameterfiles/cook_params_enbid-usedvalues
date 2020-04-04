@@ -1,6 +1,6 @@
 InitCondFile                       Examples/cook_data/cook_test.ascii
 ICFormat                           0
-SnapshotFileBase                   _ph1
+SnapshotFileBase                   _output
 SpatialScale                       1
 PartBoundary                       7
 NodeSplittingCriterion             1

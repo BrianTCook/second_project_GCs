@@ -4,7 +4,7 @@ var_input="%%  Input and Output"
 
 var_extra="%-------------------------------------------------------
 ICFormat                  0     % O)ASCII 1)Gadget 2)User defined
-SnapshotFileBase        _ph1    % underscore is in initialization of the file
+SnapshotFileBase        _output    % underscore is in initialization of the file
 
 %-------------------------------------------------------
 % Tree related options
@@ -35,10 +35,10 @@ TypeListOn        0
 PeriodicBoundaryOn 0
 %--------------------------------------------------------"
 
-destdir="/home/s1780638/second_project_gcs/Enbid-2.0/parameterfiles/"
-datadir="/home/s1780638/second_project_gcs/data/enbid_files/"
+destdir="parameterfiles/"
+datadir="AMUSE_data/"
 
-for f in /home/s1780638/second_project_gcs/data/enbid_files/*.ascii;
+for f in AMUSE_data/*.ascii;
 do
 	input=$f
 	substring=$(basename $input .ascii)
@@ -63,7 +63,7 @@ do
 	echo "" >> "$parameterfile"
 	echo "$var_extra" >> "$parameterfile"
 
-	echo "substring is" "$substring"
+	echo "parameterfile is" "$parameterfile"
 	./Enbid "$parameterfile"
 	echo ""
 

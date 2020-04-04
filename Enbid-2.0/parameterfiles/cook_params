@@ -3,7 +3,7 @@ InitCondFile	Examples/cook_data/cook_test.ascii
 
 %-------------------------------------------------------
 ICFormat                  0     % O)ASCII 1)Gadget 2)User defined
-SnapshotFileBase        _ph1
+SnapshotFileBase        _output
 
 %-------------------------------------------------------
 % Tree related options

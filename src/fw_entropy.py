@@ -8,27 +8,122 @@ Created on Thu Mar  5 13:02:16 2020
 
 import numpy as np
 import glob
-import re
 import time
 import matplotlib.pyplot as plt
+import math
 
 from scipy.interpolate import griddata
 
-def get_6D_fw(points, values, N):
+def nonuniform_bins(list_of_values, Nmax_in_bin):
     
-    spatial = list(np.linspace(-3., 3., N))  
-    velocity = list(np.linspace(-300., 300., N))
+    data = np.sort(list_of_values)
     
-    X, Y, Z, VX, VY, VZ = np.meshgrid(*(spatial, spatial, spatial, 
-                                        velocity, velocity, velocity))
+    edges = [ min(data), max(data) ]
+    
+    flag = 0
+    
+    while flag == 0:
+    
+        edges_updated = edges
+        
+        #partitions old edges
+        for i in range(len(edges)-1):
+            
+            N_in_bin = 0
+            lo, high = edges[i], edges[i+1]
+            
+            for datum in data:
+                
+                if datum >= lo and datum < high:
+                    
+                    N_in_bin += 1
+                
+            if N_in_bin > Nmax_in_bin:
+                
+                new_edge = 0.5 * (lo + high)
+                
+                if new_edge not in edges_updated:
+                
+                    edges_updated = np.append( new_edge, edges_updated )
+                
+        edges_updated = np.sort(edges_updated)
+            
+        #checks if new edges work
+        N_check = 0
+    
+        #checks new edges
+        for i in range(len(edges_updated)-1):
+            
+            N_in_bin = 0
+            lo, high = edges_updated[i], edges_updated[i+1]
+            
+            for datum in data:
+                
+                if datum >= lo and datum < high:
+                    
+                    N_in_bin += 1
+                    
+            if N_in_bin > Nmax_in_bin:
+                
+                N_check += 1
+
+        edges = edges_updated
+
+        if N_check == 0:
+            
+            flag = 1
+    
+    #want the center of each point, not the edges
+    centers = [ 0.5*(edges[i]+edges[i+1]) for i in range(len(edges)-1)  ]
+    
+    return centers
+
+def lattice_maker(points, uniformity):
+    
+    '''
+    takes 6D phase space coordinates
+    tessellates phase space s.t. there are < Npoints_max
+    '''
+    
+    xvals, yvals, zvals = points[:,0], points[:,1], points[:,2]
+    vxvals, vyvals, vzvals = points[:,3], points[:,4], points[:,5]
+    
+    if uniformity == 'uniform':
+    
+        Ncells = 12
+        
+        x_spatial = np.linspace(min(xvals), max(xvals), Ncells)
+        y_spatial = np.linspace(min(yvals), max(yvals), Ncells)
+        z_spatial = np.linspace(min(zvals), max(zvals), Ncells)
+        x_velocity = np.linspace(min(vxvals), max(vxvals), Ncells)
+        y_velocity = np.linspace(min(vyvals), max(vyvals), Ncells)
+        z_velocity = np.linspace(min(vzvals), max(vzvals), Ncells)
+        
+    if uniformity == 'non-uniform':
+    
+        Nmax_in_bin = 50
+        
+        x_spatial = nonuniform_bins(xvals, Nmax_in_bin)
+        y_spatial = nonuniform_bins(yvals, Nmax_in_bin)
+        z_spatial = nonuniform_bins(zvals, Nmax_in_bin) 
+        x_velocity = nonuniform_bins(vxvals, Nmax_in_bin)
+        y_velocity = nonuniform_bins(vyvals, Nmax_in_bin)
+        z_velocity = nonuniform_bins(vzvals, Nmax_in_bin) 
+    
+    #need to make non-uniform samples so that each cell has <= Nmax_in_bin sample points in it
+
+    return x_spatial, y_spatial, z_spatial, x_velocity, y_velocity, z_velocity
+
+def get_6D_fw(points, values, uniformity):
+    
+    print('unique fw values: ', np.unique(values).shape)
+
+    X, Y, Z, VX, VY, VZ = np.meshgrid(*lattice_maker(points, uniformity))
 
     #Ti is 6-D interpolation using method=method    
-    grid_z0 = griddata(points, values, (X, Y, Z, VX, VY, VZ), method='nearest')
-    grid_z1 = griddata(points, values, (X, Y, Z, VX, VY, VZ), method='linear')
-    
-    #does nearest but fills in nan values at boundary with small number
-    fill_value = np.median(grid_z0)  # Whatever you like
-    grid_z0[np.isnan(grid_z1)] = fill_value
+    grid_z0 = griddata(points, values, (X, Y, Z, VX, VY, VZ), method='nearest')    
+
+    print('unique elements in interpolated lattice: ', np.unique(grid_z0).shape)
     
     return grid_z0
 
@@ -49,7 +144,54 @@ def simpson(xvals, fvals): #Simpson's integration rule, \int_{a}^{b} f(x) dx wit
     
     return I
 
-def get_entropy(points, values):
+def simpson_nonuniform(x, f):
+    
+    """
+    FOUND ON WIKIPEDIA
+    
+    Simpson rule for irregularly spaced data.
+
+        Parameters
+        ----------
+        x : list or np.array of floats
+                Sampling points for the function values
+        f : list or np.array of floats
+                Function values at the sampling points
+
+        Returns
+        -------
+        float : approximation for the integral
+    """
+    
+    N = len(x) - 1
+    h = np.diff(x)
+
+    result = 0.0
+    for i in range(1, N, 2):
+        hph = h[i] + h[i - 1]
+        result += f[i] * ( h[i]**3 + h[i - 1]**3
+                           + 3. * h[i] * h[i - 1] * hph )\
+                     / ( 6 * h[i] * h[i - 1] )
+        result += f[i - 1] * ( 2. * h[i - 1]**3 - h[i]**3
+                              + 3. * h[i] * h[i - 1]**2)\
+                     / ( 6 * h[i - 1] * hph)
+        result += f[i + 1] * ( 2. * h[i]**3 - h[i - 1]**3
+                              + 3. * h[i - 1] * h[i]**2)\
+                     / ( 6 * h[i] * hph )
+
+    if (N + 1) % 2 == 0:
+        result += f[N] * ( 2 * h[N - 1]**2
+                          + 3. * h[N - 2] * h[N - 1])\
+                     / ( 6 * ( h[N - 2] + h[N - 1] ) )
+        result += f[N - 1] * ( h[N - 1]**2
+                           + 3*h[N - 1]* h[N - 2] )\
+                     / ( 6 * h[N - 2] )
+        result -= f[N - 2] * h[N - 1]**3\
+                     / ( 6 * h[N - 2] * ( h[N - 2] + h[N - 1] ) )
+    return result
+        
+
+def get_entropy(points, values, uniformity):
     
     '''
     right now have N x N x N x N x N x N array
@@ -57,52 +199,85 @@ def get_entropy(points, values):
     the value within it will be the information entropy
     '''
     
-    N = 12
+    x_spatial, y_spatial, z_spatial, x_velocity, y_velocity, z_velocity = lattice_maker(points, uniformity)
+    grid = get_6D_fw(points, values, uniformity)
     
-    spatial_vals = np.linspace(-3., 3., N)
-    velocity_vals = np.linspace(-300., 300., N)
-    
-    grid = get_6D_fw(points, values, N)
+    Nx, Ny, Nz = len(x_spatial), len(y_spatial), len(z_spatial)
+    Nvx, Nvy, Nvz = len(x_velocity), len(y_velocity), len(z_velocity)
     
     sixD_arr = np.multiply(grid, np.log(grid))
-    #sixD_arr = np.nan_to_num(sixD_arr) # 0 * np.log(0) is nan
     
-    fiveD_arr = [ simpson(velocity_vals, sixD_arr[i,j,k,l,m,:])
-                  for i in range(N) for j in range(N) 
-                  for k in range(N) for l in range(N) 
-                  for m in range(N) ]
+    if uniformity == 'uniform':
+        
+        fiveD_arr = [ simpson(z_velocity, sixD_arr[i,j,k,l,m,:])
+                      for i in range(Nx) for j in range(Ny) 
+                      for k in range(Nz) for l in range(Nvx) 
+                      for m in range(Nvy) ]
+        
+        fiveD_arr = np.asarray(fiveD_arr).reshape(Nx, Ny, Nz, Nvx, Nvy)
+         
+        fourD_arr = [ simpson(y_velocity, fiveD_arr[i,j,k,l,:])
+                      for i in range(Nx) for j in range(Ny) 
+                      for k in range(Nz) for l in range(Nvx)  ]
+        
+        fourD_arr = np.asarray(fourD_arr).reshape(Nx, Ny, Nz, Nvx)
+        
+        threeD_arr = [ simpson(x_velocity, fourD_arr[i,j,k,:])
+                       for i in range(Nx) for j in range(Ny) 
+                       for k in range(Nz) ]
+        
+        threeD_arr = np.asarray(threeD_arr).reshape(Nx, Ny, Nz)
+        
+        twoD_arr = [ simpson(z_spatial, threeD_arr[i,j,:])
+                     for i in range(Nx) for j in range(Ny) ]
+        
+        twoD_arr = np.asarray(twoD_arr).reshape(Nx, Ny)
+        
+        oneD_arr = [ simpson(y_spatial, twoD_arr[i,:])
+                  for i in range(Nx)  ]
+        
+        #returns entropy
+        return simpson(x_spatial, oneD_arr)
     
-    fiveD_arr = np.asarray(fiveD_arr).reshape(N, N, N, N, N)
+    if uniformity == 'non-uniform':
     
-    fourD_arr = [ simpson(velocity_vals, fiveD_arr[i,j,k,l,:])
-                  for i in range(N) for j in range(N) 
-                  for k in range(N) for l in range(N) ]
-    
-    fourD_arr = np.asarray(fourD_arr).reshape(N, N, N, N)
-    
-    threeD_arr = [ simpson(velocity_vals, fourD_arr[i,j,k,:])
-                   for i in range(N) for j in range(N) 
-                   for k in range(N) ]
-    
-    threeD_arr = np.asarray(threeD_arr).reshape(N, N, N)
-    
-    twoD_arr = [ simpson(spatial_vals, threeD_arr[i,j,:])
-                 for i in range(N) for j in range(N)  ]
-    
-    twoD_arr = np.asarray(twoD_arr).reshape(N, N)
-    
-    oneD_arr = [ simpson(spatial_vals, twoD_arr[i,:])
-              for i in range(N)  ]
-    
-    return simpson(spatial_vals, oneD_arr)
+        fiveD_arr = [ simpson_nonuniform(z_velocity, sixD_arr[i,j,k,l,m,:])
+                      for i in range(Nx) for j in range(Ny) 
+                      for k in range(Nz) for l in range(Nvx) 
+                      for m in range(Nvy) ]
+        
+        fiveD_arr = np.asarray(fiveD_arr).reshape(Nx, Ny, Nz, Nvx, Nvy)
+         
+        fourD_arr = [ simpson_nonuniform(y_velocity, fiveD_arr[i,j,k,l,:])
+                      for i in range(Nx) for j in range(Ny) 
+                      for k in range(Nz) for l in range(Nvx)  ]
+        
+        fourD_arr = np.asarray(fourD_arr).reshape(Nx, Ny, Nz, Nvx)
+        
+        threeD_arr = [ simpson_nonuniform(x_velocity, fourD_arr[i,j,k,:])
+                       for i in range(Nx) for j in range(Ny) 
+                       for k in range(Nz) ]
+        
+        threeD_arr = np.asarray(threeD_arr).reshape(Nx, Ny, Nz)
+        
+        twoD_arr = [ simpson_nonuniform(z_spatial, threeD_arr[i,j,:])
+                     for i in range(Nx) for j in range(Ny) ]
+        
+        twoD_arr = np.asarray(twoD_arr).reshape(Nx, Ny)
+        
+        oneD_arr = [ simpson_nonuniform(y_spatial, twoD_arr[i,:])
+                  for i in range(Nx)  ]
+        
+        #returns entropy
+        return simpson_nonuniform(x_spatial, oneD_arr)
 
 if __name__ in '__main__':
     
-    point_files = glob.glob('/home/s1780638/second_project_gcs/Enbid-2.0/AMUSE_data/*.ascii')
+    point_files = glob.glob('/Users/BrianTCook/Desktop/Thesis/second_project_gcs/Enbid-2.0/AMUSE_data/*.ascii')
     
     t0 = time.time()
     
-    logN_max = 6
+    logN_max = 1
     
     xvals_all, yvals_all = [ [] for i in range(logN_max+1) ], [ [] for i in range(logN_max+1) ]
     
@@ -122,12 +297,14 @@ if __name__ in '__main__':
         print(Nclusters, 2**logN_max)
         
         if Nclusters <= 2**logN_max:
-            
-        
+
             points = np.loadtxt(point_file)
             values = np.loadtxt(point_file + '_output.est')
             
-            S = get_entropy(points, values)
+            uniformity = 'uniform'
+            S = get_entropy(points, values, uniformity)
+            #fw_map, x0, x1, y0, y1 = get_map(points, values)
+            #print('number of unique elements in fw_map: ', np.unique(fw_map).shape)
             
             sim_time = frame/400. * 40. #frame/frame * end_time (Myr)
             
@@ -147,7 +324,7 @@ if __name__ in '__main__':
     for logN in range(logN_max+1):
         
         xvals, yvals = xvals_all[logN], yvals_all[logN]
-        plt.scatter(xvals, yvals, label=r'$\log_{2} N_{\mathrm{clusters}}$ = %i'%(logN), s=2)
+        plt.scatter(xvals, yvals, label=r'$\log_{2} N_{\mathrm{clusters}}$ = %i'%(logN), s=4)
     
     plt.gca().set_yscale('log')
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))

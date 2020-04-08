@@ -14,6 +14,7 @@ import math
 
 from scipy.interpolate import griddata
 
+'''
 def nonuniform_bins(list_of_values, Nmax_in_bin):
     
     data = np.sort(list_of_values)
@@ -77,13 +78,18 @@ def nonuniform_bins(list_of_values, Nmax_in_bin):
     centers = [ 0.5*(edges[i]+edges[i+1]) for i in range(len(edges)-1)  ]
     
     return centers
+'''
 
-def lattice_maker(points, uniformity):
+def lattices_maker(points, uniformity):
     
     '''
     takes 6D phase space coordinates
     tessellates phase space s.t. there are < Npoints_max
     '''
+    
+    cluster_populations = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/Nstars_in_clusters.txt')
+
+    for cluster in cluster_populations
     
     xvals, yvals, zvals = points[:,0], points[:,1], points[:,2]
     vxvals, vyvals, vzvals = points[:,3], points[:,4], points[:,5]
@@ -277,9 +283,12 @@ if __name__ in '__main__':
     
     t0 = time.time()
     
-    logN_max = 1
+    logN_max = 0
     
     xvals_all, yvals_all = [ [] for i in range(logN_max+1) ], [ [] for i in range(logN_max+1) ]
+    
+    plt.rc('text', usetex = True)
+    plt.rc('font', family = 'serif')
     
     for point_file in point_files:
         
@@ -327,8 +336,9 @@ if __name__ in '__main__':
         plt.scatter(xvals, yvals, label=r'$\log_{2} N_{\mathrm{clusters}}$ = %i'%(logN), s=4)
     
     plt.gca().set_yscale('log')
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=12)
     plt.xlabel('Simulation Time (Myr)', fontsize=16)
-    plt.ylabel(r'$S$ [kpc km/s]$^{3}$', fontsize=16)
+    plt.ylabel(r'$S$ ([kpc km/s]$^{3}$)', fontsize=16)
+    plt.gca().tick_params(labelsize='large')
     plt.tight_layout()
     plt.savefig('entropy_evolution.pdf')

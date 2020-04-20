@@ -10,9 +10,9 @@ import numpy as np
 import glob
 import time
 import matplotlib.pyplot as plt
-import math
-
 from scipy.interpolate import griddata
+
+from cluster_table import sort_clusters_by_attribute
 
 '''
 def nonuniform_bins(list_of_values, Nmax_in_bin):
@@ -181,13 +181,20 @@ def lattices_maker(points, uniformity, Norbiters):
     '''
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
-    cluster_populations = np.loadtxt(datadir + 'Nstars_in_clusters.txt')
-    cluster_populations = list(cluster_populations[:Norbiters])
+    cluster_populations = list( np.loadtxt(datadir + 'Nstars_in_clusters.txt') ) 
+    
+    #need to give clusters sorted by an attribute, in our case increasing |r|
+    #new_index = indices_dict[old_index]
+    indices_dict = sort_clusters_by_attribute('|r|')
+    
+    cluster_populations_sorted = [ cluster_populations[indices_dict[i]]
+                                   for i in range(len(cluster_populations)) ]
+    
     grids = []
 
-    for k, number_of_stars in enumerate(cluster_populations):
+    for k, number_of_stars in enumerate(cluster_populations_sorted):
         
-        starting_index = int(np.sum( cluster_populations[:k] ))
+        starting_index = int(np.sum( cluster_populations_sorted[:k] ))
         ending_index = starting_index + int(number_of_stars)
     
         xvals, yvals, zvals = points[starting_index:ending_index,0], points[starting_index:ending_index,1], points[starting_index:ending_index,2]
@@ -211,14 +218,22 @@ def lattices_maker(points, uniformity, Norbiters):
 def get_6D_fw(points, values, uniformity, Norbiters):
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
-    cluster_populations = np.loadtxt(datadir + 'Nstars_in_clusters.txt')
-    cluster_populations = list(cluster_populations[:Norbiters])
+    
+    cluster_populations = list( np.loadtxt(datadir + 'Nstars_in_clusters.txt') ) 
+    
+    #need to give clusters sorted by an attribute, in our case increasing |r|
+    #new_index = indices_dict[old_index]
+    indices_dict = sort_clusters_by_attribute('|r|')
+    
+    cluster_populations_sorted = [ cluster_populations[indices_dict[i]]
+                                   for i in range(len(cluster_populations)) ]
+    
     grids = lattices_maker(points, uniformity, Norbiters)
     fw_values_interpolated = []
 
-    for k, number_of_stars in enumerate(cluster_populations):
+    for k, number_of_stars in enumerate(cluster_populations_sorted):
 
-        starting_index = int(np.sum( cluster_populations[:k] ))
+        starting_index = int(np.sum( cluster_populations_sorted[:k] ))
         ending_index = starting_index + int(number_of_stars)
         
         print('unique fw values: ', np.unique(values[starting_index:ending_index]).shape)
@@ -261,15 +276,22 @@ def get_entropy(points, values, uniformity, Norbiters):
     '''
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
-    cluster_populations = np.loadtxt(datadir + 'Nstars_in_clusters.txt')
-    cluster_populations = list(cluster_populations[:Norbiters])
+    
+    cluster_populations = list( np.loadtxt(datadir + 'Nstars_in_clusters.txt') ) 
+    
+    #need to give clusters sorted by an attribute, in our case increasing |r|
+    #new_index = indices_dict[old_index]
+    indices_dict = sort_clusters_by_attribute('|r|')
+    
+    cluster_populations_sorted = [ cluster_populations[indices_dict[i]]
+                                   for i in range(len(cluster_populations)) ]
     
     fw_values_interpolated = get_6D_fw(points, values, uniformity, Norbiters)
     grids = lattices_maker(points, uniformity, Norbiters)
 
     S = 0 #entropy
 
-    for k, number_of_stars in enumerate(cluster_populations):
+    for k, number_of_stars in enumerate(cluster_populations_sorted):
     
         x_spatial, y_spatial, z_spatial, x_velocity, y_velocity, z_velocity = grids[k]
         fw_interpolated = fw_values_interpolated[k]

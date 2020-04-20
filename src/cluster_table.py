@@ -10,8 +10,6 @@ USE ON MAC NOT ON VIRTUAL MACHINE
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import csv
 
 def sort_clusters_by_attribute(attribute):
 
@@ -52,6 +50,7 @@ def sort_clusters_by_attribute(attribute):
     df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds)), columns=['M', 'Nstars', '|r|', '|v|'])
     
     df_sorted_by_r = df.sort_values(by=[attribute])
+    #df_sorted_by_r_reindexed = df_sorted_by_r.reset_index(drop=True)
     
     indices_dict = {}
     
@@ -59,11 +58,8 @@ def sort_clusters_by_attribute(attribute):
         indices_dict.update( {df : df_sorted} )
         
     return indices_dict
-    
 
 '''
-print(df.to_latex())
-
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
 

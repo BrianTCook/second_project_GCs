@@ -29,7 +29,7 @@ from cluster_table import sort_clusters_by_attribute
 import numpy as np
 np.random.seed(73)
 
-def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
+def make_king_model_cluster(r_init, phi_init, z_init, vr_init, vphi_init, vz_init, 
                             W0, Mcluster, star_masses, Mgalaxy, Rgalaxy, code_name, parameters=[]):
 
     '''
@@ -48,13 +48,13 @@ def make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_ini
     '''
     
     #convert from galpy/cylindrical to AMUSE/Cartesian units
-    x_init = Rcoord*np.cos(phicoord) | units.kpc
-    y_init = Rcoord*np.sin(phicoord) | units.kpc
-    z_init = Zcoord | units.kpc
+    x_init = r_init*np.cos(phi_init) | units.kpc
+    y_init = r_init*np.sin(phi_init) | units.kpc
+    z_init = z_init | units.kpc
     
     #vphi = R \dot{\phi}? assuming yes for now
-    vx_init = (vr_init*np.cos(phicoord) - vphi_init*np.sin(phicoord)) | units.kms
-    vy_init = (vr_init*np.sin(phicoord) + vphi_init*np.cos(phicoord)) | units.kms
+    vx_init = (vr_init*np.cos(phi_init) - vphi_init*np.sin(phi_init)) | units.kms
+    vy_init = (vr_init*np.sin(phi_init) + vphi_init*np.cos(phi_init)) | units.kms
     vz_init = vz_init | units.kms
     
     pos_vec, vel_vec = (x_init, y_init, z_init), (vx_init, vy_init, vz_init)
@@ -91,13 +91,8 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
     with appropriate ICs in 6D phase space
     '''
     
-    #need to give clusters sorted by an attribute, in our case increasing |r|
-    #new_index = indices_dict[old_index]
-    indices_dict = sort_clusters_by_attribute('|r|')
-    index = indices_dict[index]
-    
     #limit to within 1 kpc of the galactic center
-    Rcoord, phicoord, Zcoord = rvals[index], phivals[index], zvals[index]
+    r_init, phi_init, z_init = rvals[index], phivals[index], zvals[index]
     vr_init, vphi_init, vz_init = vrvals[index], vphivals[index], vzvals[index]
     
     data_directory = '/home/brian/Desktop/second_project_gcs/data/'
@@ -111,7 +106,7 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
     #just for converter, right?
     converter_sub = nbody_system.nbody_to_si(Mcluster, 10|units.parsec)
     
-    bodies, code = make_king_model_cluster(Rcoord, Zcoord, phicoord, vr_init, vphi_init, vz_init, 
+    bodies, code = make_king_model_cluster(r_init, phi_init, z_init, vr_init, vphi_init, vz_init, 
                                            W0, Mcluster, star_masses, Mgalaxy, Rgalaxy, code_name, parameters=[])
     
     return bodies, code, converter_sub
@@ -119,8 +114,13 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
 def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary, 
             rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index):
 
+    #need to give clusters sorted by an attribute, in our case increasing |r|
+    #sorting needs to happen once, either here or in star_cluster function
+    indices_dict = sort_clusters_by_attribute('|r|')
+    index_sorted = indices_dict[index]
+    
     data_directory = '/home/brian/Desktop/second_project_gcs/data/'
-    star_masses = np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%index)
+    star_masses = np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%index_sorted)
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(star_masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
@@ -131,17 +131,17 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
     should get appropriate 6D initial phase space conditions
     '''
     
-    Rcoord, phicoord, Zcoord = rvals[index], phivals[index], zvals[index]
-    vr_init, vphi_init, vz_init = vrvals[index], vphivals[index], vzvals[index]
+    r_init, phi_init, z_init = rvals[index_sorted], phivals[index_sorted], zvals[index_sorted]
+    vr_init, vphi_init, vz_init = vrvals[index_sorted], vphivals[index_sorted], vzvals[index_sorted]
     
     #convert from galpy/cylindrical to AMUSE/Cartesian units
-    x_init = Rcoord*np.cos(phicoord) | units.kpc
-    y_init = Rcoord*np.sin(phicoord) | units.kpc
-    z_init = Zcoord | units.kpc
+    x_init = r_init*np.cos(phi_init) | units.kpc
+    y_init = r_init*np.sin(phi_init) | units.kpc
+    z_init = z_init | units.kpc
     
     #vphi = R \dot{\phi}? assuming yes for now
-    vx_init = (vr_init*np.cos(phicoord) - vphi_init*np.sin(phicoord)) | units.kms
-    vy_init = (vr_init*np.sin(phicoord) + vphi_init*np.cos(phicoord)) | units.kms
+    vx_init = (vr_init*np.cos(phi_init) - vphi_init*np.sin(phi_init)) | units.kms
+    vy_init = (vr_init*np.sin(phi_init) + vphi_init*np.cos(phi_init)) | units.kms
     vz_init = vz_init | units.kms
     
     if orbiter_name == 'SingleStar':
@@ -178,6 +178,6 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
     if orbiter_name == 'SingleCluster':
         
         bodies, code, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, 
-                                       masses, index, Mgalaxy, Rgalaxy, code_name)
+                                       masses, index_sorted, Mgalaxy, Rgalaxy, code_name)
         
         return bodies, code

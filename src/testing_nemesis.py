@@ -64,7 +64,7 @@ if __name__ in '__main__':
     logN_max = 9
     Norbiters_list = [ 2**i for i in range(logN_max) ]
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
-    code_names = [ 'tree' , 'Nbody' ] #, 'nemesis' 
+    code_names = [ 'tree' , 'Nbody', 'nemesis' ] 
 
     t0 = time.time()
     
@@ -76,16 +76,9 @@ if __name__ in '__main__':
     for orbiter_name in orbiter_names:
         for code_name in code_names:
             
-            #Nvals, yvals = [], []
+            Nvals, yvals = [], []
             
             for Norbiters in Norbiters_list:
-                
-                #try:
-                
-                rvals = rvals_all[:Norbiters]
-                phivals = phivals_all[:Norbiters]
-                zvals = zvals_all[:Norbiters]  
-                masses = masses_all[:Norbiters]
                         
                 print('\\\\\\\\\\\\\\\\\\\\\\\\')
                 print(code_name, orbiter_name)
@@ -94,13 +87,13 @@ if __name__ in '__main__':
                 t_init = time.time()
 
                 simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
-                           sepBinary, rvals, phivals, zvals, vrvals, vphivals, vzvals, 
-                           masses, Norbiters, tend, dt)
+                           sepBinary, rvals_all, phivals_all, zvals_all, vrvals_all, vphivals_all, vzvals_all, 
+                           masses_all, Norbiters, tend, dt)
                 
                 t_final = time.time()
                 
-                #Nvals.append(math.log(Norbiters, 2))
-                #yvals.append((t_final-t_init)/60.)
+                Nvals.append(math.log(Norbiters, 2))
+                yvals.append((t_final-t_init)/60.)
                     
                 #except:
                     
@@ -108,7 +101,7 @@ if __name__ in '__main__':
 
                 #maps(code_name, orbiter_name, Norbiters)
                 
-            #plt.scatter(Nvals, yvals, label=code_name)
+            plt.scatter(Nvals, yvals, label=code_name)
       
     plt.gca().set_yscale('log')
     plt.legend(loc='upper left', fontsize=12)

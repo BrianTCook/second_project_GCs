@@ -61,25 +61,25 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     body_masses = gravity.particles.mass
     total_mass = body_masses.sum()
     
+    '''
     if orbiter_name == 'SingleStar':
             cluster_populations = [1 for i in range(Norbiters) ]
     if orbiter_name == 'SingleCluster':
             cluster_populations = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/Nstars_in_clusters.txt')
             cluster_populations = list(cluster_populations[:Norbiters])
             print('cluster_populations is', cluster_populations)
+    '''
     
     #for 3D numpy array storage
     all_data = np.zeros((len(sim_times), Ntotal, 7))
     #COM_data = np.zeros((len(sim_times), Norbiters, 2))
-    
-    cluster_pop_flag = 0
     
     #for saving in write_set_to_file
     filename = 'data_temp.csv'
     attributes = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz')
     
     print('len(sim_times) is', len(sim_times))
-    gadget_flag = int(math.floor(len(sim_times)/10))
+    gadget_flag = int(math.floor(len(sim_times)/20))
     
     t0 = time.time()
     all_data_index = 0

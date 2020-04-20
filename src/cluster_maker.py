@@ -24,6 +24,8 @@ from galpy.potential import MWPotential2014
 from galpy.util import bovy_conversion
 from galpy.actionAngle import actionAngleStaeckel
 
+from cluster_table import sort_clusters_by_attribute
+
 import numpy as np
 np.random.seed(73)
 
@@ -88,6 +90,11 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
     takes 3 random numbers and generates open cluster
     with appropriate ICs in 6D phase space
     '''
+    
+    #need to give clusters sorted by an attribute, in our case increasing |r|
+    #new_index = indices_dict[old_index]
+    indices_dict = sort_clusters_by_attribute('|r|')
+    index = indices_dict[index]
     
     #limit to within 1 kpc of the galactic center
     Rcoord, phicoord, Zcoord = rvals[index], phivals[index], zvals[index]

@@ -11,39 +11,57 @@ USE ON MAC NOT ON VIRTUAL MACHINE
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import csv
 
-data_directory = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/'
+def sort_clusters_by_attribute(attribute):
 
-rs = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')
-phis = np.loadtxt(data_directory+'ICs/dehnen_phivals.txt')
-zs = np.loadtxt(data_directory+'ICs/dehnen_zvals.txt')
+    '''
+    takes pandas df column name as argument (string)
+    outputs a dictionary such that cluster 0 has lowest value, cluster 1 second lowest, and so on
+    '''
+    
+    data_directory = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/'
+    
+    rs = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')
+    phis = np.loadtxt(data_directory+'ICs/dehnen_phivals.txt')
+    zs = np.loadtxt(data_directory+'ICs/dehnen_zvals.txt')
+    
+    vrs = np.loadtxt(data_directory+'ICs/bovy_vrvals.txt')
+    vphis = np.loadtxt(data_directory+'ICs/bovy_vphivals.txt')
+    vzs = np.loadtxt(data_directory+'ICs/bovy_vzvals.txt')
+    
+    N = 128
+    
+    #convert from galpy/cylindrical to AMUSE/Cartesian units
+    #all in kpc
+    xs = [ rs[i] * np.cos(phis[i]) for i in range(N) ]
+    ys = [ rs[i] * np.sin(phis[i]) for i in range(N) ]
+    zs = [ zs[i] for i in range(N) ]
+    
+    #all in km/s
+    vxs = [ vrs[i] * np.cos(phis[i]) - vphis[i] * np.sin(phis[i]) for i in range(N) ] 
+    vys = [ vrs[i] * np.sin(phis[i]) + vphis[i] * np.cos(phis[i]) for i in range(N) ]
+    vzs = [ vzs[i] for i in range(N) ]
+    
+    dists = [ np.sqrt(xs[i]**2 + ys[i]**2 + zs[i]**2) for i in range(N) ]
+    speeds = [ np.sqrt(vxs[i]**2 + vys[i]**2 + vzs[i]**2) for i in range(N) ]
+    
+    Nstars = [ len(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)) for i in range(N) ]
+    masses = [ np.sum(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)) for i in range(N) ]
+    
+    df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds)), columns=['M', 'Nstars', '|r|', '|v|'])
+    
+    df_sorted_by_r = df.sort_values(by=[attribute])
+    
+    indices_dict = {}
+    
+    for df, df_sorted in zip(df.index, df_sorted_by_r.index):
+        indices_dict.update( {df : df_sorted} )
+        
+    return indices_dict
+    
 
-vrs = np.loadtxt(data_directory+'ICs/bovy_vrvals.txt')
-vphis = np.loadtxt(data_directory+'ICs/bovy_vphivals.txt')
-vzs = np.loadtxt(data_directory+'ICs/bovy_vzvals.txt')
-
-N = 128
-
-#convert from galpy/cylindrical to AMUSE/Cartesian units
-#all in kpc
-xs = [ rs[i] * np.cos(phis[i]) for i in range(N) ]
-ys = [ rs[i] * np.sin(phis[i]) for i in range(N) ]
-zs = [ zs[i] for i in range(N) ]
-
-#all in km/s
-vxs = [ vrs[i] * np.cos(phis[i]) - vphis[i] * np.sin(phis[i]) for i in range(N) ] 
-vys = [ vrs[i] * np.sin(phis[i]) + vphis[i] * np.cos(phis[i]) for i in range(N) ]
-vzs = [ vzs[i] for i in range(N) ]
-
-dists = [ np.sqrt(xs[i]**2 + ys[i]**2 + zs[i]**2) for i in range(N) ]
-speeds = [ np.sqrt(vxs[i]**2 + vys[i]**2 + vzs[i]**2) for i in range(N) ]
-
-Nstars = [ len(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)) for i in range(N) ]
-masses = [ np.sum(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)) for i in range(N) ]
-
-print(np.sum(Nstars))
-
-df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds)), columns=['M', 'Nstars', '|r|', '|v|'])
+'''
 print(df.to_latex())
 
 plt.rc('font', family='serif')
@@ -74,3 +92,4 @@ axs[1,1].tick_params(labelsize='large')
 
 plt.tight_layout()
 plt.savefig('cluster_info.pdf')
+'''

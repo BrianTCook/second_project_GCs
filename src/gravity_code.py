@@ -65,12 +65,12 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
             other_clusters = orbiter_codes_list[:i] + orbiter_codes_list[i+1:]
             other_things = tuple(other_clusters) + (galaxy_code,)
 
-            #stellar = MESA()
-            #stellar.particles.add_particles(cluster_code.particles)
+            stellar = MESA()
+            stellar.particles.add_particles(cluster_code.particles)
 
             #bridges each cluster with the bulge, not the other way around though
             gravity.add_system(cluster_code, other_things)  
-            #gravity.add_system(cluster_code, (stellar,))
+            gravity.add_system(cluster_code, (stellar,))
             
     if code_name == 'nemesis':
         
@@ -98,10 +98,9 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
         nemesis.particles.add_particles(parts)
         nemesis.commit_particles()
         
-        #stellar = MESA()
-        #stellar.particles.add_particles(all_bodies)
+        stellar = MESA()
+        stellar.particles.add_particles(all_bodies)
 
         gravity.add_system(nemesis, (galaxy_code,))
-        #gravity.add_system(nemesis, (stellar,))
-    
-    return gravity.particles, gravity, orbiter_bodies_list, cluster_colors
+
+    return gravity.particles, gravity, orbiter_bodies_list, cluster_colors, stellar

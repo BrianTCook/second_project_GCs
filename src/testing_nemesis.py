@@ -61,7 +61,7 @@ if __name__ in '__main__':
     
     masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 
-    logN_max = 9
+    logN_max = 5
     Norbiters_list = [ 2**i for i in range(logN_max) ]
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
     code_names = [ 'tree' , 'Nbody', 'nemesis' ] 

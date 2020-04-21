@@ -96,7 +96,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         delta_energies.append(dE_dyn)
         
-	''' 
+        ''' 
         if j%gadget_flag == 0:
             
             print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
@@ -118,8 +118,10 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             #information_entropy = get_entropy(points, values)
         
         #x, y = data_t['x'].tolist(), data_t['y'].tolist()
+        '''
         
         #stuff to analyze COM of each star cluster
+        '''
         for k, number_of_stars in enumerate(cluster_populations):
             
             starting_index = int(np.sum( cluster_populations[:k] ))

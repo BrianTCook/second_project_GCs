@@ -90,7 +90,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     gadget_flag = 1 #int(math.floor(len(sim_times)/20))
     
     t0 = time.time()
-    all_data_index = 0
+    j_like_index = 0
     
     for j, t in enumerate(sim_times):
 
@@ -108,7 +108,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             
             print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
                         
-            '''
             io.write_set_to_file(gravity.particles, filename, 'csv',
                                  attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                                  attribute_names = attributes)
@@ -122,29 +121,30 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             data_t = data_t.drop(columns=['mass']) #goes from 7D --> 6D
             data_t = data_t.astype(float) #strings to floats
 
+            '''
             all_data[all_data_index, :len(data_t.index), :] = data_t.values
             np.savetxt('enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
-            
-            all_data_index += 1
             '''
         
-        x, y = data_t['x'].tolist(), data_t['y'].tolist()
-        
-        #stuff to analyze COM of each star cluster
-        for k, number_of_stars in enumerate(cluster_populations_sorted):
+            x, y = data_t['x'].tolist(), data_t['y'].tolist()
             
-            starting_index = int(np.sum( cluster_populations_sorted[:k] ))
-            ending_index = starting_index + int(number_of_stars)
+            #stuff to analyze COM of each star cluster
+            for k, number_of_stars in enumerate(cluster_populations_sorted):
+                
+                starting_index = int(np.sum( cluster_populations_sorted[:k] ))
+                ending_index = starting_index + int(number_of_stars)
+                
+                cluster_masses = body_masses[starting_index:ending_index]
+                cluster_total_mass = cluster_masses.sum()
             
-            cluster_masses = body_masses[starting_index:ending_index]
-            cluster_total_mass = cluster_masses.sum()
-        
-            x_COM = np.sum( [ body_masses[i]*x[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
-            y_COM = np.sum( [ body_masses[i]*y[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
-        
-            COM_data[j, k, 0] = x_COM
-            COM_data[j, k, 1] = y_COM
-
+                x_COM = np.sum( [ body_masses[i]*x[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
+                y_COM = np.sum( [ body_masses[i]*y[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
+            
+                COM_data[j_like_index, k, 0] = x_COM
+                COM_data[j_like_index, k, 1] = y_COM
+    
+            j_like_index += 1
+    
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
 

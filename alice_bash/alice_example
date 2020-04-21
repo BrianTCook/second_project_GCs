@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --ntasks=4
-#SBATCH --time=00:02:00
+#SBATCH --ntasks=1
+#SBATCH --time=00:01:00
 #SBATCH —mem-per-cpu=2GB
 
 source setup.sh

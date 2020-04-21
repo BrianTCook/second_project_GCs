@@ -8,14 +8,9 @@ create child processes) is strongly discouraged.
 
 The process that invoked fork was:
 
-  Local host:          [[3209,1],0] (PID 417156)
+  Local host:          [[14142,1],0] (PID 419373)
 
 If you are *absolutely sure* that your application will successfully
 and correctly survive a call to fork(), you may disable this warning
 by setting the mpi_warn_on_fork MCA parameter to 0.
 --------------------------------------------------------------------------
-\\\\\\\\\\\\
-tree SingleCluster
-\\\\\\\\\\\\
-1
-len(sim_times) is 5

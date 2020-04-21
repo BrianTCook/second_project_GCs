@@ -18,6 +18,8 @@ from galpy.util import bovy_conversion
 from gravity_code import gravity_code_setup
 from fw_entropy import get_entropy
 
+import numpy as np
+import pandas as pd
 import gzip
 import time
 import math
@@ -69,7 +71,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     '''
     
     #for 3D numpy array storage
-    all_data = np.zeros((len(sim_times), Ntotal, 7))
+    all_data = np.zeros((len(sim_times), Ntotal, 6))
     #COM_data = np.zeros((len(sim_times), Norbiters, 2))
     
     #for saving in write_set_to_file
@@ -143,6 +145,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     #things that are not easily extracted from write_set_to_file
     
+    '''
     f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
     #f_COM = gzip.GzipFile('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
     np.save(file=f_all, arr=all_data, allow_pickle=True)
@@ -150,7 +153,8 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     f_all.close()
     #f_COM.close()
-    
+    '''    
+
     np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt', cluster_colors)
     np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt', delta_energies)
     np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)

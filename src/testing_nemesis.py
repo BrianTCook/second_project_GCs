@@ -36,14 +36,14 @@ from galpy.actionAngle import actionAngleStaeckel
 random.seed(73)
 
 #Circumvent a problem with using too many threads on OpenMPI
-os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
+#os.environ["OMPI_MCA_rmaps_base_oversubscribe"] = "yes"
 
 if __name__ in '__main__':
     
     potential = MWPotential2014 #galpy
     
     sepBinary = 20.|units.parsec #not necessary if not doing binary cluster part
-    tend, dt = 0.4|units.Myr, 0.1|units.Myr
+    tend, dt = 0.5|units.Myr, 0.1|units.Myr
     #dt_param = 0.2 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass

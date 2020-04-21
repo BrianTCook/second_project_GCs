@@ -1,8 +1,12 @@
 #!/bin/bash
-#SBATCH --ntasks=4
-#SBATCH --time=01:00:00
-#SBATCH —mem-per-cpu=1GB
+#SBATCH --ntasks=8
+#SBATCH --time=00:30:00
+#SBATCH -mem-per-cpu=1GB
+
+export OMP_NUM_THREADS=8
+export OMPI_MCA_rmaps_base_oversubscribe=yes
+export OMPI_MCA_mpi_warn_on_fork=0
 
 source setup.sh
 cd ~/second_project_gcs/src/
-python testing_nemesis.py > April_Twenty.txt &
+python -u testing_nemesis.py > April_Twenty.txt &

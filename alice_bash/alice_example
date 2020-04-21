@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --ntasks=8
-#SBATCH --time=00:01:00
+#SBATCH --ntasks=4
+#SBATCH --time=00:02:00
 #SBATCH —mem-per-cpu=2GB
 
 source setup.sh
 cd ~/second_project_gcs/src/
-./run_main.sh
+python testing_nemesis.py > April_Twenty.txt &

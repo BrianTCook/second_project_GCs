@@ -49,7 +49,7 @@ if __name__ in '__main__':
     #uses a galpy function to evaluate the enclosed mass
     Mgalaxy, Rgalaxy = float(6.8e10)|units.MSun, 2.6|units.kpc #disk mass for MWPotential2014, Bovy(2015)
     
-    data_directory = '/home/brian/Desktop/second_project_gcs/data/'
+    data_directory = '/home/s1780638/second_project_gcs/data/'
     
     rvals_all = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')
     phivals_all = np.loadtxt(data_directory+'ICs/dehnen_phivals.txt')

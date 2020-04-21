@@ -19,8 +19,6 @@ from gravity_code import gravity_code_setup
 from fw_entropy import get_entropy
 
 import gzip
-import numpy as np
-import pandas as pd
 import time
 import math
 
@@ -79,7 +77,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     attributes = ('mass', 'x', 'y', 'z', 'vx', 'vy', 'vz')
     
     print('len(sim_times) is', len(sim_times))
-    gadget_flag = int(math.floor(len(sim_times)/20))
+    gadget_flag = 1 #int(math.floor(len(sim_times)/20))
     
     t0 = time.time()
     all_data_index = 0

@@ -55,9 +55,9 @@ if __name__ in '__main__':
     phivals_all = np.loadtxt(data_directory+'ICs/dehnen_phivals.txt')
     zvals_all = np.loadtxt(data_directory+'ICs/dehnen_zvals.txt')
     
-    vrvals = np.loadtxt(data_directory+'ICs/bovy_vrvals.txt')
-    vphivals = np.loadtxt(data_directory+'ICs/bovy_vphivals.txt')
-    vzvals = np.loadtxt(data_directory+'ICs/bovy_vzvals.txt')
+    vrvals_all = np.loadtxt(data_directory+'ICs/bovy_vrvals.txt')
+    vphivals_all = np.loadtxt(data_directory+'ICs/bovy_vphivals.txt')
+    vzvals_all = np.loadtxt(data_directory+'ICs/bovy_vzvals.txt')
     
     masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 

@@ -64,15 +64,23 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     '''
     if orbiter_name == 'SingleStar':
             cluster_populations = [1 for i in range(Norbiters) ]
-    if orbiter_name == 'SingleCluster':
-            cluster_populations = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/Nstars_in_clusters.txt')
-            cluster_populations = list(cluster_populations[:Norbiters])
-            print('cluster_populations is', cluster_populations)
     '''
+    
+    if orbiter_name == 'SingleCluster':
+        
+            cluster_populations = np.loadtxt('/home/s1780638/second_project_gcs/data/Nstars_in_clusters.txt')
+        
+            #need to give clusters sorted by an attribute, in our case increasing |r|
+            #new_index = indices_dict[old_index]
+            indices_dict = sort_clusters_by_attribute('|r|')
+            
+            cluster_populations_sorted = [ cluster_populations[indices_dict[i]]
+                                           for i in range(len(cluster_populations)) ]
     
     #for 3D numpy array storage
     all_data = np.zeros((len(sim_times), Ntotal, 6))
     mass_data = np.zeros((len(sim_times), Ntotal, 1))    
+    COM_data = np.zeros((len(sim_times), Norbiters, 2))
 
     #for saving in write_set_to_file
     filename = 'data_temp.csv'
@@ -100,12 +108,17 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             
             print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
                         
+            '''
             io.write_set_to_file(gravity.particles, filename, 'csv',
                                  attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                                  attribute_names = attributes)
             
             data_t = pd.read_csv(filename, names=list(attributes))
             data_t = data_t.drop([0, 1, 2]) #removes labels units, and unit names
+            
+            masses = data_t['mass'].tolist()
+            mass_data[all_data_index, :len(data_t.index), :] = masses #in solar masses
+            
             data_t = data_t.drop(columns=['mass']) #goes from 7D --> 6D
             data_t = data_t.astype(float) #strings to floats
 
@@ -113,14 +126,14 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             np.savetxt('enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
             
             all_data_index += 1
+            '''
         
-        #x, y = data_t['x'].tolist(), data_t['y'].tolist()
+        x, y = data_t['x'].tolist(), data_t['y'].tolist()
         
         #stuff to analyze COM of each star cluster
-        '''
-        for k, number_of_stars in enumerate(cluster_populations):
+        for k, number_of_stars in enumerate(cluster_populations_sorted):
             
-            starting_index = int(np.sum( cluster_populations[:k] ))
+            starting_index = int(np.sum( cluster_populations_sorted[:k] ))
             ending_index = starting_index + int(number_of_stars)
             
             cluster_masses = body_masses[starting_index:ending_index]
@@ -131,7 +144,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
             COM_data[j, k, 0] = x_COM
             COM_data[j, k, 1] = y_COM
-        '''
 
         gravity.evolve_model(t)
         channel_from_gravity_to_framework.copy()
@@ -143,16 +155,15 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     #things that are not easily extracted from write_set_to_file
     
-    '''
-    f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
+    #f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
     #f_COM = gzip.GzipFile('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
-    np.save(file=f_all, arr=all_data, allow_pickle=True)
+    #np.save(file=f_all, arr=all_data, allow_pickle=True)
     #np.save(file=f_COM, arr=COM_data, allow_pickle=True)
     
-    f_all.close()
+    #f_all.close()
     #f_COM.close()
-    '''    
-
+  
+    np.savetxt(code_name + '_' + orbiter_name + '_masses_Norbiters_' + str(Norbiters) + '.txt', mass_data)
     np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt', cluster_colors)
     np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt', delta_energies)
     np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)

@@ -43,7 +43,7 @@ if __name__ in '__main__':
     potential = MWPotential2014 #galpy
     
     sepBinary = 20.|units.parsec #not necessary if not doing binary cluster part
-    tend, dt = 0.4|units.Myr, 0.1|units.Myr
+    tend, dt = 0.3|units.Myr, 0.1|units.Myr
     #dt_param = 0.2 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass
@@ -61,10 +61,10 @@ if __name__ in '__main__':
     
     masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 
-    logN_max = 6
-    Norbiters_list = [ 2**i for i in range(logN_max) ]
+    logN_max = 3
+    Norbiters_list = [ 2**i for i in range(logN_max+1) ]
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
-    code_names = [ 'tree' , 'Nbody', 'nemesis' ] 
+    code_names = [ 'tree' , 'Nbody' ] #, 'nemesis' ] 
 
     t0 = time.time()
     
@@ -116,3 +116,5 @@ if __name__ in '__main__':
     #plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt)
     #convert_numpy(code_names, orbiter_names, Norbiters_list)
     #entropy_stuff(code_names, orbiter_names, Norbiters_list)
+
+sys.exit()

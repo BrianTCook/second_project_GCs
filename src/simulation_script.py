@@ -17,6 +17,7 @@ from galpy.util import bovy_conversion
 
 from gravity_code import gravity_code_setup
 from fw_entropy import get_entropy
+from cluster_maker import sort_clusters_by_attribute
 
 import numpy as np
 import pandas as pd
@@ -75,11 +76,11 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             indices_dict = sort_clusters_by_attribute('|r|')
             
             cluster_populations_sorted = [ cluster_populations[indices_dict[i]]
-                                           for i in range(len(cluster_populations)) ]
+                                           for i in range(Norbiters) ]
     
     #for 3D numpy array storage
     all_data = np.zeros((len(sim_times), Ntotal, 6))
-    mass_data = np.zeros((len(sim_times), Ntotal, 1))    
+    mass_data = np.zeros((len(sim_times), Ntotal))    
     COM_data = np.zeros((len(sim_times), Norbiters, 2))
 
     #for saving in write_set_to_file
@@ -116,13 +117,13 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             data_t = data_t.drop([0, 1, 2]) #removes labels units, and unit names
             
             masses = data_t['mass'].tolist()
-            mass_data[all_data_index, :len(data_t.index), :] = masses #in solar masses
+            mass_data[j_like_index, :len(data_t.index)] = masses #in solar masses
             
             data_t = data_t.drop(columns=['mass']) #goes from 7D --> 6D
             data_t = data_t.astype(float) #strings to floats
 
             '''
-            all_data[all_data_index, :len(data_t.index), :] = data_t.values
+            all_data[j_like_index, :len(data_t.index), :] = data_t.values
             np.savetxt('enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
             '''
         

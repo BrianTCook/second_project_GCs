@@ -81,7 +81,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #for 3D numpy array storage
     all_data = np.zeros((len(sim_times), Ntotal, 6))
     mass_data = np.zeros((len(sim_times), Ntotal))    
-    COM_data = np.zeros((len(sim_times), Norbiters, 2))
+    #COM_data = np.zeros((len(sim_times), Norbiters, 2))
 
     #for saving in write_set_to_file
     filename = 'data_temp.csv'
@@ -125,7 +125,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             '''
             all_data[j_like_index, :len(data_t.index), :] = data_t.values
             np.savetxt('enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
-            '''
         
             x, y = data_t['x'].tolist(), data_t['y'].tolist()
             
@@ -143,6 +142,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             
                 COM_data[j_like_index, k, 0] = x_COM
                 COM_data[j_like_index, k, 1] = y_COM
+            '''
     
             j_like_index += 1
     

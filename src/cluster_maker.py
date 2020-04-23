@@ -123,7 +123,7 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
     
     #data_directory = '/home/s1780638/second_project_gcs/data/'
     data_directory = 'home/brian/Desktop/second_project_gcs/data/'
-    star_masses = np.loadtxt(data_directory+'star_masses/star_masses_index=%i.txt'%index_sorted)
+    star_masses = np.loadtxt(data_directory+'star_masses/star_masses_index=%s.txt'%(str(index_sorted)))
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(star_masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units

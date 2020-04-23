@@ -71,7 +71,8 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     if orbiter_name == 'SingleCluster':
         
-            cluster_populations = np.loadtxt('/home/s1780638/second_project_gcs/data/Nstars_in_clusters.txt')
+            #cluster_populations = np.loadtxt('/home/s1780638/second_project_gcs/data/Nstars_in_clusters.txt')
+            cluster_populations = np.loadtxt('/home/brian/Desktop/second_project_gcs/data/Nstars_in_clusters.txt')
         
             #need to give clusters sorted by an attribute, in our case increasing |r|
             #new_index = indices_dict[old_index]

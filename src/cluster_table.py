@@ -18,6 +18,7 @@ def sort_clusters_by_attribute(attribute):
     outputs a dictionary such that cluster 0 has lowest value, cluster 1 second lowest, and so on
     '''
     
+    #data_directory = '/home/s1780638/second_project_gcs/data/'
     data_directory = '/home/s1780638/second_project_gcs/data/'
     
     rs = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')

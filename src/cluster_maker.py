@@ -95,7 +95,9 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
     r_init, phi_init, z_init = rvals[index], phivals[index], zvals[index]
     vr_init, vphi_init, vz_init = vrvals[index], vphivals[index], vzvals[index]
     
-    data_directory = '/home/s1780638/second_project_gcs/data/'
+    #data_directory = '/home/s1780638/second_project_gcs/data/'
+    data_directory = 'home/brian/Desktop/second_project_gcs/data/'
+    
     star_masses = np.loadtxt(data_directory+'star_masses/star_masses_index=%i.txt'%index)
     Mcluster = np.sum( star_masses )
     

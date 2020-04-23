@@ -121,7 +121,8 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
     indices_dict = sort_clusters_by_attribute('|r|')
     index_sorted = indices_dict[index]
     
-    data_directory = '/home/s1780638/second_project_gcs/data/'
+    #data_directory = '/home/s1780638/second_project_gcs/data/'
+    data_directory = 'home/brian/Desktop/second_project_gcs/data/'
     star_masses = np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%index_sorted)
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)

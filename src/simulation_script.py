@@ -46,10 +46,12 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #third thing is the list of orbiter bodies s.t. we can compute COMs independently
     #and plot them with different colors
     
-    simulation_bodies, gravity, orbiter_bodies_list, cluster_colors, _ = gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
+    simulation_bodies, gravity, orbiter_bodies_list, cluster_colors, stellar = gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
                                                                                                   rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, Norbiters)
 
-    channel_from_gravity_to_framework = gravity.particles.new_channel_to(simulation_bodies)    
+    channel_from_gravity_to_framework = gravity.particles.new_channel_to(simulation_bodies)
+    channel_from_stellar_to_framework = stellar.particles.new_channel_to(simulation_bodies)
+    
     Ntotal = len(simulation_bodies)
     
     sim_times_unitless = np.arange(0., tend.value_in(units.Myr)+dt.value_in(units.Myr), dt.value_in(units.Myr))
@@ -147,7 +149,9 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             j_like_index += 1
     
         gravity.evolve_model(t)
+        stellar.evolve_model(t)
         channel_from_gravity_to_framework.copy()
+        channel_from_stellar_to_framework.copy()
 
     try:
         gravity.stop()

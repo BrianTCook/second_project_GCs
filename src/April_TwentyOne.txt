@@ -57,33 +57,91 @@ E_dyn:  -8.22928749101e+43 m**2 * kg * s**-2
 dE_dyn:  0.00854552932158
 ------------
 \\\\\\\\\\\\
+tree SingleCluster
+\\\\\\\\\\\\
+4
+len(sim_times) is 4
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [-0.00864802 -0.00281721 -0.00510595]
+E_dyn:  -2.01447920569e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  0.1 Myr
+simulation_bodies.center_of_mass():  [-0.00864802 -0.00281721 -0.00510595]
+E_dyn:  -2.01447920569e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  0.2 Myr
+simulation_bodies.center_of_mass():  [-0.00695193 -0.01354342 -0.00119717]
+E_dyn:  -2.01442177526e+44 m**2 * kg * s**-2
+dE_dyn:  -2.85088252852e-05
+------------
+------------
+time:  0.3 Myr
+simulation_bodies.center_of_mass():  [-0.00451936 -0.02413892  0.003354  ]
+E_dyn:  -2.03090719992e+44 m**2 * kg * s**-2
+dE_dyn:  0.00815495845467
+------------
+\\\\\\\\\\\\
+tree SingleCluster
+\\\\\\\\\\\\
+8
+len(sim_times) is 4
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [-0.01180253 -0.00481799 -0.00188341]
+E_dyn:  -3.01427725906e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  0.1 Myr
+simulation_bodies.center_of_mass():  [-0.01180253 -0.00481799 -0.00188341]
+E_dyn:  -3.01427725906e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  0.2 Myr
+simulation_bodies.center_of_mass():  [-0.0089649  -0.01247116  0.00072648]
+E_dyn:  -3.01713291289e+44 m**2 * kg * s**-2
+dE_dyn:  0.000947375966043
+------------
+------------
+time:  0.3 Myr
+simulation_bodies.center_of_mass():  [-0.00559286 -0.01992767  0.00368015]
+E_dyn:  -3.03802468492e+44 m**2 * kg * s**-2
+dE_dyn:  0.00787831503885
+------------
+\\\\\\\\\\\\
 Nbody SingleCluster
 \\\\\\\\\\\\
 1
 len(sim_times) is 4
 ------------
 time:  0.0 Myr
-simulation_bodies.center_of_mass():  [ 0.0089906   0.01176939 -0.01006869]
-E_dyn:  -6.08687409702e+43 m**2 * kg * s**-2
+simulation_bodies.center_of_mass():  [ 0.00819092  0.01180394 -0.01081515]
+E_dyn:  -6.08492058517e+43 m**2 * kg * s**-2
 dE_dyn:  0.0
 ------------
 ------------
 time:  0.1 Myr
-simulation_bodies.center_of_mass():  [ 0.0089906   0.01176939 -0.01006869]
-E_dyn:  -6.08687409702e+43 m**2 * kg * s**-2
+simulation_bodies.center_of_mass():  [ 0.00819092  0.01180394 -0.01081515]
+E_dyn:  -6.08492058517e+43 m**2 * kg * s**-2
 dE_dyn:  -1.11022302463e-16
 ------------
 ------------
 time:  0.2 Myr
-simulation_bodies.center_of_mass():  [-0.00574961  0.00826381 -0.00312819]
-E_dyn:  -6.0777607364e+43 m**2 * kg * s**-2
-dE_dyn:  -0.00149721523329
+simulation_bodies.center_of_mass():  [-0.00712438  0.00819108 -0.00352941]
+E_dyn:  -6.08876026681e+43 m**2 * kg * s**-2
+dE_dyn:  0.000631015900794
 ------------
 ------------
 time:  0.3 Myr
-simulation_bodies.center_of_mass():  [-0.01836723  0.00188368  0.0048418 ]
-E_dyn:  -6.10564753019e+43 m**2 * kg * s**-2
-dE_dyn:  0.00308424864192
+simulation_bodies.center_of_mass():  [-0.01896294  0.00251599  0.00407151]
+E_dyn:  -6.13311484305e+43 m**2 * kg * s**-2
+dE_dyn:  0.00792027721723
 ------------
 \\\\\\\\\\\\
 Nbody SingleCluster
@@ -92,27 +150,85 @@ Nbody SingleCluster
 len(sim_times) is 4
 ------------
 time:  0.0 Myr
-simulation_bodies.center_of_mass():  [ 0.00352668  0.01083296 -0.01111342]
-E_dyn:  -8.14999432755e+43 m**2 * kg * s**-2
+simulation_bodies.center_of_mass():  [ 0.00321301  0.01080824 -0.00952114]
+E_dyn:  -8.17091862772e+43 m**2 * kg * s**-2
 dE_dyn:  0.0
 ------------
 ------------
 time:  0.1 Myr
-simulation_bodies.center_of_mass():  [ 0.00352668  0.01083296 -0.01111342]
-E_dyn:  -8.14999432755e+43 m**2 * kg * s**-2
+simulation_bodies.center_of_mass():  [ 0.00321301  0.01080824 -0.00952114]
+E_dyn:  -8.17091862772e+43 m**2 * kg * s**-2
 dE_dyn:  0.0
 ------------
 ------------
 time:  0.2 Myr
-simulation_bodies.center_of_mass():  [ -6.94026908e-03   8.57665167e-05  -4.21781692e-03]
-E_dyn:  -8.1088837881e+43 m**2 * kg * s**-2
-dE_dyn:  -0.00504424148025
+simulation_bodies.center_of_mass():  [-0.00750758 -0.00016406 -0.00252481]
+E_dyn:  -8.15371150524e+43 m**2 * kg * s**-2
+dE_dyn:  -0.00210589815771
 ------------
 ------------
 time:  0.3 Myr
-simulation_bodies.center_of_mass():  [-0.01592071 -0.01185348  0.00377021]
-E_dyn:  -8.17376421827e+43 m**2 * kg * s**-2
-dE_dyn:  0.00291655303821
+simulation_bodies.center_of_mass():  [-0.01588316 -0.01197652  0.00478858]
+E_dyn:  -8.25861863851e+43 m**2 * kg * s**-2
+dE_dyn:  0.0107331886148
+------------
+\\\\\\\\\\\\
+Nbody SingleCluster
+\\\\\\\\\\\\
+4
+len(sim_times) is 4
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [-0.00847595 -0.00280678 -0.00436395]
+E_dyn:  -2.01537932892e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  0.1 Myr
+simulation_bodies.center_of_mass():  [-0.00847595 -0.00280678 -0.00436395]
+E_dyn:  -2.01537932892e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  0.2 Myr
+simulation_bodies.center_of_mass():  [-0.00681337 -0.01362947 -0.00042128]
+E_dyn:  -2.01471729867e+44 m**2 * kg * s**-2
+dE_dyn:  -0.000328489153863
+------------
+------------
+time:  0.3 Myr
+simulation_bodies.center_of_mass():  [-0.00430791 -0.02427928  0.00401832]
+E_dyn:  -2.03244065469e+44 m**2 * kg * s**-2
+dE_dyn:  0.0084655655227
+------------
+\\\\\\\\\\\\
+Nbody SingleCluster
+\\\\\\\\\\\\
+8
+len(sim_times) is 4
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [-0.01154951 -0.00519589 -0.00200762]
+E_dyn:  -3.01218392144e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  0.1 Myr
+simulation_bodies.center_of_mass():  [-0.01154951 -0.00519589 -0.00200762]
+E_dyn:  -3.01218392144e+44 m**2 * kg * s**-2
+dE_dyn:  -1.11022302463e-16
+------------
+------------
+time:  0.2 Myr
+simulation_bodies.center_of_mass():  [-0.00870222 -0.0129112   0.00059844]
+E_dyn:  -3.01276014927e+44 m**2 * kg * s**-2
+dE_dyn:  0.000191299020316
+------------
+------------
+time:  0.3 Myr
+simulation_bodies.center_of_mass():  [-0.0052998  -0.02039788  0.00355722]
+E_dyn:  -3.0317432144e+44 m**2 * kg * s**-2
+dE_dyn:  0.00649339265999
 ------------
 \\\\\\\\\\\\
 nemesis SingleCluster
@@ -122,27 +238,27 @@ dt_nemesis is 0.0592 Myr
 len(sim_times) is 4
 ------------
 time:  0.0 Myr
-simulation_bodies.center_of_mass():  [ 0.01029567  0.01149015 -0.00939868]
-E_dyn:  -6.08327392786e+43 m**2 * kg * s**-2
+simulation_bodies.center_of_mass():  [ 0.009425    0.01185793 -0.01080043]
+E_dyn:  -6.08108189291e+43 m**2 * kg * s**-2
 dE_dyn:  0.0
 ------------
 ------------
 time:  0.1 Myr
-simulation_bodies.center_of_mass():  [ 0.01029567  0.01149015 -0.00939868]
-E_dyn:  -6.08327392786e+43 m**2 * kg * s**-2
+simulation_bodies.center_of_mass():  [ 0.009425    0.01185793 -0.01080043]
+E_dyn:  -6.08108189291e+43 m**2 * kg * s**-2
 dE_dyn:  0.0
 ------------
 ------------
 time:  0.2 Myr
-simulation_bodies.center_of_mass():  [-0.00720376  0.00740893 -0.00128178]
-E_dyn:  -6.11839745553e+43 m**2 * kg * s**-2
-dE_dyn:  0.00577378695869
+simulation_bodies.center_of_mass():  [-0.0079757   0.00778034 -0.00260524]
+E_dyn:  -6.10621431626e+43 m**2 * kg * s**-2
+dE_dyn:  0.00413288684375
 ------------
 ------------
 time:  0.3 Myr
-simulation_bodies.center_of_mass():  [-0.0144635   0.0037114   0.00304534]
-E_dyn:  -6.2216204746e+43 m**2 * kg * s**-2
-dE_dyn:  0.0227421201781
+simulation_bodies.center_of_mass():  [-0.01520831  0.00431189  0.00197427]
+E_dyn:  -6.20464812247e+43 m**2 * kg * s**-2
+dE_dyn:  0.0203197772589
 ------------
 gravity cannot be stopped, mwahahaha
 \\\\\\\\\\\\
@@ -153,26 +269,88 @@ dt_nemesis is 0.0592 Myr
 len(sim_times) is 4
 ------------
 time:  0.0 Myr
-simulation_bodies.center_of_mass():  [ 0.00131075  0.01044372 -0.01077446]
-E_dyn:  -8.15866364583e+43 m**2 * kg * s**-2
+simulation_bodies.center_of_mass():  [ 0.00168424  0.01176437 -0.01133936]
+E_dyn:  -8.136915833e+43 m**2 * kg * s**-2
 dE_dyn:  0.0
 ------------
 ------------
 time:  0.1 Myr
-simulation_bodies.center_of_mass():  [ 0.00131075  0.01044372 -0.01077446]
-E_dyn:  -8.15866364583e+43 m**2 * kg * s**-2
+simulation_bodies.center_of_mass():  [ 0.00168424  0.01176437 -0.01133936]
+E_dyn:  -8.136915833e+43 m**2 * kg * s**-2
 dE_dyn:  0.0
 ------------
 ------------
 time:  0.2 Myr
-simulation_bodies.center_of_mass():  [-0.01101172 -0.00208225 -0.00263956]
-E_dyn:  -8.16624246352e+43 m**2 * kg * s**-2
-dE_dyn:  0.000928928807592
+simulation_bodies.center_of_mass():  [-0.01064643 -0.00071954 -0.00327798]
+E_dyn:  -8.14222542468e+43 m**2 * kg * s**-2
+dE_dyn:  0.000652531228346
 ------------
 ------------
 time:  0.3 Myr
-simulation_bodies.center_of_mass():  [-0.01590939 -0.00888783  0.00168921]
-E_dyn:  -8.3624364808e+43 m**2 * kg * s**-2
-dE_dyn:  0.0249762514814
+simulation_bodies.center_of_mass():  [-0.01567379 -0.00760186  0.00105112]
+E_dyn:  -8.31616414542e+43 m**2 * kg * s**-2
+dE_dyn:  0.0220290237846
+------------
+gravity cannot be stopped, mwahahaha
+\\\\\\\\\\\\
+nemesis SingleCluster
+\\\\\\\\\\\\
+4
+dt_nemesis is 0.0592 Myr
+len(sim_times) is 4
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [-0.00857168 -0.00300332 -0.00493277]
+E_dyn:  -2.01481820679e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  0.1 Myr
+simulation_bodies.center_of_mass():  [-0.00857168 -0.00300332 -0.00493277]
+E_dyn:  -2.01481820679e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  0.2 Myr
+simulation_bodies.center_of_mass():  [-0.00657386 -0.01573827 -0.00030547]
+E_dyn:  -2.01600863556e+44 m**2 * kg * s**-2
+dE_dyn:  0.000590836815485
+------------
+------------
+time:  0.3 Myr
+simulation_bodies.center_of_mass():  [-0.00508736 -0.02190029  0.00221877]
+E_dyn:  -2.04896939188e+44 m**2 * kg * s**-2
+dE_dyn:  0.016950008182
+------------
+gravity cannot be stopped, mwahahaha
+\\\\\\\\\\\\
+nemesis SingleCluster
+\\\\\\\\\\\\
+8
+dt_nemesis is 0.0592 Myr
+len(sim_times) is 4
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [-0.01196829 -0.00475104 -0.00216813]
+E_dyn:  -3.01287329942e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  0.1 Myr
+simulation_bodies.center_of_mass():  [-0.01196829 -0.00475104 -0.00216813]
+E_dyn:  -3.01287329942e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  0.2 Myr
+simulation_bodies.center_of_mass():  [-0.00857996 -0.01380063  0.00092872]
+E_dyn:  -3.01407035109e+44 m**2 * kg * s**-2
+dE_dyn:  0.000397312315781
+------------
+------------
+time:  0.3 Myr
+simulation_bodies.center_of_mass():  [-0.00658754 -0.01812772  0.00262288]
+E_dyn:  -3.05038204353e+44 m**2 * kg * s**-2
+dE_dyn:  0.0124494926882
 ------------
 gravity cannot be stopped, mwahahaha

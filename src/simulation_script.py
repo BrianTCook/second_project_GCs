@@ -62,7 +62,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     delta_energies, clock_times = [], []
     
     body_masses = gravity.particles.mass
-    total_mass = body_masses.sum()
     
     '''
     if orbiter_name == 'SingleStar':
@@ -125,7 +124,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             data_t = data_t.drop(columns=['mass']) #goes from 7D --> 6D
             data_t = data_t.astype(float) #strings to floats
 
-            '''
             all_data[j_like_index, :len(data_t.index), :] = data_t.values
             np.savetxt('enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
         
@@ -145,8 +143,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             
                 COM_data[j_like_index, k, 0] = x_COM
                 COM_data[j_like_index, k, 1] = y_COM
-            '''
-    
+
             j_like_index += 1
     
         gravity.evolve_model(t)
@@ -158,16 +155,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         gravity.stop()
     except:
         print('gravity cannot be stopped, mwahahaha')
-    
-    #things that are not easily extracted from write_set_to_file
-    
-    #f_all = gzip.GzipFile('all_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
-    #f_COM = gzip.GzipFile('COM_data_%s_%s_Norbiters_%s.npy.gz'%(code_name, orbiter_name, str(Norbiters)), 'w')
-    #np.save(file=f_all, arr=all_data, allow_pickle=True)
-    #np.save(file=f_COM, arr=COM_data, allow_pickle=True)
-    
-    #f_all.close()
-    #f_COM.close()
   
     np.savetxt(code_name + '_' + orbiter_name + '_masses_Norbiters_' + str(Norbiters) + '.txt', mass_data)
     np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt', cluster_colors)

@@ -17,7 +17,6 @@ from amuse.couple import bridge
 
 import random
 import numpy as np
-import math
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
@@ -43,7 +42,7 @@ if __name__ in '__main__':
     potential = MWPotential2014 #galpy
     
     sepBinary = 20.|units.parsec #not necessary if not doing binary cluster part
-    tend, dt = 0.3|units.Myr, 0.1|units.Myr
+    tend, dt = 50.|units.Myr, 0.1|units.Myr
     #dt_param = 0.2 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass
@@ -76,7 +75,7 @@ if __name__ in '__main__':
     for orbiter_name in orbiter_names:
         for code_name in code_names:
             
-            Nvals, yvals = [], []
+            #Nvals, yvals = [], []
             
             for Norbiters in Norbiters_list:
                         
@@ -92,17 +91,12 @@ if __name__ in '__main__':
                 
                 t_final = time.time()
                 
-                Nvals.append(math.log(Norbiters, 2))
-                yvals.append((t_final-t_init)/60.)
-                    
-                #except:
-                    
-                #print('something went wrong with mpiexec presumably')
+                #Nvals.append(math.log(Norbiters, 2))
+                #yvals.append((t_final-t_init)/60.)
 
-                #maps(code_name, orbiter_name, Norbiters)
-                
-            plt.scatter(Nvals, yvals, label=code_name)
+            #plt.scatter(Nvals, yvals, label=code_name)
       
+    '''
     plt.gca().set_yscale('log')
     plt.legend(loc='upper left', fontsize=12)
     plt.annotate(r'$t_{\mathrm{end}} = 0.3$ Myr', xy=(0.7, 0.25), xycoords='axes fraction', fontsize=14)
@@ -111,7 +105,8 @@ if __name__ in '__main__':
     plt.gca().tick_params(labelsize='large')
     
     plt.tight_layout() 
-    plt.savefig('clock_vs_Norbiters.pdf')        
+    plt.savefig('clock_vs_Norbiters.pdf')  
+    '''      
     
     #plotting_things(code_names, orbiter_names, Norbiters_list, tend, dt)
     #convert_numpy(code_names, orbiter_names, Norbiters_list)

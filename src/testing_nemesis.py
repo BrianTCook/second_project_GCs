@@ -60,10 +60,10 @@ if __name__ in '__main__':
     
     masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
 
-    logN_max = 5
+    logN_max = 7
     Norbiters_list = [ 2**i for i in range(logN_max+1) ]
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
-    code_names = [ 'tree' ] # , 'Nbody', 'nemesis' ] 
+    code_names = [ 'tree' ] #, 'nemesis' ]  , 'Nbody'
 
     t0 = time.time()
     
@@ -83,13 +83,13 @@ if __name__ in '__main__':
                 print(code_name, orbiter_name)
                 print('\\\\\\\\\\\\\\\\\\\\\\\\')
                 
-                t_init = time.time()
+                #t_init = time.time()
 
                 simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
                            sepBinary, rvals_all, phivals_all, zvals_all, vrvals_all, vphivals_all, vzvals_all, 
                            masses_all, Norbiters, tend, dt)
                 
-                t_final = time.time()
+                #t_final = time.time()
                 
                 #Nvals.append(math.log(Norbiters, 2))
                 #yvals.append((t_final-t_init)/60.)

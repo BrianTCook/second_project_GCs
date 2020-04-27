@@ -12,11 +12,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
-pd.set_option('display.width', None)
-pd.set_option('display.max_colwidth', -1)
-
 def sort_clusters_by_attribute(attribute):
 
     '''
@@ -56,13 +51,11 @@ def sort_clusters_by_attribute(attribute):
     masses = [ np.sum(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)) for i in range(N) ]
     radii = np.loadtxt(data_directory+'/ICs/cluster_radii_for_sampling.txt') 
     
-    print(max(Nstars))
-    
     df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds, radii)), columns=['M', 'Nstars', '|r|', '|v|', 'rvir'])
     
     df_sorted_by_r = df.sort_values(by=[attribute])
-    df_sorted_by_r_reindexed_and_rounded = df_sorted_by_r.reset_index(drop=True).round(decimals=3)
     
+    #df_sorted_by_r_reindexed_and_rounded = df_sorted_by_r.reset_index(drop=True).round(decimals=3)
     #df_sorted_by_r_reindexed_and_rounded.to_latex()
     
     indices_dict = {}
@@ -71,10 +64,6 @@ def sort_clusters_by_attribute(attribute):
         indices_dict.update( {df : df_sorted} )
         
     return indices_dict
-
-if __name__ in '__main__':
-    
-    sort_clusters_by_attribute('|r|')
 
 '''
 plt.rc('font', family='serif')

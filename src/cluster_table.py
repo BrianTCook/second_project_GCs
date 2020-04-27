@@ -10,6 +10,7 @@ USE ON MAC NOT ON VIRTUAL MACHINE
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
@@ -24,8 +25,8 @@ def sort_clusters_by_attribute(attribute):
     '''
     
     #data_directory = '/home/s1780638/second_project_gcs/data/'
-    data_directory = '/home/brian/Desktop/second_project_gcs/data/'
-    #data_directory = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/'
+    #data_directory = '/home/brian/Desktop/second_project_gcs/data/'
+    data_directory = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/'
     
     rs = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')
     phis = np.loadtxt(data_directory+'ICs/dehnen_phivals.txt')
@@ -53,11 +54,16 @@ def sort_clusters_by_attribute(attribute):
     
     Nstars = [ len(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)) for i in range(N) ]
     masses = [ np.sum(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)) for i in range(N) ]
+    radii = np.loadtxt(data_directory+'/ICs/cluster_radii_for_sampling.txt') 
     
-    df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds)), columns=['M', 'Nstars', '|r|', '|v|'])
+    print(max(Nstars))
+    
+    df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds, radii)), columns=['M', 'Nstars', '|r|', '|v|', 'rvir'])
     
     df_sorted_by_r = df.sort_values(by=[attribute])
-    #df_sorted_by_r_reindexed_and_rounded = df_sorted_by_r.reset_index(drop=True).round(decimals=3)
+    df_sorted_by_r_reindexed_and_rounded = df_sorted_by_r.reset_index(drop=True).round(decimals=3)
+    
+    #df_sorted_by_r_reindexed_and_rounded.to_latex()
     
     indices_dict = {}
     

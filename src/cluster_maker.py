@@ -30,14 +30,14 @@ import numpy as np
 np.random.seed(73)
 
 def make_king_model_cluster(r_init, phi_init, z_init, vr_init, vphi_init, vz_init, 
-                            W0, Mcluster, star_masses, Mgalaxy, Rgalaxy, code_name, parameters=[]):
+                            W0, Mcluster, star_masses, radius, Mgalaxy, Rgalaxy, code_name, parameters=[]):
 
     '''
     sets up a cluster with mass M and radius R
     which nbodycode would you like to use?
     '''
             
-    converter = nbody_system.nbody_to_si(star_masses.sum(), 5|units.parsec)
+    converter = nbody_system.nbody_to_si(star_masses.sum(), radius|units.parsec)
     bodies = new_king_model(len(star_masses), W0, convert_nbody=converter)
     bodies.mass = star_masses
 
@@ -114,7 +114,7 @@ def star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index,
     return bodies, code, converter_sub
 
 def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary, 
-            rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, index):
+            rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, radii, index):
 
     #need to give clusters sorted by an attribute, in our case increasing |r|
     #sorting needs to happen once, either here or in star_cluster function
@@ -124,9 +124,10 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
     #data_directory = '/home/s1780638/second_project_gcs/data/'
     data_directory = '/home/brian/Desktop/second_project_gcs/data/'
     star_masses = np.loadtxt(data_directory+'star_masses/star_masses_index=%s.txt'%(str(index_sorted)))
+    radius = radii[index_sorted]
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    converter_sub = nbody_system.nbody_to_si(np.median(star_masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
+    converter_sub = nbody_system.nbody_to_si(np.sum(star_masses)|units.MSun, radius|units.parsec) #masses list is in solar mass units
     
     '''
     takes in R, Z value
@@ -181,6 +182,6 @@ def orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
     if orbiter_name == 'SingleCluster':
         
         bodies, code, _ = star_cluster(rvals, phivals, zvals, vrvals, vphivals, vzvals, 
-                                       masses, index_sorted, Mgalaxy, Rgalaxy, code_name)
+                                       masses, radius, index_sorted, Mgalaxy, Rgalaxy, code_name)
         
         return bodies, code

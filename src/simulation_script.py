@@ -35,7 +35,7 @@ def print_diagnostics(time, simulation_bodies, E_dyn, dE_dyn):
     print('------------')
 
 def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary, 
-               rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, Norbiters, tend, dt):
+               rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, radii, Norbiters, tend, dt):
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
     converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 5.|units.parsec) #masses list is in solar mass units
@@ -47,7 +47,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     #and plot them with different colors
     
     simulation_bodies, gravity, orbiter_bodies_list, cluster_colors, stellar = gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
-                                                                                                  rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, Norbiters)
+                                                                                                  rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, radii, Norbiters)
 
     channel_from_gravity_to_framework = gravity.particles.new_channel_to(simulation_bodies)
     channel_from_stellar_to_framework = stellar.particles.new_channel_to(simulation_bodies)

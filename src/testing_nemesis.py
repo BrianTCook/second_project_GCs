@@ -59,6 +59,7 @@ if __name__ in '__main__':
     vzvals_all = np.loadtxt(data_directory+'ICs/bovy_vzvals.txt')
     
     masses_all = np.loadtxt(data_directory+'ICs/cluster_masses_for_sampling.txt')
+    radii_all = np.loadtxt(data_directory+'ICs/cluster_radii_for_sampling.txt')
 
     logN_max = 4
     Norbiters_list = [ 2**i for i in range(logN_max+1) ]
@@ -87,7 +88,7 @@ if __name__ in '__main__':
 
                 simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
                            sepBinary, rvals_all, phivals_all, zvals_all, vrvals_all, vphivals_all, vzvals_all, 
-                           masses_all, Norbiters, tend, dt)
+                           masses_all, radii_all, Norbiters, tend, dt)
                 
                 #t_final = time.time()
                 

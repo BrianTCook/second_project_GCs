@@ -23,7 +23,7 @@ import numpy as np
 import time
 
 def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, sepBinary, 
-                       rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, Norbiters):
+                       rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, radii, Norbiters):
     
     '''
     will need to ask SPZ if he meant for field, orbiter to be separate in non
@@ -33,10 +33,10 @@ def gravity_code_setup(code_name, orbiter_name, Mgalaxy, Rgalaxy, galaxy_code, s
     gravity = bridge.Bridge(use_threading=False)
     
     converter_parent = nbody_system.nbody_to_si(Mgalaxy, Rgalaxy)
-    converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, 10.|units.parsec) #masses list is in solar mass units
+    converter_sub = nbody_system.nbody_to_si(np.median(masses)|units.MSun, np.median(radii)|units.parsec) #masses list is in solar mass units
     
     list_of_orbiters = [ orbiter(code_name, orbiter_name, Mgalaxy, Rgalaxy, sepBinary,
-                                     rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, i) for i in range(Norbiters) ]
+                                     rvals, phivals, zvals, vrvals, vphivals, vzvals, masses, radii, i) for i in range(Norbiters) ]
     
     orbiter_bodies_list = [ list_of_orbiters[i][0] for i in range(Norbiters) ] 
     orbiter_codes_list = [ list_of_orbiters[i][1] for i in range(Norbiters) ]

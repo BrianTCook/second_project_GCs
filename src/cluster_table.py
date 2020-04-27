@@ -20,8 +20,8 @@ def sort_clusters_by_attribute(attribute):
     '''
     
     #data_directory = '/home/s1780638/second_project_gcs/data/'
-    #data_directory = '/home/brian/Desktop/second_project_gcs/data/'
-    data_directory = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/'
+    data_directory = '/home/brian/Desktop/second_project_gcs/data/'
+    #data_directory = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/'
     
     rs = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')
     phis = np.loadtxt(data_directory+'ICs/dehnen_phivals.txt')
@@ -63,7 +63,7 @@ def sort_clusters_by_attribute(attribute):
     for df, df_sorted in zip(df.index, df_sorted_by_r.index):
         indices_dict.update( {df : df_sorted} )
         
-    return indices_dict
+    return indices_dictde
 
 '''
 plt.rc('font', family='serif')

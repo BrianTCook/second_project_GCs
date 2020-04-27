@@ -12,8 +12,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize
 from sklearn.decomposition import PCA
+from cluster_table import sort_clusters_by_attribute
 
-def dimensions(code_name, finder_name, sim_times_unitless, Norbiters):
+def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_populations):
     
     '''
     creates an array of dimensions [D0(t=0), ..., D0(t=f),
@@ -25,13 +26,11 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters):
     '''
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
-    clusters_init = np.loadtxt(datadir + 'enbid_files/for_enbid_%s_SingleCluster_frame_00000_Norbiters_%s.ascii'%(code_name, str(Norbiters)))
+    filename_init = 'tree_seba_50Myr/enbid_%s_frame_00000_Norbiters_%s.ascii'%(code_name, str(Norbiters))
+    clusters_init = np.loadtxt(datadir+filename_init)
     
-    cluster_populations = np.loadtxt(datadir + 'Nstars_in_clusters.txt')
-    cluster_populations = list(cluster_populations[:Norbiters])
-    
-    gadget_flag = int(math.floor(len(sim_times_unitless)/10))
-    dimension_array = np.zeros((Norbiters, 10+1)) #see gadget_flag
+    gadget_flag = int(math.floor(len(sim_times_unitless)/20))
+    dimension_array = np.zeros((Norbiters, 20+1)) #see gadget_flag
     
     if finder_name == 'naive':
         
@@ -48,19 +47,20 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters):
             return np.percentile(df[m], 97.8) - np.percentile(df[m], 2.2)
             
         switch = 5. #decides if direction is on/off
-        
-        for k, number_of_stars in enumerate(cluster_populations):
-            
-            starting_index = int(np.sum( cluster_populations[:k] ))
-            ending_index = starting_index + int(number_of_stars)
     
-            time_counter = 0
+        time_counter = 0
                     
-            for j, t in enumerate(sim_times_unitless):
+        for j, t in enumerate(sim_times_unitless):
+            
+            if j%gadget_flag == 0:
                 
-                if j%gadget_flag == 0:
+                filename_t = 'tree_seba_50Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
+                clusters_t = np.loadtxt(datadir+filename_t)
                     
-                    clusters_t = np.loadtxt(datadir+'enbid_files/for_enbid_%s_SingleCluster_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)))
+                for k, number_of_stars in enumerate(cluster_populations):
+            
+                    starting_index = int(np.sum( cluster_populations[:k] ))
+                    ending_index = starting_index + int(number_of_stars)
                 
                     cluster_init = clusters_init[starting_index:ending_index, :]                
                     cluster_t = clusters_t[starting_index:ending_index, :]
@@ -82,22 +82,25 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters):
                         D += 1
                         
                     dimension_array[k, time_counter] = D
-                    time_counter += 1
+                
+                time_counter += 1
     
     if finder_name == 'pca':
         
-        for k, number_of_stars in enumerate(cluster_populations):
+        time_counter = 0
+                    
+        for j, t in enumerate(sim_times_unitless):
             
-            starting_index = int(np.sum( cluster_populations[:k] ))
-            ending_index = starting_index + int(number_of_stars)
-    
-            time_counter = 0
-                    
-            for j, t in enumerate(sim_times_unitless):
+            if j%gadget_flag == 0:
                 
-                if j%gadget_flag == 0:
-                    
-                    clusters_t = np.loadtxt(datadir+'enbid_files/for_enbid_%s_SingleCluster_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)))
+                filename_t = 'tree_seba_50Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
+                clusters_t = np.loadtxt(datadir+filename_t)
+                
+                for k, number_of_stars in enumerate(cluster_populations):
+            
+                    starting_index = int(np.sum( cluster_populations[:k] ))
+                    ending_index = starting_index + int(number_of_stars)
+                                
                     cluster_t = clusters_t[starting_index:ending_index, :]
                     
                     pca = PCA()
@@ -114,36 +117,69 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters):
                             D += 1
                 
                     dimension_array[k, time_counter] = D
-                    time_counter += 1
+                    
+                time_counter += 1
                     
     return dimension_array
 
 if __name__ in '__main__':
     
     code_name = 'tree'
-    tend, dt = 40., 0.1
+    tend, dt = 50., 0.1
     
     sim_times_unitless = np.arange(0., tend+dt, dt)
     
-    logN_max = 5
-    Norbiters_list = [ 2**i for i in range(logN_max) ]
+    logN_max = 6
+    Norbiters_list = [ 2**i for i in range(logN_max+1) ]
     
+    datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
+    
+    cluster_populations_raw = np.loadtxt(datadir+'Nstars_in_clusters.txt')
+    indices_dict = sort_clusters_by_attribute('|r|')
+    cluster_populations_sorted = [ cluster_populations_raw[indices_dict[i]] for i in range(2**logN_max) ]
+
     plt.rc('text', usetex = True)
     plt.rc('font', family = 'serif')
     
-    dim_finder_names = [ 'naive', 'pca' ] #, 'autoencoding' ]
-    
+    dim_finder_names = [ 'pca', 'naive' ] #, 'autoencoding' ]
+        
+    for finder_name in dim_finder_names:    
+        for Norbiters in Norbiters_list:
+            
+            print(finder_name, Norbiters)
+            
+            cluster_populations = list(cluster_populations_sorted)[:Norbiters]
+            
+            plt.figure()
+            
+            dim_array = dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_populations)
+            
+            im = plt.imshow(dim_array, origin='lower', aspect='equal',
+                            extent=[min(sim_times_unitless), max(sim_times_unitless), 0, Norbiters],
+                            norm=Normalize(vmin=0, vmax=6))
+            
+            cbar = plt.colorbar(im)
+            cbar.set_label(r'$D$', rotation=270, labelpad=12)
+            plt.ylabel(r'Cluster ID (sorted by $|\vec{r}|$)')#, fontsize=16)
+            plt.xlabel('Simulation Time (Myr)')#, fontsize=16)
+            plt.title('Estimated Manifold Dimensions (%s)'%(finder_name))#, fontsize=24)
+            plt.gca().set_yticks(np.arange(0, Norbiters, math.ceil(Norbiters/4)));
+            plt.savefig('dimensions_%s_Norbiters=%i.pdf'%(finder_name, Norbiters))
+            plt.close()
+
+    plt.figure()
+
     for finder_name in dim_finder_names:
         
         if finder_name == 'naive':
         
-            finder_color = 'r' # np.random.rand(3,)
+            finder_color = 'r'
             
         if finder_name == 'pca':
         
             finder_color = 'b'
         
-        dim_array = dimensions(code_name, finder_name, sim_times_unitless, 64)
+        dim_array = dimensions(code_name, finder_name, sim_times_unitless, max(Norbiters_list), cluster_populations_sorted)
         times_plot = np.linspace(0., tend+dt, len(dim_array[0, :]))
         
         lo, mid, hi = 25, 50, 75
@@ -158,28 +194,10 @@ if __name__ in '__main__':
 
     plt.xlabel('Simulation Time (Myr)', fontsize=16)
     plt.ylabel(r'$D$', fontsize=24)
-    plt.title(r'Dimension Computation Comparison, $N_{\mathrm{clusters}} = 64$', fontsize=14)
+    plt.title(r'Dimension Computation Comparison, $N_{\mathrm{clusters}} = %i$'%(max(Norbiters_list)), fontsize=14)
     plt.legend(loc='best', fontsize=10)
     plt.gca().tick_params(labelsize='large')
     plt.tight_layout()
-    plt.savefig('dimension_percentiles_Norbiters=64.pdf')
-        
-    '''
-    for Norbiters in Norbiters_list:
+    plt.savefig('dimension_percentiles_Norbiters=%i.pdf'%(max(Norbiters_list)))
+    plt.close()
     
-        plt.figure()
-        
-        dim_array = dimensions(code_name, finder_name, sim_times_unitless, Norbiters)
-        
-        im = plt.imshow(dim_array, origin='lower', aspect='equal',
-                        extent=[min(sim_times_unitless), max(sim_times_unitless), 0, Norbiters],
-                        norm=Normalize(vmin=0, vmax=6))
-        
-        cbar = plt.colorbar(im)
-        cbar.set_label(r'$D$', rotation=270, labelpad=12)
-        plt.ylabel('Cluster ID')#, fontsize=16)
-        plt.xlabel('Simulation Time (Myr)')#, fontsize=16)
-        plt.title('Estimated Manifold Dimensions (%s)'%(finder_name))#, fontsize=24)
-        plt.gca().set_yticks(np.arange(0, Norbiters, math.ceil(Norbiters/4)));
-        plt.savefig('dimensions_%s_Norbiters=%i.pdf'%(finder_name, Norbiters))
-    '''

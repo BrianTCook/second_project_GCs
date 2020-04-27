@@ -11,6 +11,11 @@ USE ON MAC NOT ON VIRTUAL MACHINE
 import pandas as pd
 import numpy as np
 
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', None)
+pd.set_option('display.max_colwidth', -1)
+
 def sort_clusters_by_attribute(attribute):
 
     '''
@@ -20,6 +25,7 @@ def sort_clusters_by_attribute(attribute):
     
     #data_directory = '/home/s1780638/second_project_gcs/data/'
     data_directory = '/home/brian/Desktop/second_project_gcs/data/'
+    #data_directory = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/'
     
     rs = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')
     phis = np.loadtxt(data_directory+'ICs/dehnen_phivals.txt')
@@ -29,7 +35,7 @@ def sort_clusters_by_attribute(attribute):
     vphis = np.loadtxt(data_directory+'ICs/bovy_vphivals.txt')
     vzs = np.loadtxt(data_directory+'ICs/bovy_vzvals.txt')
     
-    N = 128
+    N = 128 #total number of initialized clusters I have
     
     #convert from galpy/cylindrical to AMUSE/Cartesian units
     #all in kpc
@@ -51,7 +57,7 @@ def sort_clusters_by_attribute(attribute):
     df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds)), columns=['M', 'Nstars', '|r|', '|v|'])
     
     df_sorted_by_r = df.sort_values(by=[attribute])
-    #df_sorted_by_r_reindexed = df_sorted_by_r.reset_index(drop=True)
+    #df_sorted_by_r_reindexed_and_rounded = df_sorted_by_r.reset_index(drop=True).round(decimals=3)
     
     indices_dict = {}
     
@@ -59,6 +65,10 @@ def sort_clusters_by_attribute(attribute):
         indices_dict.update( {df : df_sorted} )
         
     return indices_dict
+
+if __name__ in '__main__':
+    
+    sort_clusters_by_attribute('|r|')
 
 '''
 plt.rc('font', family='serif')

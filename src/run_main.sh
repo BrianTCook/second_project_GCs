@@ -19,7 +19,7 @@ convert -delay 2 'snapshot_nemesis_SingleCluster_*.png' -loop 0 nemesis_singlecl
 
 mv enbid_*.txt ../data/enbid_files
 mv times_*.txt ../data/simulation_times
-mv tree_*.txt ../data/tree_data
+mv tree_*.txt ../data/tree_data/tree_seba_100Myr
 #mv Nbody_*.txt ../data/Nbody_data
 mv nemesis_*.txt ../data/nemesis_data
 mv *.npy.gz ../data/zipped_files

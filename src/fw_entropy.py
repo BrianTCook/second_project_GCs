@@ -180,7 +180,8 @@ def lattices_maker(points, uniformity, Norbiters):
     tessellates phase space s.t. there are < Npoints_max
     '''
     
-    datadir = '/home/s1780638/second_project_GCs/data/'
+    #datadir = '/home/s1780638/second_project_GCs/data/'
+    datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data'
     cluster_populations = list( np.loadtxt(datadir + 'Nstars_in_clusters.txt') ) 
     
     #need to give clusters sorted by an attribute, in our case increasing |r|
@@ -217,7 +218,8 @@ def lattices_maker(points, uniformity, Norbiters):
 
 def get_6D_fw(points, values, uniformity, Norbiters):
     
-    datadir = '/home/s1780638/second_project_GCs/data/'
+    #datadir = '/home/s1780638/second_project_GCs/data/'
+    datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data'
     
     cluster_populations = list( np.loadtxt(datadir + 'Nstars_in_clusters.txt') ) 
     
@@ -275,7 +277,8 @@ def get_entropy(points, values, uniformity, Norbiters):
     the value within it will be the information entropy
     '''
     
-    datadir = '/home/s1780638/second_project_GCs/data/'
+    #datadir = '/home/s1780638/second_project_GCs/data/'
+    datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data'
     
     cluster_populations = list( np.loadtxt(datadir + 'Nstars_in_clusters.txt') ) 
     
@@ -337,11 +340,14 @@ def get_entropy(points, values, uniformity, Norbiters):
 
 if __name__ in '__main__':
     
-    point_files = glob.glob('/home/s1780638/second_project_gcs/Enbid-2.0/AMUSE_data/*.ascii')
+    #datadir = '/home/s1780638/second_project_GCs/data/'
+    datadir_seba = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/tree_seba_50Myr/*.ascii'
+    
+    point_files = glob.glob(datadir_seba) #'/home/s1780638/second_project_gcs/Enbid-2.0/AMUSE_data/*.ascii')
     
     t0 = time.time()
     
-    logN_max = 6
+    logN_max = 3
     
     xvals_all, yvals_all = [ [] for i in range(logN_max+1) ], [ [] for i in range(logN_max+1) ]
     

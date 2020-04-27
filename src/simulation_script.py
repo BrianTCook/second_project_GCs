@@ -82,8 +82,8 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
     #for 3D numpy array storage
     Nsavetimes = 20
-    all_data = np.zeros((Nsavetimes, Ntotal, 6))
-    mass_data = np.zeros((Nsavetimes, Ntotal))    
+    all_data = np.zeros((Nsavetimes+1, Ntotal, 6))
+    mass_data = np.zeros((Nsavetimes+1, Ntotal))    
     #COM_data = np.zeros((len(sim_times), Norbiters, 2))
 
     #for saving in write_set_to_file

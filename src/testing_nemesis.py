@@ -84,11 +84,14 @@ if __name__ in '__main__':
                 print(code_name, orbiter_name)
                 print('\\\\\\\\\\\\\\\\\\\\\\\\')
                 
-                #t_init = time.time()
+                t_init = time.time()
 
                 simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
                            sepBinary, rvals_all, phivals_all, zvals_all, vrvals_all, vphivals_all, vzvals_all, 
                            masses_all, radii_all, Norbiters, tend, dt)
+                
+                print('time is: %.03f minutes'%((time.time()-t0)/60.))
+                print('time to run last simulation: %.03f minutes'%((time.time()-t_init)/60.))
                 
                 #t_final = time.time()
                 

@@ -14,16 +14,11 @@ from sklearn.cluster import KMeans
 
 def sklearn_mapper(true_labels, kmeans_labels):
     
-    print(true_labels)
-    print(kmeans_labels)
-    
     input_output_dict = {}
 
     pairings = [ (x, y) for x, y in zip(true_labels, kmeans_labels) ]
     pairings_counted = [ [x,pairings.count(x)] for x in set(pairings) ]
-    
-    print(pairings_counted)
-    
+
     for counted_pairing in pairings_counted:
         
         pairing, count = counted_pairing
@@ -38,9 +33,6 @@ def sklearn_mapper(true_labels, kmeans_labels):
             input_output_dict.pop(first)
             input_output_dict.update( {first: second} )
     
-    print(input_output_dict)
-    print('')
-    
     return input_output_dict
         
 def get_kmeans_result(Norbiters, plot_6D, plot_3D):
@@ -51,8 +43,10 @@ def get_kmeans_result(Norbiters, plot_6D, plot_3D):
     
     true_labels = []
     
-    for logN in range(int(np.log2(Norbiters))+1):
-        true_labels += [ logN for i in range(int(cluster_populations[logN])) ]
+    for i in range(Norbiters):
+        true_labels += [ i for j in range(int(cluster_populations[i])) ]
+    
+    #true labels is the problem
     
     data_filename = glob.glob(datadir+'enbid_files/*_00000_Norbiters_%i.ascii'%(Norbiters))
     data_6D = np.loadtxt(data_filename[0])
@@ -60,17 +54,17 @@ def get_kmeans_result(Norbiters, plot_6D, plot_3D):
     data_2D = data_6D[:, 1:3]
 
     #apply kmeans clustering
-    kmeans_2D = KMeans(n_clusters=Norbiters)
+    kmeans_2D = KMeans(n_clusters=Norbiters, init='k-means++')
     kmeans_2D.fit(data_2D)
     y_kmeans_2D = kmeans_2D.predict(data_2D)
     io_dict_2D = sklearn_mapper(true_labels, y_kmeans_2D)
     
-    kmeans_3D = KMeans(n_clusters=Norbiters)
+    kmeans_3D = KMeans(n_clusters=Norbiters, init='k-means++')
     kmeans_3D.fit(data_3D)
     y_kmeans_3D = kmeans_3D.predict(data_3D)
     io_dict_3D = sklearn_mapper(true_labels, y_kmeans_3D)
     
-    kmeans_6D = KMeans(n_clusters=Norbiters)
+    kmeans_6D = KMeans(n_clusters=Norbiters, init='k-means++')
     kmeans_6D.fit(data_6D)
     y_kmeans_6D = kmeans_6D.predict(data_6D)
     io_dict_6D = sklearn_mapper(true_labels, y_kmeans_6D)
@@ -83,10 +77,31 @@ def get_kmeans_result(Norbiters, plot_6D, plot_3D):
     hits_3D = [ 1 if y1 == y2 else 0 for y1, y2 in zip(true_labels, y_compare_3D) ]
     hits_6D = [ 1 if y1 == y2 else 0 for y1, y2 in zip(true_labels, y_compare_6D) ]
     
-    success_2D = np.sum(hits_2D)/len(hits_2D)
-    success_3D = np.sum(hits_3D)/len(hits_3D)
-    success_6D = np.sum(hits_6D)/len(hits_6D)
-    
+    if hits_2D.count(1) > hits_2D.count(0):
+        
+        success_2D = np.sum(hits_2D)/len(hits_2D)
+        
+    if hits_2D.count(1) <= hits_2D.count(0):
+        
+        success_2D = 1. - np.sum(hits_2D)/len(hits_2D)
+        
+    if hits_3D.count(1) > hits_3D.count(0):
+        
+        success_3D = np.sum(hits_3D)/len(hits_3D)
+        
+    if hits_3D.count(1) <= hits_3D.count(0):
+        
+        success_3D = 1. - np.sum(hits_3D)/len(hits_3D)
+        
+    if hits_6D.count(1) > hits_6D.count(0):
+        
+        success_6D = np.sum(hits_6D)/len(hits_6D)
+        
+    if hits_6D.count(1) <= hits_6D.count(0):
+        
+        success_6D = 1. - np.sum(hits_6D)/len(hits_2D)
+
+
     if plot_2D == True:
         
         plt.figure()    
@@ -142,8 +157,11 @@ def get_kmeans_result(Norbiters, plot_6D, plot_3D):
 
 if __name__ in '__main__':
     
-    logN_max = 2
+    logN_max = 6
     plot_2D, plot_3D, plot_6D = True, True, True
+
+    logN_vals = [ logN for logN in range(logN_max+1) ]
+    s2_vals, s3_vals, s6_vals = [], [], []
 
     for logN in range(logN_max+1):
         
@@ -154,6 +172,20 @@ if __name__ in '__main__':
             plt.rc('font', family = 'serif')
         
         s_2, s_3, s_6 = get_kmeans_result(2**logN, plot_3D, plot_6D)
-        print(s_2, s_3, s_6)
+        s2_vals.append(s_2)
+        s3_vals.append(s_3)
+        s6_vals.append(s_6)
+        
+    plt.figure()
+    plt.plot(logN_vals, s2_vals, label='2D distance metric')
+    plt.plot(logN_vals, s3_vals, label='3D distance metric')
+    plt.plot(logN_vals, s6_vals, label='6D distance metric')
+    plt.ylim(0, 1)
+    plt.legend(loc='best')
+    plt.title(r'$k$-means Cluster Identification', fontsize=16)
+    plt.xlabel(r'$\log_{2} N_{\mathrm{clusters}}$', fontsize=14)
+    plt.ylabel('Labelling Accuracy', fontsize=14)
+    plt.tight_layout()
+    plt.savefig('accuracies_kmeans.pdf')
     
     print('hello world!')

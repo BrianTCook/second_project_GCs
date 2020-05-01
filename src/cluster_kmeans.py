@@ -48,25 +48,44 @@ def get_kmeans_result(Norbiters, plot_6D, plot_3D):
     
     #true labels is the problem
     
-    data_filename = glob.glob(datadir+'enbid_files/*_00000_Norbiters_%i.ascii'%(Norbiters))
+    data_filename = glob.glob(datadir+'enbid_files/*_00400_Norbiters_%i.ascii'%(Norbiters))
     data_6D = np.loadtxt(data_filename[0])
     data_3D = data_6D[:, 0:3]
     data_2D = data_6D[:, 1:3]
+    
+    I6, J6 = data_6D.shape
+    I3, J3 = data_3D.shape
+    I2, J2 = data_2D.shape
+
+    data_6D_rescaled = [ ( (data_6D[i,j] - np.amin(data_6D[:,j])) / (np.amax(data_6D[:,j]) - np.amin(data_6D[:,j])) ) 
+                         for i in range(I6) for j in range(J6) ]
+    np_data_6D_rescaled = np.asarray(data_6D_rescaled)
+    np_data_6D_rescaled = np.reshape(np_data_6D_rescaled, data_6D.shape)
+
+    data_3D_rescaled = [ ( (data_3D[i,j] - np.amin(data_3D[:,j])) / (np.amax(data_3D[:,j]) - np.amin(data_3D[:,j])) ) 
+                         for i in range(I3) for j in range(J3) ]
+    np_data_3D_rescaled = np.asarray(data_3D_rescaled)
+    np_data_3D_rescaled = np.reshape(np_data_3D_rescaled, data_3D.shape)
+    
+    data_2D_rescaled = [ ( (data_2D[i,j] - np.amin(data_2D[:,j])) / (np.amax(data_2D[:,j]) - np.amin(data_2D[:,j])) ) 
+                         for i in range(I2) for j in range(J2) ]
+    np_data_2D_rescaled = np.asarray(data_2D_rescaled)
+    np_data_2D_rescaled = np.reshape(np_data_2D_rescaled, data_2D.shape)
 
     #apply kmeans clustering
     kmeans_2D = KMeans(n_clusters=Norbiters, init='k-means++')
-    kmeans_2D.fit(data_2D)
-    y_kmeans_2D = kmeans_2D.predict(data_2D)
+    kmeans_2D.fit(np_data_2D_rescaled)
+    y_kmeans_2D = kmeans_2D.predict(np_data_2D_rescaled)
     io_dict_2D = sklearn_mapper(true_labels, y_kmeans_2D)
     
     kmeans_3D = KMeans(n_clusters=Norbiters, init='k-means++')
-    kmeans_3D.fit(data_3D)
-    y_kmeans_3D = kmeans_3D.predict(data_3D)
+    kmeans_3D.fit(np_data_3D_rescaled)
+    y_kmeans_3D = kmeans_3D.predict(np_data_3D_rescaled)
     io_dict_3D = sklearn_mapper(true_labels, y_kmeans_3D)
     
     kmeans_6D = KMeans(n_clusters=Norbiters, init='k-means++')
-    kmeans_6D.fit(data_6D)
-    y_kmeans_6D = kmeans_6D.predict(data_6D)
+    kmeans_6D.fit(np_data_6D_rescaled)
+    y_kmeans_6D = kmeans_6D.predict(np_data_6D_rescaled)
     io_dict_6D = sklearn_mapper(true_labels, y_kmeans_6D)
 
     y_compare_2D = [ io_dict_2D[y] for y in y_kmeans_2D ]
@@ -116,7 +135,7 @@ def get_kmeans_result(Norbiters, plot_6D, plot_3D):
         
         plt.title(r'$k$-means, $N_{clusters} = %i$'%(Norbiters), fontsize=16)
         plt.tight_layout()
-        plt.savefig('kmeans_Norbiters_%i_2D.pdf'%(Norbiters))
+        plt.savefig('kmeans_Norbiters_%i_2D.jpg'%(Norbiters))
         plt.close()    
     
     if plot_3D == True:
@@ -133,7 +152,7 @@ def get_kmeans_result(Norbiters, plot_6D, plot_3D):
         
         plt.title(r'$k$-means, $N_{clusters} = %i$'%(Norbiters), fontsize=16)
         plt.tight_layout()
-        plt.savefig('kmeans_Norbiters_%i_3D.pdf'%(Norbiters))
+        plt.savefig('kmeans_Norbiters_%i_3D.jpg'%(Norbiters))
         plt.close()
         
     if plot_6D == True:
@@ -150,7 +169,7 @@ def get_kmeans_result(Norbiters, plot_6D, plot_3D):
         
         plt.title(r'$k$-means, $N_{clusters} = %i$'%(Norbiters), fontsize=16)
         plt.tight_layout()
-        plt.savefig('kmeans_Norbiters_%i_6D.pdf'%(Norbiters))
+        plt.savefig('kmeans_Norbiters_%i_6D.jpg'%(Norbiters))
         plt.close()
     
     return success_2D, success_3D, success_6D

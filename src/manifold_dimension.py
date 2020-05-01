@@ -26,11 +26,11 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
     '''
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
-    filename_init = 'tree_seba_50Myr/enbid_%s_frame_00000_Norbiters_%s.ascii'%(code_name, str(Norbiters))
+    filename_init = 'tree_data/tree_seba_100Myr/enbid_%s_frame_00000_Norbiters_%s.ascii'%(code_name, str(Norbiters))
     clusters_init = np.loadtxt(datadir+filename_init)
     
-    gadget_flag = int(math.floor(len(sim_times_unitless)/20))
-    dimension_array = np.zeros((Norbiters, 20+1)) #see gadget_flag
+    gadget_flag = int(math.floor(len(sim_times_unitless)/50))
+    dimension_array = np.zeros((Norbiters, 50+1)) #see gadget_flag
     
     if finder_name == 'naive':
         
@@ -54,7 +54,7 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
             
             if j%gadget_flag == 0:
                 
-                filename_t = 'tree_seba_50Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
+                filename_t = 'tree_data/tree_seba_100Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
                 clusters_t = np.loadtxt(datadir+filename_t)
                     
                 for k, number_of_stars in enumerate(cluster_populations):
@@ -93,7 +93,7 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
             
             if j%gadget_flag == 0:
                 
-                filename_t = 'tree_seba_50Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
+                filename_t = 'tree_data/tree_seba_100Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
                 clusters_t = np.loadtxt(datadir+filename_t)
                 
                 for k, number_of_stars in enumerate(cluster_populations):
@@ -125,11 +125,11 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
 if __name__ in '__main__':
     
     code_name = 'tree'
-    tend, dt = 50., 0.1
+    tend, dt = 100., 0.1
     
     sim_times_unitless = np.arange(0., tend+dt, dt)
     
-    logN_max = 6
+    logN_max = 4
     Norbiters_list = [ 2**i for i in range(logN_max+1) ]
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
@@ -137,6 +137,30 @@ if __name__ in '__main__':
     cluster_populations_raw = np.loadtxt(datadir+'Nstars_in_clusters.txt')
     indices_dict = sort_clusters_by_attribute('|r|')
     cluster_populations_sorted = [ cluster_populations_raw[indices_dict[i]] for i in range(2**logN_max) ]
+
+    rs = np.loadtxt(datadir+'ICs/dehnen_rvals.txt')
+    phis = np.loadtxt(datadir+'ICs/dehnen_phivals.txt')
+    zs = np.loadtxt(datadir+'ICs/dehnen_zvals.txt')
+    
+    vrs = np.loadtxt(datadir+'ICs/bovy_vrvals.txt')
+    vphis = np.loadtxt(datadir+'ICs/bovy_vphivals.txt')
+    vzs = np.loadtxt(datadir+'ICs/bovy_vzvals.txt')
+    
+    N = 2**logN_max #total number of initialized clusters I have
+    
+    #convert from galpy/cylindrical to AMUSE/Cartesian units
+    #all in kpc
+    xs = [ rs[i] * np.cos(phis[i]) for i in range(N) ]
+    ys = [ rs[i] * np.sin(phis[i]) for i in range(N) ]
+    zs = [ zs[i] for i in range(N) ]
+    
+    #all in km/s
+    vxs = [ vrs[i] * np.cos(phis[i]) - vphis[i] * np.sin(phis[i]) for i in range(N) ] 
+    vys = [ vrs[i] * np.sin(phis[i]) + vphis[i] * np.cos(phis[i]) for i in range(N) ]
+    vzs = [ vzs[i] for i in range(N) ]
+    
+    dists = [ np.sqrt(xs[i]**2 + ys[i]**2 + zs[i]**2) for i in range(N) ]
+    dists_sorted = np.sort(dists)
 
     plt.rc('text', usetex = True)
     plt.rc('font', family = 'serif')
@@ -154,17 +178,23 @@ if __name__ in '__main__':
             
             dim_array = dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_populations)
             
-            im = plt.imshow(dim_array, origin='lower', aspect='equal',
+            dists_relevant = dists_sorted[:Norbiters]
+            dists_min, dists_max = min(dists_relevant), max(dists_relevant)
+            dmin, dmax = round(dists_min, 2), round(dists_max, 2)
+            
+            im = plt.imshow(dim_array, origin='lower', aspect='auto',
                             extent=[min(sim_times_unitless), max(sim_times_unitless), 0, Norbiters],
                             norm=Normalize(vmin=0, vmax=6))
             
+            plt.gca().set_yticklabels([dmin, (dmax-dmin)/2., dmax])
+            
             cbar = plt.colorbar(im)
             cbar.set_label(r'$D$', rotation=270, labelpad=12)
-            plt.ylabel(r'Cluster ID (sorted by $|\vec{r}|$)')#, fontsize=16)
+            plt.ylabel(r'$|\mathbf{r}_{0}|$ (kpc)')#, fontsize=16)
             plt.xlabel('Simulation Time (Myr)')#, fontsize=16)
             plt.title('Estimated Manifold Dimensions (%s)'%(finder_name))#, fontsize=24)
             plt.gca().set_yticks(np.arange(0, Norbiters, math.ceil(Norbiters/4)));
-            plt.savefig('dimensions_%s_Norbiters=%i.pdf'%(finder_name, Norbiters))
+            plt.savefig('dimensions_%s_Norbiters=%i.jpg'%(finder_name, Norbiters))
             plt.close()
 
     plt.figure()

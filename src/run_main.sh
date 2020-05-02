@@ -3,7 +3,7 @@
 #should be in ~/second_projects_GCs/src/
 
 echo 'run script'
-python testing_nemesis.py >> testing_nemesis.txt
+python3 testing_nemesis.py >> testing_nemesis.txt
 
 #echo 'create gifs'
 '''

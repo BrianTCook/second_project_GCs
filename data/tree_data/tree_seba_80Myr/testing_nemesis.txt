@@ -1,0 +1,2138 @@
+/home/brian/.local/lib/python3.6/site-packages/astropy/utils/data.py:1670: CacheMissingWarning: Remote data cache could not be accessed due to PermissionError: [Errno 13] Permission denied: '/home/brian/.astropy/cache'
+  warn(CacheMissingWarning(msg + e.__class__.__name__ + estr))
+
+/home/brian/.local/lib/python3.6/site-packages/astropy/utils/data.py:1438: CacheMissingWarning: Not clearing data cache - cache inaccessible due to PermissionError: [Errno 13] Permission denied: '/home/brian/.astropy/cache'
+  warn(CacheMissingWarning(msg + e.__class__.__name__ + estr))
+
+/home/brian/.local/lib/python3.6/site-packages/astropy/utils/data.py:1199: CacheMissingWarning: ('Cache directory cannot be read or created, providing data in temporary file instead.', '/tmp/astropy-download-2374-dwlrl5wj')
+  warn(CacheMissingWarning(missing_cache, f_name))
+
+\\\\\\\\\\\\
+tree SingleCluster
+\\\\\\\\\\\\
+1
+len(sim_times) is 1001
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00866377  0.01174821 -0.01031382]
+E_dyn:  -6.08720633002e+43 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  2.0 Myr
+simulation_bodies.center_of_mass():  [-0.08252664 -0.06794057  0.06566072]
+E_dyn:  -6.32535917934e+43 m**2 * kg * s**-2
+dE_dyn:  0.0391235053331
+------------
+------------
+time:  4.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00985043  0.00088078 -0.00903908]
+E_dyn:  -5.0163876733e+43 m**2 * kg * s**-2
+dE_dyn:  -0.175912988433
+------------
+------------
+time:  6.0 Myr
+simulation_bodies.center_of_mass():  [ 0.03394463  0.11956538 -0.01917229]
+E_dyn:  -5.23077798411e+43 m**2 * kg * s**-2
+dE_dyn:  -0.140693168505
+------------
+------------
+time:  8.0 Myr
+simulation_bodies.center_of_mass():  [-0.00608014 -0.02106092  0.00459721]
+E_dyn:  -4.64371512813e+43 m**2 * kg * s**-2
+dE_dyn:  -0.237135251153
+------------
+------------
+time:  10.0 Myr
+simulation_bodies.center_of_mass():  [ 0.0218915  -0.11039154 -0.04555137]
+E_dyn:  -4.56054985922e+43 m**2 * kg * s**-2
+dE_dyn:  -0.25079755606
+------------
+------------
+time:  12.0 Myr
+simulation_bodies.center_of_mass():  [-0.01739603  0.02839857  0.01871324]
+E_dyn:  -4.38760634082e+43 m**2 * kg * s**-2
+dE_dyn:  -0.279208539527
+------------
+------------
+time:  14.0 Myr
+simulation_bodies.center_of_mass():  [-0.07715806  0.06199513  0.05413249]
+E_dyn:  -4.54357136762e+43 m**2 * kg * s**-2
+dE_dyn:  -0.25358676521
+------------
+------------
+time:  16.0 Myr
+simulation_bodies.center_of_mass():  [ 0.04964939 -0.01548775 -0.01638299]
+E_dyn:  -4.43115633724e+43 m**2 * kg * s**-2
+dE_dyn:  -0.272054190871
+------------
+------------
+time:  18.0 Myr
+simulation_bodies.center_of_mass():  [ 0.1030459  -0.01636284 -0.00194048]
+E_dyn:  -4.52301341457e+43 m**2 * kg * s**-2
+dE_dyn:  -0.25696400461
+------------
+------------
+time:  20.0 Myr
+simulation_bodies.center_of_mass():  [-0.04898058 -0.01134694 -0.01313888]
+E_dyn:  -4.44334989592e+43 m**2 * kg * s**-2
+dE_dyn:  -0.270051045582
+------------
+------------
+time:  22.0 Myr
+simulation_bodies.center_of_mass():  [-0.07813182 -0.02373815 -0.04048143]
+E_dyn:  -4.51508820291e+43 m**2 * kg * s**-2
+dE_dyn:  -0.258265950237
+------------
+------------
+time:  24.0 Myr
+simulation_bodies.center_of_mass():  [ 0.0280387   0.04086408  0.02875535]
+E_dyn:  -4.45816605043e+43 m**2 * kg * s**-2
+dE_dyn:  -0.267617062947
+------------
+------------
+time:  26.0 Myr
+simulation_bodies.center_of_mass():  [ 0.04150555  0.05551628  0.03119872]
+E_dyn:  -4.50432789944e+43 m**2 * kg * s**-2
+dE_dyn:  -0.260033641833
+------------
+------------
+time:  28.0 Myr
+simulation_bodies.center_of_mass():  [-0.00105318 -0.05756781 -0.00755655]
+E_dyn:  -4.46951401512e+43 m**2 * kg * s**-2
+dE_dyn:  -0.265752830971
+------------
+------------
+time:  30.0 Myr
+simulation_bodies.center_of_mass():  [-0.01491015 -0.06592909  0.0048062 ]
+E_dyn:  -4.50091384452e+43 m**2 * kg * s**-2
+dE_dyn:  -0.260594499266
+------------
+------------
+time:  32.0 Myr
+simulation_bodies.center_of_mass():  [-0.02379306  0.0389517  -0.01971667]
+E_dyn:  -4.47115926926e+43 m**2 * kg * s**-2
+dE_dyn:  -0.265482550311
+------------
+------------
+time:  34.0 Myr
+simulation_bodies.center_of_mass():  [-0.0100225   0.04881165 -0.02471315]
+E_dyn:  -4.49141359987e+43 m**2 * kg * s**-2
+dE_dyn:  -0.262155189693
+------------
+------------
+time:  36.0 Myr
+simulation_bodies.center_of_mass():  [ 0.03983024 -0.01391315  0.0185418 ]
+E_dyn:  -4.47857387351e+43 m**2 * kg * s**-2
+dE_dyn:  -0.264264486744
+------------
+------------
+time:  38.0 Myr
+simulation_bodies.center_of_mass():  [ 0.0303066  -0.03266686  0.01520714]
+E_dyn:  -4.48293313736e+43 m**2 * kg * s**-2
+dE_dyn:  -0.263548351359
+------------
+------------
+time:  40.0 Myr
+simulation_bodies.center_of_mass():  [-0.03808004 -0.00780745  0.00156628]
+E_dyn:  -4.48555863613e+43 m**2 * kg * s**-2
+dE_dyn:  -0.263117037119
+------------
+------------
+time:  42.0 Myr
+simulation_bodies.center_of_mass():  [-0.03787243  0.01521943  0.00400468]
+E_dyn:  -4.36297360499e+43 m**2 * kg * s**-2
+dE_dyn:  -0.283255180053
+------------
+------------
+time:  44.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01666497  0.02121228 -0.01045748]
+E_dyn:  -4.37533460725e+43 m**2 * kg * s**-2
+dE_dyn:  -0.281224527306
+------------
+------------
+time:  46.0 Myr
+simulation_bodies.center_of_mass():  [ 0.02823857  0.00406001 -0.01368158]
+E_dyn:  -4.35163896548e+43 m**2 * kg * s**-2
+dE_dyn:  -0.285117222984
+------------
+------------
+time:  48.0 Myr
+simulation_bodies.center_of_mass():  [-0.00095425 -0.02567785  0.00372751]
+E_dyn:  -4.37273151927e+43 m**2 * kg * s**-2
+dE_dyn:  -0.281652159923
+------------
+------------
+time:  50.0 Myr
+simulation_bodies.center_of_mass():  [-0.01723576 -0.0175572   0.00575728]
+E_dyn:  -4.35920156382e+43 m**2 * kg * s**-2
+dE_dyn:  -0.2838748471
+------------
+------------
+time:  52.0 Myr
+simulation_bodies.center_of_mass():  [-0.01260096  0.01802056  0.00396568]
+E_dyn:  -4.37266622289e+43 m**2 * kg * s**-2
+dE_dyn:  -0.281662886745
+------------
+------------
+time:  54.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00423248  0.01864571  0.00453861]
+E_dyn:  -4.36117265957e+43 m**2 * kg * s**-2
+dE_dyn:  -0.283551037516
+------------
+------------
+time:  56.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01740032 -0.00360953 -0.0048803 ]
+E_dyn:  -4.36285714719e+43 m**2 * kg * s**-2
+dE_dyn:  -0.28327431162
+------------
+------------
+time:  58.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00408776 -0.01206834 -0.00607892]
+E_dyn:  -4.36156643311e+43 m**2 * kg * s**-2
+dE_dyn:  -0.283486348804
+------------
+------------
+time:  60.0 Myr
+simulation_bodies.center_of_mass():  [-0.01536939 -0.00814657 -0.00024258]
+E_dyn:  -4.36627433522e+43 m**2 * kg * s**-2
+dE_dyn:  -0.282712939483
+------------
+------------
+time:  62.0 Myr
+simulation_bodies.center_of_mass():  [-0.01027465  0.00641982  0.00109793]
+E_dyn:  -4.36176833584e+43 m**2 * kg * s**-2
+dE_dyn:  -0.28345318043
+------------
+------------
+time:  64.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00579578  0.01292532  0.00299473]
+E_dyn:  -4.27311174584e+43 m**2 * kg * s**-2
+dE_dyn:  -0.298017593923
+------------
+------------
+time:  66.0 Myr
+simulation_bodies.center_of_mass():  [ 0.0107537   0.00087906  0.00235475]
+E_dyn:  -4.25800995082e+43 m**2 * kg * s**-2
+dE_dyn:  -0.300498501288
+------------
+------------
+time:  68.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00199339 -0.00882557 -0.00097728]
+E_dyn:  -4.26692270273e+43 m**2 * kg * s**-2
+dE_dyn:  -0.299034323564
+------------
+------------
+time:  70.0 Myr
+simulation_bodies.center_of_mass():  [-0.00791423 -0.00646332 -0.00250656]
+E_dyn:  -4.25540652485e+43 m**2 * kg * s**-2
+dE_dyn:  -0.300926189431
+------------
+------------
+time:  72.0 Myr
+simulation_bodies.center_of_mass():  [-0.00572255  0.00222251 -0.00096246]
+E_dyn:  -4.26786807577e+43 m**2 * kg * s**-2
+dE_dyn:  -0.298879018652
+------------
+------------
+time:  74.0 Myr
+simulation_bodies.center_of_mass():  [  4.47501831e-03   1.11497795e-02   7.60376166e-05]
+E_dyn:  -4.26182291867e+43 m**2 * kg * s**-2
+dE_dyn:  -0.299872110847
+------------
+------------
+time:  76.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00442461  0.00580476  0.00015128]
+E_dyn:  -4.26731893018e+43 m**2 * kg * s**-2
+dE_dyn:  -0.298969231725
+------------
+------------
+time:  78.0 Myr
+simulation_bodies.center_of_mass():  [-0.00072977 -0.0103456   0.00229294]
+E_dyn:  -4.26114985847e+43 m**2 * kg * s**-2
+dE_dyn:  -0.299982680486
+------------
+------------
+time:  80.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00052568 -0.00551175  0.00234015]
+E_dyn:  -4.26539206071e+43 m**2 * kg * s**-2
+dE_dyn:  -0.299285775862
+------------
+------------
+time:  82.0 Myr
+simulation_bodies.center_of_mass():  [-0.00390424  0.00981949 -0.00324706]
+E_dyn:  -4.26421723757e+43 m**2 * kg * s**-2
+dE_dyn:  -0.299478774599
+------------
+------------
+time:  84.0 Myr
+simulation_bodies.center_of_mass():  [-0.00569258  0.0021244  -0.00165392]
+E_dyn:  -4.27195168931e+43 m**2 * kg * s**-2
+dE_dyn:  -0.298208166817
+------------
+------------
+time:  86.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00650005 -0.00775553  0.00208842]
+E_dyn:  -4.25578466194e+43 m**2 * kg * s**-2
+dE_dyn:  -0.300864069457
+------------
+------------
+time:  88.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00740393 -0.00045816 -0.00293895]
+E_dyn:  -4.27135272246e+43 m**2 * kg * s**-2
+dE_dyn:  -0.298306564475
+------------
+------------
+time:  90.0 Myr
+simulation_bodies.center_of_mass():  [-0.00466617  0.00460737  0.00243911]
+E_dyn:  -4.25369167951e+43 m**2 * kg * s**-2
+dE_dyn:  -0.301207902461
+------------
+------------
+time:  92.0 Myr
+simulation_bodies.center_of_mass():  [-0.00592801 -0.00208032  0.00586747]
+E_dyn:  -4.26489538755e+43 m**2 * kg * s**-2
+dE_dyn:  -0.299367368818
+------------
+------------
+time:  94.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00431206 -0.0038448  -0.00180714]
+E_dyn:  -4.2594576962e+43 m**2 * kg * s**-2
+dE_dyn:  -0.300260667165
+------------
+------------
+time:  96.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00858112  0.00445846 -0.0014658 ]
+E_dyn:  -4.26079459865e+43 m**2 * kg * s**-2
+dE_dyn:  -0.300041042204
+------------
+------------
+time:  98.0 Myr
+simulation_bodies.center_of_mass():  [-0.00184838  0.00493425 -0.00150233]
+E_dyn:  -4.2605258592e+43 m**2 * kg * s**-2
+dE_dyn:  -0.300085190444
+------------
+------------
+time:  100.0 Myr
+simulation_bodies.center_of_mass():  [-0.00836089 -0.00472705 -0.0055989 ]
+E_dyn:  -4.27043839191e+43 m**2 * kg * s**-2
+dE_dyn:  -0.298456769758
+------------
+time is: 2.346 minutes
+time to run last simulation: 2.345 minutes
+\\\\\\\\\\\\
+tree SingleCluster
+\\\\\\\\\\\\
+2
+len(sim_times) is 1001
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00221121  0.01059324 -0.01075269]
+E_dyn:  -8.15881878623e+43 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  2.0 Myr
+simulation_bodies.center_of_mass():  [-0.05628687 -0.1558683   0.07654488]
+E_dyn:  -8.80651230319e+43 m**2 * kg * s**-2
+dE_dyn:  0.0793856971124
+------------
+------------
+time:  4.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01258209 -0.1415435   0.02960545]
+E_dyn:  -7.77191139266e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0474219864057
+------------
+------------
+time:  6.0 Myr
+simulation_bodies.center_of_mass():  [ 0.0333262  -0.07941754  0.01695267]
+E_dyn:  -8.10885596699e+43 m**2 * kg * s**-2
+dE_dyn:  -0.00612378097233
+------------
+------------
+time:  8.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00510743 -0.20994749  0.02031986]
+E_dyn:  -7.79809375599e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0442128989128
+------------
+------------
+time:  10.0 Myr
+simulation_bodies.center_of_mass():  [ 0.03005983 -0.27576956 -0.04068677]
+E_dyn:  -8.1093058822e+43 m**2 * kg * s**-2
+dE_dyn:  -0.00606863632176
+------------
+------------
+time:  12.0 Myr
+simulation_bodies.center_of_mass():  [-0.00318679 -0.14530059 -0.00843468]
+E_dyn:  -7.86628367837e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0358550809284
+------------
+------------
+time:  14.0 Myr
+simulation_bodies.center_of_mass():  [-0.04908882 -0.0879092   0.00701025]
+E_dyn:  -8.04307910376e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0141858381101
+------------
+------------
+time:  16.0 Myr
+simulation_bodies.center_of_mass():  [ 0.05515553 -0.08880766 -0.04439582]
+E_dyn:  -7.84462847427e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0385092891747
+------------
+------------
+time:  18.0 Myr
+simulation_bodies.center_of_mass():  [ 0.07890803  0.00116008 -0.00345591]
+E_dyn:  -7.7606387105e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0488036425567
+------------
+------------
+time:  20.0 Myr
+simulation_bodies.center_of_mass():  [-0.0645583   0.06370997  0.02854721]
+E_dyn:  -7.89266441928e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0326216789378
+------------
+------------
+time:  22.0 Myr
+simulation_bodies.center_of_mass():  [-0.08077879  0.09962575  0.03462512]
+E_dyn:  -8.00857184738e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0184152807887
+------------
+------------
+time:  24.0 Myr
+simulation_bodies.center_of_mass():  [-0.00968224  0.19103435  0.09192231]
+E_dyn:  -8.015081566e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0176174056555
+------------
+------------
+time:  26.0 Myr
+simulation_bodies.center_of_mass():  [-0.01928889  0.1927898   0.05595967]
+E_dyn:  -7.94162824416e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0266203414688
+------------
+------------
+time:  28.0 Myr
+simulation_bodies.center_of_mass():  [-0.03615579  0.09281938 -0.00680943]
+E_dyn:  -7.9863486552e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0211391054942
+------------
+------------
+time:  30.0 Myr
+simulation_bodies.center_of_mass():  [-0.04571681  0.09236298 -0.03295575]
+E_dyn:  -7.9315911552e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0278505549623
+------------
+------------
+time:  32.0 Myr
+simulation_bodies.center_of_mass():  [-0.05138712  0.11458228 -0.07757908]
+E_dyn:  -7.94601086999e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0260831772121
+------------
+------------
+time:  34.0 Myr
+simulation_bodies.center_of_mass():  [-0.00134312  0.03638793 -0.05831989]
+E_dyn:  -7.85409549076e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0373489476174
+------------
+------------
+time:  36.0 Myr
+simulation_bodies.center_of_mass():  [ 0.05085638 -0.06129947  0.01547905]
+E_dyn:  -7.84819824488e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0380717539495
+------------
+------------
+time:  38.0 Myr
+simulation_bodies.center_of_mass():  [ 0.02544266 -0.11646888  0.05536532]
+E_dyn:  -7.95120914125e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0254460419363
+------------
+------------
+time:  40.0 Myr
+simulation_bodies.center_of_mass():  [-0.00080506 -0.12285122  0.08717537]
+E_dyn:  -7.9940324717e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0201973249871
+------------
+------------
+time:  42.0 Myr
+simulation_bodies.center_of_mass():  [ 0.02914914 -0.09153703  0.09007405]
+E_dyn:  -8.03472429064e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0152098605014
+------------
+------------
+time:  44.0 Myr
+simulation_bodies.center_of_mass():  [ 0.05234387 -0.08751622  0.06400347]
+E_dyn:  -7.9234861182e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0288439631033
+------------
+------------
+time:  46.0 Myr
+simulation_bodies.center_of_mass():  [ 0.04848763 -0.09239562  0.03398085]
+E_dyn:  -7.92905337389e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0281616025997
+------------
+------------
+time:  48.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00588332 -0.04321518 -0.02513652]
+E_dyn:  -7.82665864593e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0407117928465
+------------
+------------
+time:  50.0 Myr
+simulation_bodies.center_of_mass():  [-0.03544374  0.04172841 -0.05823612]
+E_dyn:  -7.91973908608e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0293032246963
+------------
+------------
+time:  52.0 Myr
+simulation_bodies.center_of_mass():  [-0.02761078  0.10621264 -0.05303457]
+E_dyn:  -7.9505236818e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0255300564814
+------------
+------------
+time:  54.0 Myr
+simulation_bodies.center_of_mass():  [-0.02928386  0.13897797 -0.02690902]
+E_dyn:  -7.96652769249e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0235684967124
+------------
+------------
+time:  56.0 Myr
+simulation_bodies.center_of_mass():  [-0.05947416  0.1367602   0.02157435]
+E_dyn:  -7.97400611439e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0226518907553
+------------
+------------
+time:  58.0 Myr
+simulation_bodies.center_of_mass():  [-0.0669671   0.13272311  0.05095585]
+E_dyn:  -7.96617832702e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0236113173066
+------------
+------------
+time:  60.0 Myr
+simulation_bodies.center_of_mass():  [-0.05754506  0.14469369  0.06361559]
+E_dyn:  -7.9848593005e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0213216508775
+------------
+------------
+time:  62.0 Myr
+simulation_bodies.center_of_mass():  [-0.04810672  0.10744569  0.06238814]
+E_dyn:  -7.92815928533e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0282711881399
+------------
+------------
+time:  64.0 Myr
+simulation_bodies.center_of_mass():  [-0.02016822  0.03787681  0.02378519]
+E_dyn:  -7.84332939127e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0386685135718
+------------
+------------
+time:  66.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01576127 -0.02563411 -0.011891  ]
+E_dyn:  -7.80295299686e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0436173174936
+------------
+------------
+time:  68.0 Myr
+simulation_bodies.center_of_mass():  [ 0.0413412  -0.08005184 -0.0246584 ]
+E_dyn:  -7.9228244177e+43 m**2 * kg * s**-2
+dE_dyn:  -0.028925065591
+------------
+------------
+time:  70.0 Myr
+simulation_bodies.center_of_mass():  [ 0.08148169 -0.13008209 -0.03872689]
+E_dyn:  -7.99663252489e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0198786448857
+------------
+------------
+time:  72.0 Myr
+simulation_bodies.center_of_mass():  [ 0.10913058 -0.15411498 -0.02041049]
+E_dyn:  -7.99020319712e+43 m**2 * kg * s**-2
+dE_dyn:  -0.020666666773
+------------
+------------
+time:  74.0 Myr
+simulation_bodies.center_of_mass():  [  9.83138972e-02  -1.61486046e-01   9.15774011e-05]
+E_dyn:  -8.02740246273e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0161072732392
+------------
+------------
+time:  76.0 Myr
+simulation_bodies.center_of_mass():  [ 0.09370155 -0.15720775  0.01810218]
+E_dyn:  -7.98901106874e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0208127820876
+------------
+------------
+time:  78.0 Myr
+simulation_bodies.center_of_mass():  [ 0.09064133 -0.12781127  0.04602175]
+E_dyn:  -8.0104426459e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0181859830715
+------------
+------------
+time:  80.0 Myr
+simulation_bodies.center_of_mass():  [ 0.06511715 -0.09598269  0.03517281]
+E_dyn:  -7.87355365389e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0349640235693
+------------
+------------
+time:  82.0 Myr
+simulation_bodies.center_of_mass():  [ 0.03349389 -0.04655295  0.00927647]
+E_dyn:  -7.85488841069e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0372517619898
+------------
+------------
+time:  84.0 Myr
+simulation_bodies.center_of_mass():  [-0.03603783  0.04458903 -0.01170462]
+E_dyn:  -7.80918963772e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0428529126175
+------------
+------------
+time:  86.0 Myr
+simulation_bodies.center_of_mass():  [-0.088164    0.08455902 -0.02293331]
+E_dyn:  -7.93885722121e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0269599767791
+------------
+------------
+time:  88.0 Myr
+simulation_bodies.center_of_mass():  [-0.09973855  0.10838649 -0.01143391]
+E_dyn:  -7.99282540084e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0203452717536
+------------
+------------
+time:  90.0 Myr
+simulation_bodies.center_of_mass():  [-0.13408203  0.14119883 -0.00303297]
+E_dyn:  -7.98529735563e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0212679598788
+------------
+------------
+time:  92.0 Myr
+simulation_bodies.center_of_mass():  [-0.16633838  0.13408943  0.00504472]
+E_dyn:  -8.04376832989e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0141013618952
+------------
+------------
+time:  94.0 Myr
+simulation_bodies.center_of_mass():  [-0.13239045  0.13337638  0.01458602]
+E_dyn:  -7.92794038107e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0282980185259
+------------
+------------
+time:  96.0 Myr
+simulation_bodies.center_of_mass():  [-0.11193825  0.13169012  0.01117128]
+E_dyn:  -8.0179291972e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0172683807207
+------------
+------------
+time:  98.0 Myr
+simulation_bodies.center_of_mass():  [-0.09756506  0.07052646  0.02238229]
+E_dyn:  -7.88828573536e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0331583600473
+------------
+------------
+time:  100.0 Myr
+simulation_bodies.center_of_mass():  [-0.04223398  0.02436077  0.00557076]
+E_dyn:  -7.85843586163e+43 m**2 * kg * s**-2
+dE_dyn:  -0.0368169624149
+------------
+time is: 5.377 minutes
+time to run last simulation: 3.032 minutes
+\\\\\\\\\\\\
+tree SingleCluster
+\\\\\\\\\\\\
+4
+len(sim_times) is 1001
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [-0.00839731 -0.00315828 -0.00497693]
+E_dyn:  -2.01571740553e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  2.0 Myr
+simulation_bodies.center_of_mass():  [ 0.04273299 -0.11811899  0.04796543]
+E_dyn:  -2.15510943943e+44 m**2 * kg * s**-2
+dE_dyn:  0.0691525674759
+------------
+------------
+time:  4.0 Myr
+simulation_bodies.center_of_mass():  [ 0.0581775  -0.14041645  0.05279213]
+E_dyn:  -2.04222332571e+44 m**2 * kg * s**-2
+dE_dyn:  0.0131496211227
+------------
+------------
+time:  6.0 Myr
+simulation_bodies.center_of_mass():  [ 0.05075178 -0.12100476  0.03070856]
+E_dyn:  -2.06122030366e+44 m**2 * kg * s**-2
+dE_dyn:  0.0225740463448
+------------
+------------
+time:  8.0 Myr
+simulation_bodies.center_of_mass():  [-0.02885975 -0.08335757  0.00535124]
+E_dyn:  -2.02159258241e+44 m**2 * kg * s**-2
+dE_dyn:  0.00291468281345
+------------
+------------
+time:  10.0 Myr
+simulation_bodies.center_of_mass():  [-0.0714832  -0.09633747 -0.00078231]
+E_dyn:  -2.07973579302e+44 m**2 * kg * s**-2
+dE_dyn:  0.0317596044549
+------------
+------------
+time:  12.0 Myr
+simulation_bodies.center_of_mass():  [-0.05103771 -0.06186475 -0.00074835]
+E_dyn:  -2.04897058062e+44 m**2 * kg * s**-2
+dE_dyn:  0.0164969429738
+------------
+------------
+time:  14.0 Myr
+simulation_bodies.center_of_mass():  [-0.03180612 -0.0475809  -0.00224277]
+E_dyn:  -2.01042498379e+44 m**2 * kg * s**-2
+dE_dyn:  -0.00262557724103
+------------
+------------
+time:  16.0 Myr
+simulation_bodies.center_of_mass():  [ 0.07971437 -0.08169539 -0.03325296]
+E_dyn:  -2.00519194849e+44 m**2 * kg * s**-2
+dE_dyn:  -0.00522169278857
+------------
+------------
+time:  18.0 Myr
+simulation_bodies.center_of_mass():  [ 0.13672726 -0.01465264 -0.02020311]
+E_dyn:  -1.98077242734e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0173362486701
+------------
+------------
+time:  20.0 Myr
+simulation_bodies.center_of_mass():  [ 0.03195684  0.04528582  0.02553759]
+E_dyn:  -1.97912046984e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0181557869156
+------------
+------------
+time:  22.0 Myr
+simulation_bodies.center_of_mass():  [-0.03254469  0.04950353  0.01944775]
+E_dyn:  -2.01176064404e+44 m**2 * kg * s**-2
+dE_dyn:  -0.00196295447062
+------------
+------------
+time:  24.0 Myr
+simulation_bodies.center_of_mass():  [-0.0414497   0.10883441  0.03642369]
+E_dyn:  -1.99341886721e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0110623335687
+------------
+------------
+time:  26.0 Myr
+simulation_bodies.center_of_mass():  [-0.06175843  0.12641087  0.02663075]
+E_dyn:  -2.00478980353e+44 m**2 * kg * s**-2
+dE_dyn:  -0.00542119742152
+------------
+------------
+time:  28.0 Myr
+simulation_bodies.center_of_mass():  [-0.04461049  0.09648542 -0.02547381]
+E_dyn:  -2.00348170684e+44 m**2 * kg * s**-2
+dE_dyn:  -0.00607014587169
+------------
+------------
+time:  30.0 Myr
+simulation_bodies.center_of_mass():  [-0.04215123  0.08457878 -0.03461643]
+E_dyn:  -2.00727549525e+44 m**2 * kg * s**-2
+dE_dyn:  -0.00418804255792
+------------
+------------
+time:  32.0 Myr
+simulation_bodies.center_of_mass():  [-0.03380505  0.04899723 -0.04826956]
+E_dyn:  -1.98074527422e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0173497193705
+------------
+------------
+time:  34.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00770244  0.00321095 -0.03876654]
+E_dyn:  -1.96506581285e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0251283203409
+------------
+------------
+time:  36.0 Myr
+simulation_bodies.center_of_mass():  [ 0.03904638 -0.05634039  0.01349384]
+E_dyn:  -1.96803034055e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0236576143304
+------------
+------------
+time:  38.0 Myr
+simulation_bodies.center_of_mass():  [ 0.0639339  -0.08295421  0.03276791]
+E_dyn:  -1.97720426559e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0191064183105
+------------
+------------
+time:  40.0 Myr
+simulation_bodies.center_of_mass():  [ 0.0479876  -0.06013225  0.05454962]
+E_dyn:  -1.99699754726e+44 m**2 * kg * s**-2
+dE_dyn:  -0.00928694578947
+------------
+------------
+time:  42.0 Myr
+simulation_bodies.center_of_mass():  [ 0.0252632  -0.06476015  0.06085269]
+E_dyn:  -1.98891282193e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0132977884322
+------------
+------------
+time:  44.0 Myr
+simulation_bodies.center_of_mass():  [ 0.02666738 -0.07065635  0.03889745]
+E_dyn:  -1.98210121468e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0166770355599
+------------
+------------
+time:  46.0 Myr
+simulation_bodies.center_of_mass():  [-0.01020894 -0.06708473  0.01922978]
+E_dyn:  -1.97111086897e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0221293602156
+------------
+------------
+time:  48.0 Myr
+simulation_bodies.center_of_mass():  [-0.04168127 -0.05073351 -0.01921752]
+E_dyn:  -1.96609878694e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0246158605655
+------------
+------------
+time:  50.0 Myr
+simulation_bodies.center_of_mass():  [-0.05025559  0.02520807 -0.03437122]
+E_dyn:  -1.9757774167e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0198142798802
+------------
+------------
+time:  52.0 Myr
+simulation_bodies.center_of_mass():  [-0.05564787  0.07930331 -0.02663298]
+E_dyn:  -1.97578913891e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0198084644767
+------------
+------------
+time:  54.0 Myr
+simulation_bodies.center_of_mass():  [-0.02322158  0.09839259 -0.01358825]
+E_dyn:  -1.98335951689e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0160527902156
+------------
+------------
+time:  56.0 Myr
+simulation_bodies.center_of_mass():  [-0.01453134  0.11735803  0.02369778]
+E_dyn:  -1.97488588768e+44 m**2 * kg * s**-2
+dE_dyn:  -0.020256568574
+------------
+------------
+time:  58.0 Myr
+simulation_bodies.center_of_mass():  [-0.02082131  0.09745463  0.0405295 ]
+E_dyn:  -1.99352302383e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0110106613352
+------------
+------------
+time:  60.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00193003  0.08668891  0.04707023]
+E_dyn:  -1.98427300323e+44 m**2 * kg * s**-2
+dE_dyn:  -0.015599608467
+------------
+------------
+time:  62.0 Myr
+simulation_bodies.center_of_mass():  [-0.0053737   0.0732487   0.04349832]
+E_dyn:  -1.98181140174e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0168208121349
+------------
+------------
+time:  64.0 Myr
+simulation_bodies.center_of_mass():  [-0.0098261   0.01464118  0.01037367]
+E_dyn:  -1.96121925509e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0270366025953
+------------
+------------
+time:  66.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00902343 -0.03356957 -0.01237973]
+E_dyn:  -1.95883818692e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0282178535833
+------------
+------------
+time:  68.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00432397 -0.05660515 -0.01344933]
+E_dyn:  -1.97499204672e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0202039029393
+------------
+------------
+time:  70.0 Myr
+simulation_bodies.center_of_mass():  [ 0.02673647 -0.08843749 -0.01296764]
+E_dyn:  -1.98048887891e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0174769174117
+------------
+------------
+time:  72.0 Myr
+simulation_bodies.center_of_mass():  [ 0.06332628 -0.09537695  0.00368458]
+E_dyn:  -1.98767587361e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0139114400896
+------------
+------------
+time:  74.0 Myr
+simulation_bodies.center_of_mass():  [ 0.07498367 -0.09704661  0.01032925]
+E_dyn:  -1.98233835415e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0165593903648
+------------
+------------
+time:  76.0 Myr
+simulation_bodies.center_of_mass():  [ 0.08010469 -0.09770528  0.01474891]
+E_dyn:  -1.98466955571e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0154028782679
+------------
+------------
+time:  78.0 Myr
+simulation_bodies.center_of_mass():  [ 0.08094944 -0.07672595  0.02495256]
+E_dyn:  -1.9809823925e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0172320846851
+------------
+------------
+time:  80.0 Myr
+simulation_bodies.center_of_mass():  [ 0.06104944 -0.04401987  0.01864547]
+E_dyn:  -1.96215639057e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0265716884802
+------------
+------------
+time:  82.0 Myr
+simulation_bodies.center_of_mass():  [ 0.02182348 -0.01427406  0.00814972]
+E_dyn:  -1.94933789455e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0329309608555
+------------
+------------
+time:  84.0 Myr
+simulation_bodies.center_of_mass():  [-0.02312258  0.02018275 -0.00224162]
+E_dyn:  -1.95492291637e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0301602243438
+------------
+------------
+time:  86.0 Myr
+simulation_bodies.center_of_mass():  [-0.04949779  0.05274772 -0.01313932]
+E_dyn:  -1.96757330425e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0238843506282
+------------
+------------
+time:  88.0 Myr
+simulation_bodies.center_of_mass():  [-0.08450559  0.07630087 -0.01429359]
+E_dyn:  -1.96472617975e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0252968127601
+------------
+------------
+time:  90.0 Myr
+simulation_bodies.center_of_mass():  [-0.10508264  0.0788467  -0.00475463]
+E_dyn:  -1.97769343984e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0188637383325
+------------
+------------
+time:  92.0 Myr
+simulation_bodies.center_of_mass():  [-0.11245142  0.08347392  0.00185098]
+E_dyn:  -1.97267041346e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0213556681866
+------------
+------------
+time:  94.0 Myr
+simulation_bodies.center_of_mass():  [-0.1191838   0.0802094   0.00802477]
+E_dyn:  -1.97881780907e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0183059373121
+------------
+------------
+time:  96.0 Myr
+simulation_bodies.center_of_mass():  [-0.10057126  0.05787146  0.01001494]
+E_dyn:  -1.96797070934e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0236871974543
+------------
+------------
+time:  98.0 Myr
+simulation_bodies.center_of_mass():  [-0.07230009  0.03890152  0.00339274]
+E_dyn:  -1.9611542115e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0270688708051
+------------
+------------
+time:  100.0 Myr
+simulation_bodies.center_of_mass():  [-0.03418583  0.01060368  0.0014159 ]
+E_dyn:  -1.93876363884e+44 m**2 * kg * s**-2
+dE_dyn:  -0.0381768627295
+------------
+time is: 12.834 minutes
+time to run last simulation: 7.457 minutes
+\\\\\\\\\\\\
+tree SingleCluster
+\\\\\\\\\\\\
+8
+len(sim_times) is 1001
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [-0.01170048 -0.00476496 -0.00203055]
+E_dyn:  -3.0144687558e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  2.0 Myr
+simulation_bodies.center_of_mass():  [ 0.04462298 -0.08261872  0.03424343]
+E_dyn:  -3.23205165167e+44 m**2 * kg * s**-2
+dE_dyn:  0.0721795160264
+------------
+------------
+time:  4.0 Myr
+simulation_bodies.center_of_mass():  [ 0.05052293 -0.10198509  0.04204287]
+E_dyn:  -3.21347395785e+44 m**2 * kg * s**-2
+dE_dyn:  0.066016674304
+------------
+------------
+time:  6.0 Myr
+simulation_bodies.center_of_mass():  [ 0.03939521 -0.10405137  0.02331332]
+E_dyn:  -3.24923085809e+44 m**2 * kg * s**-2
+dE_dyn:  0.077878432756
+------------
+------------
+time:  8.0 Myr
+simulation_bodies.center_of_mass():  [-0.02166146 -0.0788877  -0.00662473]
+E_dyn:  -3.20702434142e+44 m**2 * kg * s**-2
+dE_dyn:  0.0638771210528
+------------
+------------
+time:  10.0 Myr
+simulation_bodies.center_of_mass():  [-0.06028803 -0.0855861  -0.00857799]
+E_dyn:  -3.2210850977e+44 m**2 * kg * s**-2
+dE_dyn:  0.0685415436821
+------------
+------------
+time:  12.0 Myr
+simulation_bodies.center_of_mass():  [-0.04735279 -0.0620293  -0.005664  ]
+E_dyn:  -3.15418764656e+44 m**2 * kg * s**-2
+dE_dyn:  0.0463494240898
+------------
+------------
+time:  14.0 Myr
+simulation_bodies.center_of_mass():  [-0.03691755 -0.02388775  0.00138405]
+E_dyn:  -3.15078729578e+44 m**2 * kg * s**-2
+dE_dyn:  0.0452214141294
+------------
+------------
+time:  16.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01638296 -0.04482515 -0.00770019]
+E_dyn:  -3.1905914906e+44 m**2 * kg * s**-2
+dE_dyn:  0.0584257954146
+------------
+------------
+time:  18.0 Myr
+simulation_bodies.center_of_mass():  [ 0.06054932 -0.00946627 -0.00493489]
+E_dyn:  -3.17679839625e+44 m**2 * kg * s**-2
+dE_dyn:  0.0538501651896
+------------
+------------
+time:  20.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01033571  0.04346654  0.02863749]
+E_dyn:  -3.17220192365e+44 m**2 * kg * s**-2
+dE_dyn:  0.0523253616576
+------------
+------------
+time:  22.0 Myr
+simulation_bodies.center_of_mass():  [-0.02393187  0.0587769   0.01908488]
+E_dyn:  -3.18333891667e+44 m**2 * kg * s**-2
+dE_dyn:  0.0560198743306
+------------
+------------
+time:  24.0 Myr
+simulation_bodies.center_of_mass():  [-0.01650034  0.10664585  0.01023512]
+E_dyn:  -3.16185420921e+44 m**2 * kg * s**-2
+dE_dyn:  0.0488926790616
+------------
+------------
+time:  26.0 Myr
+simulation_bodies.center_of_mass():  [-0.03090289  0.10313623  0.00642919]
+E_dyn:  -3.19807832819e+44 m**2 * kg * s**-2
+dE_dyn:  0.0609094295762
+------------
+------------
+time:  28.0 Myr
+simulation_bodies.center_of_mass():  [-0.00767171  0.06501182 -0.00665487]
+E_dyn:  -3.18730294862e+44 m**2 * kg * s**-2
+dE_dyn:  0.0573348761687
+------------
+------------
+time:  30.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01161322  0.0487841  -0.00422434]
+E_dyn:  -3.21256884934e+44 m**2 * kg * s**-2
+dE_dyn:  0.0657164195725
+------------
+------------
+time:  32.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01901425  0.02655439 -0.01805072]
+E_dyn:  -3.17785879807e+44 m**2 * kg * s**-2
+dE_dyn:  0.0542019358988
+------------
+------------
+time:  34.0 Myr
+simulation_bodies.center_of_mass():  [ 0.0068304  -0.01294139 -0.01777234]
+E_dyn:  -3.15286502297e+44 m**2 * kg * s**-2
+dE_dyn:  0.0459106656538
+------------
+------------
+time:  36.0 Myr
+simulation_bodies.center_of_mass():  [-0.01148429 -0.08611897  0.01368532]
+E_dyn:  -3.15353712635e+44 m**2 * kg * s**-2
+dE_dyn:  0.0461336248024
+------------
+------------
+time:  38.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00690172 -0.10453889  0.02467128]
+E_dyn:  -3.18331140531e+44 m**2 * kg * s**-2
+dE_dyn:  0.0560107478951
+------------
+------------
+time:  40.0 Myr
+simulation_bodies.center_of_mass():  [-0.00198481 -0.05578661  0.03909072]
+E_dyn:  -3.20336935763e+44 m**2 * kg * s**-2
+dE_dyn:  0.0626646408158
+------------
+------------
+time:  42.0 Myr
+simulation_bodies.center_of_mass():  [-0.01132517 -0.02878295  0.03857886]
+E_dyn:  -3.19166069641e+44 m**2 * kg * s**-2
+dE_dyn:  0.0587804867022
+------------
+------------
+time:  44.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01607648  0.00924993  0.03344916]
+E_dyn:  -3.19192324518e+44 m**2 * kg * s**-2
+dE_dyn:  0.0588675829
+------------
+------------
+time:  46.0 Myr
+simulation_bodies.center_of_mass():  [-0.00580032  0.03886867  0.03372769]
+E_dyn:  -3.17065405629e+44 m**2 * kg * s**-2
+dE_dyn:  0.0518118823392
+------------
+------------
+time:  48.0 Myr
+simulation_bodies.center_of_mass():  [-0.01244388  0.02422506 -0.00157551]
+E_dyn:  -3.17205891957e+44 m**2 * kg * s**-2
+dE_dyn:  0.0522779224267
+------------
+------------
+time:  50.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00684614  0.0502467  -0.02775917]
+E_dyn:  -3.15745985265e+44 m**2 * kg * s**-2
+dE_dyn:  0.0474349241744
+------------
+------------
+time:  52.0 Myr
+simulation_bodies.center_of_mass():  [-0.00857413  0.06627909 -0.02528027]
+E_dyn:  -3.17320329872e+44 m**2 * kg * s**-2
+dE_dyn:  0.0526575512238
+------------
+------------
+time:  54.0 Myr
+simulation_bodies.center_of_mass():  [-0.00686945  0.02542717 -0.01774922]
+E_dyn:  -3.18254690115e+44 m**2 * kg * s**-2
+dE_dyn:  0.055757136321
+------------
+------------
+time:  56.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00656531  0.00201941  0.01315366]
+E_dyn:  -3.1837311557e+44 m**2 * kg * s**-2
+dE_dyn:  0.0561499931217
+------------
+------------
+time:  58.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00255677 -0.01178809  0.03292911]
+E_dyn:  -3.1991010962e+44 m**2 * kg * s**-2
+dE_dyn:  0.0612487158973
+------------
+------------
+time:  60.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01896367 -0.01250974  0.03591669]
+E_dyn:  -3.19919528074e+44 m**2 * kg * s**-2
+dE_dyn:  0.0612799600561
+------------
+------------
+time:  62.0 Myr
+simulation_bodies.center_of_mass():  [ 0.02178834  0.00157047  0.03144559]
+E_dyn:  -3.18361103967e+44 m**2 * kg * s**-2
+dE_dyn:  0.0561101466209
+------------
+------------
+time:  64.0 Myr
+simulation_bodies.center_of_mass():  [-0.00200513  0.00642944  0.00853891]
+E_dyn:  -3.14889765712e+44 m**2 * kg * s**-2
+dE_dyn:  0.0445945578536
+------------
+------------
+time:  66.0 Myr
+simulation_bodies.center_of_mass():  [-0.02547564  0.0056314  -0.0153212 ]
+E_dyn:  -3.14720466021e+44 m**2 * kg * s**-2
+dE_dyn:  0.0440329342129
+------------
+------------
+time:  68.0 Myr
+simulation_bodies.center_of_mass():  [-0.03959122  0.00931128 -0.01801606]
+E_dyn:  -3.18004719165e+44 m**2 * kg * s**-2
+dE_dyn:  0.0549278991636
+------------
+------------
+time:  70.0 Myr
+simulation_bodies.center_of_mass():  [-0.03512271  0.01223946 -0.00689895]
+E_dyn:  -3.19460791666e+44 m**2 * kg * s**-2
+dE_dyn:  0.0597581781269
+------------
+------------
+time:  72.0 Myr
+simulation_bodies.center_of_mass():  [-0.03069394 -0.0073478  -0.00236244]
+E_dyn:  -3.18572177609e+44 m**2 * kg * s**-2
+dE_dyn:  0.0568103484131
+------------
+------------
+time:  74.0 Myr
+simulation_bodies.center_of_mass():  [-0.00756443 -0.05347851 -0.0005037 ]
+E_dyn:  -3.1885729742e+44 m**2 * kg * s**-2
+dE_dyn:  0.0577561860843
+------------
+------------
+time:  76.0 Myr
+simulation_bodies.center_of_mass():  [ 0.03224211 -0.06715126  0.0079684 ]
+E_dyn:  -3.15075284203e+44 m**2 * kg * s**-2
+dE_dyn:  0.0452099846692
+------------
+------------
+time:  78.0 Myr
+simulation_bodies.center_of_mass():  [ 0.05977905 -0.05507538  0.01097664]
+E_dyn:  -3.16591138793e+44 m**2 * kg * s**-2
+dE_dyn:  0.0502385807926
+------------
+------------
+time:  80.0 Myr
+simulation_bodies.center_of_mass():  [ 0.09373509 -0.0458849   0.01368813]
+E_dyn:  -3.15764405387e+44 m**2 * kg * s**-2
+dE_dyn:  0.0474960298728
+------------
+------------
+time:  82.0 Myr
+simulation_bodies.center_of_mass():  [ 0.10351081 -0.0140993   0.00521519]
+E_dyn:  -3.15998506993e+44 m**2 * kg * s**-2
+dE_dyn:  0.0482726231138
+------------
+------------
+time:  84.0 Myr
+simulation_bodies.center_of_mass():  [ 0.06110867  0.00317498 -0.01054734]
+E_dyn:  -3.14444999531e+44 m**2 * kg * s**-2
+dE_dyn:  0.0431191198341
+------------
+------------
+time:  86.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01982045  0.01549472 -0.00606797]
+E_dyn:  -3.16487265906e+44 m**2 * kg * s**-2
+dE_dyn:  0.049893999722
+------------
+------------
+time:  88.0 Myr
+simulation_bodies.center_of_mass():  [-0.02971607  0.05697832 -0.01181075]
+E_dyn:  -3.14776388301e+44 m**2 * kg * s**-2
+dE_dyn:  0.0442184471014
+------------
+------------
+time:  90.0 Myr
+simulation_bodies.center_of_mass():  [-0.08767961  0.06892224 -0.01752577]
+E_dyn:  -3.14837277225e+44 m**2 * kg * s**-2
+dE_dyn:  0.0444204360033
+------------
+------------
+time:  92.0 Myr
+simulation_bodies.center_of_mass():  [-0.10943434  0.05085332 -0.00268611]
+E_dyn:  -3.16361158043e+44 m**2 * kg * s**-2
+dE_dyn:  0.0494756578093
+------------
+------------
+time:  94.0 Myr
+simulation_bodies.center_of_mass():  [-0.11148953  0.02737274  0.00419815]
+E_dyn:  -3.18745784046e+44 m**2 * kg * s**-2
+dE_dyn:  0.0573862589664
+------------
+------------
+time:  96.0 Myr
+simulation_bodies.center_of_mass():  [-0.10412707  0.00740841  0.00870507]
+E_dyn:  -3.17085345052e+44 m**2 * kg * s**-2
+dE_dyn:  0.0518780280683
+------------
+------------
+time:  98.0 Myr
+simulation_bodies.center_of_mass():  [-0.08348408 -0.00296462  0.00859565]
+E_dyn:  -3.16418995986e+44 m**2 * kg * s**-2
+dE_dyn:  0.0496675255892
+------------
+------------
+time:  100.0 Myr
+simulation_bodies.center_of_mass():  [-0.04222142 -0.01280734 -0.00258401]
+E_dyn:  -3.12924649156e+44 m**2 * kg * s**-2
+dE_dyn:  0.0380756096895
+------------
+time is: 27.093 minutes
+time to run last simulation: 14.259 minutes
+\\\\\\\\\\\\
+tree SingleCluster
+\\\\\\\\\\\\
+16
+len(sim_times) is 1001
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [-0.00721709 -0.00634483 -0.00879507]
+E_dyn:  -4.91589894484e+44 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  2.0 Myr
+simulation_bodies.center_of_mass():  [ 0.05816212 -0.08814318  0.01857028]
+E_dyn:  -5.22416699593e+44 m**2 * kg * s**-2
+dE_dyn:  0.0627083783754
+------------
+------------
+time:  4.0 Myr
+simulation_bodies.center_of_mass():  [ 0.09480626 -0.11807074  0.0314186 ]
+E_dyn:  -5.28517753887e+44 m**2 * kg * s**-2
+dE_dyn:  0.0751192402803
+------------
+------------
+time:  6.0 Myr
+simulation_bodies.center_of_mass():  [ 0.10973834 -0.12405847  0.02465849]
+E_dyn:  -5.34648656247e+44 m**2 * kg * s**-2
+dE_dyn:  0.0875908195955
+------------
+------------
+time:  8.0 Myr
+simulation_bodies.center_of_mass():  [ 0.08286689 -0.10881132  0.00074441]
+E_dyn:  -5.29493569871e+44 m**2 * kg * s**-2
+dE_dyn:  0.0771042607106
+------------
+------------
+time:  10.0 Myr
+simulation_bodies.center_of_mass():  [ 0.06739682 -0.10452673 -0.01185204]
+E_dyn:  -5.35708521955e+44 m**2 * kg * s**-2
+dE_dyn:  0.0897468153146
+------------
+------------
+time:  12.0 Myr
+simulation_bodies.center_of_mass():  [ 0.08314619 -0.07030796 -0.01307318]
+E_dyn:  -5.2539823329e+44 m**2 * kg * s**-2
+dE_dyn:  0.0687734617514
+------------
+------------
+time:  14.0 Myr
+simulation_bodies.center_of_mass():  [ 0.09158954 -0.01351716 -0.00233369]
+E_dyn:  -5.20792332253e+44 m**2 * kg * s**-2
+dE_dyn:  0.059404064438
+------------
+------------
+time:  16.0 Myr
+simulation_bodies.center_of_mass():  [ 0.10856137  0.02242513 -0.004692  ]
+E_dyn:  -5.19481261316e+44 m**2 * kg * s**-2
+dE_dyn:  0.0567370630373
+------------
+------------
+time:  18.0 Myr
+simulation_bodies.center_of_mass():  [ 0.08509654  0.07628982 -0.01259908]
+E_dyn:  -5.14790658121e+44 m**2 * kg * s**-2
+dE_dyn:  0.047195363243
+------------
+------------
+time:  20.0 Myr
+simulation_bodies.center_of_mass():  [-0.00618892  0.10488045 -0.00434718]
+E_dyn:  -5.20556202401e+44 m**2 * kg * s**-2
+dE_dyn:  0.0589237253279
+------------
+------------
+time:  22.0 Myr
+simulation_bodies.center_of_mass():  [-0.07234121  0.08379927 -0.00782641]
+E_dyn:  -5.20457919412e+44 m**2 * kg * s**-2
+dE_dyn:  0.0587237965048
+------------
+------------
+time:  24.0 Myr
+simulation_bodies.center_of_mass():  [-0.10032089  0.08029599  0.00427801]
+E_dyn:  -5.2080619913e+44 m**2 * kg * s**-2
+dE_dyn:  0.0594322726603
+------------
+------------
+time:  26.0 Myr
+simulation_bodies.center_of_mass():  [-0.14404445  0.05536922  0.01998819]
+E_dyn:  -5.26485378766e+44 m**2 * kg * s**-2
+dE_dyn:  0.0709849504087
+------------
+------------
+time:  28.0 Myr
+simulation_bodies.center_of_mass():  [-0.16061942  0.00663561  0.01851837]
+E_dyn:  -5.27111227663e+44 m**2 * kg * s**-2
+dE_dyn:  0.0722580622129
+------------
+------------
+time:  30.0 Myr
+simulation_bodies.center_of_mass():  [-0.15982457 -0.03020622  0.00514185]
+E_dyn:  -5.27442299183e+44 m**2 * kg * s**-2
+dE_dyn:  0.072931533177
+------------
+------------
+time:  32.0 Myr
+simulation_bodies.center_of_mass():  [-0.13546898 -0.07625985 -0.02815163]
+E_dyn:  -5.24966766238e+44 m**2 * kg * s**-2
+dE_dyn:  0.0678957645954
+------------
+------------
+time:  34.0 Myr
+simulation_bodies.center_of_mass():  [-0.07992367 -0.12774472 -0.03872813]
+E_dyn:  -5.20343823823e+44 m**2 * kg * s**-2
+dE_dyn:  0.0584917014398
+------------
+------------
+time:  36.0 Myr
+simulation_bodies.center_of_mass():  [-0.00380423 -0.1709649  -0.01149588]
+E_dyn:  -5.15310938902e+44 m**2 * kg * s**-2
+dE_dyn:  0.048253726702
+------------
+------------
+time:  38.0 Myr
+simulation_bodies.center_of_mass():  [ 0.07815005 -0.14306104  0.01088176]
+E_dyn:  -5.21394727446e+44 m**2 * kg * s**-2
+dE_dyn:  0.0606294663419
+------------
+------------
+time:  40.0 Myr
+simulation_bodies.center_of_mass():  [ 0.10387563 -0.06151404  0.02542837]
+E_dyn:  -5.24492711761e+44 m**2 * kg * s**-2
+dE_dyn:  0.0669314354227
+------------
+------------
+time:  42.0 Myr
+simulation_bodies.center_of_mass():  [ 0.10547831  0.00304027  0.02357821]
+E_dyn:  -5.21172234606e+44 m**2 * kg * s**-2
+dE_dyn:  0.0601768678596
+------------
+------------
+time:  44.0 Myr
+simulation_bodies.center_of_mass():  [ 0.11655634  0.07348402  0.01542718]
+E_dyn:  -5.23062160851e+44 m**2 * kg * s**-2
+dE_dyn:  0.0640213859562
+------------
+------------
+time:  46.0 Myr
+simulation_bodies.center_of_mass():  [ 0.09087775  0.12288756  0.01791612]
+E_dyn:  -5.23820550183e+44 m**2 * kg * s**-2
+dE_dyn:  0.065564113624
+------------
+------------
+time:  48.0 Myr
+simulation_bodies.center_of_mass():  [ 0.07908888  0.13540858  0.00046652]
+E_dyn:  -5.2467597629e+44 m**2 * kg * s**-2
+dE_dyn:  0.0673042350483
+------------
+------------
+time:  50.0 Myr
+simulation_bodies.center_of_mass():  [ 0.07482572  0.1676068  -0.02095213]
+E_dyn:  -5.23116032965e+44 m**2 * kg * s**-2
+dE_dyn:  0.0641309734699
+------------
+------------
+time:  52.0 Myr
+simulation_bodies.center_of_mass():  [ 0.03357641  0.18108812 -0.03095608]
+E_dyn:  -5.22330655237e+44 m**2 * kg * s**-2
+dE_dyn:  0.0625333455753
+------------
+------------
+time:  54.0 Myr
+simulation_bodies.center_of_mass():  [-0.01635197  0.14088145 -0.02574311]
+E_dyn:  -5.17822505782e+44 m**2 * kg * s**-2
+dE_dyn:  0.0533627960876
+------------
+------------
+time:  56.0 Myr
+simulation_bodies.center_of_mass():  [-0.05969388  0.07160048  0.00994667]
+E_dyn:  -5.20364777256e+44 m**2 * kg * s**-2
+dE_dyn:  0.0585343252474
+------------
+------------
+time:  58.0 Myr
+simulation_bodies.center_of_mass():  [-0.08583553 -0.0104204   0.03764314]
+E_dyn:  -5.23884816193e+44 m**2 * kg * s**-2
+dE_dyn:  0.0656948445663
+------------
+------------
+time:  60.0 Myr
+simulation_bodies.center_of_mass():  [-0.077655   -0.07690358  0.04184146]
+E_dyn:  -5.271098593e+44 m**2 * kg * s**-2
+dE_dyn:  0.0722552786676
+------------
+------------
+time:  62.0 Myr
+simulation_bodies.center_of_mass():  [-0.06180547 -0.11238902  0.02257449]
+E_dyn:  -5.24939964095e+44 m**2 * kg * s**-2
+dE_dyn:  0.0678412432493
+------------
+------------
+time:  64.0 Myr
+simulation_bodies.center_of_mass():  [-0.06151963 -0.13415461 -0.00472784]
+E_dyn:  -5.21164891859e+44 m**2 * kg * s**-2
+dE_dyn:  0.0601619311271
+------------
+------------
+time:  66.0 Myr
+simulation_bodies.center_of_mass():  [-0.05871862 -0.14767106 -0.02066582]
+E_dyn:  -5.19778341603e+44 m**2 * kg * s**-2
+dE_dyn:  0.0573413884933
+------------
+------------
+time:  68.0 Myr
+simulation_bodies.center_of_mass():  [-0.04570991 -0.13704627 -0.01424312]
+E_dyn:  -5.2239830724e+44 m**2 * kg * s**-2
+dE_dyn:  0.0626709643583
+------------
+------------
+time:  70.0 Myr
+simulation_bodies.center_of_mass():  [-0.0160823  -0.10322185 -0.00198287]
+E_dyn:  -5.2155657958e+44 m**2 * kg * s**-2
+dE_dyn:  0.0609587085331
+------------
+------------
+time:  72.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01751371 -0.0580519  -0.00076895]
+E_dyn:  -5.18948879712e+44 m**2 * kg * s**-2
+dE_dyn:  0.0556540838914
+------------
+------------
+time:  74.0 Myr
+simulation_bodies.center_of_mass():  [ 0.05184564 -0.01710691 -0.00812189]
+E_dyn:  -5.21832923275e+44 m**2 * kg * s**-2
+dE_dyn:  0.0615208512832
+------------
+------------
+time:  76.0 Myr
+simulation_bodies.center_of_mass():  [ 0.08620791  0.02784444 -0.00802573]
+E_dyn:  -5.22699274003e+44 m**2 * kg * s**-2
+dE_dyn:  0.0632831957455
+------------
+------------
+time:  78.0 Myr
+simulation_bodies.center_of_mass():  [ 0.09662489  0.07245352 -0.002291  ]
+E_dyn:  -5.2677512388e+44 m**2 * kg * s**-2
+dE_dyn:  0.0715743545395
+------------
+------------
+time:  80.0 Myr
+simulation_bodies.center_of_mass():  [ 0.09703628  0.09495455  0.00457441]
+E_dyn:  -5.2725628815e+44 m**2 * kg * s**-2
+dE_dyn:  0.072553146567
+------------
+------------
+time:  82.0 Myr
+simulation_bodies.center_of_mass():  [ 0.07715935  0.10895796  0.00334803]
+E_dyn:  -5.24934071906e+44 m**2 * kg * s**-2
+dE_dyn:  0.0678292572644
+------------
+------------
+time:  84.0 Myr
+simulation_bodies.center_of_mass():  [ 0.02941019  0.09205185 -0.0046235 ]
+E_dyn:  -5.2067699272e+44 m**2 * kg * s**-2
+dE_dyn:  0.0591694389198
+------------
+------------
+time:  86.0 Myr
+simulation_bodies.center_of_mass():  [-0.00342415  0.05834302  0.00192059]
+E_dyn:  -5.17894641811e+44 m**2 * kg * s**-2
+dE_dyn:  0.0535095363475
+------------
+------------
+time:  88.0 Myr
+simulation_bodies.center_of_mass():  [-0.03320633  0.04278559  0.00112692]
+E_dyn:  -5.15718660662e+44 m**2 * kg * s**-2
+dE_dyn:  0.0490831208049
+------------
+------------
+time:  90.0 Myr
+simulation_bodies.center_of_mass():  [-0.06938317  0.02503032 -0.01127878]
+E_dyn:  -5.17394862113e+44 m**2 * kg * s**-2
+dE_dyn:  0.052492876519
+------------
+------------
+time:  92.0 Myr
+simulation_bodies.center_of_mass():  [-0.08625935 -0.00246074 -0.01282505]
+E_dyn:  -5.1947041276e+44 m**2 * kg * s**-2
+dE_dyn:  0.0567149947321
+------------
+------------
+time:  94.0 Myr
+simulation_bodies.center_of_mass():  [-0.09268569 -0.03327457 -0.01943595]
+E_dyn:  -5.27421728912e+44 m**2 * kg * s**-2
+dE_dyn:  0.0728896888032
+------------
+------------
+time:  96.0 Myr
+simulation_bodies.center_of_mass():  [-0.08657789 -0.06682754 -0.01661502]
+E_dyn:  -5.27652061234e+44 m**2 * kg * s**-2
+dE_dyn:  0.0733582344851
+------------
+------------
+time:  98.0 Myr
+simulation_bodies.center_of_mass():  [-0.06205189 -0.08621149 -0.00582971]
+E_dyn:  -5.25734886598e+44 m**2 * kg * s**-2
+dE_dyn:  0.0694582872766
+------------
+------------
+time:  100.0 Myr
+simulation_bodies.center_of_mass():  [-0.02082617 -0.08219868 -0.00045792]
+E_dyn:  -5.18819792635e+44 m**2 * kg * s**-2
+dE_dyn:  0.0553914929023
+------------
+time is: 64.848 minutes
+time to run last simulation: 37.756 minutes
+\\\\\\\\\\\\
+tree SingleCluster
+\\\\\\\\\\\\
+32
+len(sim_times) is 1001
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [-0.05607518 -0.03555252  0.01254061]
+E_dyn:  -1.1293948254e+45 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  2.0 Myr
+simulation_bodies.center_of_mass():  [ 0.01584127 -0.16401425  0.01585603]
+E_dyn:  -1.18114026043e+45 m**2 * kg * s**-2
+dE_dyn:  0.0458169577791
+------------
+------------
+time:  4.0 Myr
+simulation_bodies.center_of_mass():  [ 0.07969913 -0.252729    0.01220251]
+E_dyn:  -1.2160442759e+45 m**2 * kg * s**-2
+dE_dyn:  0.0767220183277
+------------
+------------
+time:  6.0 Myr
+simulation_bodies.center_of_mass():  [ 0.13473914 -0.31563525  0.00660716]
+E_dyn:  -1.24347811357e+45 m**2 * kg * s**-2
+dE_dyn:  0.10101275976
+------------
+------------
+time:  8.0 Myr
+simulation_bodies.center_of_mass():  [ 0.17343357 -0.35095896 -0.00375162]
+E_dyn:  -1.24935212664e+45 m**2 * kg * s**-2
+dE_dyn:  0.106213786834
+------------
+------------
+time:  10.0 Myr
+simulation_bodies.center_of_mass():  [ 0.21279748 -0.36792977 -0.00999841]
+E_dyn:  -1.25436999762e+45 m**2 * kg * s**-2
+dE_dyn:  0.110656760065
+------------
+------------
+time:  12.0 Myr
+simulation_bodies.center_of_mass():  [ 0.25936965 -0.35123568 -0.01573593]
+E_dyn:  -1.24594468157e+45 m**2 * kg * s**-2
+dE_dyn:  0.103196732931
+------------
+------------
+time:  14.0 Myr
+simulation_bodies.center_of_mass():  [ 0.3012099  -0.3097947  -0.02049899]
+E_dyn:  -1.24112846232e+45 m**2 * kg * s**-2
+dE_dyn:  0.0989323081793
+------------
+------------
+time:  16.0 Myr
+simulation_bodies.center_of_mass():  [ 0.32710911 -0.26281684 -0.02833163]
+E_dyn:  -1.23924639114e+45 m**2 * kg * s**-2
+dE_dyn:  0.0972658659914
+------------
+------------
+time:  18.0 Myr
+simulation_bodies.center_of_mass():  [ 0.31236591 -0.20218188 -0.02233636]
+E_dyn:  -1.22277239467e+45 m**2 * kg * s**-2
+dE_dyn:  0.0826792961753
+------------
+------------
+time:  20.0 Myr
+simulation_bodies.center_of_mass():  [ 0.24804188 -0.15031184  0.00706572]
+E_dyn:  -1.21770008149e+45 m**2 * kg * s**-2
+dE_dyn:  0.0781881181841
+------------
+------------
+time:  22.0 Myr
+simulation_bodies.center_of_mass():  [ 0.17896853 -0.124708    0.02819649]
+E_dyn:  -1.21659675447e+45 m**2 * kg * s**-2
+dE_dyn:  0.0772111993998
+------------
+------------
+time:  24.0 Myr
+simulation_bodies.center_of_mass():  [ 0.11755587 -0.09747513  0.04516145]
+E_dyn:  -1.20374452212e+45 m**2 * kg * s**-2
+dE_dyn:  0.0658314479964
+------------
+------------
+time:  26.0 Myr
+simulation_bodies.center_of_mass():  [ 0.05114112 -0.08092301  0.04670702]
+E_dyn:  -1.20577591797e+45 m**2 * kg * s**-2
+dE_dyn:  0.067630106717
+------------
+------------
+time:  28.0 Myr
+simulation_bodies.center_of_mass():  [-0.01315643 -0.06336407  0.02313102]
+E_dyn:  -1.21198062602e+45 m**2 * kg * s**-2
+dE_dyn:  0.0731239410338
+------------
+------------
+time:  30.0 Myr
+simulation_bodies.center_of_mass():  [-0.07911379 -0.03825746 -0.01223542]
+E_dyn:  -1.20999422782e+45 m**2 * kg * s**-2
+dE_dyn:  0.07136512458
+------------
+------------
+time:  32.0 Myr
+simulation_bodies.center_of_mass():  [-0.1368013  -0.01528453 -0.0475607 ]
+E_dyn:  -1.20215706183e+45 m**2 * kg * s**-2
+dE_dyn:  0.0644258631176
+------------
+------------
+time:  34.0 Myr
+simulation_bodies.center_of_mass():  [-0.18245098  0.00679228 -0.05632551]
+E_dyn:  -1.20438316553e+45 m**2 * kg * s**-2
+dE_dyn:  0.066396921996
+------------
+------------
+time:  36.0 Myr
+simulation_bodies.center_of_mass():  [-0.21188277  0.0257608  -0.03291455]
+E_dyn:  -1.20686476716e+45 m**2 * kg * s**-2
+dE_dyn:  0.0685942063979
+------------
+------------
+time:  38.0 Myr
+simulation_bodies.center_of_mass():  [-0.22685895  0.06574314  0.01087408]
+E_dyn:  -1.21299114033e+45 m**2 * kg * s**-2
+dE_dyn:  0.0740186806627
+------------
+------------
+time:  40.0 Myr
+simulation_bodies.center_of_mass():  [-0.24827253  0.11789945  0.05463864]
+E_dyn:  -1.22256066702e+45 m**2 * kg * s**-2
+dE_dyn:  0.082491826169
+------------
+------------
+time:  42.0 Myr
+simulation_bodies.center_of_mass():  [-0.26667459  0.15598177  0.07426707]
+E_dyn:  -1.23201059176e+45 m**2 * kg * s**-2
+dE_dyn:  0.0908590725304
+------------
+------------
+time:  44.0 Myr
+simulation_bodies.center_of_mass():  [-0.26584904  0.18552778  0.069882  ]
+E_dyn:  -1.23959976862e+45 m**2 * kg * s**-2
+dE_dyn:  0.0975787569971
+------------
+------------
+time:  46.0 Myr
+simulation_bodies.center_of_mass():  [-0.26104007  0.19801067  0.04687567]
+E_dyn:  -1.23334416862e+45 m**2 * kg * s**-2
+dE_dyn:  0.0920398614194
+------------
+------------
+time:  48.0 Myr
+simulation_bodies.center_of_mass():  [-0.232798    0.19104009  0.00910548]
+E_dyn:  -1.2299537225e+45 m**2 * kg * s**-2
+dE_dyn:  0.0890378588905
+------------
+------------
+time:  50.0 Myr
+simulation_bodies.center_of_mass():  [-0.18887167  0.19768913 -0.02585694]
+E_dyn:  -1.22489152741e+45 m**2 * kg * s**-2
+dE_dyn:  0.0845556397674
+------------
+------------
+time:  52.0 Myr
+simulation_bodies.center_of_mass():  [-0.15724292  0.20364363 -0.04955614]
+E_dyn:  -1.20874528788e+45 m**2 * kg * s**-2
+dE_dyn:  0.070259275758
+------------
+------------
+time:  54.0 Myr
+simulation_bodies.center_of_mass():  [-0.13360169  0.19791972 -0.04789784]
+E_dyn:  -1.2072977776e+45 m**2 * kg * s**-2
+dE_dyn:  0.0689776068043
+------------
+------------
+time:  56.0 Myr
+simulation_bodies.center_of_mass():  [-0.11581367  0.1741365  -0.01622457]
+E_dyn:  -1.21064429729e+45 m**2 * kg * s**-2
+dE_dyn:  0.0719407155564
+------------
+------------
+time:  58.0 Myr
+simulation_bodies.center_of_mass():  [-0.09077886  0.1319273   0.01704158]
+E_dyn:  -1.21362404921e+45 m**2 * kg * s**-2
+dE_dyn:  0.0745790771419
+------------
+------------
+time:  60.0 Myr
+simulation_bodies.center_of_mass():  [-0.05676771  0.08301708  0.037121  ]
+E_dyn:  -1.21006151948e+45 m**2 * kg * s**-2
+dE_dyn:  0.0714247066314
+------------
+------------
+time:  62.0 Myr
+simulation_bodies.center_of_mass():  [-0.01682646  0.02924192  0.0375503 ]
+E_dyn:  -1.20449217529e+45 m**2 * kg * s**-2
+dE_dyn:  0.0664934425067
+------------
+------------
+time:  64.0 Myr
+simulation_bodies.center_of_mass():  [ 0.03460948 -0.02792397  0.02053024]
+E_dyn:  -1.20983812078e+45 m**2 * kg * s**-2
+dE_dyn:  0.071226902735
+------------
+------------
+time:  66.0 Myr
+simulation_bodies.center_of_mass():  [ 0.10114508 -0.07827411  0.00315978]
+E_dyn:  -1.21173228853e+45 m**2 * kg * s**-2
+dE_dyn:  0.0729040555837
+------------
+------------
+time:  68.0 Myr
+simulation_bodies.center_of_mass():  [ 0.17050843 -0.11072778 -0.0063825 ]
+E_dyn:  -1.21775050619e+45 m**2 * kg * s**-2
+dE_dyn:  0.0782327657245
+------------
+------------
+time:  70.0 Myr
+simulation_bodies.center_of_mass():  [ 0.23880385 -0.12815384 -0.01560598]
+E_dyn:  -1.21977765096e+45 m**2 * kg * s**-2
+dE_dyn:  0.0800276604162
+------------
+------------
+time:  72.0 Myr
+simulation_bodies.center_of_mass():  [ 0.30127332 -0.13062791 -0.02722962]
+E_dyn:  -1.21081450109e+45 m**2 * kg * s**-2
+dE_dyn:  0.0720914191032
+------------
+------------
+time:  74.0 Myr
+simulation_bodies.center_of_mass():  [ 0.35738976 -0.11474743 -0.03513058]
+E_dyn:  -1.21967175989e+45 m**2 * kg * s**-2
+dE_dyn:  0.0799339012875
+------------
+------------
+time:  76.0 Myr
+simulation_bodies.center_of_mass():  [ 0.38743063 -0.08571115 -0.03200245]
+E_dyn:  -1.21920315012e+45 m**2 * kg * s**-2
+dE_dyn:  0.079518980161
+------------
+------------
+time:  78.0 Myr
+simulation_bodies.center_of_mass():  [ 0.38120107 -0.05250824 -0.02226302]
+E_dyn:  -1.21892352524e+45 m**2 * kg * s**-2
+dE_dyn:  0.079271391919
+------------
+------------
+time:  80.0 Myr
+simulation_bodies.center_of_mass():  [ 0.34008554 -0.02401154 -0.01080235]
+E_dyn:  -1.21958440476e+45 m**2 * kg * s**-2
+dE_dyn:  0.0798565544383
+------------
+------------
+time:  82.0 Myr
+simulation_bodies.center_of_mass():  [ 0.26735229 -0.00962148  0.00299828]
+E_dyn:  -1.22128843617e+45 m**2 * kg * s**-2
+dE_dyn:  0.0813653548776
+------------
+------------
+time:  84.0 Myr
+simulation_bodies.center_of_mass():  [ 0.17967516 -0.01934264  0.01708447]
+E_dyn:  -1.22068696233e+45 m**2 * kg * s**-2
+dE_dyn:  0.0808327919316
+------------
+------------
+time:  86.0 Myr
+simulation_bodies.center_of_mass():  [ 0.1047721  -0.04507214  0.03866137]
+E_dyn:  -1.21861106115e+45 m**2 * kg * s**-2
+dE_dyn:  0.0789947268563
+------------
+------------
+time:  88.0 Myr
+simulation_bodies.center_of_mass():  [ 0.04209436 -0.0587093   0.04810542]
+E_dyn:  -1.22169751257e+45 m**2 * kg * s**-2
+dE_dyn:  0.081727563373
+------------
+------------
+time:  90.0 Myr
+simulation_bodies.center_of_mass():  [-0.02056114 -0.06130183  0.03656564]
+E_dyn:  -1.21526017274e+45 m**2 * kg * s**-2
+dE_dyn:  0.0760277499105
+------------
+------------
+time:  92.0 Myr
+simulation_bodies.center_of_mass():  [-0.0814123  -0.05922838  0.0095802 ]
+E_dyn:  -1.21322228339e+45 m**2 * kg * s**-2
+dE_dyn:  0.0742233416513
+------------
+------------
+time:  94.0 Myr
+simulation_bodies.center_of_mass():  [-0.13722671 -0.06037765 -0.0265089 ]
+E_dyn:  -1.22402917053e+45 m**2 * kg * s**-2
+dE_dyn:  0.0837920831588
+------------
+------------
+time:  96.0 Myr
+simulation_bodies.center_of_mass():  [-0.18241287 -0.0574456  -0.05012111]
+E_dyn:  -1.21971278842e+45 m**2 * kg * s**-2
+dE_dyn:  0.0799702291738
+------------
+------------
+time:  98.0 Myr
+simulation_bodies.center_of_mass():  [-0.21973994 -0.05073711 -0.05397153]
+E_dyn:  -1.20846416278e+45 m**2 * kg * s**-2
+dE_dyn:  0.070010359176
+------------
+------------
+time:  100.0 Myr
+simulation_bodies.center_of_mass():  [-0.23661628 -0.04882905 -0.03111318]
+E_dyn:  -1.19852149034e+45 m**2 * kg * s**-2
+dE_dyn:  0.0612068192513
+------------
+time is: 266.677 minutes
+time to run last simulation: 201.828 minutes
+\\\\\\\\\\\\
+tree SingleCluster
+\\\\\\\\\\\\
+64
+len(sim_times) is 1001
+------------
+time:  0.0 Myr
+simulation_bodies.center_of_mass():  [-0.06513513 -0.05416039 -0.0435196 ]
+E_dyn:  -3.05518675791e+45 m**2 * kg * s**-2
+dE_dyn:  0.0
+------------
+------------
+time:  2.0 Myr
+simulation_bodies.center_of_mass():  [ 0.00674751 -0.11647467 -0.03879984]
+E_dyn:  -3.11523171186e+45 m**2 * kg * s**-2
+dE_dyn:  0.01965344796
+------------
+------------
+time:  4.0 Myr
+simulation_bodies.center_of_mass():  [ 0.08189219 -0.15619779 -0.01651426]
+E_dyn:  -3.19848208369e+45 m**2 * kg * s**-2
+dE_dyn:  0.0469023130638
+------------
+------------
+time:  6.0 Myr
+simulation_bodies.center_of_mass():  [ 0.15358256 -0.18220658  0.01271656]
+E_dyn:  -3.27576659839e+45 m**2 * kg * s**-2
+dE_dyn:  0.0721984801468
+------------
+------------
+time:  8.0 Myr
+simulation_bodies.center_of_mass():  [ 0.22082941 -0.18892285  0.0343507 ]
+E_dyn:  -3.32723979067e+45 m**2 * kg * s**-2
+dE_dyn:  0.0890462856522
+------------
+------------
+time:  10.0 Myr
+simulation_bodies.center_of_mass():  [ 0.28788419 -0.18307135  0.04150399]
+E_dyn:  -3.34216062332e+45 m**2 * kg * s**-2
+dE_dyn:  0.0939300567047
+------------
+------------
+time:  12.0 Myr
+simulation_bodies.center_of_mass():  [ 0.3538348  -0.15218338  0.02836821]
+E_dyn:  -3.3104533811e+45 m**2 * kg * s**-2
+dE_dyn:  0.083551888452
+------------
+------------
+time:  14.0 Myr
+simulation_bodies.center_of_mass():  [ 0.39467861 -0.09808845  0.00852801]
+E_dyn:  -3.31442846857e+45 m**2 * kg * s**-2
+dE_dyn:  0.0848529832075
+------------
+------------
+time:  16.0 Myr
+simulation_bodies.center_of_mass():  [ 0.40726215 -0.05070755 -0.01002515]
+E_dyn:  -3.32323098139e+45 m**2 * kg * s**-2
+dE_dyn:  0.0877341533348
+------------
+------------
+time:  18.0 Myr
+simulation_bodies.center_of_mass():  [ 0.39172046 -0.01123028 -0.02111152]
+E_dyn:  -3.29995746926e+45 m**2 * kg * s**-2
+dE_dyn:  0.0801164481103
+------------
+------------
+time:  20.0 Myr
+simulation_bodies.center_of_mass():  [ 0.3467752   0.01421191 -0.0168237 ]
+E_dyn:  -3.27604609827e+45 m**2 * kg * s**-2
+dE_dyn:  0.0722899638762
+------------
+------------
+time:  22.0 Myr
+simulation_bodies.center_of_mass():  [ 0.28619542  0.02005325 -0.00927534]
+E_dyn:  -3.24629027206e+45 m**2 * kg * s**-2
+dE_dyn:  0.0625505179551
+------------
+------------
+time:  24.0 Myr
+simulation_bodies.center_of_mass():  [ 0.21590554  0.01455313 -0.00101844]
+E_dyn:  -3.19803743274e+45 m**2 * kg * s**-2
+dE_dyn:  0.0467567733683
+------------
+------------
+time:  26.0 Myr
+simulation_bodies.center_of_mass():  [ 0.13787597 -0.00722435 -0.00113511]
+E_dyn:  -3.1682149085e+45 m**2 * kg * s**-2
+dE_dyn:  0.0369954963652
+------------
+------------
+time:  28.0 Myr
+simulation_bodies.center_of_mass():  [ 0.06672584 -0.03236201 -0.01389171]
+E_dyn:  -3.16493267098e+45 m**2 * kg * s**-2
+dE_dyn:  0.0359211798742
+------------
+------------
+time:  30.0 Myr
+simulation_bodies.center_of_mass():  [-0.0003654  -0.04385253 -0.02149535]
+E_dyn:  -3.17577888091e+45 m**2 * kg * s**-2
+dE_dyn:  0.0394712770629
+------------
+------------
+time:  32.0 Myr
+simulation_bodies.center_of_mass():  [-0.0673515  -0.0499783  -0.02103588]
+E_dyn:  -3.19390033282e+45 m**2 * kg * s**-2
+dE_dyn:  0.0454026499538
+------------
+------------
+time:  34.0 Myr
+simulation_bodies.center_of_mass():  [-0.12604986 -0.05190893 -0.01292381]
+E_dyn:  -3.22187400457e+45 m**2 * kg * s**-2
+dE_dyn:  0.0545587749222
+------------
+------------
+time:  36.0 Myr
+simulation_bodies.center_of_mass():  [-0.17755959 -0.04173385  0.00324084]
+E_dyn:  -3.22836723284e+45 m**2 * kg * s**-2
+dE_dyn:  0.0566840879665
+------------
+------------
+time:  38.0 Myr
+simulation_bodies.center_of_mass():  [-0.23032063 -0.00892375  0.02246322]
+E_dyn:  -3.23162930727e+45 m**2 * kg * s**-2
+dE_dyn:  0.0577518048304
+------------
+------------
+time:  40.0 Myr
+simulation_bodies.center_of_mass():  [-0.29752558  0.03205813  0.02837169]
+E_dyn:  -3.26315681983e+45 m**2 * kg * s**-2
+dE_dyn:  0.0680711453699
+------------
+------------
+time:  42.0 Myr
+simulation_bodies.center_of_mass():  [-0.36225157  0.05594262  0.01361114]
+E_dyn:  -3.28375908992e+45 m**2 * kg * s**-2
+dE_dyn:  0.0748145203971
+------------
+------------
+time:  44.0 Myr
+simulation_bodies.center_of_mass():  [-0.40829787  0.06073826 -0.00769788]
+E_dyn:  -3.29695570311e+45 m**2 * kg * s**-2
+dE_dyn:  0.0791339333279
+------------
+------------
+time:  46.0 Myr
+simulation_bodies.center_of_mass():  [-0.43334645  0.04317782 -0.02482259]
+E_dyn:  -3.2935040757e+45 m**2 * kg * s**-2
+dE_dyn:  0.0780041734518
+------------
+------------
+time:  48.0 Myr
+simulation_bodies.center_of_mass():  [-0.42503093  0.00933535 -0.03346693]
+E_dyn:  -3.28312133025e+45 m**2 * kg * s**-2
+dE_dyn:  0.0746057738535
+------------
+------------
+time:  50.0 Myr
+simulation_bodies.center_of_mass():  [-0.38612905 -0.02285837 -0.02651932]
+E_dyn:  -3.26127244953e+45 m**2 * kg * s**-2
+dE_dyn:  0.0674543679171
+------------
+------------
+time:  52.0 Myr
+simulation_bodies.center_of_mass():  [-0.32571947 -0.05554622 -0.0054983 ]
+E_dyn:  -3.21432272856e+45 m**2 * kg * s**-2
+dE_dyn:  0.0520871499088
+------------
+------------
+time:  54.0 Myr
+simulation_bodies.center_of_mass():  [-0.23823326 -0.07942575  0.0220725 ]
+E_dyn:  -3.20648056386e+45 m**2 * kg * s**-2
+dE_dyn:  0.0495203134678
+------------
+------------
+time:  56.0 Myr
+simulation_bodies.center_of_mass():  [-0.13965393 -0.08186068  0.03973719]
+E_dyn:  -3.22783237735e+45 m**2 * kg * s**-2
+dE_dyn:  0.0565090232192
+------------
+------------
+time:  58.0 Myr
+simulation_bodies.center_of_mass():  [-0.03925954 -0.07222125  0.03251485]
+E_dyn:  -3.22066401834e+45 m**2 * kg * s**-2
+dE_dyn:  0.0541627316271
+------------
+------------
+time:  60.0 Myr
+simulation_bodies.center_of_mass():  [ 0.06214316 -0.04941609  0.00635741]
+E_dyn:  -3.1959411205e+45 m**2 * kg * s**-2
+dE_dyn:  0.0460706247278
+------------
+------------
+time:  62.0 Myr
+simulation_bodies.center_of_mass():  [ 0.15122675 -0.01029436 -0.02382062]
+E_dyn:  -3.17513520674e+45 m**2 * kg * s**-2
+dE_dyn:  0.0392605946345
+------------
+------------
+time:  64.0 Myr
+simulation_bodies.center_of_mass():  [ 0.21340729  0.03682395 -0.04287127]
+E_dyn:  -3.20324113746e+45 m**2 * kg * s**-2
+dE_dyn:  0.0484600095804
+------------
+------------
+time:  66.0 Myr
+simulation_bodies.center_of_mass():  [ 0.24913624  0.08153503 -0.03731294]
+E_dyn:  -3.22078810969e+45 m**2 * kg * s**-2
+dE_dyn:  0.0542033482438
+------------
+------------
+time:  68.0 Myr
+simulation_bodies.center_of_mass():  [ 0.2636574   0.11808296 -0.00506629]
+E_dyn:  -3.2291266751e+45 m**2 * kg * s**-2
+dE_dyn:  0.0569326627067
+------------
+------------
+time:  70.0 Myr
+simulation_bodies.center_of_mass():  [ 0.27315534  0.13857216  0.03318116]
+E_dyn:  -3.2439910318e+45 m**2 * kg * s**-2
+dE_dyn:  0.0617979484908
+------------
+------------
+time:  72.0 Myr
+simulation_bodies.center_of_mass():  [ 0.28370292  0.1473689   0.05080881]
+E_dyn:  -3.25292138393e+45 m**2 * kg * s**-2
+dE_dyn:  0.0647209619895
+------------
+------------
+time:  74.0 Myr
+simulation_bodies.center_of_mass():  [ 0.29401596  0.15183796  0.04316403]
+E_dyn:  -3.27151304667e+45 m**2 * kg * s**-2
+dE_dyn:  0.0708062406363
+------------
+------------
+time:  76.0 Myr
+simulation_bodies.center_of_mass():  [ 0.29909055  0.15407269  0.01848705]
+E_dyn:  -3.2591988495e+45 m**2 * kg * s**-2
+dE_dyn:  0.066775653261
+------------
+------------
+time:  78.0 Myr
+simulation_bodies.center_of_mass():  [ 0.29725626  0.15776005 -0.01762071]
+E_dyn:  -3.23955075953e+45 m**2 * kg * s**-2
+dE_dyn:  0.0603445930588
+------------
+------------
+time:  80.0 Myr
+simulation_bodies.center_of_mass():  [ 0.28354911  0.16746476 -0.0492425 ]
+E_dyn:  -3.24715296719e+45 m**2 * kg * s**-2
+dE_dyn:  0.0628328886229
+------------

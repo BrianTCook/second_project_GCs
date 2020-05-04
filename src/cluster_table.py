@@ -11,6 +11,7 @@ USE ON MAC NOT ON VIRTUAL MACHINE
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 def sort_clusters_by_attribute(attribute):
 
@@ -44,19 +45,17 @@ def sort_clusters_by_attribute(attribute):
     vys = [ vrs[i] * np.sin(phis[i]) + vphis[i] * np.cos(phis[i]) for i in range(N) ]
     vzs = [ vzs[i] for i in range(N) ]
     
-    dists = [ np.sqrt(xs[i]**2 + ys[i]**2 + zs[i]**2) for i in range(N) ]
-    speeds = [ np.sqrt(vxs[i]**2 + vys[i]**2 + vzs[i]**2) for i in range(N) ]
+    dists = [ round(np.sqrt(xs[i]**2 + ys[i]**2 + zs[i]**2), 3) for i in range(N) ]
+    speeds = [ round(np.sqrt(vxs[i]**2 + vys[i]**2 + vzs[i]**2), 2) for i in range(N) ]
     
     Nstars = [ len(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)) for i in range(N) ]
-    masses = [ np.sum(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)) for i in range(N) ]
+    masses = [ round(np.sum(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)), 2) for i in range(N) ]
     radii = np.loadtxt(data_directory+'/ICs/cluster_radii_for_sampling.txt') 
+    radii = [ round(r, 2) for r in radii ]
     
     df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds, radii)), columns=['M', 'Nstars', '|r|', '|v|', 'rvir'])
     
     df_sorted_by_r = df.sort_values(by=[attribute])
-    
-    #df_sorted_by_r_reindexed_and_rounded = df_sorted_by_r.reset_index(drop=True).round(decimals=3)
-    #df_sorted_by_r_reindexed_and_rounded.to_latex()
     
     indices_dict = {}
     
@@ -64,6 +63,10 @@ def sort_clusters_by_attribute(attribute):
         indices_dict.update( {df : df_sorted} )
         
     return indices_dict
+
+if __name__ in '__main__':
+    
+    sort_clusters_by_attribute('|r|')
 
 '''
 plt.rc('font', family='serif')

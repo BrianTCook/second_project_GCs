@@ -52,7 +52,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     channel_from_gravity_to_framework = gravity.particles.new_channel_to(simulation_bodies)
     channel_from_framework_to_gravity = simulation_bodies.new_channel_to(gravity.particles)
     
-    channel_from_stellar_to_framework = stellar.particles.new_channel_to(simulation_bodies)
+    #channel_from_stellar_to_framework = stellar.particles.new_channel_to(simulation_bodies)
     
     
     Ntotal = len(simulation_bodies)
@@ -84,7 +84,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
                                            for i in range(Norbiters) ]
     
     #for 3D numpy array storage
-    Nsavetimes = 50
+    Nsavetimes = 20
     all_data = np.zeros((Nsavetimes+1, Ntotal, 6))
     mass_data = np.zeros((Nsavetimes+1, Ntotal))    
     #COM_data = np.zeros((len(sim_times), Norbiters, 2))
@@ -111,6 +111,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         delta_energies.append(dE_dyn)
          
+        '''
         if j%gadget_flag == 0:
             
             print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
@@ -131,7 +132,6 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             all_data[j_like_index, :len(data_t.index), :] = data_t.values
             np.savetxt('enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
         
-            '''
             x, y = data_t['x'].tolist(), data_t['y'].tolist()
             
             #stuff to analyze COM of each star cluster
@@ -148,12 +148,12 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             
                 COM_data[j_like_index, k, 0] = x_COM
                 COM_data[j_like_index, k, 1] = y_COM
-            '''
 
-            j_like_index += 1
+            j_like_index += 1 
+        '''
     
-        stellar.evolve_model(t)
-        channel_from_stellar_to_framework.copy()
+        #stellar.evolve_model(t)
+        #channel_from_stellar_to_framework.copy()
         
         channel_from_framework_to_gravity.copy()
         gravity.evolve_model(t)
@@ -164,9 +164,9 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     except:
         print('gravity cannot be stopped, mwahahaha')
   
-    np.savetxt(code_name + '_' + orbiter_name + '_masses_Norbiters_' + str(Norbiters) + '.txt', mass_data)
-    np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '.txt', cluster_colors)
-    np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '.txt', delta_energies)
-    np.savetxt(code_name + '_' + orbiter_name + '_clock_times.txt', clock_times)
+    #np.savetxt(code_name + '_' + orbiter_name + '_masses_Norbiters_' + str(Norbiters) + '_dt_' + str(dt.value_in(units.Myr)) + '.txt', mass_data)
+    #np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '_dt_' + str(dt.value_in(units.Myr)) + '.txt', cluster_colors)
+    np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '_dt_' + str(dt.value_in(units.Myr)) + '.txt', delta_energies)
+    #np.savetxt(code_name + '_' + orbiter_name + '_dt_' + str(dt.value_in(units.Myr)) + '.txt''_clock_times.txt', clock_times)
     
     return 0

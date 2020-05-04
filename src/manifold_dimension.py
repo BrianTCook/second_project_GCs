@@ -26,11 +26,11 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
     '''
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
-    filename_init = 'tree_data/tree_seba_100Myr/enbid_%s_frame_00000_Norbiters_%s.ascii'%(code_name, str(Norbiters))
+    filename_init = 'tree_data/tree_seba_80Myr/enbid_%s_frame_00000_Norbiters_%s.ascii'%(code_name, str(Norbiters))
     clusters_init = np.loadtxt(datadir+filename_init)
     
-    gadget_flag = int(math.floor(len(sim_times_unitless)/50))
-    dimension_array = np.zeros((Norbiters, 50+1)) #see gadget_flag
+    gadget_flag = int(math.floor(len(sim_times_unitless)/40))
+    dimension_array = np.zeros((Norbiters, 40+1)) #see gadget_flag
     
     if finder_name == 'naive':
         
@@ -54,7 +54,7 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
             
             if j%gadget_flag == 0:
                 
-                filename_t = 'tree_data/tree_seba_100Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
+                filename_t = 'tree_data/tree_seba_80Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
                 clusters_t = np.loadtxt(datadir+filename_t)
                     
                 for k, number_of_stars in enumerate(cluster_populations):
@@ -93,7 +93,7 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
             
             if j%gadget_flag == 0:
                 
-                filename_t = 'tree_data/tree_seba_100Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
+                filename_t = 'tree_data/tree_seba_80Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
                 clusters_t = np.loadtxt(datadir+filename_t)
                 
                 for k, number_of_stars in enumerate(cluster_populations):
@@ -112,7 +112,7 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
                     
                     for var_rat in variance_ratios:
                         
-                        if var_rat >= 0.01:
+                        if var_rat >= 0.05:
                             
                             D += 1
                 
@@ -125,11 +125,11 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
 if __name__ in '__main__':
     
     code_name = 'tree'
-    tend, dt = 100., 0.1
+    tend, dt = 80., 0.1
     
     sim_times_unitless = np.arange(0., tend+dt, dt)
     
-    logN_max = 4
+    logN_max = 6
     Norbiters_list = [ 2**i for i in range(logN_max+1) ]
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
@@ -165,7 +165,7 @@ if __name__ in '__main__':
     plt.rc('text', usetex = True)
     plt.rc('font', family = 'serif')
     
-    dim_finder_names = [ 'pca', 'naive' ] #, 'autoencoding' ]
+    dim_finder_names = [ 'pca' ] #, 'naive' ] #, 'autoencoding' ]
         
     for finder_name in dim_finder_names:    
         for Norbiters in Norbiters_list:
@@ -182,21 +182,25 @@ if __name__ in '__main__':
             dists_min, dists_max = min(dists_relevant), max(dists_relevant)
             dmin, dmax = round(dists_min, 2), round(dists_max, 2)
             
-            im = plt.imshow(dim_array, origin='lower', aspect='auto',
+            im = plt.imshow(dim_array, origin='lower', aspect='equal',
                             extent=[min(sim_times_unitless), max(sim_times_unitless), 0, Norbiters],
                             norm=Normalize(vmin=0, vmax=6))
             
-            plt.gca().set_yticklabels([dmin, (dmax-dmin)/2., dmax])
+            
+            plt.gca().set_yticks([0, Norbiters/2, Norbiters])
+            plt.gca().set_yticklabels([dmin, round((dmax-dmin)/2., 2), dmax])
             
             cbar = plt.colorbar(im)
             cbar.set_label(r'$D$', rotation=270, labelpad=12)
-            plt.ylabel(r'$|\mathbf{r}_{0}|$ (kpc)')#, fontsize=16)
-            plt.xlabel('Simulation Time (Myr)')#, fontsize=16)
-            plt.title('Estimated Manifold Dimensions (%s)'%(finder_name))#, fontsize=24)
-            plt.gca().set_yticks(np.arange(0, Norbiters, math.ceil(Norbiters/4)));
-            plt.savefig('dimensions_%s_Norbiters=%i.jpg'%(finder_name, Norbiters))
+            plt.ylabel(r'$|\mathbf{r}_{0}|$ (kpc)', fontsize=16)
+            plt.xlabel('Simulation Time (Myr)', fontsize=16)
+            plt.title('Estimated Manifold Dimensions (%s)'%(finder_name), fontsize=16)
+            plt.gca().tick_params(labelsize='large')
+            plt.tight_layout()
+            plt.savefig('dimensions_%s_Norbiters=%i.pdf'%(finder_name, Norbiters))
             plt.close()
 
+    '''
     plt.figure()
 
     for finder_name in dim_finder_names:
@@ -230,4 +234,5 @@ if __name__ in '__main__':
     plt.tight_layout()
     plt.savefig('dimension_percentiles_Norbiters=%i.pdf'%(max(Norbiters_list)))
     plt.close()
+    '''
     

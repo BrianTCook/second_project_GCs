@@ -111,45 +111,45 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         
         delta_energies.append(dE_dyn)
          
-        '''
         if j%gadget_flag == 0:
             
             print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
                         
-            io.write_set_to_file(gravity.particles, filename, 'csv',
-                                 attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
-                                 attribute_names = attributes)
-            
-            data_t = pd.read_csv(filename, names=list(attributes))
-            data_t = data_t.drop([0, 1, 2]) #removes labels units, and unit names
-            
-            masses = data_t['mass'].tolist()
-            mass_data[j_like_index, :len(data_t.index)] = masses #in solar masses
-            
-            data_t = data_t.drop(columns=['mass']) #goes from 7D --> 6D
-            data_t = data_t.astype(float) #strings to floats
-
-            all_data[j_like_index, :len(data_t.index), :] = data_t.values
-            np.savetxt('enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
+        '''
+        io.write_set_to_file(gravity.particles, filename, 'csv',
+                             attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
+                             attribute_names = attributes)
         
-            x, y = data_t['x'].tolist(), data_t['y'].tolist()
-            
-            #stuff to analyze COM of each star cluster
-            for k, number_of_stars in enumerate(cluster_populations_sorted):
-                
-                starting_index = int(np.sum( cluster_populations_sorted[:k] ))
-                ending_index = starting_index + int(number_of_stars)
-                
-                cluster_masses = body_masses[starting_index:ending_index]
-                cluster_total_mass = cluster_masses.sum()
-            
-                x_COM = np.sum( [ body_masses[i]*x[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
-                y_COM = np.sum( [ body_masses[i]*y[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
-            
-                COM_data[j_like_index, k, 0] = x_COM
-                COM_data[j_like_index, k, 1] = y_COM
+        data_t = pd.read_csv(filename, names=list(attributes))
+        data_t = data_t.drop([0, 1, 2]) #removes labels units, and unit names
+        
+        masses = data_t['mass'].tolist()
+        mass_data[j_like_index, :len(data_t.index)] = masses #in solar masses
+        
+        data_t = data_t.drop(columns=['mass']) #goes from 7D --> 6D
+        data_t = data_t.astype(float) #strings to floats
 
-            j_like_index += 1 
+        all_data[j_like_index, :len(data_t.index), :] = data_t.values
+        np.savetxt('enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
+    
+        x, y = data_t['x'].tolist(), data_t['y'].tolist()
+        
+        #stuff to analyze COM of each star cluster
+        for k, number_of_stars in enumerate(cluster_populations_sorted):
+            
+            starting_index = int(np.sum( cluster_populations_sorted[:k] ))
+            ending_index = starting_index + int(number_of_stars)
+            
+            cluster_masses = body_masses[starting_index:ending_index]
+            cluster_total_mass = cluster_masses.sum()
+        
+            x_COM = np.sum( [ body_masses[i]*x[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
+            y_COM = np.sum( [ body_masses[i]*y[i]/cluster_total_mass for i in range(starting_index, ending_index) ] ) #in kpc
+        
+            COM_data[j_like_index, k, 0] = x_COM
+            COM_data[j_like_index, k, 1] = y_COM
+
+        j_like_index += 1 
         '''
     
         #stellar.evolve_model(t)

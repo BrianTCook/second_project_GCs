@@ -42,7 +42,7 @@ if __name__ in '__main__':
     potential = MWPotential2014 #galpy
     
     sepBinary = 20.|units.parsec #not necessary if not doing binary cluster part
-    tend, dt = 100.|units.Myr, 0.1|units.Myr
+    tend = 100.|units.Myr
     
     dt_values = [ 0.01|units.Myr, 0.05|units.Myr, 0.1|units.Myr, 0.5|units.Myr ]
     
@@ -65,7 +65,7 @@ if __name__ in '__main__':
     radii_all = np.loadtxt(data_directory+'ICs/cluster_radii_for_sampling.txt')
 
     logN_max = 6
-    Norbiters_list = [ 2**4 ] #2**i for i in range(logN_max+1) ]
+    Norbiters_list = [ 2**2 ] #2**i for i in range(logN_max+1) ]
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
     code_names = [ 'tree' ] #, 'nemesis' ]  , 'Nbody'
 

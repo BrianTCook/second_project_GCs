@@ -26,11 +26,11 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
     '''
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
-    filename_init = 'tree_data/tree_seba_80Myr/enbid_%s_frame_00000_Norbiters_%s.ascii'%(code_name, str(Norbiters))
+    filename_init = 'tree_data/tree_seba_100Myr/enbid_%s_frame_00000_Norbiters_%s.ascii'%(code_name, str(Norbiters))
     clusters_init = np.loadtxt(datadir+filename_init)
     
-    gadget_flag = int(math.floor(len(sim_times_unitless)/40))
-    dimension_array = np.zeros((Norbiters, 40+1)) #see gadget_flag
+    gadget_flag = int(math.floor(len(sim_times_unitless)/50))
+    dimension_array = np.zeros((Norbiters, 50+1)) #see gadget_flag
     
     if finder_name == 'naive':
         
@@ -54,7 +54,7 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
             
             if j%gadget_flag == 0:
                 
-                filename_t = 'tree_data/tree_seba_80Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
+                filename_t = 'tree_data/tree_seba_100Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
                 clusters_t = np.loadtxt(datadir+filename_t)
                     
                 for k, number_of_stars in enumerate(cluster_populations):
@@ -93,7 +93,7 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
             
             if j%gadget_flag == 0:
                 
-                filename_t = 'tree_data/tree_seba_80Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
+                filename_t = 'tree_data/tree_seba_100Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
                 clusters_t = np.loadtxt(datadir+filename_t)
                 
                 for k, number_of_stars in enumerate(cluster_populations):
@@ -125,7 +125,7 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
 if __name__ in '__main__':
     
     code_name = 'tree'
-    tend, dt = 80., 0.1
+    tend, dt = 100., 0.4
     
     sim_times_unitless = np.arange(0., tend+dt, dt)
     
@@ -165,7 +165,7 @@ if __name__ in '__main__':
     plt.rc('text', usetex = True)
     plt.rc('font', family = 'serif')
     
-    dim_finder_names = [ 'pca' ] #, 'naive' ] #, 'autoencoding' ]
+    dim_finder_names = [ 'pca', 'naive' ]
         
     for finder_name in dim_finder_names:    
         for Norbiters in Norbiters_list:

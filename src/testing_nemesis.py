@@ -63,7 +63,7 @@ if __name__ in '__main__':
     radii_all = np.loadtxt(data_directory+'ICs/cluster_radii_for_sampling.txt')
 
     logN_max = 7
-    Norbiters_list = [ 2**i for i in range(logN_max+1) ]
+    Norbiters_list = [ 2**7 ] #2**i for i in range(logN_max+1) ]
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
     code_names = [ 'tree' ] #, 'nemesis' ]  , 'Nbody'
 

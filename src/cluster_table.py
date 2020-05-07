@@ -11,6 +11,7 @@ USE ON MAC NOT ON VIRTUAL MACHINE
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 unused import
 import math
 
 def sort_clusters_by_attribute(attribute):
@@ -21,8 +22,8 @@ def sort_clusters_by_attribute(attribute):
     '''
     
     #data_directory = '/home/s1780638/second_project_gcs/data/'
-    data_directory = '/home/brian/Desktop/second_project_gcs/data/'
-    #data_directory = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/'
+    #data_directory = '/home/brian/Desktop/second_project_gcs/data/'
+    data_directory = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/'
     
     rs = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')
     phis = np.loadtxt(data_directory+'ICs/dehnen_phivals.txt')
@@ -56,48 +57,9 @@ def sort_clusters_by_attribute(attribute):
     df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds, radii)), columns=['M', 'Nstars', '|r|', '|v|', 'rvir'])
     
     df_sorted_by_r = df.sort_values(by=[attribute])
-    df_sorted_by_r = df_sorted_by_r.reset_index(drop=True)
+    #df_sorted_by_r = df_sorted_by_r.reset_index(drop=True)
     
     indices_dict = {}
-    
-    '''
-    plt.rc('font', family='serif')
-    plt.rc('text', usetex=True)
-    
-    plt.figure()
-    
-    max_vx, max_vy = 20*max(vxs), 20*max(vys)
-    
-    for i in range(N):
-    
-        plt.scatter(xs[i], ys[i], s=math.ceil(np.log10(Nstars[i])), c='k')
-        plt.arrow(xs[i], ys[i], vxs[i]/max_vx, vys[i]/max_vy)
-        
-    plt.xlim(-1, 1)
-    plt.ylim(-1, 1)
-    plt.xlabel(r'$x$ (kpc)', fontsize=16)
-    plt.ylabel(r'$y$ (kpc)', fontsize=16)
-    plt.gca().set_xticks([-1, -0.5, 0, 0.5, 1])
-    plt.gca().set_yticks([-1, -0.5, 0, 0.5, 1])
-    plt.gca().set_aspect('equal')
-    plt.gca().tick_params(labelsize='large')
-    plt.tight_layout()
-    plt.savefig('xy_plane_initial.pdf')
-    plt.close()
-    
-    plt.figure()
-    
-    plt.scatter(masses, radii, s=2, c='k')
-    plt.xlabel(r'$M_{\mathrm{cluster}}$ ($M_{\odot}$)', fontsize=20)
-    plt.ylabel(r'$r_{\mathrm{vir}, 0}$ (pc)', fontsize=20)
-    plt.gca().set_xscale('log')
-    plt.gca().set_yscale('log')
-    plt.gca().tick_params(labelsize='large')
-    plt.gca().set_aspect('equal')
-    plt.tight_layout()
-    plt.savefig('mass_radius_relation.pdf')
-    plt.close()
-    '''
     
     for df, df_sorted in zip(df.index, df_sorted_by_r.index):
         indices_dict.update( {df : df_sorted} )
@@ -108,7 +70,89 @@ if __name__ in '__main__':
     
     sort_clusters_by_attribute('|r|')
 
+
 '''
+    plt.rc('font', family='serif')
+    plt.rc('text', usetex=True)
+    
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+        
+    color_list_xyz = []
+    
+    for i in range(N):
+        
+        color_i = 'C' + str(math.ceil(np.log2(i+1)))
+        inew = indices_dict[i]
+        print(i, inew)
+        
+        if color_i not in color_list_xyz:
+            
+            min_i, max_i = int(str(math.ceil(np.log2(i+1))))-1, int(str(math.ceil(np.log2(i+1))))
+        
+            ax.scatter(xs[inew], ys[inew], zs[inew], s=2*math.ceil(np.log10(Nstars[inew])), 
+                       c=color_i, label=r'$%i \leq \log_{2}(\mathrm{Index}+1) < %s$'%(min_i, max_i))
+            ax.quiver(xs[inew], ys[inew], zs[inew], 0.0008*vxs[inew], 0.0008*vys[inew], 0.0008*vzs[inew],
+                      color=color_i)
+            
+            color_list_xyz.append(color_i)
+            
+        else:
+            
+            ax.scatter(xs[inew], ys[inew], zs[inew], s=2*math.ceil(np.log10(Nstars[inew])), c=color_i)
+            ax.quiver(xs[inew], ys[inew], zs[inew], 0.0008*vxs[inew], 0.0008*vys[inew], 0.0008*vzs[inew],
+                      color=color_i)
+            
+        
+    ax.set_xlabel(r'$x$ (kpc)', fontsize=16)
+    ax.set_ylabel(r'$y$ (kpc)', fontsize=16)
+    ax.set_zlabel(r'$z$ (kpc)', fontsize=16)
+    ax.set_xticks([-1, -0.5, 0, 0.5, 1])
+    ax.set_yticks([-1, -0.5, 0, 0.5, 1])
+    ax.set_zticks([-1, -0.5, 0, 0.5, 1])
+    ax.set_xlim(-1, 1)
+    ax.set_ylim(-1, 1)
+    ax.set_zlim(-1, 1)
+    plt.legend(loc='best', fontsize=8)
+    plt.tight_layout()
+    plt.savefig('xyz_plane_initial.pdf')
+    
+    plt.figure()
+        
+    color_list_xy = []
+    
+    for i in range(N):
+    
+        color_i = 'C' + str(math.ceil(np.log2(i+1)))
+        inew = indices_dict[i]
+        
+        if color_i not in color_list_xy:
+            
+            min_i, max_i = int(str(math.ceil(np.log2(i+1))))-1, int(str(math.ceil(np.log2(i+1))))
+        
+            plt.scatter(xs[inew], ys[inew], s=2*math.ceil(np.log10(Nstars[inew])), 
+                       c=color_i, label=r'$%i \leq \log_{2}(\mathrm{Index}+1) < %s$'%(min_i, max_i))
+            plt.arrow(xs[inew], ys[inew], 0.0002*vxs[inew], 0.0002*vys[inew], color=color_i)
+            
+            color_list_xy.append(color_i)
+            
+        else:
+            
+            plt.scatter(xs[i], ys[i], s=2*math.ceil(np.log10(Nstars[i])), c=color_i)
+            plt.arrow(xs[i], ys[i], 0.0002*vxs[i], 0.0002*vys[i], color=color_i)
+        
+    plt.xlim(-0.2, 0.2)
+    plt.ylim(-0.2, 0.2)
+    plt.xlabel(r'$x$ (kpc)', fontsize=16)
+    plt.ylabel(r'$y$ (kpc)', fontsize=16)
+    plt.gca().set_xticks([-0.2, -0.1, 0, 0.1, 0.2])
+    plt.gca().set_yticks([-0.2, -0.1, 0, 0.1, 0.2])
+    plt.gca().set_aspect('equal')
+    plt.gca().tick_params(labelsize='large')
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=10)
+    plt.tight_layout()
+    plt.savefig('xy_plane_initial.pdf')
+
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
 
@@ -137,4 +181,17 @@ axs[1,1].tick_params(labelsize='large')
 
 plt.tight_layout()
 plt.savefig('cluster_info.pdf')
+
+plt.figure()
+
+plt.scatter(masses, radii, s=2, c='k')
+plt.xlabel(r'$M_{\mathrm{cluster}}$ ($M_{\odot}$)', fontsize=20)
+plt.ylabel(r'$r_{\mathrm{vir}, 0}$ (pc)', fontsize=20)
+plt.gca().set_xscale('log')
+plt.gca().set_yscale('log')
+plt.gca().tick_params(labelsize='large')
+plt.gca().set_aspect('equal')
+plt.tight_layout()
+plt.savefig('mass_radius_relation.pdf')
+plt.close()
 '''

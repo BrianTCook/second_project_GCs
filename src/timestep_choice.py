@@ -10,7 +10,7 @@ import numpy as np
 import glob
 import matplotlib.pyplot as plt
 
-dt_values = [ 0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 1. ]
+dt_values = [ 0.001, 0.005, 0.01, 0.05, 0.1, 0.5 ]
 tend = 100.
 
 energy_values = glob.glob('/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/tree_data/energy_check_data/*.txt')

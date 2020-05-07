@@ -42,8 +42,10 @@ if __name__ in '__main__':
     potential = MWPotential2014 #galpy
     
     sepBinary = 20.|units.parsec #not necessary if not doing binary cluster part
-    tend, dt = 100.|units.Myr, 0.2|units.Myr
+    tend, _ = 100.|units.Myr, 0.2|units.Myr
         
+    dt_values = [ 0.001|units.Myr, 0.005|units.Myr, 0.01|units.Myr, 0.05|units.Myr, 0.1|units.Myr, 0.5|units.Myr ]
+    
     #dt_param = 0.2 #for nemesis
     
     #uses a galpy function to evaluate the enclosed mass
@@ -63,7 +65,7 @@ if __name__ in '__main__':
     radii_all = np.loadtxt(data_directory+'ICs/cluster_radii_for_sampling.txt')
 
     logN_max = 6
-    Norbiters_list = [ 2**i for i in range(logN_max+1) ]
+    Norbiters_list = [ 1 ] #2**i for i in range(logN_max+1) ]
     orbiter_names = [ 'SingleCluster' ] #,, 'SingleStar',  'BinaryCluster' 
     code_names = [ 'tree' ] #, 'nemesis' ]  , 'Nbody'
 
@@ -80,26 +82,28 @@ if __name__ in '__main__':
             #Nvals, yvals = [], []
             
             for Norbiters in Norbiters_list:
-                        
-                print('\\\\\\\\\\\\\\\\\\\\\\\\')
-                print(code_name, orbiter_name)
-                print('\\\\\\\\\\\\\\\\\\\\\\\\')
                 
-                t_init = time.time()
-
-                simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
-                           sepBinary, rvals_all, phivals_all, zvals_all, vrvals_all, vphivals_all, vzvals_all, 
-                           masses_all, radii_all, Norbiters, tend, dt)
+                for dt in dt_values:
                 
-                print('time is: %.03f minutes'%((time.time()-t0)/60.))
-                print('time to run last simulation: %.03f minutes'%((time.time()-t_init)/60.))
-                
-                #t_final = time.time()
-                
-                #Nvals.append(math.log(Norbiters, 2))
-                #yvals.append((t_final-t_init)/60.)
+                    print('\\\\\\\\\\\\\\\\\\\\\\\\')
+                    print(code_name, orbiter_name)
+                    print('\\\\\\\\\\\\\\\\\\\\\\\\')
+                    
+                    t_init = time.time()
     
-                #plt.scatter(Nvals, yvals, label=code_name)
+                    simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, 
+                               sepBinary, rvals_all, phivals_all, zvals_all, vrvals_all, vphivals_all, vzvals_all, 
+                               masses_all, radii_all, Norbiters, tend, dt)
+                    
+                    print('time is: %.03f minutes'%((time.time()-t0)/60.))
+                    print('time to run last simulation: %.03f minutes'%((time.time()-t_init)/60.))
+                    
+                    #t_final = time.time()
+                    
+                    #Nvals.append(math.log(Norbiters, 2))
+                    #yvals.append((t_final-t_init)/60.)
+        
+                    #plt.scatter(Nvals, yvals, label=code_name)
       
     '''
     plt.gca().set_yscale('log')

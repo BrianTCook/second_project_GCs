@@ -10,11 +10,10 @@ import numpy as np
 import glob
 import matplotlib.pyplot as plt
 
-dt_values = [ 0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5 ]
+dt_values = [ 0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 1. ]
 tend = 100.
 
-sim_times = np.loadtxt('/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/tree_data/energy_check_data/times_in_Myr_tree_SingleCluster_Norbiters_8.txt')
-
+energy_values = glob.glob('/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/tree_data/energy_check_data/*.txt')
 print(energy_values)
 
 plt.rc('font', family='serif')
@@ -28,7 +27,7 @@ for i, dt in enumerate(dt_values):
     sim_times = np.linspace(0., tend+dt, len(energies))
     plt.plot(sim_times, energies, linewidth=1, label=r'$\Delta t$ = %.02f Myr'%(dt))
     
-plt.ylim(-0.1, 0.1)
+plt.ylim(-0.15, 0.05)
 plt.axhline(y=0, linewidth=1, linestyle='--', color='k')
 plt.xlabel(r'$t_{\mathrm{sim}}$ (Myr)', fontsize=16)
 plt.ylabel(r'$\Delta E / E(t=0)$', fontsize=16)

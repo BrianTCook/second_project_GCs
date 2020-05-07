@@ -21,8 +21,8 @@ def sort_clusters_by_attribute(attribute):
     '''
     
     #data_directory = '/home/s1780638/second_project_gcs/data/'
-    #data_directory = '/home/brian/Desktop/second_project_gcs/data/'
-    data_directory = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/'
+    data_directory = '/home/brian/Desktop/second_project_gcs/data/'
+    #data_directory = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/data/'
     
     rs = np.loadtxt(data_directory+'ICs/dehnen_rvals.txt')
     phis = np.loadtxt(data_directory+'ICs/dehnen_phivals.txt')
@@ -32,7 +32,7 @@ def sort_clusters_by_attribute(attribute):
     vphis = np.loadtxt(data_directory+'ICs/bovy_vphivals.txt')
     vzs = np.loadtxt(data_directory+'ICs/bovy_vzvals.txt')
     
-    N = 128 #total number of initialized clusters I have
+    N = 64 #total number of initialized clusters I have
     
     #convert from galpy/cylindrical to AMUSE/Cartesian units
     #all in kpc
@@ -51,13 +51,53 @@ def sort_clusters_by_attribute(attribute):
     Nstars = [ len(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)) for i in range(N) ]
     masses = [ round(np.sum(np.loadtxt(data_directory+'/star_masses/star_masses_index=%i.txt'%i)), 2) for i in range(N) ]
     radii = np.loadtxt(data_directory+'/ICs/cluster_radii_for_sampling.txt') 
-    radii = [ round(r, 2) for r in radii ]
+    radii = [ round(radii[i], 2) for i in range(N) ]
     
     df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds, radii)), columns=['M', 'Nstars', '|r|', '|v|', 'rvir'])
     
     df_sorted_by_r = df.sort_values(by=[attribute])
+    df_sorted_by_r = df_sorted_by_r.reset_index(drop=True)
     
     indices_dict = {}
+    
+    '''
+    plt.rc('font', family='serif')
+    plt.rc('text', usetex=True)
+    
+    plt.figure()
+    
+    max_vx, max_vy = 20*max(vxs), 20*max(vys)
+    
+    for i in range(N):
+    
+        plt.scatter(xs[i], ys[i], s=math.ceil(np.log10(Nstars[i])), c='k')
+        plt.arrow(xs[i], ys[i], vxs[i]/max_vx, vys[i]/max_vy)
+        
+    plt.xlim(-1, 1)
+    plt.ylim(-1, 1)
+    plt.xlabel(r'$x$ (kpc)', fontsize=16)
+    plt.ylabel(r'$y$ (kpc)', fontsize=16)
+    plt.gca().set_xticks([-1, -0.5, 0, 0.5, 1])
+    plt.gca().set_yticks([-1, -0.5, 0, 0.5, 1])
+    plt.gca().set_aspect('equal')
+    plt.gca().tick_params(labelsize='large')
+    plt.tight_layout()
+    plt.savefig('xy_plane_initial.pdf')
+    plt.close()
+    
+    plt.figure()
+    
+    plt.scatter(masses, radii, s=2, c='k')
+    plt.xlabel(r'$M_{\mathrm{cluster}}$ ($M_{\odot}$)', fontsize=20)
+    plt.ylabel(r'$r_{\mathrm{vir}, 0}$ (pc)', fontsize=20)
+    plt.gca().set_xscale('log')
+    plt.gca().set_yscale('log')
+    plt.gca().tick_params(labelsize='large')
+    plt.gca().set_aspect('equal')
+    plt.tight_layout()
+    plt.savefig('mass_radius_relation.pdf')
+    plt.close()
+    '''
     
     for df, df_sorted in zip(df.index, df_sorted_by_r.index):
         indices_dict.update( {df : df_sorted} )

@@ -113,7 +113,8 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
         if j%gadget_flag == 0:
             
             print_diagnostics(t, simulation_bodies, E_dyn, dE_dyn)
-                        
+             
+            '''
             io.write_set_to_file(gravity.particles, filename, 'csv',
                                  attribute_types = (units.MSun, units.kpc, units.kpc, units.kpc, units.kms, units.kms, units.kms),
                                  attribute_names = attributes)
@@ -129,8 +130,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     
             all_data[j_like_index, :len(data_t.index), :] = data_t.values
             np.savetxt('enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
-        
-            '''
+
             x, y = data_t['x'].tolist(), data_t['y'].tolist()
             
             #stuff to analyze COM of each star cluster
@@ -147,9 +147,9 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             
                 COM_data[j_like_index, k, 0] = x_COM
                 COM_data[j_like_index, k, 1] = y_COM
-            '''
     
             j_like_index += 1 
+            '''
     
         stellar.evolve_model(t)
         channel_from_stellar_to_framework.copy()
@@ -165,7 +165,7 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
   
     #np.savetxt(code_name + '_' + orbiter_name + '_masses_Norbiters_' + str(Norbiters) + '_dt_' + str(dt.value_in(units.Myr)) + '.txt', mass_data)
     #np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '_dt_' + str(dt.value_in(units.Myr)) + '.txt', cluster_colors)
-    np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '_dt_' + str(dt.value_in(units.Myr)) + '.txt', delta_energies)
+    np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '_dt_' + str(math.floor(dt.value_in(units.Myr)*100)).rjust(5, '0') + '.txt', delta_energies)
     #np.savetxt(code_name + '_' + orbiter_name + '_dt_' + str(dt.value_in(units.Myr)) + '.txt''_clock_times.txt', clock_times)
     
     return 0

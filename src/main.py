@@ -44,7 +44,7 @@ if __name__ in '__main__':
     sepBinary = 20.|units.parsec #not necessary if not doing binary cluster part
     tend, _ = 100.|units.Myr, 0.2|units.Myr
         
-    dt_values = [ 0.001|units.Myr, 0.005|units.Myr, 0.01|units.Myr, 0.05|units.Myr, 0.1|units.Myr, 0.5|units.Myr ]
+    dt_values = [ 0.01|units.Myr, 0.05|units.Myr, 0.1|units.Myr, 0.2|units.Myr, 0.3|units.Myr, 0.4|units.Myr, 0.5|units.Myr ]
     
     #dt_param = 0.2 #for nemesis
     

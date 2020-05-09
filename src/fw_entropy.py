@@ -341,13 +341,13 @@ def get_entropy(points, values, uniformity, Norbiters):
 if __name__ in '__main__':
     
     #datadir = '/home/s1780638/second_project_GCs/data/'
-    datadir_seba = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/tree_seba_50Myr/*.ascii'
+    datadir_seba = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/tree_seba_1000Myr/*.ascii'
     
     point_files = glob.glob(datadir_seba) #'/home/s1780638/second_project_gcs/Enbid-2.0/AMUSE_data/*.ascii')
     
     t0 = time.time()
     
-    logN_max = 3
+    logN_max = 6
     
     xvals_all, yvals_all = [ [] for i in range(logN_max+1) ], [ [] for i in range(logN_max+1) ]
     
@@ -387,7 +387,7 @@ if __name__ in '__main__':
             
             #plotting entropy as a function of time, saving by log2N
             xvals_all[logN].append(sim_time)
-            yvals_all[logN].append(S)
+            yvals_all[logN].append(S/Nclusters)
         
             tf = time.time()
             print('current time: %.04f minutes'%((tf-t0)/60.))
@@ -402,7 +402,7 @@ if __name__ in '__main__':
     plt.gca().set_yscale('log')
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=12)
     plt.xlabel('Simulation Time (Myr)', fontsize=16)
-    plt.ylabel(r'$S$ ([kpc km/s]$^{3}$)', fontsize=16)
+    plt.ylabel(r'$S/N_{\mathrm{clusters}}$ ([kpc km/s]$^{3}$)', fontsize=16)
     plt.gca().tick_params(labelsize='large')
     plt.tight_layout()
     plt.savefig('entropy_evolution.pdf')

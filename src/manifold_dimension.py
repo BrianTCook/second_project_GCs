@@ -125,7 +125,7 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
 if __name__ in '__main__':
     
     code_name = 'tree'
-    tend, dt = 100., 0.4
+    tend, dt = 100., 0.2
     
     sim_times_unitless = np.arange(0., tend+dt, dt)
     

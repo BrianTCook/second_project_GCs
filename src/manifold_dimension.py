@@ -25,8 +25,8 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
     for the N clusters provided as input
     '''
     
-    datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
-    filename_init = 'tree_data/tree_seba_100Myr/enbid_%s_frame_00000_Norbiters_%s.ascii'%(code_name, str(Norbiters))
+    datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/Enbid-2.0/AMUSE_data/'
+    filename_init = 'enbid_%s_frame_00000_Norbiters_%s.ascii'%(code_name, str(Norbiters))
     clusters_init = np.loadtxt(datadir+filename_init)
     
     gadget_flag = int(math.floor(len(sim_times_unitless)/50))
@@ -54,7 +54,7 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
             
             if j%gadget_flag == 0:
                 
-                filename_t = 'tree_data/tree_seba_100Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
+                filename_t = 'enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
                 clusters_t = np.loadtxt(datadir+filename_t)
                     
                 for k, number_of_stars in enumerate(cluster_populations):
@@ -93,7 +93,7 @@ def dimensions(code_name, finder_name, sim_times_unitless, Norbiters, cluster_po
             
             if j%gadget_flag == 0:
                 
-                filename_t = 'tree_data/tree_seba_100Myr/enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
+                filename_t = 'enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters))
                 clusters_t = np.loadtxt(datadir+filename_t)
                 
                 for k, number_of_stars in enumerate(cluster_populations):
@@ -186,6 +186,7 @@ if __name__ in '__main__':
                             extent=[min(sim_times_unitless), max(sim_times_unitless), 0, Norbiters],
                             norm=Normalize(vmin=0, vmax=6))
             
+            np.savetxt('dim_array_%s_Norbiters_%i.txt'%(finder_name, Norbiters), dim_array)
             
             plt.gca().set_yticks([0, Norbiters/2, Norbiters])
             plt.gca().set_yticklabels([dmin, round((dmax-dmin)/2., 2), dmax])

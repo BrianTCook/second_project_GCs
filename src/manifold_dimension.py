@@ -130,7 +130,7 @@ if __name__ in '__main__':
     sim_times_unitless = np.arange(0., tend+dt, dt)
     
     logN_max = 6
-    Norbiters_list = [ 2**i for i in range(logN_max+1) ]
+    Norbiters_list = [ 2**6 ] #for i in range(logN_max+1) ]
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
     
@@ -182,11 +182,14 @@ if __name__ in '__main__':
             dists_min, dists_max = min(dists_relevant), max(dists_relevant)
             dmin, dmax = round(dists_min, 2), round(dists_max, 2)
             
+            cmap = plt.cm.get_cmap('viridis', 7)    # 11 discrete colors
+
+            
             im = plt.imshow(dim_array, origin='lower', aspect='equal',
                             extent=[min(sim_times_unitless), max(sim_times_unitless), 0, Norbiters],
-                            norm=Normalize(vmin=0, vmax=6))
+                            cmap=cmap, norm=Normalize(vmin=-.5, vmax=6.5))
             
-            np.savetxt('dim_array_%s_Norbiters_%i.txt'%(finder_name, Norbiters), dim_array)
+            np.savetxt('dim_array_%s_Norbiters_%i.txt'%(finder_name, Norbiters), dim_array, fmt='%i', delimiter='\t')
             
             plt.gca().set_yticks([0, Norbiters/2, Norbiters])
             plt.gca().set_yticklabels([dmin, round((dmax-dmin)/2., 2), dmax])

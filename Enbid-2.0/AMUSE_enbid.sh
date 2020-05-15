@@ -17,7 +17,7 @@ MedianSplittingOn       0   %
 %--------------------------------------------------------
 % Smoothing options  AM=adaptive metric Ker=Kernel Sp=Spherical Pr=Product 
 % 0) None 1)FiEstAS 2)Ker Sp Normal 3)Ker Sp AM 4)KerPr Normal 5)KerPr AM
-TypeOfSmoothing      0
+TypeOfSmoothing      5
 DesNumNgb            50   % 2-10 for Fiestas and 25-100 for Kernel
 VolCorr              1    %  0) Disbale 1) Enable 
 

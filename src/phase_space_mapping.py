@@ -15,13 +15,20 @@ def maps(whole_or_clusters):
     datadir_AMUSE = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/Enbid-2.0/AMUSE_data/'
     
     logN_max = 6
-    Norbiters_list = [ 2**6 ] #int(2**i) for i in range(logN_max)]
+    Norbiters_list = [ 2**3 ] #int(2**i) for i in range(logN_max)]
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
     
     cluster_populations_raw = np.loadtxt(datadir+'Nstars_in_clusters.txt')
-    indices_dict = sort_clusters_by_attribute('|r|')
+    indices_dict, df_sorted_by_r = sort_clusters_by_attribute('|r|')
     cluster_populations_sorted = [ cluster_populations_raw[indices_dict[i]] for i in range(2**logN_max) ]
+    
+    x_init_all = df_sorted_by_r['x'].tolist()
+    y_init_all = df_sorted_by_r['y'].tolist()
+    z_init_all = df_sorted_by_r['z'].tolist()
+    vx_init_all = df_sorted_by_r['vx'].tolist()
+    vy_init_all = df_sorted_by_r['vy'].tolist()
+    vz_init_all = df_sorted_by_r['vz'].tolist()
     
     plt.rc('text', usetex = True)
     plt.rc('font', family = 'serif')
@@ -49,7 +56,7 @@ def maps(whole_or_clusters):
                     
                     y_total = phase_space_data[:,0]
                     z_total = phase_space_data[:,2]
-                    
+                
                     ytotztot = np.vstack([y_total,z_total])
                     colortot = gaussian_kde(ytotztot)(ytotztot)
                     
@@ -83,8 +90,9 @@ def maps(whole_or_clusters):
 
         if whole_or_clusters == 'clusters':
             
-            dim_array_pca = np.loadtxt(datadir+'manifold_dimensions/dim_array_pca_Norbiters_%i.txt'%Norbiters)
-            dim_array_naive = np.loadtxt(datadir+'manifold_dimensions/dim_array_naive_Norbiters_%i.txt'%Norbiters)
+            N = 8 #total number of initialized clusters I have
+            dim_array_naive = np.loadtxt(datadir+'manifold_dimensions/dim_array_naive_Norbiters_%i.txt'%(N))
+            dim_array_pca = np.loadtxt(datadir+'manifold_dimensions/dim_array_pca_Norbiters_%i.txt'%(N))
             
             for i, t in enumerate(sim_times):
                 
@@ -100,6 +108,13 @@ def maps(whole_or_clusters):
                         
                             starting_index = int(np.sum( cluster_populations[:k] ))
                             ending_index = starting_index + int(number_of_stars)
+                            
+                            x_init = x_init_all[k]
+                            y_init = y_init_all[k]
+                            z_init = z_init_all[k]
+                            vx_init = vx_init_all[k]
+                            vy_init = vy_init_all[k]
+                            vz_init = vz_init_all[k]
                     
                             x = phase_space_data[starting_index:ending_index, 0]
                             y = phase_space_data[starting_index:ending_index, 1]
@@ -107,6 +122,13 @@ def maps(whole_or_clusters):
                             vx = phase_space_data[starting_index:ending_index, 3]
                             vy = phase_space_data[starting_index:ending_index, 4]
                             vz = phase_space_data[starting_index:ending_index, 5]
+                            
+                            x = np.asarray([ xx - x_init for xx in x ])
+                            y = np.asarray([ yy - y_init for yy in y ])
+                            z = np.asarray([ zz - z_init for zz in z ])
+                            vx = np.asarray([ vxvx - vx_init for vxvx in vx ])
+                            vy = np.asarray([ vyvy - vy_init for vyvy in vy ])
+                            vz = np.asarray([ vzvz - vz_init for vzvz in vz ])
                             
                             dx = (np.percentile(x, 95) - np.percentile(x, 5))/2.
                             dy = (np.percentile(y, 95) - np.percentile(y, 5))/2.
@@ -117,7 +139,7 @@ def maps(whole_or_clusters):
     
                             fig, axs = plt.subplots(5, 5)
                             
-                            #first column            
+                            #first column      
                             
                             xy = np.vstack([x,y])
                             z00 = gaussian_kde(xy)(xy)
@@ -127,7 +149,6 @@ def maps(whole_or_clusters):
                             axs[0, 0].set_ylabel(r'$y$ (kpc)', fontsize=8)
                             axs[0, 0].tick_params(labelsize='xx-small')
                             axs[0, 0].set_title(r'$x = %.03f \pm %.03f$ kpc'%(np.median(x), dx), fontsize=3)
-    
                             
                             xz = np.vstack([x,z])
                             z10 = gaussian_kde(xz)(xz)
@@ -274,8 +295,8 @@ def maps(whole_or_clusters):
                             Dn, Dp = dim_array_naive[k,i], dim_array_pca[k,i]
                             
                             fig.align_ylabels(axs[:, 0])
-                            fig.suptitle(r'Cluster %i ($D_{\mathrm{naive}, \mathrm{pca}} = %i, %i$), $t_{\mathrm{sim}}$ = %.00f Myr'%(k, Dn, Dp, t), fontsize=12)
-                            plt.savefig('phase_space_map_frame_%s_Norbiters_%s_Index_%i.pdf'%(str(i*10).rjust(5, '0'), str(Norbiters), k))
+                            fig.suptitle(r'Cluster %i ($D_{\mathrm{naive}, \mathrm{pca}} = %i, %i$,), $t_{\mathrm{sim}}$ = %.00f Myr, Cluster Frame'%(k, Dn, Dp, t), fontsize=10)
+                            plt.savefig('phase_space_map_frame_%s_Norbiters_%s_Index_%i_internal.pdf'%(str(i*10).rjust(5, '0'), str(Norbiters), k))
                             plt.close()
         
     return 0

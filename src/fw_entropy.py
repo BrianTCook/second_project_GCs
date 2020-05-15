@@ -189,9 +189,8 @@ def lattices_maker(points, uniformity, Norbiters):
     #new_index = indices_dict[old_index]
     indices_dict = sort_clusters_by_attribute('|r|')
     
-    cluster_populations_sorted = [ cluster_populations[indices_dict[i]]
-                                   for i in range(Norbiters) ]
-    
+    cluster_populations_sorted = [ int(cluster_populations[indices_dict[i]]) for i in range(Norbiters) ]
+
     grids_spatial, grids_velocity = [], []
 
     for k, number_of_stars in enumerate(cluster_populations_sorted):
@@ -204,7 +203,7 @@ def lattices_maker(points, uniformity, Norbiters):
         
         if uniformity == 'uniform':
         
-            Ncells = 40
+            Ncells = 20
             
             x_spatial = np.linspace(min(xvals), max(xvals), Ncells)
             y_spatial = np.linspace(min(yvals), max(yvals), Ncells)
@@ -229,11 +228,12 @@ def get_6D_fw(points, values, uniformity, Norbiters):
     #new_index = indices_dict[old_index]
     indices_dict = sort_clusters_by_attribute('|r|')
     
-    cluster_populations_sorted = [ cluster_populations[indices_dict[i]]
-                                   for i in range(Norbiters) ]
+    cluster_populations_sorted = [ int(cluster_populations[indices_dict[i]]) for i in range(Norbiters) ]
     
     grids_spatial, grids_velocity = lattices_maker(points, uniformity, Norbiters)
-    fw_values_interpolated_spatial, fw_values_interpolated_velocity = [], []
+    
+    fw_values_interpolated_spatial = []
+    fw_values_interpolated_velocity = []
 
     for k, number_of_stars in enumerate(cluster_populations_sorted):
 
@@ -244,15 +244,15 @@ def get_6D_fw(points, values, uniformity, Norbiters):
         VX, VY, VZ = np.meshgrid(*grids_velocity[k])
     
         #Ti is 6-D interpolation using method=method    
-        grid_z0_spatial = griddata(points[starting_index:ending_index,:3], values[starting_index:ending_index], 
+        grid_z0_spatial = griddata(points[starting_index:ending_index, :3], values[starting_index:ending_index], 
                                    (X, Y, Z), method='nearest')    
 
-        grid_z0_velocity = griddata(points[starting_index:ending_index,:3], values[starting_index:ending_index], 
+        grid_z0_velocity = griddata(points[starting_index:ending_index, 3:6], values[starting_index:ending_index], 
                                    (VX, VY, VZ), method='nearest')
 
         fw_values_interpolated_spatial.append(grid_z0_spatial)
         fw_values_interpolated_velocity.append(grid_z0_velocity)
-        
+    
     return fw_values_interpolated_spatial, fw_values_interpolated_velocity
 
 def simpson(xvals, fvals): #Simpson's integration rule, \int_{a}^{b} f(x) dx with N sample points
@@ -290,8 +290,7 @@ def get_entropy(points, values, uniformity, Norbiters):
     #new_index = indices_dict[old_index]
     indices_dict = sort_clusters_by_attribute('|r|')
 
-    cluster_populations_sorted = [ cluster_populations[indices_dict[i]]
-                                   for i in range(Norbiters) ]
+    cluster_populations_sorted = [ int(cluster_populations[indices_dict[i]]) for i in range(Norbiters) ]
     
     fw_values_interpolated_spatial, fw_values_interpolated_velocity = get_6D_fw(points, values, uniformity, Norbiters)
     grids_spatial, grids_velocity = lattices_maker(points, uniformity, Norbiters)
@@ -312,6 +311,9 @@ def get_entropy(points, values, uniformity, Norbiters):
         threeD_arr_spatial = np.multiply(fw_interpolated_spatial, np.log(fw_interpolated_spatial))
         threeD_arr_velocity = np.multiply(fw_interpolated_velocity, np.log(fw_interpolated_velocity))
         
+        print(np.median(threeD_arr_spatial))
+        print(np.median(threeD_arr_velocity))
+        
         if uniformity == 'uniform':
             
             twoD_arr_spatial = [ simpson(z_spatial, threeD_arr_spatial[i,j,:])
@@ -324,6 +326,8 @@ def get_entropy(points, values, uniformity, Norbiters):
              
             spatial_component = simpson(x_spatial, oneD_arr_spatial)
             
+            print(spatial_component)
+            
             twoD_arr_velocity = [ simpson(z_velocity, threeD_arr_velocity[i,j,:])
                                  for i in range(Nvx) for j in range(Nvy) ]
             
@@ -331,8 +335,10 @@ def get_entropy(points, values, uniformity, Norbiters):
             
             oneD_arr_velocity = [ simpson(y_velocity, twoD_arr_velocity[i,:])
                                  for i in range(Nvx)  ]
-             
+            
             velocity_component = simpson(x_velocity, oneD_arr_velocity)
+            
+            print(velocity_component)
             
             S += -spatial_component*velocity_component
         
@@ -381,6 +387,7 @@ if __name__ in '__main__':
 
             points = np.loadtxt(point_file)
             values = np.loadtxt(point_file + '_output.est')
+            values = np.asarray([ float(val)/np.sum(values) for val in values])
             
             uniformity = 'uniform'
             S = get_entropy(points, values, uniformity, Nclusters)
@@ -408,4 +415,4 @@ if __name__ in '__main__':
         plt.plot(xvals, yvals, label=r'$\log_{2} N_{\mathrm{clusters}}$ = %i'%(logN), linewidth=1)
     
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=12)
-    plt.savefig('entropy_evolution.pdf')
+    plt.savefig('entropy_evolution_inner100pc.pdf')

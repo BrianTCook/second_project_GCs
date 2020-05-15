@@ -54,8 +54,8 @@ def sort_clusters_by_attribute(attribute):
     radii = np.loadtxt(data_directory+'/ICs/cluster_radii_for_sampling.txt') 
     radii = [ round(radii[i], 2) for i in range(N) ]
     
-    df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds, radii)), columns=['M', 'Nstars', '|r|', '|v|', 'rvir'])
-    
+    #df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds, radii)), columns=['M', 'Nstars', '|r|', '|v|', 'rvir'])
+    df = pd.DataFrame(list(zip(dists, xs, ys, zs, vxs, vys, vzs)), columns=['|r|', 'x', 'y', 'z', 'vx', 'vy', 'vz'])
     df_sorted_by_r = df.sort_values(by=[attribute])
     #df_sorted_by_r = df_sorted_by_r.reset_index(drop=True)
     

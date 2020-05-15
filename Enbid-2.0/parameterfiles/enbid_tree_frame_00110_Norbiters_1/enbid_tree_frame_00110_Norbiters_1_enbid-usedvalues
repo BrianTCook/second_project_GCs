@@ -6,7 +6,7 @@ PartBoundary                       7
 NodeSplittingCriterion             1
 CubicCells                         0
 MedianSplittingOn                  0
-TypeOfSmoothing                    0
+TypeOfSmoothing                    5
 DesNumNgb                          50
 VolCorr                            1
 TypeOfKernel                       3

@@ -124,13 +124,13 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
             masses = data_t['mass'].tolist()
             mass_data[j_like_index, :len(data_t.index)] = masses #in solar masses
             
+            '''
             data_t = data_t.drop(columns=['mass']) #goes from 7D --> 6D
             data_t = data_t.astype(float) #strings to floats
     
             all_data[j_like_index, :len(data_t.index), :] = data_t.values
             np.savetxt('enbid_%s_frame_%s_Norbiters_%s.ascii'%(code_name, str(j).rjust(5, '0'), str(Norbiters)), data_t.values)
 
-            '''
             x, y = data_t['x'].tolist(), data_t['y'].tolist()
             
             #stuff to analyze COM of each star cluster
@@ -164,9 +164,9 @@ def simulation(code_name, orbiter_name, potential, Mgalaxy, Rgalaxy, sepBinary,
     except:
         print('gravity cannot be stopped, mwahahaha')
   
-    #np.savetxt(code_name + '_' + orbiter_name + '_masses_Norbiters_' + str(Norbiters) + '_dt_' + str(dt.value_in(units.Myr)) + '.txt', mass_data)
+    np.savetxt(code_name + '_' + orbiter_name + '_masses_Norbiters_' + str(Norbiters) + '_dt_' + str(dt.value_in(units.Myr)) + '.txt', mass_data)
     #np.savetxt(code_name + '_' + orbiter_name + '_colors_Norbiters_' + str(Norbiters) + '_dt_' + str(dt.value_in(units.Myr)) + '.txt', cluster_colors)
-    np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '_dt_' + str(math.floor(dt.value_in(units.Myr)*1000)).rjust(5, '0') + '.txt', delta_energies)
+    #np.savetxt(code_name + '_' + orbiter_name + '_dE_Norbiters_' + str(Norbiters) + '_dt_' + str(math.floor(dt.value_in(units.Myr)*1000)).rjust(5, '0') + '.txt', delta_energies)
     #np.savetxt(code_name + '_' + orbiter_name + '_dt_' + str(dt.value_in(units.Myr)) + '.txt''_clock_times.txt', clock_times)
     
     return 0

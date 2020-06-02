@@ -9,7 +9,7 @@ Created on Mon Apr 13 14:17:37 2020
 import numpy as np
 import glob
 import matplotlib.pyplot as plt
-from collections import Counter
+import pandas as pd
 from sklearn.cluster import KMeans
 
 def sklearn_mapper(true_labels, kmeans_labels):
@@ -76,9 +76,10 @@ def ellipsoid_fit(X):
 
     return center, evecs, radii
         
-def get_kmeans_result(snapshot, Norbiters):
+def get_kmeans_result(snapshots, Norbiters, initial_masses):
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
+    datadir_AMUSE = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/Enbid-2.0/AMUSE_data/'
     cluster_populations = np.loadtxt(datadir + 'Nstars_in_clusters.txt')
     cluster_populations = list(cluster_populations[:Norbiters])
     
@@ -87,43 +88,114 @@ def get_kmeans_result(snapshot, Norbiters):
     for i in range(Norbiters):
         true_labels += [ i for j in range(int(cluster_populations[i])) ]
     
-    #true labels is the problem
+    for snapshot in snapshots:
     
-    data_filename = glob.glob(datadir+'enbid_files/*_%s_Norbiters_%i.ascii'%(snapshot, Norbiters))
-    data_6D = np.loadtxt(data_filename[0])
+        #true labels is the problem
+        
+        data_filename = glob.glob(datadir_AMUSE+'*_%s_Norbiters_%i.ascii'%(snapshot, Norbiters))
+        data_6D = np.loadtxt(data_filename[0])
+        
+        I6, J6 = data_6D.shape
     
-    I6, J6 = data_6D.shape
-
-    data_6D_rescaled = [ ( (data_6D[i,j] - np.amin(data_6D[:,j])) / (np.amax(data_6D[:,j]) - np.amin(data_6D[:,j])) ) 
-                         for i in range(I6) for j in range(J6) ]
+        data_6D_rescaled = [ ( (data_6D[i,j] - np.amin(data_6D[:,j])) / (np.amax(data_6D[:,j]) - np.amin(data_6D[:,j])) ) 
+                             for i in range(I6) for j in range(J6) ]
+        
+        np_data_6D_rescaled = np.asarray(data_6D_rescaled)
+        np_data_6D_rescaled = np.reshape(np_data_6D_rescaled, data_6D.shape)
     
-    np_data_6D_rescaled = np.asarray(data_6D_rescaled)
-    np_data_6D_rescaled = np.reshape(np_data_6D_rescaled, data_6D.shape)
-
-    #apply kmeans clustering
-    kmeans_6D = KMeans(n_clusters=Norbiters, init='k-means++')
-    kmeans_6D.fit(np_data_6D_rescaled)
-    y_kmeans_6D = kmeans_6D.predict(np_data_6D_rescaled)
-    io_dict_6D = sklearn_mapper(true_labels, y_kmeans_6D)
-
-    y_compare_6D = [ io_dict_6D[y] for y in y_kmeans_6D ]
-
-    return true_labels, y_compare_6D
+        #apply kmeans clustering
+        kmeans_6D = KMeans(n_clusters=Norbiters, init='k-means++')
+        kmeans_6D.fit(np_data_6D_rescaled)
+        y_kmeans_6D = kmeans_6D.predict(np_data_6D_rescaled)
+        io_dict_6D = sklearn_mapper(true_labels, y_kmeans_6D)
+    
+        #k-means clustering with same labelling scheme as true_labels
+        y_compare_6D = [ io_dict_6D[y] for y in y_kmeans_6D ]
+    
+        all_data = np.concatenate((data_6D, np_data_6D_rescaled), axis=1)
+    
+        df = pd.DataFrame(all_data,
+                          columns=['x', 'y', 'z', 'vx', 'vy', 'vz', 
+                                   'x (rescaled)', 'y (rescaled)', 'z (rescaled)', 
+                                   'vx (rescaled)', 'vy (rescaled)', 'vz (rescaled)'])
+        
+        df['labels'] = y_compare_6D
+        
+        '''
+        if Norbiters == 64:
+            masses = np.loadtxt(datadir+'tree_data/tree_SingleCluster_masses_Norbiters_64_dt_0.2.txt').T
+        '''
+        
+        df['masses'] = np.ones(len(df.index))
+        
+        deltas = []
+    
+        for cluster_label in range(int(np.log2(Norbiters)) + 1):
+            
+            df_cluster = df.loc[df['labels'] == cluster_label]
+            m_cluster_init = np.sum(df_cluster['masses'].tolist())
+            not_pruned_flag = 0
+            
+            while not_pruned_flag == 0:
+                
+                #sort by distance from COM of cluster
+                xc, yc, zc = np.mean(df_cluster['x'].tolist()), np.mean(df_cluster['y'].tolist()), np.mean(df_cluster['z'].tolist())
+                vxc, vyc, vzc = np.mean(df_cluster['vx'].tolist()), np.mean(df_cluster['vy'].tolist()), np.mean(df_cluster['vz'].tolist())     
+            
+                #add column with distances to COM cluster
+                df_cluster['distances'] = np.zeros(len(df_cluster.index))
+                
+                for i in df_cluster.index:
+                    
+                    dist_sq = (df_cluster.at[i, 'x']-xc)**2 + (df_cluster.at[i, 'y']-yc)**2 + (df_cluster.at[i, 'z']-zc)**2 + (df_cluster.at[i, 'vx']-vxc)**2 + (df_cluster.at[i, 'vy']-vyc)**2 + (df_cluster.at[i, 'vz']-vzc)**2
+                    df_cluster.at[i, 'distances'] = np.sqrt(dist_sq)
+                
+                #sort by that column
+                df_cluster = df_cluster.sort_values(by=['distances'], ascending=False)
+                df_cluster = df_cluster.reset_index(drop=True)
+                
+                X_clust = np.ones((len(df_cluster.index), 3))
+                X_clust[:,0] = df_cluster['x'].tolist()
+                X_clust[:,1] = df_cluster['y'].tolist()
+                X_clust[:,2] = df_cluster['z'].tolist()
+                
+                #gets ellipsoidal characteristics of the cluster
+                center_clust, evecs_clust, radii_clust = ellipsoid_fit(X_clust)
+                min_radius, max_radius = min(radii_clust), max(radii_clust)
+    
+                eccentricity = np.sqrt( 1 - (min_radius**2)/(max_radius**2) )
+                
+                if eccentricity >= 0.7:
+    
+                    df_cluster = df_cluster.drop([0])
+    
+                else:
+                    
+                    m_cluster_t = np.sum(df_cluster['masses'].tolist())
+                    eps = 0. / m_cluster_t
+                    
+                    delta = 1 - m_cluster_t / m_cluster_init * (1 + eps)
+                    deltas.append(delta)
+                    
+                    not_pruned_flag = 1
+        
+    return true_labels, y_compare_6D, deltas
     
 
 if __name__ in '__main__':
-    
-    logN_max = 1
-    logN_vals = [ logN for logN in range(logN_max+1) ]
 
-    snapshot = '00000'
+    snapshots = [ str(j*10).rjust(5, '0') for j in range(51) ]
+    print(snapshots)
+    '''
+    initial_masses = 0.
     
-    for logN in logN_vals:
+    Norbiters = 1
+    _, _, deltas = get_kmeans_result(snapshot, Norbiters, initial_masses)
     
-        Norbiters = 2**logN
-        print(get_kmeans_result(snapshot, Norbiters))
+    print(deltas)
         
     print('hello world!')
+    '''
     
 '''
 success plotting

@@ -75,7 +75,7 @@ def ellipsoid_fit(X):
     radii *= np.sign(evals)
 
     return center, evecs, radii
-        
+
 def get_kmeans_result(snapshots, Norbiters, initial_masses):
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
@@ -88,9 +88,12 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
     for i in range(Norbiters):
         true_labels += [ i for j in range(int(cluster_populations[i])) ]
     
-    for snapshot in snapshots:
+    all_deltas = np.zeros((Norbiters, len(snapshots)))
+    delta_max = 0.9
     
-        #true labels is the problem
+    for k, snapshot in enumerate(snapshots):
+        
+        print('snapshot: ', snapshot)
         
         data_filename = glob.glob(datadir_AMUSE+'*_%s_Norbiters_%i.ascii'%(snapshot, Norbiters))
         data_6D = np.loadtxt(data_filename[0])
@@ -118,7 +121,7 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
                           columns=['x', 'y', 'z', 'vx', 'vy', 'vz', 
                                    'x (rescaled)', 'y (rescaled)', 'z (rescaled)', 
                                    'vx (rescaled)', 'vy (rescaled)', 'vz (rescaled)'])
-        
+
         df['labels'] = y_compare_6D
         
         '''
@@ -127,75 +130,79 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
         '''
         
         df['masses'] = np.ones(len(df.index))
-        
-        deltas = []
-    
+
         for cluster_label in range(int(np.log2(Norbiters)) + 1):
+            
+            print('cluster_label: ', cluster_label)
             
             df_cluster = df.loc[df['labels'] == cluster_label]
             m_cluster_init = np.sum(df_cluster['masses'].tolist())
-            not_pruned_flag = 0
             
-            while not_pruned_flag == 0:
-                
-                #sort by distance from COM of cluster
-                xc, yc, zc = np.mean(df_cluster['x'].tolist()), np.mean(df_cluster['y'].tolist()), np.mean(df_cluster['z'].tolist())
-                vxc, vyc, vzc = np.mean(df_cluster['vx'].tolist()), np.mean(df_cluster['vy'].tolist()), np.mean(df_cluster['vz'].tolist())     
+            print(len(df_cluster.index))
             
-                #add column with distances to COM cluster
-                df_cluster['distances'] = np.zeros(len(df_cluster.index))
+            if all_deltas[cluster_label, k-1] >= delta_max and k != 0:
+                        
+                all_deltas[cluster_label, k] = all_deltas[cluster_label, k-1]     
                 
-                for i in df_cluster.index:
+            if all_deltas[cluster_label, k-1] <= delta_max or k == 0:
+            
+                not_pruned_flag = 0
+                
+                while not_pruned_flag == 0:
                     
-                    dist_sq = (df_cluster.at[i, 'x']-xc)**2 + (df_cluster.at[i, 'y']-yc)**2 + (df_cluster.at[i, 'z']-zc)**2 + (df_cluster.at[i, 'vx']-vxc)**2 + (df_cluster.at[i, 'vy']-vyc)**2 + (df_cluster.at[i, 'vz']-vzc)**2
-                    df_cluster.at[i, 'distances'] = np.sqrt(dist_sq)
+                    #sort by distance from COM of cluster
+                    xc, yc, zc = np.mean(df_cluster['x'].tolist()), np.mean(df_cluster['y'].tolist()), np.mean(df_cluster['z'].tolist())
                 
-                #sort by that column
-                df_cluster = df_cluster.sort_values(by=['distances'], ascending=False)
-                df_cluster = df_cluster.reset_index(drop=True)
-                
-                X_clust = np.ones((len(df_cluster.index), 3))
-                X_clust[:,0] = df_cluster['x'].tolist()
-                X_clust[:,1] = df_cluster['y'].tolist()
-                X_clust[:,2] = df_cluster['z'].tolist()
-                
-                #gets ellipsoidal characteristics of the cluster
-                center_clust, evecs_clust, radii_clust = ellipsoid_fit(X_clust)
-                min_radius, max_radius = min(radii_clust), max(radii_clust)
+                    #add column with distances to COM cluster
+                    df_cluster['distances'] = ''
+                    
+                    for i in df_cluster.index:
+                        
+                        dist_sq = (df_cluster.at[i, 'x']-xc)**2 + (df_cluster.at[i, 'y']-yc)**2 + (df_cluster.at[i, 'z']-zc)**2
+                        df_cluster.at[i, 'distances'] = np.sqrt(dist_sq)
+                    
+                    #sort by that column
+                    df_cluster = df_cluster.sort_values(by=['distances'], ascending=False)
+                    df_cluster = df_cluster.reset_index(drop=True)
     
-                eccentricity = np.sqrt( 1 - (min_radius**2)/(max_radius**2) )
-                
-                if eccentricity >= 0.7:
-    
-                    df_cluster = df_cluster.drop([0])
-    
-                else:
+                    X_clust = np.ones((len(df_cluster.index), 3))
+                    X_clust[:,0] = df_cluster['x'].tolist()
+                    X_clust[:,1] = df_cluster['y'].tolist()
+                    X_clust[:,2] = df_cluster['z'].tolist()
                     
-                    m_cluster_t = np.sum(df_cluster['masses'].tolist())
-                    eps = 0. / m_cluster_t
-                    
-                    delta = 1 - m_cluster_t / m_cluster_init * (1 + eps)
-                    deltas.append(delta)
-                    
-                    not_pruned_flag = 1
+                    #gets ellipsoidal characteristics of the cluster      
+                    center_clust, evecs_clust, radii_clust = ellipsoid_fit(X_clust)
+                    min_radius, max_radius = min(np.abs(radii_clust)), max(np.abs(radii_clust))
         
-    return true_labels, y_compare_6D, deltas
-    
+                    eccentricity = np.sqrt( 1 - (min_radius**2)/(max_radius**2) )
+                    
+                    if eccentricity >= 0.9:
+        
+                        df_cluster = df_cluster.drop([0])
+        
+                    if eccentricity < 0.9:
+                        
+                        m_cluster_t = np.sum(df_cluster['masses'].tolist())
+                        eps = 0. / m_cluster_t
+                        
+                        delta = 1 - m_cluster_t / m_cluster_init * (1 + eps)
+                        all_deltas[cluster_label, k] = delta
+                        
+                        not_pruned_flag = 1
+
+    return all_deltas
 
 if __name__ in '__main__':
 
     snapshots = [ str(j*10).rjust(5, '0') for j in range(51) ]
-    print(snapshots)
-    '''
+    
     initial_masses = 0.
     
     Norbiters = 1
-    _, _, deltas = get_kmeans_result(snapshot, Norbiters, initial_masses)
-    
-    print(deltas)
+    all_deltas = get_kmeans_result(snapshots, Norbiters, initial_masses)
         
+    print(all_deltas)
     print('hello world!')
-    '''
     
 '''
 success plotting

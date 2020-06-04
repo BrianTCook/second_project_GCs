@@ -33,6 +33,8 @@ def sklearn_mapper(true_labels, kmeans_labels):
             input_output_dict.pop(first)
             input_output_dict.update( {first: second} )
     
+    print('io_dict: ', input_output_dict)
+    
     return input_output_dict
 
 # http://www.mathworks.com/matlabcentral/fileexchange/24693-ellipsoid-fit
@@ -91,6 +93,8 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
     all_deltas = np.zeros((Norbiters, len(snapshots)))
     delta_max = 0.9
     
+    Norbiters_active = Norbiters
+    
     for k, snapshot in enumerate(snapshots):
         
         print('snapshot: ', snapshot)
@@ -107,9 +111,18 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
         np_data_6D_rescaled = np.reshape(np_data_6D_rescaled, data_6D.shape)
     
         #apply kmeans clustering
-        kmeans_6D = KMeans(n_clusters=Norbiters, init='k-means++')
+        
+        if Norbiters_active >= 1:
+        
+            kmeans_6D = KMeans(n_clusters=Norbiters_active, init='k-means++')
+            
+        if Norbiters_active == 0:
+            
+            kmeans_6D = KMeans(n_clusters=1, init='k-means++')
+        
         kmeans_6D.fit(np_data_6D_rescaled)
         y_kmeans_6D = kmeans_6D.predict(np_data_6D_rescaled)
+        
         io_dict_6D = sklearn_mapper(true_labels, y_kmeans_6D)
     
         #k-means clustering with same labelling scheme as true_labels
@@ -122,7 +135,7 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
                                    'x (rescaled)', 'y (rescaled)', 'z (rescaled)', 
                                    'vx (rescaled)', 'vy (rescaled)', 'vz (rescaled)'])
 
-        df['labels'] = y_compare_6D
+        df['labels'] = y_kmeans_6D #y_compare_6D
         
         '''
         if Norbiters == 64:
@@ -131,14 +144,13 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
         
         df['masses'] = np.ones(len(df.index))
 
-        for cluster_label in range(int(np.log2(Norbiters)) + 1):
+        for cluster_label in range(Norbiters):
             
             print('cluster_label: ', cluster_label)
             
             df_cluster = df.loc[df['labels'] == cluster_label]
+            N_original_in_cluster = len(df_cluster.index)
             m_cluster_init = np.sum(df_cluster['masses'].tolist())
-            
-            print(len(df_cluster.index))
             
             if all_deltas[cluster_label, k-1] >= delta_max and k != 0:
                         
@@ -151,19 +163,21 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
                 while not_pruned_flag == 0:
                     
                     #sort by distance from COM of cluster
-                    xc, yc, zc = np.mean(df_cluster['x'].tolist()), np.mean(df_cluster['y'].tolist()), np.mean(df_cluster['z'].tolist())
+                    xc, yc, zc = np.median(df_cluster['x (rescaled)'].tolist()), np.median(df_cluster['y (rescaled)'].tolist()), np.median(df_cluster['z (rescaled)'].tolist())
+                    vxc, vyc, vzc = np.median(df_cluster['vx (rescaled)'].tolist()), np.median(df_cluster['vy (rescaled)'].tolist()), np.median(df_cluster['vz (rescaled)'].tolist())               
                 
                     #add column with distances to COM cluster
                     df_cluster['distances'] = ''
                     
                     for i in df_cluster.index:
                         
-                        dist_sq = (df_cluster.at[i, 'x']-xc)**2 + (df_cluster.at[i, 'y']-yc)**2 + (df_cluster.at[i, 'z']-zc)**2
+                        dist_sq = (df_cluster.at[i, 'x (rescaled)']-xc)**2 + (df_cluster.at[i, 'y (rescaled)']-yc)**2 + (df_cluster.at[i, 'z (rescaled)']-zc)**2 + (df_cluster.at[i, 'vx (rescaled)']-vxc)**2 + (df_cluster.at[i, 'vy (rescaled)']-vyc)**2 + (df_cluster.at[i, 'vz (rescaled)']-vzc)**2
                         df_cluster.at[i, 'distances'] = np.sqrt(dist_sq)
                     
                     #sort by that column
                     df_cluster = df_cluster.sort_values(by=['distances'], ascending=False)
                     df_cluster = df_cluster.reset_index(drop=True)
+                    N_in_cluster = len(df_cluster.index)
     
                     X_clust = np.ones((len(df_cluster.index), 3))
                     X_clust[:,0] = df_cluster['x'].tolist()
@@ -176,17 +190,31 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
         
                     eccentricity = np.sqrt( 1 - (min_radius**2)/(max_radius**2) )
                     
+                    '''
+                    maybe try something other than eccentricity,
+                    if 50% Lagrangian radius is 5x bigger than originally it is dissolved
+                    all get characterized as field stars?
+                    
+                    
+                    add column saying current label for plot showing N_in birth cluster,
+                    N_field, and N_adopted by other cluster?
+                    '''
+                    
                     if eccentricity >= 0.9:
         
                         df_cluster = df_cluster.drop([0])
         
-                    if eccentricity < 0.9:
+                    if eccentricity < 0.9 or np.abs(N_in_cluster/N_original_in_cluster) < 0.1:
                         
                         m_cluster_t = np.sum(df_cluster['masses'].tolist())
                         eps = 0. / m_cluster_t
                         
                         delta = 1 - m_cluster_t / m_cluster_init * (1 + eps)
                         all_deltas[cluster_label, k] = delta
+                        
+                        if delta >= delta_max:
+                            
+                            N_orbiters_active -= 1
                         
                         not_pruned_flag = 1
 
@@ -200,8 +228,20 @@ if __name__ in '__main__':
     
     Norbiters = 1
     all_deltas = get_kmeans_result(snapshots, Norbiters, initial_masses)
+    sim_times = np.linspace(0., 100., len(snapshots))    
+    
+    for cluster, deltas in enumerate(all_deltas):
         
-    print(all_deltas)
+        y = deltas
+        x = sim_times[:len(y)+1]
+        
+        plt.plot(x, y, linewidth=1, label='cluster %i'%(cluster))
+        
+    plt.axhline(y=0.9, linestyle='--', c='k', linewidth=2)
+    plt.xlabel(r'$t_{\mathrm{sim}}$ (Myr)', fontsize=24)
+    plt.ylabel(r'$\delta$', fontsize=24)
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=10)
+    
     print('hello world!')
     
 '''

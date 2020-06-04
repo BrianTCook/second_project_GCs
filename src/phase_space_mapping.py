@@ -15,7 +15,7 @@ def maps(whole_or_clusters):
     datadir_AMUSE = '/Users/BrianTCook/Desktop/Thesis/second_project_gcs/Enbid-2.0/AMUSE_data/'
     
     logN_max = 6
-    Norbiters_list = [ 2**3 ] #int(2**i) for i in range(logN_max)]
+    Norbiters_list = [ 2**6 ] #int(2**i) for i in range(logN_max)]
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
     
@@ -64,7 +64,7 @@ def maps(whole_or_clusters):
                     y_tot, z_tot, colors = y_total[idx], z_total[idx], colortot[idx]
                     
                     cm = plt.cm.get_cmap('viridis')
-                    axs[l].scatter(y_tot, z_tot, s=0.5, c=colors, cmap=cm)
+                    axs[l].scatter(y_tot, z_tot, marker=',', s=0.1, c=colors, cmap=cm, linewidths=0)
                     axs[l].annotate(r'$t_{\mathrm{sim}} = %.02f$ Myr'%(t), xy=(0.1, 0.85 ), xycoords='axes fraction', fontsize=6)
                     #fig.colorbar(sc, fraction=0.046, pad=0.04)#, norm=LogNorm())
                     axs[l].set_xlim(-2.0, 2.0)
@@ -303,4 +303,4 @@ def maps(whole_or_clusters):
 
 if __name__ in '__main__':
     
-    maps('clusters')
+    maps('whole')

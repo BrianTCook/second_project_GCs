@@ -181,7 +181,7 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
             
             #print('median separation distance, initial radius: %.03f pc, %.03f pc'%(np.median(df_cluster['separation distance'].tolist()), cluster_radii_sorted[cluster_label] ))
             
-            df_cluster = df_cluster[ df_cluster['separation distance'] <= cluster_radii_sorted[cluster_label] ] #outside of original radius
+            df_cluster = df_cluster[ df_cluster['separation distance'] <= 2.*cluster_radii_sorted[cluster_label] ] #outside of original radius
             df_cluster = df_cluster.reset_index(drop=True)
             m_cluster_t = np.sum(df_cluster['masses'].tolist())
             nstars = len(df_cluster.index)
@@ -216,7 +216,7 @@ if __name__ in '__main__':
     
     initial_masses = 0.
     
-    Norbiters = 32
+    Norbiters = 64
     all_deltas = get_kmeans_result(snapshots, Norbiters, initial_masses)
     dt = 2. #Myr
     
@@ -230,14 +230,17 @@ if __name__ in '__main__':
         y = deltas
         x = np.arange(0., dt*len(deltas), dt) #sim_times
         
-        plt.plot(x, y, linewidth=0.5, alpha=0.7, color=colors[cluster])
+        print(deltas)
         
-    #plt.colorbar()
+        plt.plot(x, y, linewidth=0.5, alpha=0.6, color=colors[cluster], label=str(cluster))
+        
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=8, ncol=4)
     plt.axhline(y=0.9, linestyle='--', c='k', linewidth=1)
     plt.xlim(0., 100.)
     plt.ylim(0., 1.)
     plt.xlabel(r'$t_{\mathrm{sim}}$ (Myr)', fontsize=12)
     plt.ylabel(r'$\delta \simeq 1 - M_{\mathrm{cluster}}(t)/M_{\mathrm{cluster}}(t=0)$', fontsize=12)
+    plt.tight_layout()
     plt.savefig('mass_loss_Norbiters_%i.pdf'%(Norbiters))    
     
     print('hello world!')

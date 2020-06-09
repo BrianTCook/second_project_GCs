@@ -32,6 +32,7 @@ def maps(whole_or_clusters):
     
     plt.rc('text', usetex = True)
     plt.rc('font', family = 'serif')
+    plt.style.use('dark_background')
     
     sim_times = np.linspace(0., 100., 51)  
     gadget_flags = [ 0, 25, 50 ]
@@ -63,7 +64,7 @@ def maps(whole_or_clusters):
                     idx = colortot.argsort()
                     y_tot, z_tot, colors = y_total[idx], z_total[idx], colortot[idx]
                     
-                    cm = plt.cm.get_cmap('viridis')
+                    cm = plt.cm.get_cmap('plasma')
                     axs[l].scatter(y_tot, z_tot, marker=',', s=0.1, c=colors, cmap=cm, linewidths=0)
                     axs[l].annotate(r'$t_{\mathrm{sim}} = %.02f$ Myr'%(t), xy=(0.1, 0.85 ), xycoords='axes fraction', fontsize=6)
                     #fig.colorbar(sc, fraction=0.046, pad=0.04)#, norm=LogNorm())
@@ -83,9 +84,9 @@ def maps(whole_or_clusters):
             for ax in axs.flat:
                 ax.label_outer()
                 
-            plt.suptitle(r'$\log_{2}N_{\mathrm{clusters}}=6$ Simulation', fontsize=12)
+            #plt.suptitle(r'$\log_{2}N_{\mathrm{clusters}}=6$ Simulation', fontsize=12)
             plt.subplots_adjust(wspace=0, hspace=0)
-            plt.savefig('snapshot_Norbiters_%s_all.pdf'%(str(Norbiters)), bbox_inches = 'tight')
+            plt.savefig('snapshot_Norbiters_%s_all.jpg'%(str(Norbiters)), bbox_inches = 'tight')
             plt.close()
 
         if whole_or_clusters == 'clusters':

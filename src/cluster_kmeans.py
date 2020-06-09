@@ -82,7 +82,7 @@ def ellipsoid_fit(X):
 
 def get_kmeans_result(snapshots, Norbiters, initial_masses):
     
-    t0 = time.time()
+    #t0 = time.time()
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
     datadir_AMUSE = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/Enbid-2.0/AMUSE_data/'
@@ -102,6 +102,7 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
     
     delta_max = 0.9
     all_deltas = [ [] for i in range(Norbiters) ]
+    endpoints = [ '' for i in range(Norbiters) ]
     active_orbiters = [ i for i in range(Norbiters) ]
     
     star_masses = np.loadtxt(datadir+'tree_data/tree_SingleCluster_masses_Norbiters_64_dt_0.2.txt').T
@@ -112,11 +113,15 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
         deltaMs[i] = np.mean(star_masses[:, i]) - np.mean(star_masses[:, i-1])
 
     deltaM = np.mean(deltaMs)
+    centroids = np.zeros((Norbiters, 6))
 
     for k, snapshot in enumerate(snapshots):
         
-        print('snapshot: ', snapshot)
-        print('active_orbiters: ', active_orbiters)
+        print(snapshot)
+        
+        if len(active_orbiters) == 0:
+            
+            return all_deltas, endpoints
         
         data_filename = glob.glob(datadir_AMUSE+'*_%s_Norbiters_%i.ascii'%(snapshot, Norbiters))
         data_6D = np.loadtxt(data_filename[0])
@@ -128,18 +133,26 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
         np_data_6D_rescaled = np.asarray(data_6D_rescaled)
         np_data_6D_rescaled = np.reshape(np_data_6D_rescaled, data_6D.shape)
     
-        '''
         #apply kmeans clustering
-        
-        if len(active_orbiters) > 0:
-        
+        #kmeans.cluster_centers_
+        '''
+        if k == 0:
+            
             kmeans_6D = KMeans(n_clusters=len(active_orbiters), init='k-means++')
+        
+        if len(active_orbiters) > 0 and k != 0:
+        
+            kmeans_6D = KMeans(n_clusters=len(active_orbiters), init=centroids)
             
         if len(active_orbiters) == 0:
             
-            kmeans_6D = KMeans(n_clusters=1, init='k-means++')
+            kmeans_6D = KMeans(n_clusters=1, init=centroids)
         
         kmeans_6D.fit(np_data_6D_rescaled)
+        centroids = kmeans_6D.cluster_centers_
+        
+        print(centroids)
+        
         y_kmeans_6D = kmeans_6D.predict(np_data_6D_rescaled)
         
         io_dict_6D = sklearn_mapper(true_labels, y_kmeans_6D)
@@ -163,8 +176,8 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
 
         for cluster_label in active_orbiters:
             
-            print('cluster_label: ', cluster_label)
-            print('current time: %.04f minutes'%((time.time()-t0)/60.))
+            #print('cluster_label: ', cluster_label)
+            #print('current time: %.04f minutes'%((time.time()-t0)/60.))
             
             df_cluster = df.loc[df['labels'] == cluster_label]
             df_cluster['separation distance'] = '' #in parsecs
@@ -198,17 +211,23 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
                 
                 delta = 1. - m_cluster_t / m_cluster_init * (1 + eps)
                 
+                galactocentric_dist = np.sqrt( np.median(df_cluster['x'].tolist())**2. + np.median(df_cluster['y'].tolist())**2. + np.median(df_cluster['z'].tolist())**2. )
+                endpoints[cluster_label] = 'final galactocentric distance: %.03f kpc'%(galactocentric_dist)
+                
             else:
                 
                 delta = 1.
                 
             all_deltas[cluster_label].append(delta)
-
+            
             if delta >= delta_max:
                 
-                active_orbiters.remove(cluster_label)
-            
-    return all_deltas
+                cluster_ind = active_orbiters.index(cluster_label)
+                centroids = np.delete(centroids, cluster_ind, 0) #removes centroid from consideration
+                endpoints[cluster_label] = 'disruption time: %.00f Myr'%(k*2.)
+                active_orbiters.remove(cluster_label) #removes orbiter label from active ones
+                
+    return all_deltas, endpoints
 
 if __name__ in '__main__':
 
@@ -217,24 +236,24 @@ if __name__ in '__main__':
     initial_masses = 0.
     
     Norbiters = 64
-    all_deltas = get_kmeans_result(snapshots, Norbiters, initial_masses)
+    all_deltas, endpoints = get_kmeans_result(snapshots, Norbiters, initial_masses) #endpoints
     dt = 2. #Myr
     
     plt.rc('text', usetex = True)
     plt.rc('font', family = 'serif')
     
-    colors = pl.cm.jet(np.linspace(0,1,Norbiters))
+    colors = pl.cm.rainbow(np.linspace(0,1,Norbiters))
     
     for cluster, deltas in enumerate(all_deltas):
         
-        y = deltas
-        x = np.arange(0., dt*len(deltas), dt) #sim_times
+        print('cluster: %i, fate: %s'%(cluster, endpoints[cluster]))
         
-        print(deltas)
+        y = deltas
+        x = np.arange(1e-5, dt*len(deltas), dt) #sim_times
         
         plt.plot(x, y, linewidth=0.5, alpha=0.6, color=colors[cluster], label=str(cluster))
         
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=8, ncol=4)
+    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=4, ncol=2)
     plt.axhline(y=0.9, linestyle='--', c='k', linewidth=1)
     plt.xlim(0., 100.)
     plt.ylim(0., 1.)

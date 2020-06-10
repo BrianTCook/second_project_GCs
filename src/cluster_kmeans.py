@@ -135,7 +135,6 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
     
         #apply kmeans clustering
         #kmeans.cluster_centers_
-        '''
         if k == 0:
             
             kmeans_6D = KMeans(n_clusters=len(active_orbiters), init='k-means++')
@@ -159,7 +158,6 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
     
         #k-means clustering with same labelling scheme as true_labels
         y_compare_6D = [ io_dict_6D[y] for y in y_kmeans_6D ]
-        '''
     
         all_data = np.concatenate((data_6D, np_data_6D_rescaled), axis=1)
     
@@ -168,7 +166,7 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
                                    'x (rescaled)', 'y (rescaled)', 'z (rescaled)', 
                                    'vx (rescaled)', 'vy (rescaled)', 'vz (rescaled)'])
 
-        df['labels'] = true_labels
+        df['labels'] = y_compare_6D
         
         star_masses_truncated = star_masses[:len(df.index), k]
         
@@ -260,7 +258,7 @@ if __name__ in '__main__':
     plt.xlabel(r'$t_{\mathrm{sim}}$ (Myr)', fontsize=12)
     plt.ylabel(r'$\delta \simeq 1 - M_{\mathrm{cluster}}(t)/M_{\mathrm{cluster}}(t=0)$', fontsize=12)
     plt.tight_layout()
-    plt.savefig('mass_loss_Norbiters_%i.pdf'%(Norbiters))    
+    plt.savefig('mass_loss_Norbiters_%i_kmeans.pdf'%(Norbiters))    
     
     print('hello world!')
     

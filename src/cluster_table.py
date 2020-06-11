@@ -172,7 +172,8 @@ if __name__ in '__main__':
                 plt.scatter(xs[inew], ys[inew], s=2*math.ceil(np.log10(Nstars[inew])), 
                             c=color_i, label=r'Indices: $%i, \dots, %i$'%(i, 2*i - 1))
                 
-            plt.arrow(xs[inew], ys[inew], 0.0001*vxs[inew], 0.0001*vys[inew], color=color_i)
+            plt.arrow(xs[inew], ys[inew], 0.0001*vxs[inew], 0.0001*vys[inew], 
+                      alpha = 0.6, color=color_i)
             
             color_list_xy.append(color_i)
             

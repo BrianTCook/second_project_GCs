@@ -55,7 +55,7 @@ def sort_clusters_by_attribute(attribute):
     radii = [ round(radii[i], 2) for i in range(N) ]
     
     #df = pd.DataFrame(list(zip(masses, Nstars, dists, speeds, radii)), columns=['M', 'Nstars', '|r|', '|v|', 'rvir'])
-    df = pd.DataFrame(list(zip(dists, xs, ys, zs, vxs, vys, vzs)), columns=['|r|', 'x', 'y', 'z', 'vx', 'vy', 'vz'])
+    df = pd.DataFrame(list(zip(dists, xs, ys, zs, vxs, vys, vzs, Nstars)), columns=['|r|', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'Nstars'])
     df_sorted_by_r = df.sort_values(by=[attribute])
     #df_sorted_by_r = df_sorted_by_r.reset_index(drop=True)
     
@@ -64,21 +64,21 @@ def sort_clusters_by_attribute(attribute):
     for df, df_sorted in zip(df.index, df_sorted_by_r.index):
         indices_dict.update( {df : df_sorted} )
         
-    return indices_dict, masses
+    return indices_dict, df_sorted_by_r
 
 if __name__ in '__main__':
     
-    sort_clusters_by_attribute('|r|')
+    indices_dict, df_sorted_by_r = sort_clusters_by_attribute('|r|')
 
-
-'''
     plt.rc('font', family='serif')
     plt.rc('text', usetex=True)
     
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-        
+    
     color_list_xyz = []
+    
+    N = 64
     
     for i in range(N):
         
@@ -89,9 +89,33 @@ if __name__ in '__main__':
         if color_i not in color_list_xyz:
             
             min_i, max_i = int(str(math.ceil(np.log2(i+1))))-1, int(str(math.ceil(np.log2(i+1))))
+            min_i, max_i = 2**(min_i), 2**(max_i)-1
         
-            ax.scatter(xs[inew], ys[inew], zs[inew], s=2*math.ceil(np.log10(Nstars[inew])), 
-                       c=color_i, label=r'$%i \leq \log_{2}(\mathrm{Index}+1) < %s$'%(min_i, max_i))
+            Nstars = df_sorted_by_r['Nstars'].tolist()
+        
+            xs = df_sorted_by_r['x'].tolist()
+            ys = df_sorted_by_r['y'].tolist()
+            zs = df_sorted_by_r['z'].tolist()
+            vxs = df_sorted_by_r['vx'].tolist()
+            vys = df_sorted_by_r['vy'].tolist()
+            vzs = df_sorted_by_r['vz'].tolist()
+            
+            if i == 0 or i == 1:
+                
+                ax.scatter(xs[inew], ys[inew], zs[inew], s=2*math.ceil(np.log10(Nstars[inew])), 
+                           c=color_i, label=r'Index: %i'%(i))
+            
+            if i == 2:
+                
+                ax.scatter(xs[inew], ys[inew], zs[inew], s=2*math.ceil(np.log10(Nstars[inew])), 
+                           c=color_i, label=r'Indices: %i, %i'%(i, i+1))
+            
+            if min_i > 2:
+                
+                ax.scatter(xs[inew], ys[inew], zs[inew], s=2*math.ceil(np.log10(Nstars[inew])), 
+                           c=color_i, label=r'Indices: $%i, \dots, %i$'%(min_i, max_i))
+            
+            
             ax.quiver(xs[inew], ys[inew], zs[inew], 0.0008*vxs[inew], 0.0008*vys[inew], 0.0008*vzs[inew],
                       color=color_i)
             
@@ -128,11 +152,27 @@ if __name__ in '__main__':
         
         if color_i not in color_list_xy:
             
-            min_i, max_i = int(str(math.ceil(np.log2(i+1))))-1, int(str(math.ceil(np.log2(i+1))))
+            if i == 0:
         
-            plt.scatter(xs[inew], ys[inew], s=2*math.ceil(np.log10(Nstars[inew])), 
-                       c=color_i, label=r'$%i \leq \log_{2}(\mathrm{Index}+1) < %s$'%(min_i, max_i))
-            plt.arrow(xs[inew], ys[inew], 0.0002*vxs[inew], 0.0002*vys[inew], color=color_i)
+                plt.scatter(xs[inew], ys[inew], s=2*math.ceil(np.log10(Nstars[inew])), 
+                            c=color_i, label=r'Index: 0')
+                
+            if i == 1:
+        
+                plt.scatter(xs[inew], ys[inew], s=2*math.ceil(np.log10(Nstars[inew])), 
+                            c=color_i, label=r'Index: 1')
+                
+            if i == 2:
+                
+                plt.scatter(xs[inew], ys[inew], s=2*math.ceil(np.log10(Nstars[inew])), 
+                            c=color_i, label=r'Index: 2, 3')
+            
+            if i >= 4:
+        
+                plt.scatter(xs[inew], ys[inew], s=2*math.ceil(np.log10(Nstars[inew])), 
+                            c=color_i, label=r'Indices: $%i, \dots, %i$'%(i, 2*i - 1))
+                
+            plt.arrow(xs[inew], ys[inew], 0.0001*vxs[inew], 0.0001*vys[inew], color=color_i)
             
             color_list_xy.append(color_i)
             
@@ -153,6 +193,7 @@ if __name__ in '__main__':
     plt.tight_layout()
     plt.savefig('xy_plane_initial.pdf')
 
+'''
 plt.rc('font', family='serif')
 plt.rc('text', usetex=True)
 

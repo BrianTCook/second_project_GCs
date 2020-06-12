@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import matplotlib.pylab as pl
 from sklearn.cluster import KMeans
+from scipy.optimize import curve_fit
 from cluster_table import sort_clusters_by_attribute
 pd.options.mode.chained_assignment = None  # default='warn'
 
@@ -39,61 +40,21 @@ def sklearn_mapper(true_labels, kmeans_labels):
     
     return input_output_dict
 
-# http://www.mathworks.com/matlabcentral/fileexchange/24693-ellipsoid-fit
-# for arbitrary axes
-def ellipsoid_fit(X):
-    x = X[:, 0]
-    y = X[:, 1]
-    z = X[:, 2]
-    D = np.array([x * x + y * y - 2 * z * z,
-                 x * x + z * z - 2 * y * y,
-                 2 * x * y,
-                 2 * x * z,
-                 2 * y * z,
-                 2 * x,
-                 2 * y,
-                 2 * z,
-                 1 - 0 * x])
-    d2 = np.array(x * x + y * y + z * z).T # rhs for LLSQ
-    u = np.linalg.solve(D.dot(D.T), D.dot(d2))
-    a = np.array([u[0] + 1 * u[1] - 1])
-    b = np.array([u[0] - 2 * u[1] - 1])
-    c = np.array([u[1] - 2 * u[0] - 1])
-    v = np.concatenate([a, b, c, u[2:]], axis=0).flatten()
-    A = np.array([[v[0], v[3], v[4], v[6]],
-                  [v[3], v[1], v[5], v[7]],
-                  [v[4], v[5], v[2], v[8]],
-                  [v[6], v[7], v[8], v[9]]])
-
-    center = np.linalg.solve(- A[:3, :3], v[6:9])
-
-    translation_matrix = np.eye(4)
-    translation_matrix[3, :3] = center.T
-
-    R = translation_matrix.dot(A).dot(translation_matrix.T)
-
-    evals, evecs = np.linalg.eig(R[:3, :3] / -R[3, 3])
-    evecs = evecs.T
-
-    radii = np.sqrt(1. / np.abs(evals))
-    radii *= np.sign(evals)
-
-    return center, evecs, radii
-
 def get_kmeans_result(snapshots, Norbiters, initial_masses):
     
-    #t0 = time.time()
+    t0 = time.time()
     
     datadir = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/data/'
     datadir_AMUSE = '/Users/BrianTCook/Desktop/Thesis/second_project_GCs/Enbid-2.0/AMUSE_data/'
     cluster_populations = np.loadtxt(datadir + 'Nstars_in_clusters.txt')
     cluster_radii = np.loadtxt(datadir + '/ICs/cluster_radii_for_sampling.txt') 
     
-    indices_dict, cluster_masses = sort_clusters_by_attribute('|r|')
+    indices_dict, cluster_masses, cluster_dists = sort_clusters_by_attribute('|r|')
             
     cluster_populations_sorted = [ cluster_populations[indices_dict[i]] for i in range(Norbiters) ]        
     cluster_radii_sorted = [ cluster_radii[indices_dict[i]] for i in range(Norbiters) ]
     cluster_masses_sorted = [ cluster_masses[indices_dict[i]] for i in range(Norbiters) ]
+    cluster_dists_sorted = [ cluster_dists[indices_dict[i]] for i in range(Norbiters) ]
 
     true_labels = []
     
@@ -113,60 +74,22 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
         deltaMs[i] = np.mean(star_masses[:, i]) - np.mean(star_masses[:, i-1])
 
     deltaM = np.mean(deltaMs)
-    centroids = np.zeros((Norbiters, 6))
 
     for k, snapshot in enumerate(snapshots):
         
         print(snapshot)
+        print('time is: %.03f minutes'%((time.time()-t0)/60.))
         
         if len(active_orbiters) == 0:
             
             return all_deltas, endpoints
         
         data_filename = glob.glob(datadir_AMUSE+'*_%s_Norbiters_%i.ascii'%(snapshot, Norbiters))
-        data_6D = np.loadtxt(data_filename[0])
-        
-        I6, J6 = data_6D.shape
-        data_6D_rescaled = [ ( (data_6D[i,j] - np.amin(data_6D[:,j])) / (np.amax(data_6D[:,j]) - np.amin(data_6D[:,j])) ) 
-                             for i in range(I6) for j in range(J6) ]
-        
-        np_data_6D_rescaled = np.asarray(data_6D_rescaled)
-        np_data_6D_rescaled = np.reshape(np_data_6D_rescaled, data_6D.shape)
+        data_3D = np.loadtxt(data_filename[0])[:, :3]
     
-        #apply kmeans clustering
-        #kmeans.cluster_centers_
-        if k == 0:
-            
-            kmeans_6D = KMeans(n_clusters=len(active_orbiters), init='k-means++')
-        
-        if len(active_orbiters) > 0 and k != 0:
-        
-            kmeans_6D = KMeans(n_clusters=len(active_orbiters), init=centroids)
-            
-        if len(active_orbiters) == 0:
-            
-            kmeans_6D = KMeans(n_clusters=1, init=centroids)
-        
-        kmeans_6D.fit(np_data_6D_rescaled)
-        centroids = kmeans_6D.cluster_centers_
-        
-        print(centroids)
-        
-        y_kmeans_6D = kmeans_6D.predict(np_data_6D_rescaled)
-        
-        io_dict_6D = sklearn_mapper(true_labels, y_kmeans_6D)
-    
-        #k-means clustering with same labelling scheme as true_labels
-        y_compare_6D = [ io_dict_6D[y] for y in y_kmeans_6D ]
-    
-        all_data = np.concatenate((data_6D, np_data_6D_rescaled), axis=1)
-    
-        df = pd.DataFrame(all_data,
-                          columns=['x', 'y', 'z', 'vx', 'vy', 'vz', 
-                                   'x (rescaled)', 'y (rescaled)', 'z (rescaled)', 
-                                   'vx (rescaled)', 'vy (rescaled)', 'vz (rescaled)'])
+        df = pd.DataFrame(data_3D, columns=['x', 'y', 'z'])
 
-        df['labels'] = y_compare_6D
+        df['labels'] = true_labels
         
         star_masses_truncated = star_masses[:len(df.index), k]
         
@@ -220,12 +143,17 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
             
             if delta >= delta_max:
                 
-                cluster_ind = active_orbiters.index(cluster_label)
-                centroids = np.delete(centroids, cluster_ind, 0) #removes centroid from consideration
                 endpoints[cluster_label] = 'disruption time: %.00f Myr'%(k*2.)
                 active_orbiters.remove(cluster_label) #removes orbiter label from active ones
                 
-    return all_deltas, endpoints
+                
+    return all_deltas, endpoints, cluster_dists_sorted
+
+def func_powerlaw(x, m, b):
+    
+    #log scaled fit
+    
+    return m*x + b
 
 if __name__ in '__main__':
 
@@ -233,33 +161,60 @@ if __name__ in '__main__':
     
     initial_masses = 0.
     
+    '''
     Norbiters = 64
-    all_deltas, endpoints = get_kmeans_result(snapshots, Norbiters, initial_masses) #endpoints
+    all_deltas, endpoints, cluster_dists_sorted = get_kmeans_result(snapshots, Norbiters, initial_masses) #endpoints
     dt = 2. #Myr
     
     plt.rc('text', usetex = True)
     plt.rc('font', family = 'serif')
     
     colors = pl.cm.rainbow(np.linspace(0,1,Norbiters))
+    '''
+    
+    xvals_powerlaw = np.loadtxt('xvals_powerlaw.txt')
+    yvals_powerlaw = np.loadtxt('yvals_powerlaw.txt')
+    
+    xs = np.log10(xvals_powerlaw)
+    ys = np.log10(yvals_powerlaw)
+    
+    popt, pcov = curve_fit(func_powerlaw, xs, ys)
+    m_optimal, b_optimal = popt
+    
+    print('m: %.03f \pm %.03f'%(m_optimal, np.sqrt(pcov[0,0])))
+    print('b: %.03f \pm %.03f'%(b_optimal, np.sqrt(pcov[1,1])))
+    
+    xs_fit = np.linspace(min(xvals_powerlaw), max(xvals_powerlaw), 100)
+    ys_fit = [ 10**(b_optimal) * x**(m_optimal) for x in xs_fit ]
+    
+    xs_fit_log = np.linspace(min(xs), max(xs), 100)
+    ys_fit_log = [ func_powerlaw(x, m_optimal, b_optimal) for x in xs_fit_log ]
+
+    '''
+    xvals_powerlaw, yvals_powerlaw = [], []
     
     for cluster, deltas in enumerate(all_deltas):
         
         print('cluster: %i, fate: %s'%(cluster, endpoints[cluster]))
         
-        y = deltas
-        x = np.arange(1e-5, dt*len(deltas), dt) #sim_times
+        xvals_powerlaw.append(cluster_dists_sorted[cluster])
+        yvals_powerlaw.append( np.mean( [ (deltas[i+1]-deltas[i])/dt for i in range(len(deltas)-1) ] ) )
+    '''
         
-        plt.plot(x, y, linewidth=0.5, alpha=0.6, color=colors[cluster], label=str(cluster))
-        
-    plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=4, ncol=2)
-    plt.axhline(y=0.9, linestyle='--', c='k', linewidth=1)
-    plt.xlim(0., 100.)
-    plt.ylim(0., 1.)
-    plt.xlabel(r'$t_{\mathrm{sim}}$ (Myr)', fontsize=18)
-    plt.ylabel(r'$\delta \simeq 1 - M_{\mathrm{cluster}}(t)/M_{\mathrm{cluster}}(t=0)$', fontsize=18)
-    plt.gca().tick_params(labelsize='x-large')
+    plt.scatter(xs, ys, c='r', s=4, label='Star Clusters')
+    plt.plot(xs_fit_log, ys_fit_log, c='k', linewidth=1, label=r'Power law, $\alpha = %.03f \pm %.03f$'%(popt[0], np.sqrt(pcov[0,0])))
+
+    #plt.gca().set_xscale('log')
+
+    #np.savetxt('xvals_powerlaw.txt', xvals_powerlaw)
+    #np.savetxt('yvals_powerlaw.txt', yvals_powerlaw)
+
+    plt.legend(loc='lower left', fontsize=10)
+    plt.xlabel(r'$\log \big(r_{0} \, (\mathrm{kpc})\big)$', fontsize=16)
+    plt.ylabel(r'$\log \big(\langle \dot{\delta} \rangle \, (\mathrm{Myr}^{-1}) \big)$', fontsize=16)
+    plt.gca().tick_params(labelsize='large')
     plt.tight_layout()
-    plt.savefig('mass_loss_Norbiters_%i_kmeans.pdf'%(Norbiters))    
+    plt.savefig('mass_loss_Norbiters_%i_powerlaw.pdf'%(Norbiters))    
     
     print('hello world!')
     

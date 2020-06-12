@@ -190,7 +190,7 @@ def get_kmeans_result(snapshots, Norbiters, initial_masses):
                 dist_in_pc = np.sqrt(dist_sq) * 1000.
                 df_cluster.loc[i, 'separation distance'] = dist_in_pc
             
-            #print('median separation distance, initial radius: %.03f pc, %.03f pc'%(np.median(df_cluster['separation distance'].tolist()), cluster_radii_sorted[cluster_label] ))
+            #praint('median separation distance, initial radius: %.03f pc, %.03f pc'%(np.median(df_cluster['separation distance'].tolist()), cluster_radii_sorted[cluster_label] ))
             
             df_cluster = df_cluster[ df_cluster['separation distance'] <= 2.*cluster_radii_sorted[cluster_label] ] #outside of original radius
             df_cluster = df_cluster.reset_index(drop=True)
@@ -255,8 +255,9 @@ if __name__ in '__main__':
     plt.axhline(y=0.9, linestyle='--', c='k', linewidth=1)
     plt.xlim(0., 100.)
     plt.ylim(0., 1.)
-    plt.xlabel(r'$t_{\mathrm{sim}}$ (Myr)', fontsize=12)
-    plt.ylabel(r'$\delta \simeq 1 - M_{\mathrm{cluster}}(t)/M_{\mathrm{cluster}}(t=0)$', fontsize=12)
+    plt.xlabel(r'$t_{\mathrm{sim}}$ (Myr)', fontsize=18)
+    plt.ylabel(r'$\delta \simeq 1 - M_{\mathrm{cluster}}(t)/M_{\mathrm{cluster}}(t=0)$', fontsize=18)
+    plt.gca().tick_params(labelsize='x-large')
     plt.tight_layout()
     plt.savefig('mass_loss_Norbiters_%i_kmeans.pdf'%(Norbiters))    
     

@@ -312,8 +312,8 @@ if __name__ in '__main__':
                 
                 xvals, yvals = xvals_all[logN], yvals_all[logN]
                 
-                cmap = cm.get_cmap('plasma', 8)
-                sc = axs[l].scatter(xvals, yvals, c=zvals_all, s=1, alpha=0.8, cmap=cmap, norm=Normalize(vmin=-.5, vmax=7.5))
+                cmap = cm.get_cmap('nipy_spectral', 8)
+                sc = axs[l].scatter(xvals, yvals, c=zvals_all, s=4, alpha=1.0, cmap=cmap, norm=Normalize(vmin=-.5, vmax=7.5))
                 
                 if logN == logN_max and l == 2:
             

@@ -68,8 +68,9 @@ def sort_clusters_by_attribute(attribute):
 
 if __name__ in '__main__':
     
-    indices_dict, df_sorted_by_r = sort_clusters_by_attribute('|r|')
+    indices_dict = sort_clusters_by_attribute('|r|') #
 
+    '''
     plt.rc('font', family='serif')
     plt.rc('text', usetex=True)
     
@@ -193,6 +194,8 @@ if __name__ in '__main__':
     plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize=10)
     plt.tight_layout()
     plt.savefig('xy_plane_initial.pdf')
+
+    '''
 
 '''
 plt.rc('font', family='serif')
